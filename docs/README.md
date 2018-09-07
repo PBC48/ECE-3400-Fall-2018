@@ -3,7 +3,11 @@
 # Welcome to Team 7's website! 
 # &#10024; &#10024; &#10024; &#10024; &#10024; &#10024; &#10024;
 
-Members: Chrissy Mayer, Patrick Clobridge, Tara van Nieuwstadt, Xioayu Yan
+# Members:
+## Chrissy Mayer
+## Patrick Clobridge 
+## Tara van Nieuwstadt
+## Xiaoyu Yan
 
 # Ethics and Contracts
 
