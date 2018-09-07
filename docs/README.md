@@ -26,3 +26,11 @@
 [Lab 4](lab4.md)
 
 # Milestones
+
+[Milestone 1](Milestone1.md)
+
+[Milestone 2](Milestone2.md)
+
+[Milestone 3](Milestone3.md)
+
+[Milestone 4](Milestone4.md)
