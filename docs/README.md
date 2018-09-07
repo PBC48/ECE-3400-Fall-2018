@@ -1,6 +1,6 @@
 ## 75% Band, 25% not band 
 
-# Welcome to Team 7's website! <p> &#128513; &#128513; </p>
+# Welcome to Team 7's website! &#128513; &#128513;
 
 Members: Chrissy Mayer, Patrick Clobridge, Tara van Nieuwstadt, Xioayu Yan
 
