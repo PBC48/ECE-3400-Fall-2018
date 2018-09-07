@@ -89,9 +89,12 @@ c)	I understand that if I do not abide by these terms and conditions, I will suf
 
 1) Xiaoyu Yan                                       date  8/31/2018
 
+
 2) Patrick Clobridge                                date  8/31/2018
 
+
 3) Chrissy Mayer                                    date  8/31/2018
+
 
 4) Tara van Nieuwstadt                              date  31 August 2018
 
