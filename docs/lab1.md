@@ -5,15 +5,22 @@ The purpose of lab 1 is to learn introductory Arduino programming through the Ar
 
 ## Blink
 
-	We set up blinking on the Uno built-in IDE by using an Arduino example code. This was done by going to File -> Examples -> 1.Basics-> Blink. After opening the file, we compiled and uploaded the code onto the Uno using the right arrow button. 
+We set up blinking on the Uno built-in IDE by using an Arduino example code. This was done by going to File -> Examples -> 1.Basics-> Blink. After opening the file, we compiled and uploaded the code onto the Uno using the right arrow button. 
   
 ### Demonstration of Internal LED Blinking
 <a href="http://www.youtube.com/watch?feature=player_embedded&v=Xe242vkh8Xo" target="_blank"><img src="http://img.youtube.com/vi/Xe242vkh8Xo/0.jpg" 
 alt="Demonstration of Internal LED Blinking" width="240" height="180" border="10" /></a>
+
+We then modified the LED blink sketch for an external LED. We used a solderless breadboard with wires connected to a digital I/O pin and the Arduino ground. We used a resistor greater than 300 Ohms in the circuit. As resistance increased, the LED dimmed. 
+
+
+To toggle the LED light, we toggled the digital I/O port connected to the external LED. We made a few adjustments to the example blink code.
+
+![BlinkCode](/images/Blinkcode.PNG)
+
 ### Demonstration of External LED Blinking
-
-
 <a href="http://www.youtube.com/watch?feature=player_embedded&v=pbVh3dkpa-c" target="_blank"><img src="http://img.youtube.com/vi/pbVh3dkpa-c/0.jpg" alt="Demonstration of Internal LED Blinking" width="240" height="180" border="10" /></a>
+
 ### Demonstration of LED Controlled by Potentiometer
 
 <a href="http://www.youtube.com/watch?feature=player_embedded&v=Dvo0qhI7H8Y" target="_blank"><img src="http://img.youtube.com/vi/Dvo0qhI7H8Y/0.jpg" alt="Demonstration of Internal LED Blinking" width="240" height="180" border="10" /></a>
