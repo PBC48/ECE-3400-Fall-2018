@@ -2,7 +2,7 @@
 
 # Welcome to Team 7's website! 
 # &#10024; &#10024; &#10024; &#10024; &#10024; &#10024; &#10024;
-
+# [Link to Github](https://github.com/PBC48/ECE-3400-Fall-2018)
 # Members:
 ## Chrissy Mayer
 ## Patrick Clobridge 
