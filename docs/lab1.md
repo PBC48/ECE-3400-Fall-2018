@@ -1,1 +1,1 @@
-##[![Demonstration of Internal LED Blinking](http://img.youtube.com/vi/PLlDmQrapOPoI81cNX5rbt9q5gyuW65E6B/0.jpg)](http://www.youtube.com/watch?v=Xe242vkh8Xo&list=PLlDmQrapOPoI81cNX5rbt9q5gyuW65E6B&t=0s&index=3)
+## [![Demonstration of Internal LED Blinking](http://img.youtube.com/vi/PLlDmQrapOPoI81cNX5rbt9q5gyuW65E6B/0.jpg)](http://www.youtube.com/watch?v=Xe242vkh8Xo&list=PLlDmQrapOPoI81cNX5rbt9q5gyuW65E6B&t=0s&index=3)
