@@ -16,7 +16,7 @@ We then modified the LED blink sketch for an external LED. We used a solderless 
 
 To toggle the LED light, we toggled the digital I/O port connected to the external LED. We made a few adjustments to the example blink code.
 
-![BlinkCode](/images/blinkcode.png)
+![BlinkCode](/docs/images/blinkcode.png)
 
 ### Demonstration of External LED Blinking
 <a href="http://www.youtube.com/watch?feature=player_embedded&v=pbVh3dkpa-c" target="_blank"><img src="http://img.youtube.com/vi/pbVh3dkpa-c/0.jpg" alt="Demonstration of Internal LED Blinking" width="240" height="180" border="10" /></a>
