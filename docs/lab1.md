@@ -15,3 +15,7 @@ alt="Demonstration of Internal LED Blinking" width="240" height="180" border="10
 
 
 <a href="http://www.youtube.com/watch?feature=player_embedded&v=rJJShOBNLfM" target="_blank"><img src="http://img.youtube.com/vi/rJJShOBNLfM/0.jpg" alt="Demonstration of Internal LED Blinking" width="240" height="180" border="10" /></a>
+>Demonstration of Robot moving in a square
+
+
+<a href="http://www.youtube.com/watch?feature=player_embedded&v=az1fnLFKQlA" target="_blank"><img src="http://img.youtube.com/vi/az1fnLFKQlA/0.jpg" alt="Demonstration of Internal LED Blinking" width="240" height="180" border="10" /></a>
