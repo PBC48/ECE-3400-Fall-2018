@@ -80,7 +80,7 @@ We set up a circuit according to the following schematic, similar to what we had
 
 In accordance with our earlier observation of larger resistances resulting in a dimmer LED, adjusting the potentiometer changed the brightness of the LED, as shown by the following demonstration of the LED controlled by the potentiometer:
 
-<a href="http://www.youtube.com/watch?feature=player_embedded&v=Dvo0qhI7H8Y" target="_blank"><img src="http://img.youtube.com/vi/Dvo0qhI7H8Y/0.jpg" alt="Demonstration of Internal LED Blinking" width="240" height="180" border="10" /></a>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/Dvo0qhI7H8Y?rel=0&amp;controls=0&amp;showinfo=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
 
 
