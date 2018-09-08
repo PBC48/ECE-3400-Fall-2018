@@ -27,43 +27,42 @@ _Work Quality:_
 
 We all want to get an A in this class really badly. So, we will make sure that our work is pristine, comments are understandable and well marked, and generated processes will be well documented for ease of the next user.
 
-1.	Project standards (What is a realistic level of quality for team presentations, collaborative writing, individual research, preparation of drafts, peer reviews, etc.?): Team presentations are to be rehearsed, collaborative writing needs to be peer reviewed, individual research has to be well documented and thorough, preparation of drafts should be case by case, where we all understand the purpose, and peer reviews are to be thorough, no detail left unchecked (We don't want another Challenger to happen!)
+1.	__Project standards:__ Team presentations are to be rehearsed, collaborative writing needs to be peer reviewed, individual research has to be well documented and thorough, preparation of drafts should be case by case, where we all understand the purpose, and peer reviews are to be thorough, no detail left unchecked (We don't want another Challenger to happen!)
 
-2.	Strategies to fulfill these standards:
-
-_Team Participation: Hold each other and yourself accountable for the work done (Don't let your teammates down, don't mess up the PK!)
+2.	__Strategies to fulfill these standards:__
+Team Participation: Hold each other and yourself accountable for the work done (Don't let your teammates down, don't mess up the PK!)
 Communicate clearly on your expectations. Don't let things that bother you build up.
 
-1.	Strategies to ensure cooperation and equal distribution of tasks:
+1.	__Strategies to ensure cooperation and equal distribution of tasks:__
 Keep in mind how much time each task takes, and take into account previous experience, while at the same time giving people the chance to work on tasks that they are interested in.
 
-2.	Strategies for encouraging/including ideas from all team members (team maintenance):
+2.	__Strategies for encouraging/including ideas from all team members (team maintenance):__
 Listen to everyone's ideas. Have ideas thoroughly developed before each meeting.
 
-3.	Strategies for keeping on task (task maintenance):
+3.	__Strategies for keeping on task (task maintenance):__
 Develop task deadlines before each meeting to establish the reality of each deadline. Keep track of deadlines on Google Drive and place in our calendars.
 
-4.	Preferences for leadership (informal, formal, individual, shared): shared, informal leadership.
+4.	__Preferences for leadership (informal, formal, individual, shared):__ shared, informal leadership.
 
 _Personal Accountability:_
 
-1.	Expected individual attendance, punctuality, and participation at all team meetings:
+1.	__Expected individual attendance, punctuality, and participation at all team meetings:__
 Attendance, punctuality, and participation are required, unless if a member has conflicting issues come up.
 
-2.	Expected level of responsibility for fulfilling team assignments, timelines, and deadlines:
+2.	__Expected level of responsibility for fulfilling team assignments, timelines, and deadlines:__
 High level of responsibility for all three.
 
-3.	Expected level of communication with other team members:
+3.	__Expected level of communication with other team members:__
 Whenever someone completes a task or is having on a task, they should communicate.
 
-4.	Expected level of commitment to team decisions and tasks:
+4.	__Expected level of commitment to team decisions and tasks:__
 Everyone should be in on decisions and tasks.
 
 _Consequences for Failing to Follow Procedures and Fulfill Expectations_
 
-1.	Describe, as a group, you would handle infractions of any of the obligations of this team contract:
+1.	__Describe, as a group, you would handle infractions of any of the obligations of this team contract:__
 They are responsible for taking care of agenda for week after infraction.
-2.	Describe what your team will do if the infractions continue:
+2.	__Describe what your team will do if the infractions continue:__
 You'll have to keep doing agenda stuff, or we'll bring it up with the Prof.
 
 ### Team Leadership ###
