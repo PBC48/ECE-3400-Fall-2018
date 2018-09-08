@@ -11,19 +11,21 @@ In Lab 1, we began with using digital I/O pins to make internal and external LED
 
 ## Blink
 
-We set up blinking on the Uno’s built-in LED by using an Arduino example code found as follows: 
+We made the Uno’s built-in LED blink by running an Arduino example code, found as follows: 
 
 <figure>
     <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/blinkAccessScreenshot.png" width="800"/>
     <font size="2">
-    <figcaption> Blinking LED code location
+    <figcaption> Blinking LED example code location
     </figcaption>
     </font>
 </figure>
 
-### Demonstration of Internal LED Blinking
+The code worked as expected:
+
 <a href="http://www.youtube.com/watch?feature=player_embedded&v=Xe242vkh8Xo" target="_blank"><img src="http://img.youtube.com/vi/Xe242vkh8Xo/0.jpg" 
-alt="Demonstration of Internal LED Blinking" width="240" height="180" border="10" /></a>
+alt="Demonstration of Internal LED Blinking" width="240" height="180" border="10" />
+    <figcaption> Demonstration of Internal LED Blinking </figcaption></a>
 
 Next, we modified the LED blink sketch for an external LED. We set up a circuit for the external LED using a solderless breadboard with wires to connect the LED in series with a 1kOhm resistor to a digital I/O pin and the Arduino ground. When we used larger resistors in the circuit, the LED dimmed. 
 
@@ -32,7 +34,7 @@ To make the LED blink, we toggled the digital I/O port connected to the external
 <figure>
     <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/Code-blink.PNG" width="600">
     <font size="2">
-    <figcaption> Blinking LED code location
+    <figcaption> Blinking External LED Code
     </figcaption>
     </font>
 </figure>
@@ -97,7 +99,7 @@ The Arduino analog I/O pins can control the turn direction and speed of the serv
 <figure>
     <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/Schematic-ServoPotentiometer.PNG" width="500">
     <font size="2">
-    <figcaption> Schematic for controlling blink with potentiometer
+    <figcaption> Schematic for controlling servo with potentiometer
     </figcaption>
     </font>
 </figure>
