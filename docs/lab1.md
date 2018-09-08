@@ -120,6 +120,14 @@ Adjusting the potentiometer changed the speed and direction of the servo as we e
 We built the robot consisting of a chassis and two servos with wheels attached, and mounted the Arduino on top of the chassis.  We also attached a 5V DC phone charging port to power the robot.  Finally, we wrote a simple Arduino program for the robot to drive in a square.
 
 <figure>
+    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/robot.jpg" width="300">
+    <font size="2">
+    <figcaption> Assembled Robot
+    </figcaption>
+    </font>
+</figure>
+
+<figure>
     <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/Code-robotDrive.PNG" width="300">
     <font size="2">
     <figcaption> Robot Square Driving Code
