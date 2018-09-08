@@ -13,11 +13,8 @@ In Lab 1, we began with using digital I/O pins to make internal and external LED
 
 We set up blinking on the Uno’s built-in LED by using an Arduino example code found as follows: 
 
-![alt text](https://github.com/PBC48/ECE-3400-Fall-2018/tree/master/docs/images/blinkAccessScreenshot.png "Logo Title Text 1")
-
-
 <figure>
-    <img src="https://github.com/PBC48/ECE-3400-Fall-2018/tree/master/docs/images/Code-analog.PNG" width="400">
+    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/blinkAccessScreenshot.png" width="800"/>
     <font size="2">
     <figcaption> Blinking LED code location<br> </a> 
     </figcaption>
@@ -31,7 +28,7 @@ alt="Demonstration of Internal LED Blinking" width="240" height="180" border="10
 Next, we modified the LED blink sketch for an external LED. We set up a circuit for the external LED using a solderless breadboard with wires to connect the LED in series with a 1kOhm resistor to a digital I/O pin and the Arduino ground. When we used larger resistors in the circuit, the LED dimmed. 
 
 <figure>
-    <img src="https://github.com/PBC48/ECE-3400-Fall-2018/tree/master/docs/images/Schematic-Blinking.PNG" width="400">
+    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/Schematic-Blinking.PNG" width="200">
     <font size="2">
     <figcaption> Schematic for blinking external LED<br> </a> 
     </figcaption>
@@ -42,7 +39,7 @@ Next, we modified the LED blink sketch for an external LED. We set up a circuit 
 To make the LED blink, we toggled the digital I/O port connected to the external LED between HIGH and LOW. We made a few adjustments to the example blink code to configure one of the I/O ports (pin 13 in the code shown below) for the external LED.
 
 <figure>
-    <img src="https://github.com/PBC48/ECE-3400-Fall-2018/tree/master/docs/images/Code-blink.PNG" width="400">
+    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/Code-blink.PNG" width="800">
     <font size="2">
     <figcaption> Blinking LED code location<br> </a> 
     </figcaption>
