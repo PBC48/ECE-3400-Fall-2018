@@ -1,4 +1,4 @@
-# Lab 1 Demonstration and Results
+# Lab 1: Microcontrollers
 ## Objectives
 * Familiarize ourselves with the Arduino IDE and Arduino Uno
 * Learn introductory Arduino programming and basic Arduino functionalities
