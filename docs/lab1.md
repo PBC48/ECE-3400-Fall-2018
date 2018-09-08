@@ -21,16 +21,12 @@ We made the Uno’s built-in LED blink by running an Arduino example code, found
     </font>
 </figure>
 
-The code worked as expected:
+The code worked as expected, as can be seen by the following demonstration of the internal LED blinking:
 
 <a href="http://www.youtube.com/watch?feature=player_embedded&v=Xe242vkh8Xo" target="_blank"><img src="http://img.youtube.com/vi/Xe242vkh8Xo/0.jpg" 
-alt="Demonstration of Internal LED Blinking" width="240" height="180" border="10" />
-    <font size="2">
-    <figcaption> Demonstration of Internal LED Blinking 
-    </figcaption>
-</a>
+alt="Demonstration of Internal LED Blinking" width="240" height="180" border="10" /></a>
 
-Next, we modified the LED blink sketch for an external LED. We set up a circuit for the external LED using a solderless breadboard with wires to connect the LED in series with a 1kOhm resistor to a digital I/O pin and the Arduino ground. When we used larger resistors in the circuit, the LED dimmed. 
+Next, we modified the LED blink sketch for an external LED. We set up a circuit for the external LED using a solderless breadboard with wires to connect the LED in series with a 1kOhm resistor to a digital I/O pin and the Arduino ground. When we used larger resistors in the circuit, the LED dimmed.
 
 To make the LED blink, we toggled the digital I/O port connected to the external LED between HIGH and LOW. We made a few adjustments to the example blink code to configure one of the I/O ports (pin 13 in the code shown below) for the external LED.
 
