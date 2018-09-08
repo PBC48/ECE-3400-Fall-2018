@@ -87,7 +87,7 @@ In accordance with our earlier observation of larger resistances resulting in a 
 
 ## Servos
 
-We used the Arduino analog I/O pins to control the turn direction and speed of continuously rotating servos. We relied primarily on the Arduino’s servo library to control the servo. On a high level, we dictated which analog I/O port (PWM pin) would be used to control the servos and then used the write function of the servo library to dictate the speed and direction of the servo. We combined the servo with the potentiometer in a similar way to what we did with the potentiometer and LED, allowing the potentiometer to control the speed and direction of the servo by adjusting the value read from the potentiometer and writing it to the servo.
+We used the Arduino analog I/O pins to control the turn direction and speed of continuously rotating servos. We relied primarily on the Arduino’s servo library to control the servo. On a high level, we dictated which analog I/O port (PWM pin) would be used to control the servos and then used the write function of the servo library to dictate the speed and direction of the servo. We combined the servo with the potentiometer in a similar way to what we did with the potentiometer and LED, allowing the potentiometer to control the speed and direction of the servo by adjusting the value read from the potentiometer and writing it to the servo via a PWM pin (pin 10 in the code below).
 
 <figure>
     <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/Code-Servo.PNG" width="300">
@@ -96,6 +96,8 @@ We used the Arduino analog I/O pins to control the turn direction and speed of c
     </figcaption>
     </font>
 </figure>
+
+We set up a circuit according to the schematic below, similar to what we had created for the LED and adding in the servo connection to the PWM pin and the Arduino circuit:
 
 <figure>
     <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/Schematic-ServoPotentiometer.PNG" width="500">
