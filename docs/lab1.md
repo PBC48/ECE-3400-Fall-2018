@@ -13,8 +13,11 @@ In Lab 1, we began with using digital I/O pins to make internal and external LED
 
 We set up blinking on the Uno’s built-in LED by using an Arduino example code found as follows: 
 
+![alt text](https://github.com/PBC48/ECE-3400-Fall-2018/tree/master/docs/images/blinkAccessScreenshot.png "Logo Title Text 1")
+
+
 <figure>
-    <img src="https://github.com/PBC48/ECE-3400-Fall-2018/tree/master/docs/images/blinkAccessScreenshot.png" width="400">
+    <img src="https://github.com/PBC48/ECE-3400-Fall-2018/tree/master/docs/images/Code-analog.PNG" width="400">
     <font size="2">
     <figcaption> Blinking LED code location<br> </a> 
     </figcaption>
