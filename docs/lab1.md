@@ -91,7 +91,7 @@ The Arduino analog I/O pins can control the turn direction and speed of the serv
 ### Demonstration of Servos Controlled via Pulse Width Modulation (PWM)
 
 
-<a href="http://www.youtube.com/watch?feature=player_embedded&v=rJJShOBNLfM" target="_blank"><img src="http://img.youtube.com/vi/rJJShOBNLfM/0.jpg" alt="Demonstration of Internal LED Blinking" width="240" height="180" border="10" /></a>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/rJJShOBNLfM?rel=0&amp;controls=0&amp;showinfo=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
 <figure>
     <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/Schematic-ServoPotentiometer.PNG" width="500">
@@ -131,7 +131,7 @@ We built the robot with a chassis and two servos with wheels attached, and place
 
 ### Demonstration of Robot Moving in a Square
 
-<a href="http://www.youtube.com/watch?feature=player_embedded&v=az1fnLFKQlA" target="_blank"><img src="http://img.youtube.com/vi/az1fnLFKQlA/0.jpg" alt="Demonstration of Internal LED Blinking" width="240" height="180" border="10" /></a>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/az1fnLFKQlA?rel=0&amp;controls=0&amp;showinfo=0&amp;start=1" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
 ## Conclusion and Result
 
