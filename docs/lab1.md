@@ -47,7 +47,7 @@ We set up a circuit for the external LED using a solderless breadboard with wire
 
 Our setup worked as expected, as shown by the following demonstration of the external LED blinking:
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/pbVh3dkpa-c?rel=0&amp;controls=0&amp;showinfo=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/pbVh3dkpa-c?rel=0&amp;controls=0&amp;showinfo=0?autoplay=1" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
 
 
