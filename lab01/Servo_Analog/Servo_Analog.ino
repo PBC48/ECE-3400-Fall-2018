@@ -1,5 +1,3 @@
-#include <Servo.h>
-
 /*
   Servo Analog
 
@@ -8,13 +6,14 @@
   ECE 3400, Team 7
 */
 
+#include <Servo.h>
+
 // Define analog output and input pins
 #define SERVO 10
 #define APIN A5
 
 // Define servo
 Servo myservo;
-
 
 void setup() {
   // initialize digital pin as an output
@@ -26,7 +25,6 @@ void setup() {
   // attach servo to pin
   myservo.attach(10);
 }
-
 
 void loop() {
   float value = analogRead(APIN); // Read and store input value from analog pin
