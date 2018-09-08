@@ -23,8 +23,6 @@ We made the Uno’s built-in LED blink by running an Arduino example code, found
 
 The code worked as expected, as can be seen by the following demonstration of the internal LED blinking:
 
-<a href="http://freegifmaker.me/images/2cRe8/"><img src="http://i.freegifmaker.me/1/5/3/6/3/7/15363774991666278.gif?1536377507" alt="gifs website"/></a><br/><a href="http://www.freegifmaker.me/">FreeGifMaker.me<a/>
-
 <iframe width="600" height="350" src="https://www.youtube-nocookie.com/embed/Xe242vkh8Xo?rel=0&amp;controls=0&amp;showinfo=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
 
@@ -119,15 +117,17 @@ Adjusting the potentiometer changed the speed and direction of the servo as we e
 
 ## Robot
 
-We built the robot with a chassis and two servos with wheels attached, and placed the Arduino on top.  We also built in a 5v DC phone charging port to power the robot.  Finally, we wrote a simple Arduino program for the robot to drive in a square.
+We built the robot consisting of a chassis and two servos with wheels attached, and mounted the Arduino on the chassis.  We also attached a 5V DC phone charging port to power the robot. Finally, we wrote a simple Arduino program for the robot to drive in a square:
 
 <figure>
     <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/Code-robotDrive.PNG" width="300">
     <font size="2">
-    <figcaption> Schematic for controlling blink with potentiometer
+    <figcaption> Robot Square Driving Code
     </figcaption>
     </font>
 </figure>
+
+Overall, the schematic for the robot is as follows:
 
 <figure>
     <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/Schematic-Robot.PNG" width="600">
@@ -137,6 +137,7 @@ We built the robot with a chassis and two servos with wheels attached, and place
     </font>
 </figure>
 
+The robot was able to move autonomously as we had directed, as shown by the following demonstration of the robot moving in a square:
 ### Demonstration of Robot Moving in a Square
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/az1fnLFKQlA?rel=0&amp;controls=0&amp;showinfo=0&amp;start=1" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
