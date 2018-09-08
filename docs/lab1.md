@@ -122,7 +122,7 @@ We built the robot consisting of a chassis and two servos with wheels attached, 
 <figure>
     <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/Code-robotDrive.PNG" width="300">
     <font size="2">
-    <figcaption> Schematic for controlling blink with potentiometer
+    <figcaption> Robot Square Driving Code
     </figcaption>
     </font>
 </figure>
