@@ -30,7 +30,7 @@ Next, we modified the LED blink sketch for an external LED. We set up a circuit 
 To make the LED blink, we toggled the digital I/O port connected to the external LED between HIGH and LOW. We made a few adjustments to the example blink code to configure one of the I/O ports (pin 13 in the code shown below) for the external LED.
 
 <figure>
-    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/Code-blink.PNG" width="800">
+    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/Code-blink.PNG" width="600">
     <font size="2">
     <figcaption> Blinking LED code location
     </figcaption>
@@ -63,7 +63,7 @@ We used analogRead() to read the analog output from the potentiometer and to con
 
 
 <figure>
-    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/Code-analog.PNG" width="800">
+    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/Code-analog.PNG" width="500">
     <font size="2">
     <figcaption> Blinking LED code location
     </figcaption>
@@ -71,7 +71,7 @@ We used analogRead() to read the analog output from the potentiometer and to con
 </figure>
 
 <figure>
-    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/Schematic-PotentiometerBlink.PNG" width="400">
+    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/Schematic-PotentiometerBlink.PNG" width="500">
     <font size="2">
     <figcaption> Schematic for controlling blink with potentiometer
     </figcaption>
@@ -95,7 +95,7 @@ The Arduino analog I/O pins can control the turn direction and speed of the serv
 <a href="http://www.youtube.com/watch?feature=player_embedded&v=rJJShOBNLfM" target="_blank"><img src="http://img.youtube.com/vi/rJJShOBNLfM/0.jpg" alt="Demonstration of Internal LED Blinking" width="240" height="180" border="10" /></a>
 
 <figure>
-    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/Schematic-ServoPotentiometer.PNG" width="400">
+    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/Schematic-ServoPotentiometer.PNG" width="500">
     <font size="2">
     <figcaption> Schematic for controlling blink with potentiometer
     </figcaption>
@@ -103,7 +103,7 @@ The Arduino analog I/O pins can control the turn direction and speed of the serv
 </figure>
 
 <figure>
-    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/Code-.PNG" width="400">
+    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/Code-servo.PNG" width="300">
     <font size="2">
     <figcaption> Schematic for controlling blink with potentiometer
     </figcaption>
@@ -115,7 +115,7 @@ The Arduino analog I/O pins can control the turn direction and speed of the serv
 We built the robot with a chassis and two servos with wheels attached, and placed the Arduino on top.  We also built in a 5v DC phone charging port to power the robot.  Finally, we wrote a simple Arduino program for the robot to drive in a square.
 
 <figure>
-    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/Code-robotDrive.PNG" width="400">
+    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/Code-robotDrive.PNG" width="300">
     <font size="2">
     <figcaption> Schematic for controlling blink with potentiometer
     </figcaption>
@@ -123,7 +123,7 @@ We built the robot with a chassis and two servos with wheels attached, and place
 </figure>
 
 <figure>
-    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/Schematic-Robot.PNG" width="400">
+    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/Schematic-Robot.PNG" width="600">
     <font size="2">
     <figcaption> Schematic for current robot
     </figcaption>
