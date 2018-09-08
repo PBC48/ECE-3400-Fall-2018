@@ -148,7 +148,7 @@ The robot moved as expected in the square and there were no problems with the sp
 
 
 <figure>
-    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/robottop-v1.PNG" width="400">
+    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/robottop-v1.PNG" width="600">
     <font size="2">
     <figcaption> Robot front
     </figcaption>
@@ -157,7 +157,7 @@ The robot moved as expected in the square and there were no problems with the sp
 
 
 <figure>
-    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/robotv1.PNG" width="400">
+    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/robotv1.PNG" width="600">
     <font size="2">
     <figcaption> Robot top
     </figcaption>
