@@ -1,5 +1,3 @@
-#include <Servo.h>
-
 /*
   Servo Analog
 
@@ -7,6 +5,8 @@
 
   ECE 3400, Team 7
 */
+
+#include <Servo.h>
 
 // Define analog output and input pins
 #define SERVO 10
