@@ -9,7 +9,6 @@
 // define analog pin
 #define APIN A5
 
-
 void setup() {
   // initialize analog pin as an input
   pinMode(APIN, INPUT);
@@ -17,7 +16,6 @@ void setup() {
   // establish serial connection with board
   Serial.begin(115200);
 }
-
 
 void loop() {
   int value = analogRead(APIN);   // Read the input value from the analog pin
