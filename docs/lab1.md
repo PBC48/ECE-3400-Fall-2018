@@ -142,3 +142,25 @@ We built the robot with a chassis and two servos with wheels attached, and place
 ## Conclusion and Result
 
 The robot moved as expected in the square and there were no problems with the speed of the servos. However, we did encounter a problem with the direction of one of the motors.  The orientation of the two motors was inconsistent so the right and left wheels spun in opposite directions.  This slightly complicated the code to direct the robot, requiring a roundabout solution even to go in a straight line.  In the next lab section, we will fix the installation of the wheels by reversing the orientation of one of the wheels. 
+
+
+
+
+
+<figure>
+    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/robottop-v1.PNG" width="400">
+    <font size="2">
+    <figcaption> Robot front
+    </figcaption>
+    </font>
+</figure>
+
+
+<figure>
+    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/robotv1.PNG" width="400">
+    <font size="2">
+    <figcaption> Robot top
+    </figcaption>
+    </font>
+</figure>
+
