@@ -54,11 +54,11 @@ Our setup worked as expected, as shown by the following demonstration of the ext
 
 ## Serial Monitor and Analog Pins
 
-To experiment with using the serial monitor and analog pins, we tested reading values from a potentiometer. We connected the potentiometer to the Arduino by connecting its output to an analog input pin of the Arduino, and connecting the potentiometer to the Arduino's 5V power and ground. To avoid accidentally short-circuiting the LED, we also added a 300 Ohm resistance in series with the potentiometer. We used the analogRead() function to read the potentiometer values and used the Serial.println() function to print those values to the serial monitor.
+To experiment with using the serial monitor and analog pins, we tested reading values from a potentiometer. We connected the potentiometer to the Arduino by connecting its output to an analog input pin of the Arduino, and connecting the potentiometer to the Arduino's 5V power and ground. To avoid accidentally short-circuiting the LED, we also added a 300 Ohm resistance in series with the potentiometer. We used the analogRead() function to read the potentiometer values and used the Serial.println() function to print those values to the serial monitor. These functions are included in the code for the LED analog output.
 
 ## LED Analog Output
 
-We used analogRead() to read the analog output from the potentiometer and to control the brightness of the LED in software. 
+Next, we used the analog output from the potentiometer to control the brightness of the LED. After reading the potentiometer value, we adjusted that value and used the analogWrite() function to output it to an Arduino pin with PWM capability (pin 10 in the code below). We had to adjust the output value to be within the range accepted by the analogWrite() function; the potentiometer readings returned values between 0 and 1023, and the analogWrite() function accepts values between 0 and 255.
 
 
 <figure>
@@ -69,16 +69,17 @@ We used analogRead() to read the analog output from the potentiometer and to con
     </font>
 </figure>
 
+We set up a circuit according to the following schematic, similar to what we had already set up to read the potentiometer values and adding the connection of the LED to a PWM pin:
+
 <figure>
     <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/Schematic-PotentiometerBlink.PNG" width="500">
     <font size="2">
-    <figcaption> Schematic for controlling blink with potentiometer
+    <figcaption> Schematic for controlling LED brightness with potentiometer
     </figcaption>
     </font>
 </figure>
 
-
-### Demonstration of LED Controlled by Potentiometer
+In accordance with our earlier observation of larger resistances resulting in a dimmer LED, adjusting the potentiometer changed the brightness of the LED, as shown by the following demonstration of the LED controlled by the potentiometer:
 
 <a href="http://www.youtube.com/watch?feature=player_embedded&v=Dvo0qhI7H8Y" target="_blank"><img src="http://img.youtube.com/vi/Dvo0qhI7H8Y/0.jpg" alt="Demonstration of Internal LED Blinking" width="240" height="180" border="10" /></a>
 
