@@ -15,7 +15,6 @@
 // Define servo
 Servo myservo;
 
-
 void setup() {
   // initialize digital pin as an output
   pinMode(SERVO, OUTPUT);
@@ -26,7 +25,6 @@ void setup() {
   // attach servo to pin
   myservo.attach(10);
 }
-
 
 void loop() {
   float value = analogRead(APIN); // Read and store input value from analog pin
