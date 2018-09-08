@@ -26,7 +26,7 @@ The code worked as expected, as can be seen by the following demonstration of th
 <a href="http://www.youtube.com/watch?feature=player_embedded&v=Xe242vkh8Xo" target="_blank"><img src="http://img.youtube.com/vi/Xe242vkh8Xo/0.jpg" 
 alt="Demonstration of Internal LED Blinking" width="240" height="180" border="10" /></a>
 
-Next, we modified the LED blink sketch for an external LED. We adjusted the example blink code to configure one of the digital I/O ports (pin 13 in the code shown below) for the external LED. In doing so we made the LED blink by toggling the output of the digital I/O pin connected to the external LED between HIGH and LOW. For digital I/O ports, the output signal can be set either at HIGH, at 3.3V, or LOW, at 0V. Thus, when we used the Arduino function digitalWrite to output a HIGH to the digital pin, we output 3.3V to the circuit, which turned the LED on. Outputting a LOW, or 0V, turned the LED off. 
+Next, we modified the LED blink sketch for an external LED. We adjusted the example blink code to configure one of the digital I/O ports (pin 13 in the code shown below) for the external LED. In doing so we made the LED blink by toggling the output of the digital I/O pin connected to the external LED between HIGH and LOW. For digital I/O ports, the output signal can be set either at HIGH, at 3.3V, or LOW, at 0V. Thus, when we used the Arduino function digitalWrite() to output a HIGH to the digital pin, we output 3.3V to the circuit, which turned the LED on. Outputting a LOW, or 0V, turned the LED off. 
 
 <figure>
     <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/Code-blink.PNG" width="600">
@@ -54,7 +54,7 @@ Our setup worked as expected, as shown by the following demonstration of the ext
 
 ## Serial Monitor and Analog Pins
 
-We experimented with using potentiometers to control LED brightness. First, we tested the potentiometer readings using analogRead() and the serial monitor. We connected one wire to one of the side pins which goes to the 5v Arduino output pin, and the other side pin to a wire connecting to ground. We used the built in funcion Serial.println() to output analog values from the potentiometer’s middle pin. To avoid accidentally short circuiting the LED, we also added a 300 Ohm resistance in series with the potentiometer. 
+To experiment with using the serial monitor and analog pins, we tested reading values from a potentiometer. We connected the potentiometer to the Arduino by connecting its output to an analog input pin of the Arduino, and connecting the potentiometer to the Arduino's 5V power and ground. To avoid accidentally short-circuiting the LED, we also added a 300 Ohm resistance in series with the potentiometer. We used the analogRead() function to read the potentiometer values and used the Serial.println() function to print those values to the serial monitor.
 
 ## LED Analog Output
 
