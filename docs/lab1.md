@@ -16,7 +16,7 @@ We set up blinking on the Uno’s built-in LED by using an Arduino example code 
 <figure>
     <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/blinkAccessScreenshot.png" width="800"/>
     <font size="2">
-    <figcaption> Blinking LED code location<br> </a> 
+    <figcaption> Blinking LED code location
     </figcaption>
     </font>
 </figure>
@@ -30,7 +30,7 @@ Next, we modified the LED blink sketch for an external LED. We set up a circuit 
 <figure>
     <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/Schematic-Blinking.PNG" width="200">
     <font size="2">
-    <figcaption> Schematic for blinking external LED<br> </a> 
+    <figcaption> Schematic for blinking external LED 
     </figcaption>
     </font>
 </figure>
@@ -41,7 +41,7 @@ To make the LED blink, we toggled the digital I/O port connected to the external
 <figure>
     <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/Code-blink.PNG" width="800">
     <font size="2">
-    <figcaption> Blinking LED code location<br> </a> 
+    <figcaption> Blinking LED code location
     </figcaption>
     </font>
 </figure>
@@ -59,7 +59,14 @@ We experimented with using potentiometers to control LED brightness. First, we t
 
 We used analogRead() to read the analog output from the potentiometer and to control the brightness of the LED in software. 
 
-![LED Analog Code]("/docs/lab01 media/LEDAnalog.PNG")
+
+<figure>
+    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/Code-analog.PNG" width="800">
+    <font size="2">
+    <figcaption> Blinking LED code location
+    </figcaption>
+    </font>
+</figure>
 
 ### Demonstration of LED Controlled by Potentiometer
 
