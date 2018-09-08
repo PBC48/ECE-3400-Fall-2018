@@ -117,7 +117,7 @@ Adjusting the potentiometer changed the speed and direction of the servo as we e
 
 ## Robot
 
-We built the robot with a chassis and two servos with wheels attached, and placed the Arduino on top.  We also built in a 5v DC phone charging port to power the robot.  Finally, we wrote a simple Arduino program for the robot to drive in a square.
+We built the robot consisting of a chassis and two servos with wheels attached, and mounted the Arduino on top of the chassis.  We also attached a 5V DC phone charging port to power the robot.  Finally, we wrote a simple Arduino program for the robot to drive in a square.
 
 <figure>
     <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/Code-robotDrive.PNG" width="300">
@@ -127,6 +127,8 @@ We built the robot with a chassis and two servos with wheels attached, and place
     </font>
 </figure>
 
+The circuit on the robot is set up according the following schematic:
+
 <figure>
     <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/Schematic-Robot.PNG" width="600">
     <font size="2">
@@ -135,32 +137,10 @@ We built the robot with a chassis and two servos with wheels attached, and place
     </font>
 </figure>
 
-### Demonstration of Robot Moving in a Square
+The robot was able to move autonomously as we had directed, as shown in the following demonstration of the robot moving in a square:
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/az1fnLFKQlA?rel=0&amp;controls=0&amp;showinfo=0&amp;start=1" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
 ## Conclusion and Result
 
 The robot moved as expected in the square and there were no problems with the speed of the servos. However, we did encounter a problem with the direction of one of the motors.  The orientation of the two motors was inconsistent so the right and left wheels spun in opposite directions.  This slightly complicated the code to direct the robot, requiring a roundabout solution even to go in a straight line.  In the next lab section, we will fix the installation of the wheels by reversing the orientation of one of the wheels. 
-
-
-
-
-
-<figure>
-    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/robottop-v1.PNG" width="600">
-    <font size="2">
-    <figcaption> Robot front
-    </figcaption>
-    </font>
-</figure>
-
-
-<figure>
-    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/robotv1.PNG" width="600">
-    <font size="2">
-    <figcaption> Robot top
-    </figcaption>
-    </font>
-</figure>
-
