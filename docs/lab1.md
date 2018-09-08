@@ -27,15 +27,6 @@ alt="Demonstration of Internal LED Blinking" width="240" height="180" border="10
 
 Next, we modified the LED blink sketch for an external LED. We set up a circuit for the external LED using a solderless breadboard with wires to connect the LED in series with a 1kOhm resistor to a digital I/O pin and the Arduino ground. When we used larger resistors in the circuit, the LED dimmed. 
 
-<figure>
-    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/Schematic-Blinking.PNG" width="200">
-    <font size="2">
-    <figcaption> Schematic for blinking external LED 
-    </figcaption>
-    </font>
-</figure>
-
-
 To make the LED blink, we toggled the digital I/O port connected to the external LED between HIGH and LOW. We made a few adjustments to the example blink code to configure one of the I/O ports (pin 13 in the code shown below) for the external LED.
 
 <figure>
@@ -47,9 +38,20 @@ To make the LED blink, we toggled the digital I/O port connected to the external
 </figure>
 
 ### Demonstration of External LED Blinking
+For digital I/O ports, the output signal can be set either at HIGH, at 3.3v, or LOW, at 0v. Thus, when we used digitalwrite to output a high to the digital pin, we output 3.3v to the circuit, which turned the LED on. Outputting the 0v low turned the LED off.
+
+
+<figure>
+    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/Schematic-Blinking.PNG" width="200">
+    <font size="2">
+    <figcaption> Schematic for blinking external LED 
+    </figcaption>
+    </font>
+</figure>
+
 <a href="http://www.youtube.com/watch?feature=player_embedded&v=pbVh3dkpa-c" target="_blank"><img src="http://img.youtube.com/vi/pbVh3dkpa-c/0.jpg" alt="Demonstration of Internal LED Blinking" width="240" height="180" border="10" /></a>
 
-For digital I/O ports, the output signal can be set either at HIGH, at 3.3v, or LOW, at 0v. Thus, when we used digitalwrite to output a high to the digital pin, we output 3.3v to the circuit, which turned the LED on. Outputting the 0v low turned the LED off.
+
 
 ## Serial Monitor and Analog Pins
 
@@ -68,9 +70,20 @@ We used analogRead() to read the analog output from the potentiometer and to con
     </font>
 </figure>
 
+<figure>
+    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/Schematic-PotentiometerBlink.PNG" width="400">
+    <font size="2">
+    <figcaption> Schematic for controlling blink with potentiometer
+    </figcaption>
+    </font>
+</figure>
+
+
 ### Demonstration of LED Controlled by Potentiometer
 
 <a href="http://www.youtube.com/watch?feature=player_embedded&v=Dvo0qhI7H8Y" target="_blank"><img src="http://img.youtube.com/vi/Dvo0qhI7H8Y/0.jpg" alt="Demonstration of Internal LED Blinking" width="240" height="180" border="10" /></a>
+
+
 
 ## Servos
 
@@ -81,9 +94,41 @@ The Arduino analog I/O pins can control the turn direction and speed of the serv
 
 <a href="http://www.youtube.com/watch?feature=player_embedded&v=rJJShOBNLfM" target="_blank"><img src="http://img.youtube.com/vi/rJJShOBNLfM/0.jpg" alt="Demonstration of Internal LED Blinking" width="240" height="180" border="10" /></a>
 
+<figure>
+    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/Schematic-ServoPotentiometer.PNG" width="400">
+    <font size="2">
+    <figcaption> Schematic for controlling blink with potentiometer
+    </figcaption>
+    </font>
+</figure>
+
+<figure>
+    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/Code-.PNG" width="400">
+    <font size="2">
+    <figcaption> Schematic for controlling blink with potentiometer
+    </figcaption>
+    </font>
+</figure>
+
 ## Robot
 
 We built the robot with a chassis and two servos with wheels attached, and placed the Arduino on top.  We also built in a 5v DC phone charging port to power the robot.  Finally, we wrote a simple Arduino program for the robot to drive in a square.
+
+<figure>
+    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/Code-robotDrive.PNG" width="400">
+    <font size="2">
+    <figcaption> Schematic for controlling blink with potentiometer
+    </figcaption>
+    </font>
+</figure>
+
+<figure>
+    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/Schematic-Robot.PNG" width="400">
+    <font size="2">
+    <figcaption> Schematic for current robot
+    </figcaption>
+    </font>
+</figure>
 
 ### Demonstration of Robot Moving in a Square
 
