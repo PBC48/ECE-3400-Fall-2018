@@ -21,11 +21,24 @@ alt="Demonstration of Internal LED Blinking" width="240" height="180" border="10
 
 Next, we modified the LED blink sketch for an external LED. We set up a circuit for the external LED using a solderless breadboard with wires to connect the LED in series with a 1kOhm resistor to a digital I/O pin and the Arduino ground. When we used larger resistors in the circuit, the LED dimmed. 
 
-![Schematic of Blink]("'docs/lab01 media/Schematic-Blinking.PNG")
+<figure>
+    <img src="https://github.com/PBC48/ECE-3400-Fall-2018/tree/master/docs/images/Schematic-Blinking.PNG" width="400">
+    <font size="2">
+    <figcaption> Schematic for blinking external LED<br> </a> 
+    </figcaption>
+    </font>
+</figure>
+
 
 To make the LED blink, we toggled the digital I/O port connected to the external LED between HIGH and LOW. We made a few adjustments to the example blink code to configure one of the I/O ports (pin 13 in the code shown below) for the external LED.
 
-![BlinkCode]("/docs/lab01 media/blinkcode.PNG")
+<figure>
+    <img src="https://github.com/PBC48/ECE-3400-Fall-2018/tree/master/docs/images/blinkAccessScreenshot.png" width="400">
+    <font size="2">
+    <figcaption> Blinking LED code location<br> </a> 
+    </figcaption>
+    </font>
+</figure>
 
 ### Demonstration of External LED Blinking
 <a href="http://www.youtube.com/watch?feature=player_embedded&v=pbVh3dkpa-c" target="_blank"><img src="http://img.youtube.com/vi/pbVh3dkpa-c/0.jpg" alt="Demonstration of Internal LED Blinking" width="240" height="180" border="10" /></a>
