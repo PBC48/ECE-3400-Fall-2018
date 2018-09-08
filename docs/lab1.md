@@ -23,7 +23,8 @@ We made the Uno’s built-in LED blink by running an Arduino example code, found
 
 The code worked as expected, as can be seen by the following demonstration of the internal LED blinking:
 
-<iframe width="600" height="350" src="https://www.youtube-nocookie.com/embed/Xe242vkh8Xo?rel=0&amp;controls=0&amp;showinfo=0?autoplay=1" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+<iframe width="600" height="350" src="https://www.youtube-nocookie.com/embed/Xe242vkh8Xo?rel=0&amp;controls=0&amp;showinfo=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+
 
 Next, we modified the LED blink sketch for an external LED. We adjusted the example blink code to configure one of the digital I/O ports (pin 13 in the code shown below) for the external LED. In doing so we made the LED blink by toggling the output of the digital I/O pin connected to the external LED between HIGH and LOW. For digital I/O ports, the output signal can be set either at HIGH, at 3.3V, or LOW, at 0V. Thus, when we used the Arduino function digitalWrite() to output a HIGH to the digital pin, we output 3.3V to the circuit, which turned the LED on. Outputting a LOW, or 0V, turned the LED off. 
 
@@ -47,7 +48,7 @@ We set up a circuit for the external LED using a solderless breadboard with wire
 
 Our setup worked as expected, as shown by the following demonstration of the external LED blinking:
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/pbVh3dkpa-c?rel=0&amp;controls=0&amp;showinfo=0?autoplay=1" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/pbVh3dkpa-c?rel=0&amp;controls=0&amp;showinfo=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
 
 
@@ -63,7 +64,7 @@ Next, we used the analog output from the potentiometer to control the brightness
 <figure>
     <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/Code-analog.PNG" width="500">
     <font size="2">
-    <figcaption> Blinking LED code location
+    <figcaption> Writing Potentiometer Values to LED Code
     </figcaption>
     </font>
 </figure>
@@ -86,12 +87,15 @@ In accordance with our earlier observation of larger resistances resulting in a 
 
 ## Servos
 
-The Arduino analog I/O pins can control the turn direction and speed of the servos. We relied primarily on the Arduino’s servo library to control the servo. On a high level, we dictated the analog I/O port that will be used to control the servos and then used the write function of the servo library to dictate the speed and direction of the servo. We combined the servo with the potentiometer, allowing the potentiometer to control the speed and direction of the servo.
+We used the Arduino analog I/O pins to control the turn direction and speed of continuously rotating servos. We relied primarily on the Arduino’s servo library to control the servo. On a high level, we dictated which analog I/O port (PWM pin) would be used to control the servos and then used the write function of the servo library to dictate the speed and direction of the servo. We combined the servo with the potentiometer in a similar way to what we did with the potentiometer and LED, allowing the potentiometer to control the speed and direction of the servo by adjusting the value read from the potentiometer and writing it to the servo.
 
-### Demonstration of Servos Controlled via Pulse Width Modulation (PWM)
-
-
-<iframe width="560" height="315" src="https://www.youtube.com/embed/rJJShOBNLfM?rel=0&amp;controls=0&amp;showinfo=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+<figure>
+    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/Code-Servo.PNG" width="300">
+    <font size="2">
+    <figcaption> Writing Potentiometer Values to Servo Code
+    </figcaption>
+    </font>
+</figure>
 
 <figure>
     <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/Schematic-ServoPotentiometer.PNG" width="500">
@@ -101,13 +105,13 @@ The Arduino analog I/O pins can control the turn direction and speed of the serv
     </font>
 </figure>
 
-<figure>
-    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/Code-servo.PNG" width="300">
-    <font size="2">
-    <figcaption> Schematic for controlling blink with potentiometer
-    </figcaption>
-    </font>
-</figure>
+Adjusting the potentiometer changed the speed and direction of the servo as we expected, and as is shown in the following demonstration of servos controlled via the potentiometer:
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/rJJShOBNLfM?rel=0&amp;controls=0&amp;showinfo=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+
+
+
+
 
 ## Robot
 
