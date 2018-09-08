@@ -23,7 +23,7 @@ We made the Uno’s built-in LED blink by running an Arduino example code, found
 
 The code worked as expected, as can be seen by the following demonstration of the internal LED blinking:
 
-<a width="600" height="350" href="http://freegifmaker.me/images/2cRe8/"><img src="http://i.freegifmaker.me/1/5/3/6/3/7/15363774991666278.gif?1536377507" alt="gifs website"/></a><br/><a/>
+<a href="http://freegifmaker.me/images/2cRe8/"><img src="http://i.freegifmaker.me/1/5/3/6/3/7/15363774991666278.gif?1536377507" alt="gifs website"/ width="60" height="60"></a>
 
 <iframe width="600" height="350" src="https://www.youtube-nocookie.com/embed/Xe242vkh8Xo?rel=0&amp;controls=0&amp;showinfo=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
@@ -136,6 +136,8 @@ We built the robot with a chassis and two servos with wheels attached, and place
     </figcaption>
     </font>
 </figure>
+
+### Demonstration of Robot Moving in a Square
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/az1fnLFKQlA?rel=0&amp;controls=0&amp;showinfo=0&amp;start=1" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
