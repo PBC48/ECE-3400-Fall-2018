@@ -1,6 +1,6 @@
 #include <Servo.h>
 
-#include <cmath>
+//#include <cmath>
 
 int servo_right_pin = 9;
 int servo_left_pin = 10;
@@ -23,6 +23,18 @@ void robot_forward(){
   servo_left.write(abs(ROBOT_SPEED-180));
 }
 
+void robot_turn(int dir)
+{
+  if(dir){
+    servo_right.write(0);
+    servo_left.write(0);
+  }else{
+    servo_right.write(180);
+    servo_left.write(180);
+  }
+  
+}
+
 void setup() {
   pinMode(LED_BUILTIN,OUTPUT);
   delay(2000);
@@ -34,5 +46,8 @@ void setup() {
 
 void loop() {
   // put your main code here, to run repeatedly:
-  //delay(1000);
+  robot_forward();
+  delay(1000);
+  robot_turn(1);
+  delay(1000);
 }
