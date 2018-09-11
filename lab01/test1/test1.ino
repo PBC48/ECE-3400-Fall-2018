@@ -43,7 +43,7 @@ void SENSOR1_ISR() {
 }
 
 void setup() {
-  Serial.begin(115200);
+  Serial.begin(9600);
 
   // Tell the compiler which pin to associate with which ISR
   attachInterrupt(digitalPinToInterrupt(SENSOR0_PIN), SENSOR0_ISR, LOW);
@@ -56,7 +56,7 @@ void setup() {
 
 void loop() {
   // These delays are purely for ease of reading.
-  //Serial.print("Sensor Digital: ");Serial.println(SENSOR0_READING);
+  Serial.print("Sensor Digital: ");Serial.println(SENSOR0_READING);
   //Serial.print("Sensor Analog: "); Serial.println(analogRead(A0));
   //delay(500);
   //Serial.println("Sensor 1");
