@@ -24,7 +24,6 @@ void setup() {
   pinMode(LED_BUILTIN,OUTPUT);
   delay(2000);
   digitalWrite(LED_BUILTIN,LOW);
-  // put your setup code here, to run once:
   setup_sensor(SENSOR0_PIN,&SENSOR0_TIMER,0);
   setup_sensor(SENSOR1_PIN,&SENSOR1_TIMER,1);
   wait = millis()+200;
@@ -34,11 +33,13 @@ void setup() {
 void loop() {
   switch(state){
     case 0:
-      robot.forward();
+      
       if(SENSOR0_READING>100){
         state++;
       }else if(SENSOR1_READING>100){
         state = 2;
+      }else{
+        robot.forward();
       }
       if(millis()-wait>=0){
         state = 3;
