@@ -29,6 +29,15 @@ void setup() {
   wait = millis()+200;
 }
 
+/**
+ * States:
+ * 0: initial state with no sensor triggers
+ * 1: turn right; go to Robot.h for implementation
+ * 2: turn left
+ * 3: POLL 3rd line sensor 
+ * 4: turn as a result of robot reaching the intersection
+*/
+
 
 void loop() {
   switch(state){

@@ -19,7 +19,17 @@ volatile int SENSOR1_READING;
 void SENSOR0_ISR();
 void SENSOR1_ISR();
 
-// A digital write is required to trigger a sensor reading.
+
+/**
+ * @brief
+ *  initializes a sensor with an interrupt. There are 2 interrupts available
+ * for digital state changes. 
+ * @param
+ *  pin: Arduino digital pin
+ *  sensor_timer: timer for sensor that times how long it takes for state 
+ * change
+ *  type: sensor 0 or sensor 1 (supports up to 2 sensors)
+*/
 void setup_sensor(uint8_t pin, long *sensor_timer, uint8_t type) {
   *sensor_timer = micros();
   pinMode(pin, OUTPUT);
@@ -32,7 +42,11 @@ void setup_sensor(uint8_t pin, long *sensor_timer, uint8_t type) {
   }
 }
 
-
+/**
+ * @brief
+ *  Interrupt handler for sensor 0. Triggered as a result of digital signal
+ * changing states from high to low.
+*/
 void SENSOR0_ISR() {
   // The sensor light reading is inversely proportional to the time taken
   // for the pin to fall from high to low. Lower values mean lighter colors.
@@ -48,7 +62,18 @@ void SENSOR1_ISR() {
   setup_sensor(SENSOR1_PIN,&SENSOR1_TIMER,1);
 }
 
-
+/**
+ * @brief 
+ *  DIGITAL reading of QRE1113 line sensor
+ * Polls the digital pin for line sensor value. The line sensor has a 
+ * capacitor that gets charged at a rate based on the light reflected
+ * from the surface it faces. The typical charge time is around 10uS to
+ * 2.5ms. Thus we poll for a max of that long.
+ * @param
+ *  pin: Arduino digital pin
+ * @return 
+ *  time to charge cap (raw value of reflected surface)
+ */
 int pollLineSensor(uint8_t pin){
   pinMode( pin, OUTPUT );
   digitalWrite( pin, HIGH );

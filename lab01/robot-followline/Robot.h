@@ -62,17 +62,35 @@ Robot::Robot(){
 	//init status
 }
 
+/**
+ * @brief
+ *  Initializes the robot
+ * @param
+ *  w_pin_R: Arduino pin for right wheel
+ *  w_pin_L: pin for left wheel
+*/
 Robot::Robot(uint8_t w_pin_R, uint8_t w_pin_L):PIN_WHEEL_L(w_pin_L),
 PIN_WHEEL_R(w_pin_R){
     Robot();
 }
 
-
+/**
+ * @brief
+ *  Sets the servo such that the robot will move forward
+ * Because wheels are installed such that they turn the same 
+ * direction, setting them both forward will result in robot
+ * turning and setting one rotating backwards and one rotating
+ * forward will result in robot moving forward.
+*/
 void Robot::forward(){
   wheel_R.write(ROBOT_SPEED);
   wheel_L.write(abs(ROBOT_SPEED-180));
 }
 
+/**
+ * @brief
+ *  Sets servos such that robot turns 
+*/
 void Robot::turn(DIRECTIONS dir)
 {
   if(dir==right){
