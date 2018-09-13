@@ -24,16 +24,16 @@ enum DIRECTIONS {
 class Robot
 {
         
-    Servo wheel_R;
-    Servo wheel_L;
-    int turn_time = 300;
+    Servo wheel_R; //Initialize the right wheel servo
+    Servo wheel_L; //Initialize the left wheel servo
+    int turn_time = 300; 
 	int turn_direction;
 
     
-    uint8_t ROBOT_SPEED=180;
+    uint8_t ROBOT_SPEED=180; //180 max speed forward, 0 max speed back
 
-	uint8_t PIN_WHEEL_R = 9;
-	uint8_t PIN_WHEEL_L = 10;
+	uint8_t PIN_WHEEL_R = 9; //default pin for right whhel
+	uint8_t PIN_WHEEL_L = 10; //default pin for left wheel
 	
 
 public:
