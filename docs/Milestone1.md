@@ -45,7 +45,7 @@
 ### Follow the Line
 
 
-<a><img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/milestone1/gif-followLine.gif" width = "1200" height = "auto"></a>
+<a><img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/milestone1/gif-followLine.gif" width = "560" height = "auto"></a>
 
 ### Figure 8
 <iframe width="560" height="315" src="https://www.youtube.com/embed/mZf0CTAzZvA" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
