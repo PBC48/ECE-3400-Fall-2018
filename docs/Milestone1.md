@@ -8,7 +8,7 @@
 <figure>
     <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/milestone1/20180910_213436.jpg" width="800"/>
     <font size="2">
-    <figcaption> Front view of First Robot version
+    <figcaption> Front view of Robot version 1
     </figcaption>
     </font>
 </figure>
@@ -24,7 +24,7 @@
 <figure>
     <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/milestone1/20180913_204701.jpg" width="800"/>
     <font size="2">
-    <figcaption> Top view of updated Chassis
+    <figcaption> Front view of Robot version 2
     </figcaption>
     </font>
 </figure>
@@ -33,7 +33,7 @@
 <figure>
     <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/Schematic-RobotLineSensing.PNG" width="800"/>
     <font size="2">
-    <figcaption> Front view of Second Robot version
+    <figcaption> Schematic of Updated Robot
     </figcaption>
     </font>
 </figure>
