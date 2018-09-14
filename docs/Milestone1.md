@@ -44,7 +44,7 @@
 
 ### Follow the Line
 
-``` cpp
+```cpp
 if(SENSOR1_READING < 400){ //turning right
     turn_right();
     Serial.println("right");
@@ -55,7 +55,7 @@ if(SENSOR1_READING < 400){ //turning right
     forward();
     Serial.println("forward");
   }
-  ```
+```
 
 <a><img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/milestone1/gif-followLine.gif" width = "800" height = "auto"></a>
 
