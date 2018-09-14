@@ -22,7 +22,7 @@
 </figure>
 
 <figure>
-    <img style= src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/milestone1/20180913_204701.jpg" width="800"/>
+    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/milestone1/20180913_204701.jpg" width="800"/>
     <font size="2">
     <figcaption> Front view of Robot version 2
     </figcaption>
