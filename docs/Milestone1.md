@@ -27,4 +27,4 @@
 
 
 
-<a><img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/milestone1/gif-figure8.gif" width = "1200" height = "auto"></a>
+<a><img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/milestone1/gif-figure8.gif" width = "400" height = "auto"></a>
