@@ -83,7 +83,11 @@ void setup(){
 
 ### Obstacles
 
+We tried to use the analogRead() function to read input values from the sensors, but the numbers we read were illogical and unuseable. Instead, we used a combination of digital interrupts and polling to gather data from the line sensors. The Arduino supports two digital state change interrupts which trigger an interrupt whenever the state of a digital pin changes. We used the interrupts for sensors with time sensitive operations such as following the line. We were going to use polling for our third sensor to obtain a digital reading to detect intersections, but we discovered we could accomplish all our functionality with just two. As our implementation progressed, we enabled the robot to first follow a straight line, then a curved line, and finally drive in a figure 8. 
+
 ### Follow the Line
+
+To follow the line, we used simple if statements to adjust the robot’s path. The two line sensors detected when the robot moved too far off-center of the white line, and we used a conditional to move the robot left or right when the line sensors’ values pass a certain threshold.
 
 #### Code snippet for following the line
 ```cpp
@@ -99,6 +103,8 @@ if(SENSOR1_READING < 400){ //turning right
 <a><img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/milestone1/gif-followLine.gif" width = "800" height = "auto"></a>
 
 ### Figure-8
+
+To implement a figure-8 path, we built off the line-following code and added a conditional checking when both sensors hit a white line -- an intersection.  Using an array, we created a map of where the robot should turn at an intersection to create a figure-8, with each element of the array indicating the direction to turn. The array is repeatable such that the robot will continuously move in a figure-8 formation.
 
 #### Video of robot Figure-8
 <iframe width="800" height="450" src="https://www.youtube.com/embed/mZf0CTAzZvA" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
