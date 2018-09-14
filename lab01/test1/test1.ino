@@ -88,7 +88,12 @@ void loop() {
   //Serial.print("Sensor Analog: "); Serial.println(analogRead(A0));
   //delay(500);
   Serial.print("Sensor 1: ");Serial.println(SENSOR1_READING);
-  if(SENSOR1_READING < 400){ //turning right
+  if(SENSOR0_READING<400 && SENSOR1_READING<400){
+    map1[i%8] ? turn_right() : turn_left();
+    delay(1200);
+    i++;
+    Serial.println("straight");
+  }else if(SENSOR1_READING < 400){ //turning right
     L.write(140);
     R.write(90);
     Serial.println("right");
@@ -101,12 +106,7 @@ void loop() {
     R.write(0);
     Serial.println("forward");
   }
-  if(SENSOR0_READING<400 && SENSOR1_READING<400){
-    map1[i%8] ? turn_right() : turn_left();
-    delay(1200);
-    i++;
-    Serial.println("straight");
-  }
+  
 
 }
 
