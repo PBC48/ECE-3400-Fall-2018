@@ -60,6 +60,7 @@ if(SENSOR1_READING < 400){ //turning right
 
 ### Figure 8
 <iframe width="800" height="450" src="https://www.youtube.com/embed/mZf0CTAzZvA" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+
 ```cpp
 char map1[] = {0,1,1,1,1,0,0,0};
 int i=0; 
