@@ -33,7 +33,7 @@ We used QRE1113 line sensors, which work by transmitting and then detecting IR l
 Our first design idea used three line sensors -- two for staying on the line and a third for detecting intersections.  In our final implementation, we were able to use software to perform all the required tasks using only two sensors.
 
 <figure>
-    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/milestone1/20180913_204701.jpg" width="800"/>
+    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/milestone1/20180913_204605.jpg" width="800"/>
     <font size="3">
     <figcaption> Front view of Robot Version 2
     </figcaption>
