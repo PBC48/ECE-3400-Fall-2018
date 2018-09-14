@@ -119,7 +119,7 @@ void loop() {
     delay(1200);
     i++;
   }else if(SENSOR1_READING < 400){ //turning right
-    turn_right();git pulu
+    turn_right();
   }else if(SENSOR0_READING < 400) { //turning left
     turn _left();
   }else{
