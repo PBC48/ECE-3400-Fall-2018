@@ -22,8 +22,8 @@
 </figure>
 
 <figure>
-    <img style="float:left;transform: rotate(90deg);"
-    src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/milestone1/20180913_204701.jpg" width="800"/>
+    <img style="float:left;transform: rotate(90deg)"
+    src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/milestone1/20180913_204701.jpg" width="600"/>
     <font size="2">
     <figcaption> Front view of Robot version 2
     </figcaption>
