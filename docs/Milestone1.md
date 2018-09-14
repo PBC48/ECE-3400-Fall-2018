@@ -52,10 +52,40 @@ Our first design idea used three line sensors -- two for staying on the line and
 
 ## Software Design
 
+### Code snippet for reading from line sensor using digital pins
+```cpp
+volatile int SENSOR0_READING;
+volatile int SENSOR0_TIMER;
+int SENSOR0_PIN=2;
+
+
+/**
+ * Triggers when the state of digital pin goes from high to low.
+ * Updates SENSOR0_READING variable.
+*/
+void SENSOR0_ISR(){
+    SENSOR0_READING = micros() - SENSOR0_TIMER;
+    SENSOR0_TIMER = micros();
+    pinMode(SENSOR0_PIN, OUTPUT);
+    digitalWrite(SENSOR0_PIN, HIGH);
+    pinMode(SENSOR0_PIN, INPUT);  
+}
+
+
+void setup(){
+    attachInterrupt(digitalPinToInterrupt(SENSOR0_PIN), SENSOR0_ISR, LOW);
+}
+
+
+```
+
+
+
 ### Obstacles
 
 ### Follow the Line
 
+#### Code snippet for following the line
 ```cpp
 if(SENSOR1_READING < 400){ //turning right
     turn_right();git pulu
@@ -73,6 +103,7 @@ if(SENSOR1_READING < 400){ //turning right
 #### Video of robot Figure-8
 <iframe width="800" height="450" src="https://www.youtube.com/embed/mZf0CTAzZvA" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
+#### Code snippet for figure-8 logic
 ```cpp
 char map1[] = {right,left,left,left,left,right,right,right};
 int i=0; 
