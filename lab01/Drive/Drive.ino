@@ -8,6 +8,7 @@ Servo servo_left;
 
 void setup() {
   delay(2000);
+  Serial.begin(9600);
   // put your setup code here, to run once:
   pinMode(servo_right_pin,OUTPUT);
   pinMode(servo_left_pin,OUTPUT);
@@ -17,12 +18,14 @@ void setup() {
 
 void loop() {
   // put your main code here, to run repeatedly:
-      servo_right.write(80);
-      servo_left.write(80);
-      delay(667);
-      servo_right.write(100);
-      servo_left.write(80);
-      delay(333);
+      servo_right.write(90);
+      for(int i =90;i<180;i++){
+        Serial.println(i);
+        servo_left.write(i);
+        delay(5000);
+        
+      }
+        
   
   //delay(1000);
 }

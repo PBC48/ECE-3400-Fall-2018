@@ -1,5 +1,5 @@
 # Milestone 1: Line Follower
-----
+
 ## Introduction
 
 ## Hardware Upgrades

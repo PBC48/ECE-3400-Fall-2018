@@ -41,11 +41,12 @@ void setup() {
 
 void loop() {
   switch(state){
+    Serial.println(state);
     case 0:
       
-      if(SENSOR0_READING>100){
+      if(SENSOR0_READING>600){
         state++;
-      }else if(SENSOR1_READING>100){
+      }else if(SENSOR1_READING>600){
         state = 2;
       }else{
         robot.forward();
@@ -69,7 +70,7 @@ void loop() {
       break;
     
     case 3:    
-      poll_result = pollLineSensor(SENSOR3_PIN);
+      //poll_result = pollLineSensor(SENSOR3_PIN);
       state = 0;
       break;
     

@@ -8,6 +8,7 @@
  * Refer to this for information on attachInterrupt():
  * https://www.arduino.cc/reference/en/language/functions/external-interrupts/attachinterrupt/
   */
+#include <Servo.h>
 
 #define SENSOR0_PIN 2
 #define SENSOR1_PIN 3
@@ -42,6 +43,8 @@ void SENSOR1_ISR() {
   setup_sensor(SENSOR1_PIN, &SENSOR1_TIMER);
 }
 
+Servo R;
+Servo L;
 void setup() {
   Serial.begin(9600);
 
@@ -52,14 +55,84 @@ void setup() {
   // Setup the sensors
   setup_sensor(SENSOR0_PIN, &SENSOR0_TIMER);
   setup_sensor(SENSOR1_PIN, &SENSOR1_TIMER);
+
+  R.attach(9);
+  L.attach(10);
+  delay(1000);
+  L.write(180);
+    R.write(0);
+ 
 }
+
+void turn_left(){
+  L.write(140);
+    R.write(91);
+    Serial.println("right");
+}
+
+void turn_right(){
+  L.write(90);
+    R.write(40);
+    Serial.println("left");
+}
+
+char map1[] = {0,1,1,1,1,0,0,0};
+
+int i=0;
 
 void loop() {
   // These delays are purely for ease of reading.
-  Serial.print("Sensor Digital: ");Serial.println(SENSOR0_READING);
+  Serial.print("Sensor 0: ");Serial.println(SENSOR0_READING);
   //Serial.print("Sensor Analog: "); Serial.println(analogRead(A0));
   //delay(500);
-  //Serial.println("Sensor 1");
-  //Serial.println(SENSOR1_READING);
-  delay(200);
+  Serial.print("Sensor 1: ");Serial.println(SENSOR1_READING);
+  if(SENSOR1_READING < 400){ //turning right
+    L.write(140);
+    R.write(90);
+    Serial.println("right");
+  }else if(SENSOR0_READING < 400) { //turning left
+    L.write(90);
+    R.write(40);
+    Serial.println("left");
+  }else{
+    L.write(180);
+    R.write(0);
+    Serial.println("forward");
+  }
+  if(SENSOR0_READING<400 && SENSOR1_READING<400){
+    map1[i%8] ? turn_right() : turn_left();
+    delay(1200);
+    i++;
+    Serial.println("straight");
+  }
+
 }
+
+/*
+void loop() {
+  // These delays are purely for ease of reading.
+  Serial.print("Sensor 0: ");Serial.println(SENSOR0_READING);
+  //Serial.print("Sensor Analog: "); Serial.println(analogRead(A0));
+  //delay(500);
+  Serial.print("Sensor 1: ");Serial.println(SENSOR1_READING);
+  if(SENSOR1_READING < 400){ //turning right
+    L.write(140);
+    R.write(90);
+    Serial.println("right");
+  }else if(SENSOR0_READING < 400) { //turning left
+    L.write(90);
+    R.write(40);
+    Serial.println("left");
+  }else{
+    L.write(180);
+    R.write(0);
+    Serial.println("forward");
+  }
+  if(SENSOR0_READING<400 && SENSOR1_READING<400){
+     L.write(180);
+    R.write(0);
+    Serial.println("forward");
+  }
+
+}
+*/
