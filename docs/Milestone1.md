@@ -52,7 +52,7 @@ Our first design idea used three line sensors -- two for staying on the line and
 
 ## Software Design
 
-### Code snippet for reading from line sensor using digital pins
+#### Code snippet for reading from line sensor using digital pins
 ```cpp
 volatile int SENSOR0_READING;
 volatile int SENSOR0_TIMER;
