@@ -22,6 +22,27 @@ void SENSOR1_ISR();
 
 /**
  * @brief
+ *  Interrupt handler for sensor 0. Triggered as a result of digital signal
+ * changing states from high to low.
+*/
+void SENSOR0_ISR() {
+  // The sensor light reading is inversely proportional to the time taken
+  // for the pin to fall from high to low. Lower values mean lighter colors.
+  SENSOR0_READING = micros() - SENSOR0_TIMER;
+  // Reset the sensor for another reading
+  Serial.print("sensor0 reading: ");Serial.println(SENSOR0_READING);
+  setup_sensor(SENSOR0_PIN,&SENSOR0_TIMER,0);
+}
+
+void SENSOR1_ISR() {
+  SENSOR1_READING = micros() - SENSOR1_TIMER;
+  Serial.print("sensor1 reading: ");Serial.println(SENSOR1_READING);
+  setup_sensor(SENSOR1_PIN,&SENSOR1_TIMER,1);
+}
+
+
+/**
+ * @brief
  *  initializes a sensor with an interrupt. There are 2 interrupts available
  * for digital state changes. 
  * @param
@@ -40,26 +61,6 @@ void setup_sensor(uint8_t pin, long *sensor_timer, uint8_t type) {
   }else if (type==1){
     attachInterrupt(digitalPinToInterrupt(pin), SENSOR1_ISR,LOW);
   }
-}
-
-/**
- * @brief
- *  Interrupt handler for sensor 0. Triggered as a result of digital signal
- * changing states from high to low.
-*/
-void SENSOR0_ISR() {
-  // The sensor light reading is inversely proportional to the time taken
-  // for the pin to fall from high to low. Lower values mean lighter colors.
-  SENSOR0_READING = micros() - SENSOR0_TIMER;
-  // Reset the sensor for another reading
-  Serial.print("sensor0 reading: ");Serial.println(SENSOR0_READING);
-  setup_sensor(SENSOR0_PIN,&SENSOR0_TIMER,0);
-}
-
-void SENSOR1_ISR() {
-  SENSOR1_READING = micros() - SENSOR1_TIMER;
-  Serial.print("sensor1 reading: ");Serial.println(SENSOR1_READING);
-  setup_sensor(SENSOR1_PIN,&SENSOR1_TIMER,1);
 }
 
 /**

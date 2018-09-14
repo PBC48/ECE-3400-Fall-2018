@@ -75,10 +75,8 @@ void loop() {
       break;
     
     case 4:
-      robot.turn(map1[i++]);
-      if(i>=8){
-        i=0;
-      }
+      robot.turn(map1[i%8]);
+      i++;
       wait=millis()+500;
       if(millis()-wait>=0){
         state = 0;

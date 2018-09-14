@@ -45,6 +45,11 @@ void SENSOR1_ISR() {
 
 Servo R;
 Servo L;
+
+char map1[] = {0,1,1,1,1,0,0,0};
+
+int i=0; 
+
 void setup() {
   Serial.begin(9600);
 
@@ -76,9 +81,6 @@ void turn_right(){
   Serial.println("left");
 }
 
-char map1[] = {0,1,1,1,1,0,0,0};
-
-int i=0;
 
 void loop() {
   // These delays are purely for ease of reading.
