@@ -12,16 +12,16 @@ We added a second level to the robot’s chassis to support our battery, the ard
 
 <figure>
     <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/milestone1/20180910_213436.jpg" width="800"/>
-    <font size="2">
-    <figcaption> Front view of Robot version 1
+    <font size="3">
+    <figcaption> Front View of Robot Version 1
     </figcaption>
     </font>
 </figure>
 
 <figure>
     <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/milestone1/20180910_213510.jpg" width="800"/>
-    <font size="2">
-    <figcaption> Top view of updated Chassis
+    <font size="3">
+    <figcaption> Top View of Updated Chassis
     </figcaption>
     </font>
 </figure>
@@ -34,8 +34,8 @@ Our first design idea used three line sensors -- two for staying on the line and
 
 <figure>
     <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/milestone1/20180913_204701.jpg" width="800"/>
-    <font size="2">
-    <figcaption> Front view of Robot version 2
+    <font size="3">
+    <figcaption> Front view of Robot Version 2
     </figcaption>
     </font>
 </figure>
@@ -43,8 +43,8 @@ Our first design idea used three line sensors -- two for staying on the line and
 ### Circuit
 <figure>
     <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/Schematic-RobotLineSensing.PNG" width="800"/>
-    <font size="2">
-    <figcaption> Schematic of Updated Robot
+    <font size="3">
+    <figcaption> Schematic of Updated Robot with 2 Line Sensors
     </figcaption>
     </font>
 </figure>
@@ -68,7 +68,9 @@ if(SENSOR1_READING < 400){ //turning right
 
 <a><img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/milestone1/gif-followLine.gif" width = "800" height = "auto"></a>
 
-### Figure 8
+### Figure-8
+
+#### Video of robot Figure-8
 <iframe width="800" height="450" src="https://www.youtube.com/embed/mZf0CTAzZvA" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
 ```cpp
