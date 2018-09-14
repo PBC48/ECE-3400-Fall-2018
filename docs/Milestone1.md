@@ -22,8 +22,7 @@
 </figure>
 
 <figure>
-    <img style="float:left;transform: rotate(90deg)"
-    src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/milestone1/20180913_204701.jpg" width="800"/>
+    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/milestone1/20180913_204701.jpg" width="800"/>
     <font size="2">
     <figcaption> Front view of Robot version 2
     </figcaption>
@@ -60,4 +59,4 @@ if(SENSOR1_READING < 400){ //turning right
 <a><img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/milestone1/gif-followLine.gif" width = "800" height = "auto"></a>
 
 ### Figure 8
-<iframe width="800" height="auto" src="https://www.youtube.com/embed/mZf0CTAzZvA" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+<iframe width="800" height="450" src="https://www.youtube.com/embed/mZf0CTAzZvA" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
