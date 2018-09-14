@@ -20,4 +20,8 @@
 
 ### Follow the Line
 
+
+<a><img src="https://github.com/PBC48/ECE-3400-Fall-2018/blob/master/docs/images/milestone1/gif-followLine.gif" width = "1200" height = "auto"></a>
+
 ### Figure 8
+
