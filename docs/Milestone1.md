@@ -49,6 +49,8 @@
 
 ### Figure 8
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/mZf0CTAzZvA?rel=0&amp;controls=0&amp;showinfo=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+<a href="http://www.youtube.com/watch?feature=player_embedded&v=mZf0CTAzZvA
+" target="_blank"><img src="http://img.youtube.com/vi/mZf0CTAzZvA/0.jpg" 
+alt="IMAGE ALT TEXT HERE" width="240" height="180" border="10" /></a>
 
 <a><img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/milestone1/gif-figure8.gif" width = "275" height = "auto"></a>
