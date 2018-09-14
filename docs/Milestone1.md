@@ -62,11 +62,13 @@ if(SENSOR1_READING < 400){ //turning right
 <iframe width="800" height="450" src="https://www.youtube.com/embed/mZf0CTAzZvA" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
 ```cpp
-char map1[] = {0,1,1,1,1,0,0,0};
+
+
+char map1[] = {right,left,left,left,left,right,right,right};
 int i=0; 
 void loop() {
   if(SENSOR0_READING<400 && SENSOR1_READING<400){
-    map1[i%8] ? turn_right() : turn_left();
+    map1[i%8]==right ? turn_right() : turn_left();
     delay(1200);
     i++;
   }else if(SENSOR1_READING < 400){ //turning right
