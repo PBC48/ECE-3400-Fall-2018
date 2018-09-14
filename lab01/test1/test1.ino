@@ -60,20 +60,20 @@ void setup() {
   L.attach(10);
   delay(1000);
   L.write(180);
-    R.write(0);
+  R.write(0);
  
 }
 
 void turn_left(){
   L.write(140);
-    R.write(91);
-    Serial.println("right");
+  R.write(91);
+  Serial.println("right");
 }
 
 void turn_right(){
   L.write(90);
-    R.write(40);
-    Serial.println("left");
+  R.write(40);
+  Serial.println("left");
 }
 
 char map1[] = {0,1,1,1,1,0,0,0};
