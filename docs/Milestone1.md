@@ -39,7 +39,7 @@ The breadboard allowed us to connect more components requiring more ground and p
 
 We used QRE1113 line sensors, which work by transmitting and then detecting IR light that reflects back to the phototransistor on the sensor. We used digital pins to detect how long it takes to charge the phototransistor -- the return values indicate a light or dark surface. These sensors are mounted at the front of the robot facing downward, with the sensors only a few centimeters above the ground to maximize sensor accuracy. 
 
-Our first design idea used three line sensors -- two for staying on the line and a third for detecting intersections.  In our final implementation, we were able to use software to perform all the required tasks using only two sensors.
+Our first design idea used three line sensors -- two for staying on the line and a third for detecting intersections.  In our final implementation, we were able to use software to perform all the required tasks using only two sensors. We then separated the sensors farther apart so that the sensors won't trigger often and the robot will only make as many frequent adjustments to stay on the line. This hardware update helps improve the robot's navigation speed.
 
 <figure>
     <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/milestone1/20180913_204605.jpg" width="800"/>
@@ -61,6 +61,12 @@ Our first design idea used three line sensors -- two for staying on the line and
 
 ## Software Design
 
+We used a simple software algorithm for solving these simple problems. However, we began the ground work for abstracting away some of the robot functions such as servo speed for robot forward movement and turning, which will be useful as we develop more complex algorithms to solve difficult problems later on. 
+
+
+### The Line Sensor
+We tried to use the analogRead() function to read input values from the sensors, but the numbers we read were illogical and unuseable. Instead, we used a combination of digital interrupts and polling to gather data from the line sensors. The Arduino supports two digital state change interrupts which trigger an interrupt whenever the state of a digital pin changes. We used the interrupts for sensors with time sensitive operations such as following the line.
+
 #### Code snippet for reading from line sensor using digital pins
 ```cpp
 volatile int SENSOR0_READING;
@@ -73,10 +79,11 @@ int SENSOR0_PIN=2;
  * Updates SENSOR0_READING variable.
 */
 void SENSOR0_ISR(){
-    SENSOR0_READING = micros() - SENSOR0_TIMER;
-    SENSOR0_TIMER = micros();
-    pinMode(SENSOR0_PIN, OUTPUT);
-    digitalWrite(SENSOR0_PIN, HIGH);
+    SENSOR0_READING = micros() - SENSOR0_TIMER; //time difference as a result 
+    //of digital signal changing states from high to low. 
+    SENSOR0_TIMER = micros(); 
+    pinMode(SENSOR0_PIN, OUTPUT); //reset the digital pin
+    digitalWrite(SENSOR0_PIN, HIGH); //put back to high for next reading when low
     pinMode(SENSOR0_PIN, INPUT);  
 }
 
@@ -85,14 +92,11 @@ void setup(){
     attachInterrupt(digitalPinToInterrupt(SENSOR0_PIN), SENSOR0_ISR, LOW);
 }
 
-
 ```
 
-
-
 ### Obstacles
-
-We tried to use the analogRead() function to read input values from the sensors, but the numbers we read were illogical and unuseable. Instead, we used a combination of digital interrupts and polling to gather data from the line sensors. The Arduino supports two digital state change interrupts which trigger an interrupt whenever the state of a digital pin changes. We used the interrupts for sensors with time sensitive operations such as following the line. We were going to use polling for our third sensor to obtain a digital reading to detect intersections, but we discovered we could accomplish all our functionality with just two. As our implementation progressed, we enabled the robot to first follow a straight line, then a curved line, and finally drive in a figure 8. 
+We needed to follow white lines taped on top of a black surface with possible intersections between said lines. The robot will need to make turns at these intersections and drive in a figure-8 formation.
+ We were going to use polling for our third sensor to obtain a digital reading to detect intersections, but we discovered we could accomplish all our functionality with just two. As our implementation progressed, we enabled the robot to first follow a straight line, then a curved line, and finally drive in a figure 8. 
 
 ### Follow the Line
 
@@ -111,6 +115,8 @@ if(SENSOR1_READING < 400){ //turning right
 
 <a><img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/milestone1/gif-followLine.gif" width = "800" height = "auto"></a>
 
+The robot reliably follows the line. The distance between the line sensors were a good 
+
 ### Figure-8
 
 To implement a figure-8 path, we built off the line-following code and added a conditional checking when both sensors hit a white line -- an intersection.  Using an array, we created a map of where the robot should turn at an intersection to create a figure-8, with each element of the array indicating the direction to turn. The array is repeatable such that the robot will continuously move in a figure-8 formation.
@@ -120,7 +126,7 @@ To implement a figure-8 path, we built off the line-following code and added a c
 
 #### Code snippet for figure-8 logic
 ```cpp
-char map1[] = {right,left,left,left,left,right,right,right};
+char map1[] = {right,left,left,left,left,right,right,right}; //dependent on where robot starts
 int i=0; 
 void loop() {
   if(SENSOR0_READING<400 && SENSOR1_READING<400){
