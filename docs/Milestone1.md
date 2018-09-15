@@ -112,6 +112,7 @@ if(SENSOR1_READING < 400){ //turning right
 }
 ```
 
+#### Demonstration of Robot Following the Line
 <a><img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/milestone1/gif-followLine.gif" width = "800" height = "auto"></a>
 
 The robot reliably follows the line. The distance between the line sensors was good enough for the robot to be "following" the line but not constantly repositioning itself; we wanted to maximize the forward moving time while turning only occasionally, when the robot moved off the line.
@@ -121,9 +122,6 @@ Currently, the robot turns very sharply to reposition itself because we stop one
 ### Figure-8
 
 To implement a figure-8 path, we built off the line-following code and added a conditional checking when both sensors hit a white line at an intersection.  Using an array, we created a map of the sequence of turns the robot should take at each intersection to create a figure-8, with each element of the array indicating the direction to turn. The array is repeatable such that the robot will continuously move in a figure-8 formation.
-
-#### Video of robot Figure-8
-<iframe width="800" height="450" src="https://www.youtube.com/embed/mZf0CTAzZvA" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
 #### Code snippet for figure-8 logic
 ```cpp
@@ -145,6 +143,14 @@ void loop() {
 }
 ```
 
+#### Video of Robot Performing Figure-8
+<iframe width="800" height="450" src="https://www.youtube.com/embed/mZf0CTAzZvA" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+
 Currently the robot doesn't turn as well as we would like; it doesn't turn for long enough and relies on the line sensors to reposition itself on the line after the turn. There is more room to optimize the robot's turn configuration either by optimizing the turn or the robot's shifting. 
 
-# &#10024; &#10024; &#10024; &#10024; &#10024; &#10024; &#10024;
+
+
+
+
+
+ <!--<img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/milestone1/20180913_204644.jpg" width = "340"/><img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/milestone1/20180913_204557.jpg" width = "340"/>--> 
