@@ -28,6 +28,8 @@ This second level allows us to mount the battery in a secure place and creates r
 
 #### Robot with Breadboard on top
 
+
+
 <p>
  <src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/milestone1/20180913_204623.jpg" width = "430"/> <src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/milestone1/20180913_204628.jpg" width = "430"/>
 </p>
