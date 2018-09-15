@@ -33,7 +33,7 @@ This second level allows us to mount the battery in a secure place and creates r
  <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/milestone1/20180913_204623.jpg" width = "340"/><img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/milestone1/20180913_204628.jpg" width = "340"/>
 
 
-We also added a breadboard to create common power and ground lines and connect more components than there are power and ground pins on the Arduino. We were then able to connect the line sensors to the Arduino. The current breadboard is temporary, as smaller breadboards were unavailable during the lab. We plan on attaching a smaller breadboard, or potentially solder breadboards, in order to securely attach electrical components to the board. Better organization and reliablitity will be important as we add more components.
+Adding the breadboard allowed us to create common power and ground lines and connect more components than there are power and ground pins on the Arduino. We were then able to connect the line sensors to the Arduino. The current breadboard is temporary, as smaller breadboards were unavailable during the lab. We plan to attach a smaller breadboard or potentially solder breadboards in order to securely and reliably attach electrical components to the board. We also plan to attach the breadboard more securely to the chassis, and will organize the wiring better especially as we add more components.
 
 ### Line Sensor Update
 
@@ -61,11 +61,11 @@ Our first design idea used three line sensors -- two for staying on the line and
 
 ## Software Design
 
-We used a simple software algorithm for solving these simple problems. However, we began the ground work for abstracting away some of the robot functions such as servo speed for robot forward movement and turning, which will be useful as we develop more complex algorithms to solve difficult problems later on. 
+We used a simple software algorithm for performing these simple tasks. However, we began the ground work for abstracting away some of the robot functions such as servo speed for robot forward movement and turning, which will be useful as we develop more complex algorithms to solve difficult problems later on. 
 
 
 ### The Line Sensor
-We tried to use the analogRead() function to read input values from the sensors, but the numbers we read were illogical and unuseable. Instead, we used a combination of digital interrupts and polling to gather data from the line sensors. The Arduino supports two digital state change interrupts which trigger an interrupt whenever the state of a digital pin changes. We used the interrupts for sensors with time sensitive operations such as following the line.
+We tried to use the analogRead() function to read input values from the sensors corresponding to the darkness of the surface, but the numbers we read were illogical and unuseable. Instead, we used a combination of digital interrupts and polling to gather data from the line sensors. The Arduino supports two digital state change interrupts which trigger an interrupt whenever the state of a digital pin changes. We used the interrupts for sensors with time sensitive operations such as following the line.
 
 #### Code snippet for reading from line sensor using digital pins
 ```cpp
@@ -95,7 +95,7 @@ void setup(){
 ```
 
 ### Obstacles
-We needed to follow white lines taped on top of a black surface with possible intersections between said lines. The robot will need to make turns at these intersections and drive in a figure-8 formation.
+We needed to follow white lines taped on a black surface with possible intersections between said lines. The robot will need to make turns at these intersections and drive in a figure-8 formation.
  We were going to use polling for our third sensor to obtain a digital reading to detect intersections, but we discovered we could accomplish all our functionality with just two. Thus, we were able to save pin spots with only two sensors.
 
 ### Follow the Line
