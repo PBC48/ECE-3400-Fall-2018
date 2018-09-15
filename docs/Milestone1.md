@@ -8,8 +8,8 @@ The goal of this milestone was to add functionality enabling our robot to both f
 
 ### Chassis upgrade
 
-We added a second level to the robot’s chassis to support our battery, the arduino, and a breadboard for our circuits. The breadboard allowed us to connect more components requiring more ground and power sources than are available directly on the Arduino.  With a common ground and source on the breadboard, we were able to connect the line sensors to the Arduino.
-
+We added a second level to the robot’s chassis to support our battery, the arduino, and a breadboard for our circuits. 
+This second level allows us to mount the battery in a secure place and creates room for additions.
 <figure>
     <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/milestone1/20180910_213436.jpg" width="800"/>
     <font size="3">
@@ -26,9 +26,12 @@ We added a second level to the robot’s chassis to support our battery, the ard
     </font>
 </figure>
 
-<img align="left" width="500" height="auto" src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/milestone1/20180913_204623.jpg">
+#### Robot with Breadboard on top
+The breadboard allowed us to connect more components requiring more ground and power sources than are available directly on the Arduino. With a common ground and source on the breadboard, we were able to connect the line sensors to the Arduino.
 
-<img align="right" width="500" height="auto" src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/milestone1/20180913_204628.jpg">
+<img align="left" width="450" height="auto" src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/milestone1/20180913_204623.jpg">
+
+<img align="right" width="450" height="auto" src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/milestone1/20180913_204628.jpg">
 
 
 
