@@ -37,9 +37,9 @@ Adding the breadboard allowed us to create common power and ground lines and con
 
 ### Line Sensor Update
 
-We used QRE1113 line sensors, which work by transmitting and then detecting IR light that reflects back to the phototransistor on the sensor. We used digital pins to detect how long it takes to charge the phototransistor -- the return values indicate a light or dark surface. These sensors are mounted at the front of the robot facing downward, with the sensors only a few centimeters above the ground to maximize sensor accuracy. 
+We used QRE1113 line sensors, which work by transmitting and then detecting IR light that reflects back to a phototransistor on the sensor. These sensors are mounted at the front of the robot facing downward, with the sensors only a few centimeters above the ground to maximize sensor accuracy. 
 
-Our first design idea used three line sensors -- two for staying on the line and a third for detecting intersections.  In our final implementation, we were able to use software to perform all the required tasks using only two sensors. We also positioned the sensors further apart than they were in our initial design so that they wouldn't trigger as often and the robot would make fewer adjustments to stay on the line. This hardware update helped improve the robot's navigation speed and smoothness.
+Our first design idea used three line sensors: two for staying on the line, and a third for detecting intersections.  In our final implementation, we were able to use software to perform all the required tasks using only two sensors. We then positioned the sensors further apart than they were in our initial design so that they wouldn't trigger as often and the robot would make fewer adjustments to stay on the line. This hardware update helped improve the robot's navigation speed and smoothness.
 
 <figure>
     <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/milestone1/20180913_204620.jpg" width="800"/>
@@ -50,6 +50,7 @@ Our first design idea used three line sensors -- two for staying on the line and
 </figure>
 
 ### Circuit
+Our final circuit with the sensors looked like this:
 <figure>
     <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/Schematic-RobotLineSensing.PNG" width="800"/>
     <font size="3">
@@ -61,11 +62,11 @@ Our first design idea used three line sensors -- two for staying on the line and
 
 ## Software Design
 
-We used a simple software algorithm for performing these simple tasks. However, we began the ground work for abstracting away some of the robot functions such as servo speed for robot forward movement and turning, which will be useful as we develop more complex algorithms to solve difficult problems later on. 
+We used a simple software algorithm for performing these tasks. However, we began the ground work for abstracting away some of the robot functions such as servo speed for robot forward movement and turning, which will be useful as we develop more complex algorithms to solve difficult problems later on. 
 
 
 ### The Line Sensor
-We tried to use the analogRead() function to read input values from the sensors corresponding to the darkness of the surface, but the numbers we read were illogical and unuseable. Instead, we used digital interrupts to gather data from the line sensors. The Arduino supports two digital state change interrupts which trigger an interrupt whenever the state of a digital pin changes. We used the interrupts for sensors with time sensitive operations such as following the line.
+We tried to use the ```analogRead()``` function to read input values from the sensors corresponding to the darkness of the surface, but the numbers we read were illogical and unuseable. Instead, we used digital pins to detect how long it takes to charge the sensor's phototransistor; the return values indicate the darkness of the surface. We used digital interrupts to gather data from the line sensors. The Arduino supports two digital state change interrupts which trigger an interrupt whenever the state of a digital pin changes. We used the interrupts for sensors with time sensitive operations such as following the line.
 
 #### Code snippet for reading from line sensor using digital pins
 ```cpp
@@ -98,7 +99,7 @@ void setup(){
 
 ### Follow the Line
 
-To follow the line, we used simple ```if``` statements to adjust the robot’s path. The two line sensors detected when the robot moved too far off-center of the white line; we used a conditional to move the robot left or right when the line sensors’ values passed a certain threshold indicating they were over the white tape. 
+To follow the line, we used simple ```if``` statements to adjust the robot’s path. The two line sensors detected when the robot moved too far off-center of the white line. We used a conditional to move the robot left or right when the line sensors’ values passed a certain threshold indicating they were over the white tape, and had it move straight forward when both sensors detected white tape at an intersection.
 
 #### Code snippet for following the line
 ```cpp
@@ -113,13 +114,13 @@ if(SENSOR1_READING < 400){ //turning right
 
 <a><img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/milestone1/gif-followLine.gif" width = "800" height = "auto"></a>
 
-The robot reliably follows the line. The distance between the line sensors were good enough for the robot to be "following" the line but not constantly repositioning itself; we wanted to maximize the forward moving time while turning only occasionally when the robot moved off the line.
+The robot reliably follows the line. The distance between the line sensors was good enough for the robot to be "following" the line but not constantly repositioning itself; we wanted to maximize the forward moving time while turning only occasionally, when the robot moved off the line.
 
-Currently, the robot turns very sharply to reposiiton itself because we stop one wheel and move the other to create a turning motion. Moving forward, we want to smooth the robot's readjustment so that it will not lose too much speed when readjusting.
+Currently, the robot turns very sharply to reposition itself because we stop one wheel and move the other to create a turning motion. Moving forward, we want to smooth the robot's readjustment so that it will not lose too much speed when readjusting.
 
 ### Figure-8
 
-To implement a figure-8 path, we built off the line-following code and added a conditional checking when both sensors hit a white line -- an intersection.  Using an array, we created a map of where the robot should turn at an intersection to create a figure-8, with each element of the array indicating the direction to turn. The array is repeatable such that the robot will continuously move in a figure-8 formation.
+To implement a figure-8 path, we built off the line-following code and added a conditional checking when both sensors hit a white line at an intersection.  Using an array, we created a map of the sequence of turns the robot should take at each intersection to create a figure-8, with each element of the array indicating the direction to turn. The array is repeatable such that the robot will continuously move in a figure-8 formation.
 
 #### Video of robot Figure-8
 <iframe width="800" height="450" src="https://www.youtube.com/embed/mZf0CTAzZvA" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
@@ -144,7 +145,7 @@ void loop() {
 }
 ```
 
-The robot doesn't turn as well as we would like. Currently, it doesn't turn for long enough and relies on the line sensors to reposition itself on the line after the turn. There is more room to optimize the robot's turn configuration either by optimizing the turn or the robot's shifting. 
+Currently the robot doesn't turn as well as we would like; it doesn't turn for long enough and relies on the line sensors to reposition itself on the line after the turn. There is more room to optimize the robot's turn configuration either by optimizing the turn or the robot's shifting. 
 
 
 
