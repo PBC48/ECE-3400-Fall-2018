@@ -33,7 +33,7 @@ This second level allows us to mount the battery in a secure place and creates r
  <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/milestone1/20180913_204623.jpg" width = "340"/><img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/milestone1/20180913_204628.jpg" width = "340"/>
 
 
-Adding the breadboard allowed us to create common power and ground lines to connect more components than there are power and ground pins on the Arduino. We were then able to connect the line sensors to the Arduino. The current breadboard is temporary, as smaller breadboards were unavailable during the lab. We plan to attach a smaller breadboard or potentially solder breadboards in order to securely and reliably attach electrical components to the board. We also plan to attach the breadboard more securely to the chassis, and will organize the wiring better especially as we add more components.
+Adding the breadboard allowed us to create common power and ground lines and connect more components than there are power and ground pins on the Arduino. We were then able to connect the line sensors to the Arduino. The current breadboard is temporary, as smaller breadboards were unavailable during the lab. We plan to attach a smaller breadboard or potentially solder breadboards in order to securely and reliably attach electrical components to the board. We also plan to attach the breadboard more securely to the chassis, and will organize the wiring better especially as we add more components.
 
 ### Line Sensor Update
 
