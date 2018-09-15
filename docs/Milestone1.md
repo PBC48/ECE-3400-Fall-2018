@@ -16,7 +16,7 @@ This second level allows us to mount the battery in a secure place and creates r
 <figure>
     <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/milestone1/20180910_213436.jpg" width="800"/>
     <font size="3">
-    <figcaption> Front View of Robot after Adding Second Level
+    <figcaption> Front View of Robot after Adding a Second Level
     </figcaption>
     </font>
 </figure>
@@ -65,7 +65,7 @@ We used a simple software algorithm for performing these simple tasks. However, 
 
 
 ### The Line Sensor
-We tried to use the analogRead() function to read input values from the sensors corresponding to the darkness of the surface, but the numbers we read were illogical and unuseable. Instead, we used a combination of digital interrupts and polling to gather data from the line sensors. The Arduino supports two digital state change interrupts which trigger an interrupt whenever the state of a digital pin changes. We used the interrupts for sensors with time sensitive operations such as following the line.
+We tried to use the analogRead() function to read input values from the sensors corresponding to the darkness of the surface, but the numbers we read were illogical and unuseable. Instead, we used digital interrupts to gather data from the line sensors. The Arduino supports two digital state change interrupts which trigger an interrupt whenever the state of a digital pin changes. We used the interrupts for sensors with time sensitive operations such as following the line.
 
 #### Code snippet for reading from line sensor using digital pins
 ```cpp
@@ -94,13 +94,11 @@ void setup(){
 
 ```
 
-### Obstacles
-We needed to follow white lines taped on a black surface with possible intersections between said lines. The robot will need to make turns at these intersections and drive in a figure-8 formation.
- We were going to use polling for our third sensor to obtain a digital reading to detect intersections, but we discovered we could accomplish all our functionality with just two. Thus, we were able to save pin spots with only two sensors.
+
 
 ### Follow the Line
 
-To follow the line, we used simple ```if``` statements to adjust the robot’s path. The two line sensors detected when the robot moved too far off-center of the white line, and we used a conditional to move the robot left or right when the line sensors’ values pass a certain threshold. 
+To follow the line, we used simple ```if``` statements to adjust the robot’s path. The two line sensors detected when the robot moved too far off-center of the white line; we used a conditional to move the robot left or right when the line sensors’ values passed a certain threshold indicating they were over the white tape. 
 
 #### Code snippet for following the line
 ```cpp
@@ -115,9 +113,9 @@ if(SENSOR1_READING < 400){ //turning right
 
 <a><img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/milestone1/gif-followLine.gif" width = "800" height = "auto"></a>
 
-The robot reliably follows the line. The distance between the line sensors were good enough for the robot to be "following" the line but not repeatedly reposition itself. From the code, We want to maximize the forward moving time while turning only occasionally when the robot moves off the line.
+The robot reliably follows the line. The distance between the line sensors were good enough for the robot to be "following" the line but not constantly repositioning itself; we wanted to maximize the forward moving time while turning only occasionally when the robot moved off the line.
 
-Currently, the robot turns very sharply to reposiiton itself. This is because we stop one wheel and move the other to create a turn motion. Moving forward, we want to smooth robot's readjustment so that it will not lose too much speed when readjusting. We want to allow the robot to shift rather than turn. 
+Currently, the robot turns very sharply to reposiiton itself because we stop one wheel and move the other to create a turning motion. Moving forward, we want to smooth the robot's readjustment so that it will not lose too much speed when readjusting.
 
 ### Figure-8
 
@@ -146,7 +144,7 @@ void loop() {
 }
 ```
 
-The robot doesn't turn as perfectly as we would want. Currently, robot doesn't turn for as long and relies on the line sensors to reposition itself on the line. There is more room to optimize the robot's turn configuration either by optimizing the turn or the robot's shifting. 
+The robot doesn't turn as well as we would like. Currently, it doesn't turn for long enough and relies on the line sensors to reposition itself on the line after the turn. There is more room to optimize the robot's turn configuration either by optimizing the turn or the robot's shifting. 
 
 
 
