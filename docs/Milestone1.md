@@ -103,7 +103,9 @@ To follow the line, we used simple ```if``` statements to adjust the robot’s p
 
 #### Code snippet for following the line
 ```cpp
-if(SENSOR1_READING < 400){ //turning right
+if(SENSOR0_READING<400 && SENSOR1_READING<400){ //continue straight
+    forward();
+}else if(SENSOR1_READING < 400){ //turning right
     turn_right();
 }else if(SENSOR0_READING < 400) { //turning left
     turn _left();
@@ -146,6 +148,7 @@ void loop() {
 #### Video of Robot Performing Figure-8
 <iframe width="800" height="450" src="https://www.youtube.com/embed/mZf0CTAzZvA" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
+
 Currently the robot doesn't turn as well as we would like; it doesn't turn for long enough and relies on the line sensors to reposition itself on the line after the turn. There is more room to optimize the robot's turn configuration either by optimizing the turn or the robot's shifting. 
 
 
@@ -153,4 +156,4 @@ Currently the robot doesn't turn as well as we would like; it doesn't turn for l
 
 
 
- <!--<img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/milestone1/20180913_204644.jpg" width = "340"/><img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/milestone1/20180913_204557.jpg" width = "340"/>--> 
+ <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/milestone1/20180913_204644.jpg" width = "340"/><img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/milestone1/20180913_204557.jpg" width = "340"/>
