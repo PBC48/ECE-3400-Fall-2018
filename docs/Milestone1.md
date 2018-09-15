@@ -96,11 +96,11 @@ void setup(){
 
 ### Obstacles
 We needed to follow white lines taped on top of a black surface with possible intersections between said lines. The robot will need to make turns at these intersections and drive in a figure-8 formation.
- We were going to use polling for our third sensor to obtain a digital reading to detect intersections, but we discovered we could accomplish all our functionality with just two. As our implementation progressed, we enabled the robot to first follow a straight line, then a curved line, and finally drive in a figure 8. 
+ We were going to use polling for our third sensor to obtain a digital reading to detect intersections, but we discovered we could accomplish all our functionality with just two. Thus, we were able to save pin spots with only two sensors.
 
 ### Follow the Line
 
-To follow the line, we used simple if statements to adjust the robot’s path. The two line sensors detected when the robot moved too far off-center of the white line, and we used a conditional to move the robot left or right when the line sensors’ values pass a certain threshold.
+To follow the line, we used simple ```if``` statements to adjust the robot’s path. The two line sensors detected when the robot moved too far off-center of the white line, and we used a conditional to move the robot left or right when the line sensors’ values pass a certain threshold. 
 
 #### Code snippet for following the line
 ```cpp
@@ -115,7 +115,9 @@ if(SENSOR1_READING < 400){ //turning right
 
 <a><img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/milestone1/gif-followLine.gif" width = "800" height = "auto"></a>
 
-The robot reliably follows the line. The distance between the line sensors were a good 
+The robot reliably follows the line. The distance between the line sensors were good enough for the robot to be "following" the line but not repeatedly reposition itself. From the code, We want to maximize the forward moving time while turning only occasionally when the robot moves off the line.
+
+Currently, the robot turns very sharply to reposiiton itself. This is because we stop one wheel and move the other to create a turn motion. Moving forward, we want to smooth robot's readjustment so that it will not lose too much speed when readjusting. We want to allow the robot to veer rather than turn. 
 
 ### Figure-8
 
@@ -126,7 +128,8 @@ To implement a figure-8 path, we built off the line-following code and added a c
 
 #### Code snippet for figure-8 logic
 ```cpp
-char map1[] = {right,left,left,left,left,right,right,right}; //dependent on where robot starts
+char map1[] = {right,left,left,left,left,right,right,right}; //dependent on 
+//where robot starts
 int i=0; 
 void loop() {
   if(SENSOR0_READING<400 && SENSOR1_READING<400){
