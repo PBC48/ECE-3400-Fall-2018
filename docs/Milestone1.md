@@ -42,7 +42,7 @@ We used QRE1113 line sensors, which work by transmitting and then detecting IR l
 Our first design idea used three line sensors -- two for staying on the line and a third for detecting intersections.  In our final implementation, we were able to use software to perform all the required tasks using only two sensors. We then separated the sensors farther apart so that the sensors won't trigger often and the robot will only make as many frequent adjustments to stay on the line. This hardware update helps improve the robot's navigation speed.
 
 <figure>
-    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/milestone1/20180913_204605.jpg" width="800"/>
+    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/milestone1/20180913_204620.jpg" width="800"/>
     <font size="3">
     <figcaption> Front view of Robot Version 2
     </figcaption>
@@ -148,3 +148,9 @@ void loop() {
 
 The robot doesn't turn as perfectly as we would want. Currently, robot doesn't turn for as long and relies on the line sensors to reposition itself on the line. There is more room to optimize the robot's turn configuration either by optimizing the turn or the robot's shifting. 
 
+
+
+
+
+
+ <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/milestone1/20180913_204701.jpg" width = "300"/><img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/milestone1/20180913_204653.jpg" width = "300"/>
