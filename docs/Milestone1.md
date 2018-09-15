@@ -30,22 +30,16 @@ This second level allows us to mount the battery in a secure place and creates r
 </figure>
 
 #### Robot with Breadboard on top
- <figure>
  <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/milestone1/20180913_204623.jpg" width = "340"/><img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/milestone1/20180913_204628.jpg" width = "340"/>
-<font size="3">
-    <figcaption> Robot with Breadboard Added on Top
-    </figcaption>
-    </font>
-    </figure>
-    
 
-The breadboard allowed us to connect more components requiring more ground and power sources than are available directly on the Arduino. With a common ground and source on the breadboard, we were able to connect the line sensors to the Arduino. The current breadboard used is only temporary as the smaller breadboards were unavailable during the lab. We plan to attach a smaller breadboard or even add solder breadboards so that we can more securely and reliably attach electrical components to the board. We also plan to attach the breadboards more securely using the screws around the chassis. Another note worthy improvement is the wiring. We will need to better organize the wiring of the robot as we put more sensors later on in the course.
+
+Adding the breadboard allowed us to create common power and ground lines to connect more components than there are power and ground pins on the Arduino. We were then able to connect the line sensors to the Arduino. The current breadboard is temporary, as smaller breadboards were unavailable during the lab. We plan to attach a smaller breadboard or potentially solder breadboards in order to securely and reliably attach electrical components to the board. We also plan to attach the breadboard more securely to the chassis, and will organize the wiring better especially as we add more components.
 
 ### Line Sensor Update
 
 We used QRE1113 line sensors, which work by transmitting and then detecting IR light that reflects back to the phototransistor on the sensor. We used digital pins to detect how long it takes to charge the phototransistor -- the return values indicate a light or dark surface. These sensors are mounted at the front of the robot facing downward, with the sensors only a few centimeters above the ground to maximize sensor accuracy. 
 
-Our first design idea used three line sensors -- two for staying on the line and a third for detecting intersections.  In our final implementation, we were able to use software to perform all the required tasks using only two sensors. We then separated the sensors farther apart so that the sensors won't trigger often and the robot will only make as many frequent adjustments to stay on the line. This hardware update helps improve the robot's navigation speed.
+Our first design idea used three line sensors -- two for staying on the line and a third for detecting intersections.  In our final implementation, we were able to use software to perform all the required tasks using only two sensors. We also positioned the sensors further apart than they were in our initial design so that they wouldn't trigger as often and the robot would make fewer adjustments to stay on the line. This hardware update helped improve the robot's navigation speed and smoothness.
 
 <figure>
     <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/milestone1/20180913_204620.jpg" width="800"/>
