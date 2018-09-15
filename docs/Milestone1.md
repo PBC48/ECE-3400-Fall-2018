@@ -27,13 +27,12 @@ This second level allows us to mount the battery in a secure place and creates r
 </figure>
 
 #### Robot with Breadboard on top
-The breadboard allowed us to connect more components requiring more ground and power sources than are available directly on the Arduino. With a common ground and source on the breadboard, we were able to connect the line sensors to the Arduino.
 
-<img align="left" width="450" height="auto" src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/milestone1/20180913_204623.jpg">
+<img align="left" width="430" height="auto" src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/milestone1/20180913_204623.jpg">
 
-<img align="right" width="450" height="auto" src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/milestone1/20180913_204628.jpg">
+<img align="right" width="430" height="auto" src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/milestone1/20180913_204628.jpg">
 
-
+The breadboard allowed us to connect more components requiring more ground and power sources than are available directly on the Arduino. With a common ground and source on the breadboard, we were able to connect the line sensors to the Arduino. The current breadboard used is only temporary as the smaller breadboards were unavailable during the lab. We plan to attach a smaller breadboard or even add solder breadboards so that we can more securely and reliably attach electrical components to the board. 
 
 ### Line Sensor Update
 
