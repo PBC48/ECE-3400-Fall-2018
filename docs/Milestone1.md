@@ -26,9 +26,10 @@ We added a second level to the robot’s chassis to support our battery, the ard
     </font>
 </figure>
 
+<img align="left" width="100" height="100" src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/milestone1/20180913_204623.jpg">
 
-![](https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/milestone1/20180913_204623.jpg =100x20) | ![](https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/milestone1/20180913_204628.jpg =100x20)|
-----|:----:|  
+<img align="center" width="100" height="100" src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/milestone1/20180913_204628.jpg">
+
 
 
 ### Line Sensor Update
