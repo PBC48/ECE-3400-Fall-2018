@@ -117,7 +117,7 @@ if(SENSOR1_READING < 400){ //turning right
 
 The robot reliably follows the line. The distance between the line sensors were good enough for the robot to be "following" the line but not repeatedly reposition itself. From the code, We want to maximize the forward moving time while turning only occasionally when the robot moves off the line.
 
-Currently, the robot turns very sharply to reposiiton itself. This is because we stop one wheel and move the other to create a turn motion. Moving forward, we want to smooth robot's readjustment so that it will not lose too much speed when readjusting. We want to allow the robot to veer rather than turn. 
+Currently, the robot turns very sharply to reposiiton itself. This is because we stop one wheel and move the other to create a turn motion. Moving forward, we want to smooth robot's readjustment so that it will not lose too much speed when readjusting. We want to allow the robot to shift rather than turn. 
 
 ### Figure-8
 
@@ -145,3 +145,6 @@ void loop() {
   }
 }
 ```
+
+The robot doesn't turn as perfectly as we would want. Currently, robot doesn't turn for as long and relies on the line sensors to reposition itself on the line. There is more room to optimize the robot's turn configuration either by optimizing the turn or the robot's shifting. 
+
