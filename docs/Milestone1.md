@@ -44,7 +44,7 @@ Our first design idea used three line sensors: two for staying on the line, and 
 <figure>
     <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/milestone1/20180913_204620.jpg" width="800"/>
     <font size="3">
-    <figcaption> Front view of Robot Version 2
+    <figcaption> Front view of Robot, Final Version
     </figcaption>
     </font>
 </figure>
@@ -62,7 +62,7 @@ Our final circuit with the sensors looked like this:
 
 ## Software Design
 
-We used a simple software algorithm for performing these tasks. However, we began the ground work for abstracting away some of the robot functions such as servo speed for robot forward movement and turning, which will be useful as we develop more complex algorithms to solve difficult problems later on. 
+We used a simple software algorithm for performing these tasks. However, we also began the ground work for abstracting away some of the robot functions such as servo speed for robot forward movement and turning, which will be useful as we develop more complex algorithms to solve difficult problems later on. 
 
 
 ### The Line Sensor
@@ -152,4 +152,4 @@ Currently the robot doesn't turn as well as we would like; it doesn't turn for l
 
 
 
- <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/milestone1/20180913_204644.jpg" width = "340"/><img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/milestone1/20180913_204557.jpg" width = "340"/>
+ <!--<img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/milestone1/20180913_204644.jpg" width = "340"/><img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/milestone1/20180913_204557.jpg" width = "340"/>--> 
