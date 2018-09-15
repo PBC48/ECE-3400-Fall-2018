@@ -147,9 +147,4 @@ void loop() {
 
 Currently the robot doesn't turn as well as we would like; it doesn't turn for long enough and relies on the line sensors to reposition itself on the line after the turn. There is more room to optimize the robot's turn configuration either by optimizing the turn or the robot's shifting. 
 
-
-
-
-
-
- <!--<img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/milestone1/20180913_204644.jpg" width = "340"/><img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/milestone1/20180913_204557.jpg" width = "340"/>--> 
+# &#10024; &#10024; &#10024; &#10024; &#10024; &#10024; &#10024;
