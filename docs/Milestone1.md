@@ -105,7 +105,7 @@ To follow the line, we used simple ```if``` statements to adjust the robot’s p
 #### Code snippet for following the line
 ```cpp
 if(SENSOR1_READING < 400){ //turning right
-    turn_right();git pulu
+    turn_right();
 }else if(SENSOR0_READING < 400) { //turning left
     turn _left();
 }else{
