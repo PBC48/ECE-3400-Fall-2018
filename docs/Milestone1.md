@@ -30,7 +30,7 @@ This second level allows us to mount the battery in a secure place and creates r
 </figure>
 
 #### Robot with Breadboard on top
- <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/milestone1/20180913_204623.jpg" width = "320"/><img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/milestone1/20180913_204628.jpg" width = "320"/>
+ <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/milestone1/20180913_204623.jpg" width = "340"/><img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/milestone1/20180913_204628.jpg" width = "340"/>
 
 
 The breadboard allowed us to connect more components requiring more ground and power sources than are available directly on the Arduino. With a common ground and source on the breadboard, we were able to connect the line sensors to the Arduino. The current breadboard used is only temporary as the smaller breadboards were unavailable during the lab. We plan to attach a smaller breadboard or even add solder breadboards so that we can more securely and reliably attach electrical components to the board. We also plan to attach the breadboards more securely using the screws around the chassis. Another note worthy improvement is the wiring. We will need to better organize the wiring of the robot as we put more sensors later on in the course.
@@ -153,4 +153,4 @@ The robot doesn't turn as perfectly as we would want. Currently, robot doesn't t
 
 
 
- <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/milestone1/20180913_204644.jpg" width = "330"/><img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/milestone1/20180913_204557.jpg" width = "330"/>
+ <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/milestone1/20180913_204644.jpg" width = "340"/><img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/milestone1/20180913_204557.jpg" width = "340"/>
