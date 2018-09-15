@@ -2,14 +2,17 @@
 
 ## Introduction
 
-The goal of this milestone was to add functionality enabling our robot to both follow a straight line and run in a figure eight pattern.  To accomplish this task, we added line sensors to the robot and implemented code to follow the lines and turn as directed at intersections.
+The goal of this milestone was to add functionality enabling our robot to both follow a straight line and run in a figure eight pattern. To accomplish this task, we added line sensors to the robot and implemented code to follow the lines and turn as directed at intersections.
 
 ## Hardware Upgrades
+
+We spent a large amount of lab time changing the structure of the robot chasis and adding extra levels. The goal is to build a good foundation for the robot structure so that we can have enough space and organization later on as the robot becomes more complex.
 
 ### Chassis upgrade
 
 We added a second level to the robot’s chassis to support our battery, the arduino, and a breadboard for our circuits. 
-This second level allows us to mount the battery in a secure place and creates room for additions.
+This second level allows us to mount the battery in a secure place and creates room for additions. The spaces between the two chassis can also be used to store wiring for the sensors because we will likely add more sensors that will take more pins and use more wires. 
+
 <figure>
     <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/milestone1/20180910_213436.jpg" width="800"/>
     <font size="3">
@@ -27,10 +30,10 @@ This second level allows us to mount the battery in a secure place and creates r
 </figure>
 
 #### Robot with Breadboard on top
- <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/milestone1/20180913_204623.jpg" width = "430"/><img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/milestone1/20180913_204628.jpg" width = "430"/>
+ <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/milestone1/20180913_204623.jpg" width = "350"/><img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/milestone1/20180913_204628.jpg" width = "350"/>
 
 
-The breadboard allowed us to connect more components requiring more ground and power sources than are available directly on the Arduino. With a common ground and source on the breadboard, we were able to connect the line sensors to the Arduino. The current breadboard used is only temporary as the smaller breadboards were unavailable during the lab. We plan to attach a smaller breadboard or even add solder breadboards so that we can more securely and reliably attach electrical components to the board. We also plan to attach the breadboards more securely using the screws around the chassis.
+The breadboard allowed us to connect more components requiring more ground and power sources than are available directly on the Arduino. With a common ground and source on the breadboard, we were able to connect the line sensors to the Arduino. The current breadboard used is only temporary as the smaller breadboards were unavailable during the lab. We plan to attach a smaller breadboard or even add solder breadboards so that we can more securely and reliably attach electrical components to the board. We also plan to attach the breadboards more securely using the screws around the chassis. Another note worthy improvement is the wiring. We will need to better organize the wiring of the robot as we put more sensors later on in the course.
 
 ### Line Sensor Update
 
