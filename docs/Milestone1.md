@@ -26,9 +26,9 @@ We added a second level to the robot’s chassis to support our battery, the ard
     </font>
 </figure>
 
-<img align="left" width="400" height="auto" src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/milestone1/20180913_204623.jpg">
+<img align="left" width="500" height="auto" src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/milestone1/20180913_204623.jpg">
 
-<img align="right" width="400" height="auto" src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/milestone1/20180913_204628.jpg">
+<img align="right" width="500" height="auto" src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/milestone1/20180913_204628.jpg">
 
 
 
