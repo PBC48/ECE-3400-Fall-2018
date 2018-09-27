@@ -17,7 +17,7 @@ uint32_t target_freq = 6080;
 uint32_t smp_freq = 19235;
 
 void turn_led(int i){
-  int pin = 1;
+  int pin = LED_BUILTIN;
   pinMode(pin,OUTPUT);
   i ? digitalWrite(pin,HIGH) : digitalWrite(pin, LOW); 
 }
@@ -35,9 +35,9 @@ void setup() {
 
 void loop() {
   // long start = target_freq*FFT_N/smp_freq - 10;
-  // long endl = target_freq*FFT_N/smp_freq + 10;
-  uint32_t freq_loc = target_freq*FFT_N/smp_freq;
- 
+  // long endl = target_freq*FFT_N/smp_freq + 10; bin = *Fs/N
+  uint32_t freq_loc = target_freq*(FFT_N/2)/smp_freq;
+  Serial.println(freq_loc);
   while(i<1) { // reduces jitter
     cli();  // UDRE interrupt slows this way down on arduino1.0
     for (int i = 0 ; i < 512 ; i += 2) { // save 256 samples
@@ -56,14 +56,16 @@ void loop() {
     fft_run(); // process the data in the fft
     fft_mag_log(); // take the output of the fft
     sei();   
-    if(fft_log_out[freq_loc]>70){
+    Serial.println(fft_log_out[freq_loc]);
+    if(fft_log_out[freq_loc]>45){
       turn_led(1);
     }else{
       turn_led(0);
     }
-    /*for (byte i = start ; i < endl ; i++) { 
+    /*
+    for (byte i = 0 ; i < FFT_N/2 ; i++) { 
       Serial.println(fft_log_out[i]); // send out the data
-    }*/
-    //i++;
+    }
+    i++;*/
   }
 }
