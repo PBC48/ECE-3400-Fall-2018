@@ -12,12 +12,15 @@ void setup() {
   ADCSRA = 0xe5; // set the adc to free running mode prescaler 32
   ADMUX = 0x40; // use adc0
   DIDR0 = 0x01; // turn off the digital input for adc0
-  while (!Serial.available());
+  //while (!Serial.available());
 }
 
 void loop() {
-
+  
   while(i<1) { // reduces jitter
+    Serial.println("START");
+    Serial.println("START");
+  
     cli();  // UDRE interrupt slows this way down on arduino1.0
     for (int i = 0 ; i < 512 ; i += 2) { // save 256 samples
       while(!(ADCSRA & 0x10)); // wait for adc to be ready
@@ -35,10 +38,11 @@ void loop() {
     fft_run(); // process the data in the fft
     fft_mag_log(); // take the output of the fft
     sei();   
-    
+    Serial.println(fft_log_out[40]);
+    /*
     for (byte i = 0 ; i < FFT_N/2 ; i++) { 
       Serial.println(fft_log_out[i]); // send out the data
-    }
+    }*/
     i++;
   }
 }
