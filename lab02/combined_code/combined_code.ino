@@ -19,12 +19,14 @@ void turn_led(int i){
   int pin = 7;
   pinMode(pin,OUTPUT);
   digitalWrite(pin,i?HIGH:LOW);
+  
 }
 
 
 void setup() {
   Serial.begin(115200); // use the serial port
   ir_init();
+    unsigned long wait = millis();
 }
 
 void loop() {
@@ -35,7 +37,8 @@ void loop() {
             break;
 
         case AUDIO_FFT:
-            Serial.println("AUDIO_FFT");
+            //Serial.println("AUDIO_FFT");
+            N = 25;
             ADMUX = 0x40; // use adc0
             for(int j=0;j<N;j++) { // reduces jitter
                 cli();  // UDRE interrupt slows this way down on arduino1.0
@@ -63,12 +66,12 @@ void loop() {
             break;
         
         case AUDIO_PROC:
-            Serial.println("AUDIO_PROC");
-            Serial.println(sum);
-            if(sum > 70){
+            //Serial.println("AUDIO_PROC");
+            //Serial.println(sum);
+            if(sum > 90){
                 turn_led(1);
                 Serial.println("660Hz Tone Detected");
-                delay(2000); // only for demonstration purposes
+                
                 turn_led(0);
                 state = IR_FFT;
             }else{
@@ -79,8 +82,9 @@ void loop() {
             break;
 
         case IR_FFT:
-            Serial.println("IR_FFT");
+            //Serial.println("IR_FFT");
             ADMUX = 0x41; // use adc1
+            N=2;
             for(int j=0;j<N;j++) { // reduces jitter
                 cli();  // UDRE interrupt slows this way down on arduino1.0
                 for (int i = 0 ; i < 512 ; i += 2) { // save 256 samples
@@ -100,19 +104,19 @@ void loop() {
                 fft_mag_log(); // take the output of the fft
                 sei();   
                 
-                sum += fft_log_out[40];
+                sum += fft_log_out[41];
             }
             sum/=N;
             state = IR_PROC;
             break;
 
         case IR_PROC:
-            Serial.println("IR_PROC");
-            Serial.println(sum);
+            //Serial.println("IR_PROC");
+            //Serial.println(sum);
             if(sum>55){
                 turn_led(1);
                 Serial.println("Robot Detected");
-                delay(2000); // only for demonstration purposes
+               
                 turn_led(0);
                 state = START;
             }else{
