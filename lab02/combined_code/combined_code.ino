@@ -41,7 +41,7 @@ void loop() {
                 cli();  // UDRE interrupt slows this way down on arduino1.0
                 for (int i = 0 ; i < 512 ; i += 2) { // save 256 samples
                     while(!(ADCSRA & 0x10)); // wait for adc to be ready
-                    ADCSRA = 0xf5; // restart adc
+                    ADCSRA = 0xf7; // restart adc
                     byte m = ADCL; // fetch adc data
                     byte j = ADCH;
                     int k = (j << 8) | m; // form into an int
