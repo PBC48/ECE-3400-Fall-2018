@@ -18,7 +18,7 @@ uint8_t state;
 void turn_led(int i){
   int pin = LED_BUILTIN;
   pinMode(pin,OUTPUT);
-  i ? digitalWrite(pin,HIGH) : digitalWrite(pin, LOW); 
+  digitalWrite(pin,i?HIGH:LOW);
 }
 
 
@@ -28,11 +28,11 @@ void setup() {
 }
 
 void loop() {
-  switch (state){
-        
+  switch (state){   
         case START:
             Serial.println("starting");
-            
+            state = AUDIO_FFT;
+            break;
 
         case AUDIO_FFT:
             Serial.println("AUDIO_FFT");
@@ -67,11 +67,11 @@ void loop() {
             Serial.println(sum);
             if(sum > 90){
                 turn_led(1);
+                state = IR_FFT;
             }else{
                 turn_led(0);
             }
             sum = 0;
-            state = IR_FFT;
             break;
 
         case IR_FFT:
@@ -100,17 +100,19 @@ void loop() {
             }
             sum/=N;
             state = IR_PROC;
+            break;
 
         case IR_PROC:
             Serial.println("IR_PROC");
             Serial.println(sum);
             if(sum>55){
                 turn_led(1);
+                state = START;
             }else{
                 turn_led(0);
             }
             sum = 0;
-            state = START;
+            
             break;
   }  
  
