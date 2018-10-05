@@ -67,9 +67,13 @@ void loop() {
             Serial.println(sum);
             if(sum > 90){
                 turn_led(1);
+                Serial.println("660Hz Tone Detected");
+                delay(2000);
+                turn_led(0);
                 state = IR_FFT;
             }else{
                 turn_led(0);
+                state = AUDIO_FFT;
             }
             sum = 0;
             break;
