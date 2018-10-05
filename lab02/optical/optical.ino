@@ -29,7 +29,6 @@ void setup() {
   ADCSRA = 0xe5; // set the adc to free running mode
   ADMUX = 0x40; // use adc0
   DIDR0 = 0x01; // turn off the digital input for adc0
-  //while (!Serial.available());
   //pinMode(3,OUTPUT);
 }
 
