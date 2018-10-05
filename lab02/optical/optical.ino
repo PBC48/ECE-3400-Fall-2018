@@ -12,7 +12,7 @@ port at 115.2kb.
 
 #include <FFT.h> // include the library
 
-int i = 0;
+int N = 25;
 uint32_t target_freq = 6080;
 uint32_t smp_freq = 19235*2;
 
@@ -29,13 +29,14 @@ void setup() {
   ADCSRA = 0xe5; // set the adc to free running mode
   ADMUX = 0x40; // use adc0
   DIDR0 = 0x01; // turn off the digital input for adc0
-  //pinMode(3,OUTPUT);
+  
 }
 
 void loop() {
   uint32_t freq_loc = target_freq*(FFT_N)/smp_freq;
+  uint32_t sum = 0;
   //Serial.println(freq_loc);
-  while(i<1) { // reduces jitter
+  for(int j=0;j<N;j++) { // reduces jitter
     cli();  // UDRE interrupt slows this way down on arduino1.0
     for (int i = 0 ; i < 512 ; i += 2) { // save 256 samples
       while(!(ADCSRA & 0x10)); // wait for adc to be ready
@@ -53,16 +54,15 @@ void loop() {
     fft_run(); // process the data in the fft
     fft_mag_log(); // take the output of the fft
     sei();   
-    Serial.println(fft_log_out[40]);
-    if(fft_log_out[40]>55){
+    
+    sum += fft_log_out[40];
+
+  }
+  sum/=N;
+  Serial.println(sum);
+  if(sum>55){
       turn_led(1);
     }else{
       turn_led(0);
     }
-    /*
-    for (byte i = 0 ; i < FFT_N/2 ; i++) { 
-      Serial.println(fft_log_out[i]); // send out the data
-    }*/
-    //i++;
-  }
 }
