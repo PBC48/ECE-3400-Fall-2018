@@ -57,8 +57,8 @@ void loop() {
                 sei();   
                 
                 sum += fft_log_out[18];
-                sum/=N;
             }
+            sum/=N;
             state = AUDIO_PROC;
             break;
         
