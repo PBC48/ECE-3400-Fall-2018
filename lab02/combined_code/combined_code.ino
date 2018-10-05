@@ -65,7 +65,7 @@ void loop() {
         case AUDIO_PROC:
             Serial.println("AUDIO_PROC");
             Serial.println(sum);
-            if(sum > 90){
+            if(sum > 70){
                 turn_led(1);
                 Serial.println("660Hz Tone Detected");
                 delay(2000);
