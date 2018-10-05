@@ -37,7 +37,7 @@ void loop() {
         case AUDIO_FFT:
             Serial.println("AUDIO_FFT");
             ADMUX = 0x40; // use adc0
-            for(int j=0;j<1;j++) { // reduces jitter
+            for(int j=0;j<N;j++) { // reduces jitter
                 cli();  // UDRE interrupt slows this way down on arduino1.0
                 for (int i = 0 ; i < 512 ; i += 2) { // save 256 samples
                     while(!(ADCSRA & 0x10)); // wait for adc to be ready
