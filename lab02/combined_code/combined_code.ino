@@ -16,7 +16,7 @@ enum states{
 uint8_t state;
 
 void turn_led(int i){
-  int pin = LED_BUILTIN;
+  int pin = 7;
   pinMode(pin,OUTPUT);
   digitalWrite(pin,i?HIGH:LOW);
 }
