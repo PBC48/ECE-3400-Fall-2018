@@ -5,7 +5,7 @@
 #include <FFT.h> // include the library
 #include "IR_init.h"
 
-enum cases{
+enum states{
     START,
     AUDIO_FFT,
     AUDIO_PROC,
@@ -24,11 +24,7 @@ void turn_led(int i){
 
 void setup() {
   Serial.begin(115200); // use the serial port
-  TIMSK0 = 0; // turn off timer0 for lower jitter
-  ADCSRA = 0xe5; // set the adc to free running mode
-  ADMUX = 0x40; // use adc0
-  DIDR0 = 0x01; // turn off the digital input for adc0
-  
+  ir_init();
 }
 
 void loop() {
@@ -40,7 +36,7 @@ void loop() {
 
         case AUDIO_FFT:
             Serial.println("AUDIO_FFT");
-            
+            ADMUX = 0x40; // use adc0
             for(int j=0;j<1;j++) { // reduces jitter
                 cli();  // UDRE interrupt slows this way down on arduino1.0
                 for (int i = 0 ; i < 512 ; i += 2) { // save 256 samples
@@ -80,6 +76,7 @@ void loop() {
 
         case IR_FFT:
             Serial.println("IR_FFT");
+            ADMUX = 0x41; // use adc1
             for(int j=0;j<N;j++) { // reduces jitter
                 cli();  // UDRE interrupt slows this way down on arduino1.0
                 for (int i = 0 ; i < 512 ; i += 2) { // save 256 samples
