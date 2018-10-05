@@ -68,7 +68,7 @@ void loop() {
             if(sum > 70){
                 turn_led(1);
                 Serial.println("660Hz Tone Detected");
-                delay(2000);
+                delay(2000); // only for demonstration purposes
                 turn_led(0);
                 state = IR_FFT;
             }else{
@@ -111,12 +111,15 @@ void loop() {
             Serial.println(sum);
             if(sum>55){
                 turn_led(1);
+                Serial.println("Robot Detected");
+                delay(2000); // only for demonstration purposes
+                turn_led(0);
                 state = START;
             }else{
                 turn_led(0);
+                state = IR_FFT;
             }
             sum = 0;
-            
             break;
   }  
  
