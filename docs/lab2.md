@@ -39,3 +39,19 @@
     </figcaption>
     </font>
 </figure>
+
+## Integration
+<figure>
+    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab02/Lab2integrated_1.PNG" width="800"/>
+    <font size="2">
+    <figcaption> First Part of State Machine
+    </figcaption>
+    </font>
+</figure>
+<figure>
+    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab02/Lab2integratedcode_2.PNG" width="800"/>
+    <font size="2">
+    <figcaption> Second Part of State Machine
+    </figcaption>
+    </font>
+</figure>
