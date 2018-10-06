@@ -52,7 +52,9 @@ which hosts the stored data in bins with a specific frequency range per bin.
 
 ## Optical
 
-### Initial Design
+<iframe width="560" height="315" src="https://www.youtube.com/embed/_hD_c_GUQas" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+
+### Initial design
 We used the OP598A phototransistor to detect IR signals. The phototransistor was built exactly like the schemamtic from the lab, with a 1.8k reistor connected to 5V power supply and the photoresistor connected to ground. We first put that output into the oscilioscope and got the following reading for FFT: 
 
 <figure>
@@ -133,6 +135,9 @@ We reached two conclusions with this test. The augmented sensor worked with diff
 
 
 ## Integration
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/v4Z3QcfFZ4k" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+
 <figure>
     <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab02/Lab2integrated_1.PNG" width="800"/>
     <font size="2">
