@@ -52,7 +52,7 @@ which hosts the stored data in bins with a specific frequency range per bin.
 
 ## Optical
 
-### Initial design
+### Initial Design
 We used the OP598A phototransistor to detect IR signals. The phototransistor was built exactly like the schemamtic from the lab, with a 1.8k reistor connected to 5V power supply and the photoresistor connected to ground. We first put that output into the oscilioscope and got the following reading for FFT: 
 
 <figure>
@@ -69,7 +69,7 @@ The result is from turning the IR hat near the sensor. The signal strength appea
 ```
 to get our readings.
 
-### Upgraded design
+### Upgraded Design
 The signal strength of the FFT at our desired bin was already strong but we wanted to implement noise filtering which means we need a filter. We also want to amplify the values in order to utilize all 10 bits of the ADC for a higher resolution reading. The Arduino Analog input can only take in voltage values from 0 to 5 volts which means that any the input voltage can’t be negative or higher than that which will result in cut off and possibly damaging the circuit. Thus, this is the resulting schematic:
 
 <figure>
@@ -80,15 +80,19 @@ The signal strength of the FFT at our desired bin was already strong but we want
     </font>
 </figure>
 
-We opted with using a high pass filter to remove any DC bias inherent in the output of the sensor. Then we added our own DC bias of 2.5V to put the steady state signal in the middle of the possible voltage range of the pins. This allows us to take in negative voltage since the negative voltage will be offset by the DC to above zero. 
-
+We opted with using a high pass filter to remove any DC bias inherent in the output of the sensor because the DC bias is already high at around 4v. We then amplified the filtered signal by a factor of 20 which can be adjusted as needed. The amplification seems like a good amount based on the detection strength of the IR sensor. After we amplified the signal, we ran the output through a low pass filter that removes any high frequency noise and harmonics. This completes our bandpass filter.
 
 
 ### Testing
 For testing we started with unit tests by turning on the hat and holding it a certain distance from the phototransistor and check the output of the FFT printing to serial. We also implemented a blinking LED that would increase blinking rate as the IR gets closer to the phototransistor. The frequency of the blink rates tell us how close the hat is to the IR sensor. This tells us that the sensor is working as intended. 
 
+We also reedited the FFT library's codes to record FFT values in a single FFT cycle for better side by side comparison. Here are the results:
 
-
+We divided the tests as such:
+-off: IR hat turned off
+-far: IR hat 1.5 intersections away from sensor
+-mid: IR hat 0.5 intersections away from sensor
+-close: IR hat right next to sensor
 
 <figure>
     <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab02/IRnoOpAmp.PNG" width="800"/>
@@ -106,7 +110,10 @@ For testing we started with unit tests by turning on the hat and holding it a ce
     </font>
 </figure>
 
+From this two comparisons, we can see that the op amp increases mid range performance of the IR sensor by detecting more of the IR hat's correct frequency signal whereas the harmonics appears to be more filtered out as a result of the installed bandpass filters. The long range performance appears to be unaffected by the augmentation and the close range performance clearly increased slightly.
 
+
+After testing that the sensor could detect the desired signal, we then tested the robustness of our filtering software and hardware by giving it decoy signals. We used a decoy IR signal at around 12kHz placed next to the sensor and read its FFT's. We also used the decoy to test our sensor for detecting different frequencies. 
 <figure>
     <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab02/DecoyOpAmp.PNG" width="800"/>
     <font size="2">
@@ -115,7 +122,6 @@ For testing we started with unit tests by turning on the hat and holding it a ce
     </font>
 </figure>
 
-
 <figure>
     <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab02/Decoy.PNG" width="800"/>
     <font size="2">
@@ -123,7 +129,7 @@ For testing we started with unit tests by turning on the hat and holding it a ce
     </figcaption>
     </font>
 </figure>
-
+We reached two conclusions with this test. The augmented sensor worked with different frequencies because the signal strengths were clearly amplified. Although for this test, it appears some of the noise were amplified as well but it was not significant. We also see that the 40th bin of the FFT is contains only background signals. This means that the signal strength will not be enough for the threshhold to detect a false positive. With these two tests, we proved that the IR sensor's hardware and software can detect the desired frequency amount and augmented it so that it detect farther away signals.  
 
 
 ## Integration
