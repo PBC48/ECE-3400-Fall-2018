@@ -206,7 +206,8 @@ To integrate both the optical and the acoustic sensors, we first read input from
 
 In order to properly incorporate this, we have but in a 5-part finite state machine. The state starts. It then starts to recording audio. Once we record audio, we go to process it. Once we have processed it, if the input passes threshold (meaning we need to start), we start recording IR. If not, then we go back to recording audio. From here, We continue to record IR. If IR surpasses threshold (meaning robot is detected), it writes to the serial monitor and goes back to start. Else, it keeps recording. 
 
-```cpp
+``` cpp
+
 enum states{
     START,
     AUDIO_FFT,
@@ -259,9 +260,10 @@ void loop() {
             break;
   }  
 }
+
 ```
 
 ## Conclusion
-We were able to integrate both the IR and microphone sensors to a single code base. This step important as we will need to integrate all of the code into the arduino 
+We were able to integrate both the IR and microphone sensors to a single code base. This step important as we will need to integrate all of the codes from the different modules we made into the arduino. Looking forward, we would like to increase the ranges of the microphone sensors and IR sensors such that they will be able to detect the correct freqencies from farther away. This is important since the IR is used to detect other robots and the microphone is used to start the robot. We also want to explore ways to schedule our code because the sensing is a hard real time process where we have to stop the robot if it is in danger of collision and thus, we must find a way to quickly calculate the FFT and then have the robot react quick enough. A likely solution will be to use interrupts.  
 
 
