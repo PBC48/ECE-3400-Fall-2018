@@ -239,6 +239,7 @@ void loop() {
             state = AUDIO_FFT; //next state
             break;
         case AUDIO_FFT:
+            ADMUX = 0x40; // use adc0
             /*
                 Some FFT array from ADC generating code....
             */
@@ -257,6 +258,7 @@ void loop() {
             break;
 
         case IR_FFT:
+            ADMUX = 0x41; // use adc1
             /*
                 Some FFT array from ADC generating code....
             */
