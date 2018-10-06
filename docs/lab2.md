@@ -14,7 +14,7 @@ The “Fast Fourier Transform” is an operation that uses the Discrete Time Fou
 <figure>
     <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab02/frequency%20of%20ADC.PNG" width="800"/>
     <font size="2">
-    <figcaption> Frequency of the ADC
+    <figcaption> <b> Frequency of the ADC </b>
     </figcaption>
     </font>
 </figure>
