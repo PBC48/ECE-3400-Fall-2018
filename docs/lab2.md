@@ -2,6 +2,9 @@
 # Lab 2: Analog Circuitry and FFTs
 
 ## Objectives
+* Understand and Utilize the FFT Library
+* Implement 660Hz Tone Detection
+* Implement 6.08kHz IR signal detection, ignoring decoys
 
 ## Introduction
 In lab 2, we added hardware sensors and signal processing capabilities to the robot.  We split into two subteams, with Tara and Chrissy working on acoustics and Xiaoyu and Patrick on optical sensing. The start of our final maze will commence with a 660 Hz whistle blow, so the acoustic team used an Electret microphone and an amplifying circuit to detect the tone and distinguish it from background noise.  The optical group used an IR transistor to detect other robots emitting IR at 6.08kHz, and ignore decoys (18kHz).
