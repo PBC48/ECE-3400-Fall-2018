@@ -99,7 +99,7 @@ For testing we started with unit tests by turning on the hat and holding it a ce
 </figure>
 
 <figure>
-    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab02/IMG_1042.JPG" width="800"/>
+    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab02/20181003_164149.jpg"/>
     <font size="2">
     <figcaption> FFT of Decoy with Op Amp
     </figcaption>
