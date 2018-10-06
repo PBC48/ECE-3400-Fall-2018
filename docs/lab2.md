@@ -77,8 +77,8 @@ Although we had trouble getting any signal out of the microphone at first, we ev
 
 To amplify this signal to a more detectable and readable value, we created a simple non-inverting amplifier, starting with a modest gain of around 5 to be safe. We first tested the amplifier with an input signal from the function generator, reading the output on the oscilloscope. For a while we were not able to obtain any output signal at all. After switching our op amp from an LF353 to LM358AN, the amplifier worked as expected; we saw the desired output and amplification.
 
-<img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab02/amp_input" width = "340"/>
-<img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab02/amp_output" width = "340"/>
+<img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab02/amp_input.jpg" width = "340"/>
+<img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab02/amp_output.jpg" width = "340"/>
 
 We then put the microphone output through the amplifier. We again were not able to obtain any output signal, so we re-examined our connection between the microphone and amplifier and added a DC bias. Rather than send the simple microphone circuit output straight into the amplifier, we decided to keep the capacitor from the example circuit to remove its DC offset, and use a voltage divider to create a small, 50mV bias at the input to the amplifier. This allowed us to control our DC offset and left room for a large amplification. After solving this problem, we successfully increased our amplification to around 52. We played the 660Hz tone near the microphone and read the output to the scope to confirm that the signal was what we expected it to be. Our final design was the following amplifier circuit:
 
