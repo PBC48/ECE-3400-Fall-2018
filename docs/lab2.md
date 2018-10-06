@@ -76,8 +76,6 @@ Although we had trouble getting any signal out of the microphone at first, we ev
 To amplify this signal to a more detectable and readable value, we created a simple non-inverting amplifier, starting with a modest gain of around 5 to be safe. We first tested the amplifier with an input signal from the function generator, reading the output on the oscilloscope. For a while we were not able to obtain any output signal at all. After switching our op amp from an LF353 to LM358AN, the amplifier worked as expected; we saw the desired output and amplification.
 
 
-
-
 <iframe width="560" height="315" src="https://www.youtube.com/embed/JvM9OUa2xY0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
 <figure>
@@ -131,10 +129,10 @@ For testing we started with unit tests by turning on the hat and holding it a ce
 We also reedited the FFT library's codes to record FFT values in a single FFT cycle for better side by side comparison. Here are the results:
 
 We divided the tests as such:
--off: IR hat turned off
--far: IR hat 1.5 intersections away from sensor
--mid: IR hat 0.5 intersections away from sensor
--close: IR hat right next to sensor
+- off: IR hat turned off
+- far: IR hat 1.5 intersections away from sensor
+- mid: IR hat 0.5 intersections away from sensor
+- close: IR hat right next to sensor
 
 <figure>
     <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab02/IRnoOpAmp.PNG" width="800"/>
