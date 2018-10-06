@@ -150,7 +150,7 @@ We opted with using a high pass filter to remove any DC bias inherent in the out
 
 
 ### Testing
-For testing we started with unit tests by turning on the hat and holding it a certain distance from the phototransistor and check the output of the FFT printing to serial. We also implemented a blinking LED that would increase blinking rate as the IR gets closer to the phototransistor. The frequency of the blink rates tell us how close the hat is to the IR sensor. This tells us that the sensor is working as intended. 
+For testing we started with unit tests by turning on the hat and holding it a certain distance from the phototransistor and check the output of the FFT printing to serial. We also implemented a blinking LED that would increase blinking rate as the IR gets closer to the phototransistor. The frequency of the blink rates tell us how close the hat is to the IR sensor. This tells us that the sensor is working as intended. In the video, the blinking is from the Arduino's internal LED although we should have used an external instead for demostration purposes. 
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/_hD_c_GUQas?rel=0&amp;controls=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
