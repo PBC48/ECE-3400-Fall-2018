@@ -21,6 +21,12 @@ The “Fast Fourier Transform” is an operation that uses the Discrete Time Fou
 <iframe width="560" height="315" src="https://www.youtube.com/embed/JvM9OUa2xY0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
 ## Optical
+The signal strength of the FFT at our desired bin was already strong but we wanted to implement noise filtering which means we need a filter. We also want to amplify the values in order to utilize all 10 bits of the ADC for a high resolution reading. The Arduino Analog input can only take in voltage values from 0 to 5 volts which means that any the input voltage can’t be negative or higher than that which will result in cut off and possibly damaging the circuit.
+We opted with using a high pass filter to remove any DC bias inherent in the output of the sensor. Then, we added our own DC bias of 2.5V to put the steady state signal in the middle of the possible voltage range of the pins. This allows us to take in negative voltage since the negative voltage will be offset by the DC to above zero. 
+
+ Testing
+	For testing we started with unit tests by turning on the hat and holding it a certain distance from the phototransistor and check the output of the FFT printing to serial. We also implemented a blinking LED that would increase blinking rate as the IR gets closer to the phototransistor. The frequency of the blink rates tell us how close the hat is to the IR sensor. This tells us that the sensor is working as intended. 
+
 
 <figure>
     <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab02/IR_FFT_without%20opamp.PNG" width="800"/>
@@ -57,17 +63,16 @@ The “Fast Fourier Transform” is an operation that uses the Discrete Time Fou
 
 
 <figure>
-    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab02/Decoy.PNG" width="800"/>
+    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab02/DecoyOpAmp.PNG" width="800"/>
     <font size="2">
-    <figcaption> FFT of Decoy
+    <figcaption> FFT of Decoy 
     </figcaption>
     </font>
 </figure>
 
 
-
 <figure>
-    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab02/DecoyOpAmp.PNG" width="800"/>
+    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab02/Decoy.PNG" width="800"/>
     <font size="2">
     <figcaption> FFT of Decoy with Op Amp
     </figcaption>
