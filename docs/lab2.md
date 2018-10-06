@@ -21,8 +21,18 @@ The “Fast Fourier Transform” is an operation that uses the Discrete Time Fou
 <iframe width="560" height="315" src="https://www.youtube.com/embed/JvM9OUa2xY0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
 ## Optical
+
 <figure>
-    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab02/IR_NO_OPAMP.PNG" width="800"/>
+    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab02/IR_FFT_without%20opamp.PNG" width="800"/>
+    <font size="2">
+    <figcaption> Oscilloscope FFT of IR Sensor without augmentations
+    </figcaption>
+    </font>
+</figure>
+
+
+<figure>
+    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab02/IRnoOpAmp.PNG" width="800"/>
     <font size="2">
     <figcaption> FFT of IR without Op Amp
     </figcaption>
@@ -30,20 +40,13 @@ The “Fast Fourier Transform” is an operation that uses the Discrete Time Fou
 </figure>
 
 <figure>
-    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab02/IR_WITH_OPAMP.PNG" width="800"/>
+    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab02/IROpAmp.PNG" width="800"/>
     <font size="2">
     <figcaption> FFT of IR with Op Amp
     </figcaption>
     </font>
 </figure>
 
-<figure>
-    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab02/IR_FFT_without%20opamp.PNG" width="800"/>
-    <font size="2">
-    <figcaption> FFT of IR without augmentations
-    </figcaption>
-    </font>
-</figure>
 
 <figure>
     <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab02/schematic-Phototransistor%20with%20OpAmp.PNG" width="800"/>
