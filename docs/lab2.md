@@ -56,7 +56,7 @@ From our analysis of the FFT and our determination of the frequency bin width, w
 <figure>
     <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab02/fft_660.png" width="800"/>
     <font size="2">
-    <figcaption> FFT output from fft_adc_serial example code with 660Hz Signal from Function Generator
+    <figcaption> <b>FFT output from fft_adc_serial example code with 660Hz Signal from Function Generator</b>
     </figcaption>
     </font>
 </figure>
@@ -66,7 +66,7 @@ Next we created the simple microphone circuit from the lab document:
 <figure>
     <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab02/simple_microphone.png" width="800"/>
     <font size="2">
-    <figcaption> Basic Microphone Circuit from Lab Document
+    <figcaption> <b>Basic Microphone Circuit from Lab Document </b>
     </figcaption>
     </font>
 </figure>
@@ -127,6 +127,7 @@ We opted with using a high pass filter to remove any DC bias inherent in the out
 For testing we started with unit tests by turning on the hat and holding it a certain distance from the phototransistor and check the output of the FFT printing to serial. We also implemented a blinking LED that would increase blinking rate as the IR gets closer to the phototransistor. The frequency of the blink rates tell us how close the hat is to the IR sensor. This tells us that the sensor is working as intended. 
 
 <iframe width="600" height="auto" src="https://www.youtube.com/embed/_hD_c_GUQas?rel=0&amp;controls=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+
 We also reedited the FFT library's codes to record FFT values in a single FFT cycle for better side by side comparison. Here are the results:
 
 We divided the tests as such:
@@ -166,7 +167,7 @@ After testing that the sensor could detect the desired signal, we then tested th
 <figure>
     <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab02/Decoy.PNG" width="800"/>
     <font size="2">
-    <figcaption> <b>FFT of Decoy with Op Amp<\b>
+    <figcaption> <b>FFT of Decoy with Op Amp </b>
     </figcaption>
     </font>
 </figure>
@@ -176,21 +177,6 @@ We reached two conclusions with this test. The augmented sensor worked with diff
 ## Integration
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/v4Z3QcfFZ4k" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-
-<figure>
-    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab02/Lab2integrated_1.PNG" width="800"/>
-    <font size="2">
-    <figcaption> First Part of State Machine
-    </figcaption>
-    </font>
-</figure>
-<figure>
-    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab02/Lab2integratedcode_2.PNG" width="800"/>
-    <font size="2">
-    <figcaption> Second Part of State Machine
-    </figcaption>
-    </font>
-</figure>
 
 <figure>
     <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab02/20181003_164149.jpg"/>
