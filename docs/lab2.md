@@ -6,7 +6,7 @@
 ## Introduction
 In lab 2, we added hardware sensors and signal processing capabilities to the robot.  We split into two subteams, with Tara and Chrissy working on acoustics and Xiaoyu and Patrick on optical sensing. The start of our final maze will commence with a 660 Hz whistle blow, so the acoustic team used an Electret microphone and an amplifying circuit to detect the tone and distinguish it from background noise.  The optical group used an IR transistor to detect other robots emitting IR at 6.08kHz, and ignore decoys (18kHz).
 
-## FFT/ADC
+## FFT Analysis
 The “Fast Fourier Transform” is an operation that uses the Discrete Time Fourier Transform in a time-efficient method to sample a signal over time and return its frequency components. Because both sub teams had to implement algorithms to detect specific frequencies in a noisy environment, we began the lab by familiarizing ourselves with the Arduino Open Music Labs FFT library in order to allow us to use digital filters to process these signals. We each installed the library in our Arduino IDE and studied the example script fft_adc_serial, with the goal of understanding how to use the FFT library and identifying the frequency bin where we should look for our signal. First, we looked at the sampling frequency of the ADC. There are two ways to identify this rate -- the first is to use the oscilloscope and the digitalWrite() function to change the state of the digital pin whenever the ADC finishes one conversion. The scope will then measure the frequency of the output wave. Based on our implementation, we know that the ADC converts two values per period, so the frequency is about 38 kHz.  
 
 <figure>
