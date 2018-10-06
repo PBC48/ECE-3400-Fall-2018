@@ -127,6 +127,9 @@ For testing we started with unit tests by turning on the hat and holding it a ce
 
 
 ## Integration
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/v4Z3QcfFZ4k" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+
 <figure>
     <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab02/Lab2integrated_1.PNG" width="800"/>
     <font size="2">
