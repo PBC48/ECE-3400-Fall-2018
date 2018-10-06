@@ -20,7 +20,7 @@ The “Fast Fourier Transform” is an operation that uses the Discrete Time Fou
     </font>
 </figure>
 
-To confirm this result, we referenced Section 28 of the ATmega328 datasheet, which provides information about the ADC. It indicates that the last 3 bits of the ADC Control and Status Register A determine a prescalar by which the Arduino clock frequency is divided to determine the ADC clock frequency. The example script fft_adc_serial sets this division factor to 32 in the second line of the code snipped below.  Given the 16MHz Arduino system clock frequency and the 13 clock cycles it takes the ADC to convert, we used the formula `Arduino clock cycle / total conversion clock cycles / prescalar` to find the 38 kHz sampling frequency. 
+To confirm this result, we referenced Section 28 of the ATmega328 datasheet, which provides information about the ADC. It indicates that the last 3 bits of the ADC Control and Status Register A determine a prescalar by which the Arduino clock frequency is divided to determine the ADC clock frequency. The example script fft_adc_serial sets this division factor to 32 in the second line of the code snippet below.  Given the 16MHz Arduino system clock frequency and the 13 clock cycles it takes the ADC to convert, we used the formula `Arduino clock cycle / total conversion clock cycles / prescalar` to find the 38 kHz sampling frequency. 
 
 Calling the FFT function is simple using the Music Labs' library where we first must setup the ADC settings:
 ```cpp
@@ -215,11 +215,11 @@ We reached two conclusions with this test. The augmented sensor worked with diff
 </figure>
 
 
-To integrate both the optical and the acoustic sensors, we first read input from the acoustic sensor from input A0. Once we get a hit from the acoustic sensor, we switch to reading input from the IR sensor at input A1. Both of these inputs rely on the same FFT function. 
+To integrate both the optical and the acoustic sensors, we first read input from the acoustic sensor through pin A0. Once we get a hit from the acoustic sensor, we switch to reading input from the IR sensor at pin A1. Both of these inputs rely on the same FFT function. 
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/v4Z3QcfFZ4k" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
-In order to properly incorporate this, we have but in a 5-part finite state machine. The state starts. It then starts to recording audio. Once we record audio, we go to process it. Once we have processed it, if the input passes threshold (meaning we need to start), we start recording IR. If not, then we go back to recording audio. From here, We continue to record IR. If IR surpasses threshold (meaning robot is detected), it writes to the serial monitor and goes back to start. Else, it keeps recording. 
+In order to properly incorporate this, we have put in a 5-part finite state machine. The state starts. It then moves on to recording and running the FFT on the audio. Once we record the audio, we go to process it. If the bin containing 660Hz passes its intensity threshold (meaning we've detected the tone and we need to start), we start recording IR. If not, then we go back to recording audio. From here, we continue to recording and running the FFT on the IR. If the IR surpasses its threshold (meaning a robot is detected), it writes to the serial monitor and goes back to the start. Else, it keeps recording IR. 
 
 ``` cpp
 
