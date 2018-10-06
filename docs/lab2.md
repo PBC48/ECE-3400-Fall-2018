@@ -96,3 +96,11 @@ We opted with using a high pass filter to remove any DC bias inherent in the out
     </figcaption>
     </font>
 </figure>
+
+<figure>
+    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab02/IMG_1042.JPG" width="800"/>
+    <font size="2">
+    <figcaption> FFT of Decoy with Op Amp
+    </figcaption>
+    </font>
+</figure>
