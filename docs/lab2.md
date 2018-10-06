@@ -51,7 +51,42 @@ which hosts the stored data in bins with a specific frequency range per bin.
 
 ## Acoustics
 
+From our analysis of the FFT and our determination of the frequency bin width, we determined that our 660Hz audio signal should fall in the fifth bin. We confirmed this by inputting a 660Hz sine wave from a function generator through a 330-ohm resistor into an analog Arduino pin and running the example fft_adc_serial code. We graphed the FFT output, as shown below. From this graph we saw our expected peak in the fifth bin.
+
+<figure>
+    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab02/fft_660.png" width="800"/>
+    <font size="2">
+    <figcaption> FFT output from fft_adc_serial example code with 660Hz Signal from Function Generator
+    </figcaption>
+    </font>
+</figure>
+
+Next we created the simple microphone circuit from the lab document:
+
+<figure>
+    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab02/simple_microphone.png" width="800"/>
+    <font size="2">
+    <figcaption> Basic Microphone Circuit from Lab Document
+    </figcaption>
+    </font>
+</figure>
+
+Although we had trouble getting any signal out of the microphone at first, we eventually were able to see a response on the oscilloscope when we played a 660Hz tone near the microphone from a tone generator on our phones. We observed that the amplitude of the signal was around 40 mV, and the output was unsteady and weak. 
+
+To amplify this signal to a more detectable and readable value, we created a simple non-inverting amplifier, starting with a modest gain of around 5 to be safe. We first tested the amplifier with an input signal from the function generator, reading the output on the oscilloscope. For a while we were not able to obtain any output signal at all. After switching our op amp from an LF353 to LM358AN, the amplifier worked as expected; we saw the desired output and amplification.
+
+
+
+
 <iframe width="560" height="315" src="https://www.youtube.com/embed/JvM9OUa2xY0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+
+<figure>
+    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab02/Acoustic.png" width="800"/>
+    <font size="2">
+    <figcaption> Acoustic Circuit Design
+    </figcaption>
+    </font>
+</figure>
 
 ## Optical
 
@@ -95,10 +130,10 @@ For testing we started with unit tests by turning on the hat and holding it a ce
 We also reedited the FFT library's codes to record FFT values in a single FFT cycle for better side by side comparison. Here are the results:
 
 We divided the tests as such:
-- off: IR hat turned off
-- far: IR hat 1.5 intersections away from sensor
-- mid: IR hat 0.5 intersections away from sensor
-- close: IR hat right next to sensor
+-off: IR hat turned off
+-far: IR hat 1.5 intersections away from sensor
+-mid: IR hat 0.5 intersections away from sensor
+-close: IR hat right next to sensor
 
 <figure>
     <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab02/IRnoOpAmp.PNG" width="800"/>
@@ -139,6 +174,23 @@ We reached two conclusions with this test. The augmented sensor worked with diff
 
 
 ## Integration
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/v4Z3QcfFZ4k" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+
+<figure>
+    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab02/Lab2integrated_1.PNG" width="800"/>
+    <font size="2">
+    <figcaption> First Part of State Machine
+    </figcaption>
+    </font>
+</figure>
+<figure>
+    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab02/Lab2integratedcode_2.PNG" width="800"/>
+    <font size="2">
+    <figcaption> Second Part of State Machine
+    </figcaption>
+    </font>
+</figure>
 
 <figure>
     <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab02/20181003_164149.jpg"/>
