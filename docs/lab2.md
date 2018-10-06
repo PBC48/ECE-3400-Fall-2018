@@ -51,7 +51,7 @@ which hosts the stored data in bins with a specific frequency range per bin.
 From our analysis of the FFT and our determination of the frequency bin width, we determined that our 660Hz audio signal should fall in the fifth bin. We confirmed this by inputting a 660Hz sine wave from a function generator through a 330-ohm resistor into an analog Arduino pin and running the example fft_adc_serial code. We graphed the FFT output, as shown below. From this graph we saw our expected peak in the fifth bin.
 
 <figure>
-    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab02/fft_660.png" width="800"/>
+    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab02/fft_660.PNG" width="800"/>
     <font size="2">
     <figcaption> FFT output from fft_adc_serial example code with 660Hz Signal from Function Generator
     </figcaption>
@@ -61,7 +61,7 @@ From our analysis of the FFT and our determination of the frequency bin width, w
 Next we created the simple microphone circuit from the lab document:
 
 <figure>
-    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab02/simple_microphone.png" width="800"/>
+    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab02/simple_microphone.PNG" width="800"/>
     <font size="2">
     <figcaption> Basic Microphone Circuit from Lab Document
     </figcaption>
