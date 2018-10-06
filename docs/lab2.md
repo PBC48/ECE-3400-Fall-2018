@@ -2,6 +2,9 @@
 # Lab 2: Analog Circuitry and FFTs
 
 ## Objectives
+1. Get a working microphone sensor that detects 660Hz signal and ignores noise
+2. Get a working IR sensor that detects 6.08kHz signal and ignores noise and decoy signals
+3. Integrate both sensors togehter into a sigal system with integrated code.
 
 ## Introduction
 In lab 2, we added hardware sensors and signal processing capabilities to the robot.  We split into two subteams, with Tara and Chrissy working on acoustics and Xiaoyu and Patrick on optical sensing. The start of our final maze will commence with a 660 Hz whistle blow, so the acoustic team used an Electret microphone and an amplifying circuit to detect the tone and distinguish it from background noise.  The optical group used an IR transistor to detect other robots emitting IR at 6.08kHz, and ignore decoys (18kHz).
@@ -113,9 +116,7 @@ A demonstration of this detection is shown in the following video:
 <iframe width="560" height="315" src="https://www.youtube.com/embed/JvM9OUa2xY0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
 
-## Optical Team
-
-<iframe width="560" height="315" src="https://www.youtube.com/embed/_hD_c_GUQas" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+## Optical
 
 ### Initial design
 We used the OP598A phototransistor to detect IR signals. The phototransistor was built exactly like the schemamtic from the lab, with a 1.8k reistor connected to 5V power supply and the photoresistor connected to ground. We first put that output into the oscilioscope and got the following reading for FFT: 
@@ -123,7 +124,7 @@ We used the OP598A phototransistor to detect IR signals. The phototransistor was
 <figure>
     <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab02/IR_FFT_without%20opamp.PNG" width="800"/>
     <font size="2">
-    <figcaption> Oscilloscope FFT of IR Sensor without augmentations
+    <figcaption> <b>Oscilloscope FFT of IR Sensor without augmentations</b>
     </figcaption>
     </font>
 </figure>
@@ -140,29 +141,31 @@ The signal strength of the FFT at our desired bin was already strong but we want
 <figure>
     <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab02/schematic-Phototransistor%20with%20OpAmp.PNG" width="800"/>
     <font size="2">
-    <figcaption> Schematic of IR with OpAmp and bandpass filter
+    <figcaption> <b>Schematic of IR with OpAmp and bandpass filter</b>
     </figcaption>
     </font>
 </figure>
 
-We opted with using a high pass filter to remove any DC bias inherent in the output of the sensor because the DC bias is already high at around 4v. We then amplified the filtered signal by a factor of 20 which can be adjusted as needed. The amplification seems like a good amount based on the detection strength of the IR sensor. After we amplified the signal, we ran the output through a low pass filter that removes any high frequency noise and harmonics. This completes our bandpass filter.
+We opted with using a high pass filter to remove any DC bias inherent in the output of the sensor because the DC bias is already high at around 4v. We then amplified the filtered signal by a factor of 20 which can be adjusted as needed. The amplification seems like a good amount based on the detection strength of the IR sensor. After we amplified the signal, we ran the output through a low pass filter that removes any high frequency noise and harmonics. We chose the values of the capacitor and resistor such that the bandpass filter contains a lower cutoff frequency of 5.5kHz and higher cuttoff frequency of 6.5kHz. The formula to calculate the cutoff frequency is 1/(2*pi*RC). This completes our bandpass filter.
 
 
 ### Testing
 For testing we started with unit tests by turning on the hat and holding it a certain distance from the phototransistor and check the output of the FFT printing to serial. We also implemented a blinking LED that would increase blinking rate as the IR gets closer to the phototransistor. The frequency of the blink rates tell us how close the hat is to the IR sensor. This tells us that the sensor is working as intended. 
 
+<iframe width="560" height="315" src="https://www.youtube.com/embed/_hD_c_GUQas?rel=0&amp;controls=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+
 We also reedited the FFT library's codes to record FFT values in a single FFT cycle for better side by side comparison. Here are the results:
 
 We divided the tests as such:
--off: IR hat turned off
--far: IR hat 1.5 intersections away from sensor
--mid: IR hat 0.5 intersections away from sensor
--close: IR hat right next to sensor
+- off: IR hat turned off
+- far: IR hat 1.5 intersections away from sensor
+- mid: IR hat 0.5 intersections away from sensor
+- close: IR hat right next to sensor
 
 <figure>
     <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab02/IRnoOpAmp.PNG" width="800"/>
     <font size="2">
-    <figcaption> FFT of IR without Op Amp
+    <figcaption> <b>FFT of IR without Op Amp</b>
     </figcaption>
     </font>
 </figure>
@@ -170,19 +173,19 @@ We divided the tests as such:
 <figure>
     <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab02/IROpAmp.PNG" width="800"/>
     <font size="2">
-    <figcaption> FFT of IR with Op Amp
+    <figcaption> <b>FFT of IR with Op Amp</b>
     </figcaption>
     </font>
 </figure>
 
-From this two comparisons, we can see that the op amp increases mid range performance of the IR sensor by detecting more of the IR hat's correct frequency signal whereas the harmonics appears to be more filtered out as a result of the installed bandpass filters. The long range performance appears to be unaffected by the augmentation and the close range performance clearly increased slightly.
+From these two comparisons, we can see that the op amp increases mid range performance of the IR sensor by detecting more of the IR hat's correct frequency signal whereas the harmonics appears to be more filtered out as a result of the installed bandpass filters. The long range performance appears to be unaffected by the augmentation and the close range performance clearly increased slightly.
 
 
 After testing that the sensor could detect the desired signal, we then tested the robustness of our filtering software and hardware by giving it decoy signals. We used a decoy IR signal at around 12kHz placed next to the sensor and read its FFT's. We also used the decoy to test our sensor for detecting different frequencies. 
 <figure>
     <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab02/DecoyOpAmp.PNG" width="800"/>
     <font size="2">
-    <figcaption> FFT of Decoy 
+    <figcaption> <b>FFT of Decoy </b>
     </figcaption>
     </font>
 </figure>
@@ -190,7 +193,7 @@ After testing that the sensor could detect the desired signal, we then tested th
 <figure>
     <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab02/Decoy.PNG" width="800"/>
     <font size="2">
-    <figcaption> FFT of Decoy with Op Amp
+    <figcaption> <b>FFT of Decoy with Op Amp </b>
     </figcaption>
     </font>
 </figure>
@@ -199,27 +202,77 @@ We reached two conclusions with this test. The augmented sensor worked with diff
 
 ## Integration
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/v4Z3QcfFZ4k" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-
-<figure>
-    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab02/Lab2integrated_1.PNG" width="800"/>
-    <font size="2">
-    <figcaption> First Part of State Machine
-    </figcaption>
-    </font>
-</figure>
-<figure>
-    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab02/Lab2integratedcode_2.PNG" width="800"/>
-    <font size="2">
-    <figcaption> Second Part of State Machine
-    </figcaption>
-    </font>
-</figure>
-
 <figure>
     <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab02/20181003_164149.jpg"/>
     <font size="2">
-    <figcaption> The IR sensor and microphone together!
+    <figcaption> <b>The IR sensor and microphone together!</b>
     </figcaption>
     </font>
 </figure>
+
+
+To integrate both the optical and the acoustic sensors, we first read input from the acoustic sensor from input A0. Once we get a hit from the acoustic sensor, we switch to reading input from the IR sensor at input A1. Both of these inputs rely on the same FFT function. 
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/v4Z3QcfFZ4k" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+
+In order to properly incorporate this, we have but in a 5-part finite state machine. The state starts. It then starts to recording audio. Once we record audio, we go to process it. Once we have processed it, if the input passes threshold (meaning we need to start), we start recording IR. If not, then we go back to recording audio. From here, We continue to record IR. If IR surpasses threshold (meaning robot is detected), it writes to the serial monitor and goes back to start. Else, it keeps recording. 
+
+``` cpp
+
+enum states{
+    START,
+    AUDIO_FFT,
+    AUDIO_PROC,
+    IR_FFT,
+    IR_PROC
+};
+uint8_t state;
+void loop() {
+    
+    switch (state){   
+        case START:
+            //check point
+            state = AUDIO_FFT; //next state
+            break;
+        case AUDIO_FFT:
+            /*
+                Some FFT array from ADC generating code....
+            */
+            state = AUDIO_PROC;
+            break;
+        
+        case AUDIO_PROC:
+            /*
+                Processing FFT result code and check threshhold...
+            */
+            if(past_some_threshhold){
+                state = IR_PROC; //past threshhold so we move on
+            }else{
+                state = AUDIO_FFT; //recalculate FFT with new samples
+            }
+            break;
+
+        case IR_FFT:
+            /*
+                Some FFT array from ADC generating code....
+            */
+            state = IR_PROC;
+            break;
+
+        case IR_PROC:
+            /*
+                Processing FFT result code and check threshhold...
+            */
+            if(past_some_threshhold){
+                state = START; //past threshhold so we move on
+            }else{
+                state = IR_FFT; //recalculate FFT with new samples
+            }
+            break;
+  }  
+}
+
+```
+
+## Conclusion
+We were able to integrate both the IR and microphone sensors to a single code base. This step important as we will need to integrate all of the codes from the different modules we made into the arduino. Looking forward, we would like to increase the ranges of the microphone sensors and IR sensors such that they will be able to detect the correct freqencies from farther away. This is important since the IR is used to detect other robots and the microphone is used to start the robot. We also want to explore ways to schedule our code because the sensing is a hard real time process where we have to stop the robot if it is in danger of collision and thus, we must find a way to quickly calculate the FFT and then have the robot react quick enough. A likely solution will be to use interrupts.  
