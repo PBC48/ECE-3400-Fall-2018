@@ -32,6 +32,14 @@ The “Fast Fourier Transform” is an operation that uses the Discrete Time Fou
 
 
 <figure>
+    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab02/schematic-Phototransistor%20with%20OpAmp.PNG" width="800"/>
+    <font size="2">
+    <figcaption> Schematic of IR with OpAmp and bandpass filter
+    </figcaption>
+    </font>
+</figure>
+
+<figure>
     <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab02/IRnoOpAmp.PNG" width="800"/>
     <font size="2">
     <figcaption> FFT of IR without Op Amp
@@ -67,13 +75,6 @@ The “Fast Fourier Transform” is an operation that uses the Discrete Time Fou
 </figure>
 
 
-<figure>
-    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab02/schematic-Phototransistor%20with%20OpAmp.PNG" width="800"/>
-    <font size="2">
-    <figcaption> Schematic of IR with OpAmp
-    </figcaption>
-    </font>
-</figure>
 
 ## Integration
 <figure>
