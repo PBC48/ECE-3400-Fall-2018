@@ -49,6 +49,25 @@ The “Fast Fourier Transform” is an operation that uses the Discrete Time Fou
 
 
 <figure>
+    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab02/Decoy.PNG" width="800"/>
+    <font size="2">
+    <figcaption> FFT of Decoy
+    </figcaption>
+    </font>
+</figure>
+
+
+
+<figure>
+    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab02/DecoyOpAmp.PNG" width="800"/>
+    <font size="2">
+    <figcaption> FFT of Decoy with Op Amp
+    </figcaption>
+    </font>
+</figure>
+
+
+<figure>
     <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab02/schematic-Phototransistor%20with%20OpAmp.PNG" width="800"/>
     <font size="2">
     <figcaption> Schematic of IR with OpAmp
