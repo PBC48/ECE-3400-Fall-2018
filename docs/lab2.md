@@ -50,6 +50,14 @@ which hosts the stored data in bins with a specific frequency range per bin.
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/JvM9OUa2xY0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
+<figure>
+    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab02/Acoustic.png" width="800"/>
+    <font size="2">
+    <figcaption> Acoustic Circuit Design
+    </figcaption>
+    </font>
+</figure>
+
 ## Optical
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/_hD_c_GUQas" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
@@ -91,10 +99,10 @@ For testing we started with unit tests by turning on the hat and holding it a ce
 We also reedited the FFT library's codes to record FFT values in a single FFT cycle for better side by side comparison. Here are the results:
 
 We divided the tests as such:
-- off: IR hat turned off
-- far: IR hat 1.5 intersections away from sensor
-- mid: IR hat 0.5 intersections away from sensor
-- close: IR hat right next to sensor
+-off: IR hat turned off
+-far: IR hat 1.5 intersections away from sensor
+-mid: IR hat 0.5 intersections away from sensor
+-close: IR hat right next to sensor
 
 <figure>
     <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab02/IRnoOpAmp.PNG" width="800"/>
@@ -136,6 +144,23 @@ We reached two conclusions with this test. The augmented sensor worked with diff
 
 ## Integration
 
+<iframe width="560" height="315" src="https://www.youtube.com/embed/v4Z3QcfFZ4k" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+
+<figure>
+    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab02/Lab2integrated_1.PNG" width="800"/>
+    <font size="2">
+    <figcaption> First Part of State Machine
+    </figcaption>
+    </font>
+</figure>
+<figure>
+    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab02/Lab2integratedcode_2.PNG" width="800"/>
+    <font size="2">
+    <figcaption> Second Part of State Machine
+    </figcaption>
+    </font>
+</figure>
+
 <figure>
     <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab02/20181003_164149.jpg"/>
     <font size="2">
@@ -143,15 +168,3 @@ We reached two conclusions with this test. The augmented sensor worked with diff
     </figcaption>
     </font>
 </figure>
-
-To integrate both the optical and the acoustic sensors, we first read input from the acoustic sensor from input A0. Once we get a hit from the acoustic sensor, we switch to reading input from the IR sensor at input A1. Both of these inputs rely on the same FFT function. 
-
-<iframe width="560" height="315" src="https://www.youtube.com/embed/v4Z3QcfFZ4k" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-
-In order to properly incorporate this, we have but in a 5-part finite state machine. The state starts. It then starts to recording audio. Once we record audio, we go to process it. Once we have processed it, if the input passes threshold (meaning we need to start), we start recording IR. If not, then we go back to recording audio. From here, We continue to record IR. If IR surpasses threshold (meaning robot is detected), it writes to the serial monitor and goes back to start. Else, it keeps recording.
-
-
-
-## Conclusion
-
-
