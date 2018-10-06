@@ -51,7 +51,7 @@ which hosts the stored data in bins with a specific frequency range per bin.
 From our analysis of the FFT and our determination of the frequency bin width, we determined that our 660Hz audio signal should fall in the fifth bin. We confirmed this by inputting a 660Hz sine wave from a function generator through a 330-ohm resistor into an analog Arduino pin and running the example fft_adc_serial code. We graphed the FFT output, as shown below. From this graph we saw our expected peak in the fifth bin.
 
 <figure>
-    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab02/fft_660.PNG" width="800"/>
+    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab02/fft_660.PNG" width="500"/>
     <font size="2">
     <figcaption> FFT output from fft_adc_serial example code with 660Hz Signal from Function Generator
     </figcaption>
@@ -61,7 +61,7 @@ From our analysis of the FFT and our determination of the frequency bin width, w
 Next we created the simple microphone circuit from the lab document:
 
 <figure>
-    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab02/simple_microphone.PNG" width="800"/>
+    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab02/simple_microphone.PNG" width="300"/>
     <font size="2">
     <figcaption> Basic Microphone Circuit from Lab Document
     </figcaption>
@@ -75,7 +75,7 @@ To amplify this signal to a more detectable and readable value, we created a sim
 We then put the microphone output through the amplifier. We again were not able to obtain any output signal, so we re-examined our connection between the microphone and amplifier and added a DC bias. Rather than send the simple microphone circuit output straight into the amplifier, we decided to keep the capacitor from the example circuit to remove its DC offset, and use a voltage divider to create a small, 50mV bias at the input to the amplifier. This allowed us to control our DC offset and left room for a large amplification. After solving this problem, we successfully increased our amplification to around 52. We played the 660Hz tone near the microphone and read the output to the scope to confirm that the signal was what we expected it to be. Our final design was the following amplifier circuit:
 
 <figure>
-    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab02/Acoustic.png" width="800"/>
+    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab02/Acoustic.png" width="500"/>
     <font size="2">
     <figcaption> Acoustic Amplifier Circuit Design
     </figcaption>
@@ -91,7 +91,7 @@ Finally, we connected the output from the amplified microphone signal to an anal
 Re-calculating the frequency bin width we determined we should find our 660Hz frequency in bin 19, and we confirmed this by running the FFT and plotting the results:
 
 <figure>
-    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab02/fft_660_128.png" width="800"/>
+    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab02/fft_660_128.PNG" width="500"/>
     <font size="2">
     <figcaption> Acoustic Amplifier Circuit Design
     </figcaption>
