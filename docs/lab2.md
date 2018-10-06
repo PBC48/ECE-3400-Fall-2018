@@ -126,7 +126,7 @@ We opted with using a high pass filter to remove any DC bias inherent in the out
 ### Testing
 For testing we started with unit tests by turning on the hat and holding it a certain distance from the phototransistor and check the output of the FFT printing to serial. We also implemented a blinking LED that would increase blinking rate as the IR gets closer to the phototransistor. The frequency of the blink rates tell us how close the hat is to the IR sensor. This tells us that the sensor is working as intended. 
 
-<iframe width="600" height="auto" src="https://www.youtube.com/embed/_hD_c_GUQas?rel=0&amp;controls=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/_hD_c_GUQas?rel=0&amp;controls=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
 We also reedited the FFT library's codes to record FFT values in a single FFT cycle for better side by side comparison. Here are the results:
 
@@ -176,8 +176,6 @@ We reached two conclusions with this test. The augmented sensor worked with diff
 
 ## Integration
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/v4Z3QcfFZ4k" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-
 <figure>
     <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab02/20181003_164149.jpg"/>
     <font size="2">
@@ -185,6 +183,7 @@ We reached two conclusions with this test. The augmented sensor worked with diff
     </figcaption>
     </font>
 </figure>
+
 
 To integrate both the optical and the acoustic sensors, we first read input from the acoustic sensor from input A0. Once we get a hit from the acoustic sensor, we switch to reading input from the IR sensor at input A1. Both of these inputs rely on the same FFT function. 
 
