@@ -52,6 +52,8 @@ which hosts the stored data in bins with a specific frequency range per bin.
 
 ## Optical
 
+<iframe width="560" height="315" src="https://www.youtube.com/embed/_hD_c_GUQas" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+
 ### Initial design
 We used the OP598A phototransistor to detect IR signals. The phototransistor was built exactly like the schemamtic from the lab, with a 1.8k reistor connected to 5V power supply and the photoresistor connected to ground. We first put that output into the oscilioscope and got the following reading for FFT: 
 
