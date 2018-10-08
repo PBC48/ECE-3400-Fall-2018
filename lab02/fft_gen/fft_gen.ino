@@ -19,7 +19,6 @@ void loop() {
   
   while(i<1) { // reduces jitter
     Serial.println("START");
-    Serial.println("START");
   
     cli();  // UDRE interrupt slows this way down on arduino1.0
     for (int i = 0 ; i < 512 ; i += 2) { // save 256 samples
