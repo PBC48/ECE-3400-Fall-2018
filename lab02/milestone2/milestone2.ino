@@ -18,6 +18,7 @@ enum states {
     IR_DECT,
     ROBOT_MOVE,
     ROBOT_SENSE,
+    ROBOT_DECTECTED,
 };
 uint8_t state;
 
@@ -60,10 +61,10 @@ void loop() {
                 Serial.println("Robot Detected");
                 
                 turn_led(0);
-                state = ;
+                state = ROBOT_DECTECTED;
             }else{
                 turn_led(0);
-                state = IR_DECT;
+                state = ROBOT_SENSE;
             }
             sum = 0;
             break;
