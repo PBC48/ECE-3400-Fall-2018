@@ -1,5 +1,4 @@
 #include <Servo.h>
-// need to fill this out
 
 #define ROBOT_RIGHT_PIN 9
 #define ROBOT_LEFT_PIN 10
@@ -8,22 +7,9 @@ Servo R;
 Servo L;
 
 
-enum ROBOT_STATES {
-    ROBOT_START = 0,
-//    ROBOT_HIT = 1,
-//    ROBOT_FOUND = 2,
-    ROBOT_FORWARD = 3,
-    ROBOT_RIGHT = 4,
-    ROBOT_LEFT = 5,
-//	ROBOT_REVERSE = 6,
-//	ROBOT_TURN = 7,
-    ROBOT_STOP = 8,
-};
-
-
 enum DIRECTIONS {
-	right = 0,
-	left = 1,
+	right,
+	left,
 	forward,
     stop,
     adj_right,
@@ -40,7 +26,7 @@ void robot_move(DIRECTIONS dir){
         R.detach();
         L.detach();
     }
-    switch (dir){
+    switch (dir){ //NEED SOME CALIBRATION
         case right:
             L.write(180);
             R.write(90);
@@ -52,22 +38,25 @@ void robot_move(DIRECTIONS dir){
             R.write(0);
             Serial.println("left");
             break;
-
         case forward:
             L.write(180);
             R.write(0);
             Serial.println("forward");
             break;
-
         case stop:
             L.write(90);
             R.write(90);
             Serial.println("stopped");
             break;
         case adj_left:
+            L.write(95);
+            R.write(0);
+            Serial.println("adjust left");
             break;
-
         case adj_right:
+            L.write(180);
+            R.write(85);
+            Serial.println("adjust right");
             break;
         case back:
             L.write(0);
@@ -82,6 +71,7 @@ void robot_move(DIRECTIONS dir){
 void robot_init(){
   robot_move(stop);
 }
+
 
 void robot_calibrate(){
     robot_move(right);

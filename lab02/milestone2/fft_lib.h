@@ -10,16 +10,16 @@
 #include <FFT.h> // include the library
 
 enum device {
-    microphone,
-    ir
+    MIC,
+    IR
 };
 
 uint8_t AVERAGE;
 uint8_t FBIN;
 uint8_t ADC_RESTART;
 
-uint32_t IR_target_freq = 6080;
-uint32_t smp_freq = 19235*2;
+//uint32_t IR_target_freq = 6080;
+//uint32_t smp_freq = 19235*2;
 
 uint32_t sum = 0;
 
@@ -77,4 +77,3 @@ void calculate_FFT(){
     sum /= AVERAGE;
 }
      
-  

@@ -8,6 +8,10 @@
  * Refer to this for information on attachInterrupt():
  * https://www.arduino.cc/reference/en/language/functions/external-interrupts/attachinterrupt/
   */
+
+#define WALL_FRONT A1
+#define WALL_LEFT A2
+
 #include "robot.h"
 #include "line_sensor.h"
 #include "fft_lib.h"
@@ -18,37 +22,37 @@ enum states {
     IR_DECT,
     ROBOT_MOVE,
     ROBOT_SENSE,
-    ROBOT_DECTECTED,
+    ROBOT_DETECTED
 };
-uint8_t state;
+
+uint8_t STATE;
+uint32_t u32wait;
+uint32_t WAITTIME = 800;
 
 void setup() {
   Serial.begin(115200);
     line_sensor_init();
     robot_init();
-    state = START;
- 
+    STATE = START;
+    u32wait = millis();
 }
 
 void loop() {
-    switch (state){
+    Serial.print("State: ");Serial.println(STATE);
+    switch (STATE){
         case START:
             Serial.println("start");
-            state = AUDIO_DECT;
+            STATE = AUDIO_DECT;
             break;
         
         case AUDIO_DECT:
             microphone_set();
             calculate_FFT();
             if(sum>90){
-                turn_led(1);
                 Serial.println("660Hz Tone Detected");
-               
-                turn_led(0);
-                state = IR_DECT;
+                STATE = IR_DECT;
             }else{
-                turn_led(0);
-                state = AUDIO_DECT;
+                STATE = AUDIO_DECT;
             }
             sum = 0;
             break;
@@ -57,45 +61,50 @@ void loop() {
             ir_set();
             calculate_FFT();
             if(sum > 55){
-                turn_led(1);
                 Serial.println("Robot Detected");
-                
-                turn_led(0);
-                state = ROBOT_DECTECTED;
+                STATE = ROBOT_DETECTED;
             }else{
-                turn_led(0);
-                state = ROBOT_SENSE;
+                STATE = ROBOT_SENSE;
             }
             sum = 0;
+            u32wait = millis();
             break;
 
-        case ROBOT_MOVE
+        case ROBOT_SENSE:
+        {
+            uint16_t FRONTWALL = analogRead(WALL_FRONT);
+            uint16_t LEFTWALL = analogRead(WALL_LEFT);
+            if(SENSOR0_READING<400 && SENSOR1_READING<400){
+                if(LEFTWALL < 200){
+                    robot_move(left);
+                    // digitalWrite(RED_LED,HIGH);
+                    delay(1200);
+                    // digitalWrite(RED_LED,LOW);
+                } else if (FRONTWALL > 170) {
+                    robot_move(right);
+                    // digitalWrite(YELLOW_LED,HIGH);
+                    delay(1200);
+                    // digitalWrite(YELLOW_LED,LOW);
+                } else {
+                    robot_move(forward);
+                }
+            }else if(SENSOR1_READING < 400){ //turning right
+                robot_move(adj_right);
+            }else if(SENSOR0_READING < 400){
+                robot_move(adj_left);
+            }else{
+                robot_move(forward);
+                STATE = (millis()-u32wait)>WAITTIME ? IR_DECT : ROBOT_SENSE;
+                
+            }
+            break;
+        }
+        
+        case ROBOT_DETECTED:
+            robot_move(stop);
+            STATE = IR_DECT;
+            break;
     }
 }
- /* // These delays are purely for ease of reading.
-  Serial.print("Sensor 0: ");Serial.println(SENSOR0_READING);
-  //Serial.print("Sensor Analog: "); Serial.println(analogRead(A0));
-  //delay(500);
-  Serial.print("Sensor 1: ");Serial.println(SENSOR1_READING);
-  if(SENSOR0_READING<400 && SENSOR1_READING<400){
-    map1[i%8] ? turn_right() : turn_left();
-    delay(1200);
-    i++;
-    Serial.println("straight");
-  }else if(SENSOR1_READING < 400){ //turning right
-    L.write(140);
-    R.write(90);
-    Serial.println("right");
-  }else if(SENSOR0_READING < 400) { //turning left
-    L.write(90);
-    R.write(40);
-    Serial.println("left");
-  }else{
-    L.write(180);
-    R.write(0);
-    Serial.println("forward");
-  }
- */ 
 
-}
 
