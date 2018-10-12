@@ -1,13 +1,7 @@
 /*
- * How to use the QRE1113 Digital Line Sensor by SparkFun with hardware interrupts
- * https://www.sparkfun.com/products/9454
- *
- * Note: The Arduino Uno is limited to two pins for digital state interrupts: pins 2 and 3.
- * This means you will be limited to two digital line sensors.
- *
- * Refer to this for information on attachInterrupt():
- * https://www.arduino.cc/reference/en/language/functions/external-interrupts/attachinterrupt/
-  */
+milestone 2 code with FSMs where we integrated line sensor, wall 
+sensor, robot movement, microphone, and ir all in one.
+*/
 
 #define WALL_FRONT A1
 #define WALL_LEFT A2
@@ -94,8 +88,7 @@ void loop() {
                 robot_move(adj_left);
             }else{
                 robot_move(forward);
-                STATE = (millis()-u32wait)>WAITTIME ? IR_DECT : ROBOT_SENSE;
-                
+                STATE = (millis()-u32wait) > WAITTIME ? IR_DECT : ROBOT_SENSE; 
             }
             break;
         }
