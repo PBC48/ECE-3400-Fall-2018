@@ -23,8 +23,17 @@ uint8_t STATE;
 uint32_t u32wait;
 uint32_t WAITTIME = 800;
 
+void toggle_LED(uint8_t &pin){
+    
+    int set = digitalRead(pin) == LOW ? HIGH : LOW;
+    digitalWrite(pin, set);
+}
+
 void setup() {
   Serial.begin(115200);
+  
+    pinMode(WALL_FRONT,OUTPUT);
+    pinMode(WALL_LEFT,OUTPUT);
     line_sensor_init();
     robot_init();
     STATE = START;
