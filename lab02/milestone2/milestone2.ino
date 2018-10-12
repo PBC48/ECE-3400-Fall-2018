@@ -97,6 +97,11 @@ void loop() {
             robot_move(stop);
             STATE = IR_DECT;
             break;
+        
+        default:
+            STATE = ROBOT_SENSE;
+            Serial.println("state broken");
+            break;
     }
 }
 
