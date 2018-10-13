@@ -3,8 +3,8 @@ milestone 2 code with FSMs where we integrated line sensor, wall
 sensor, robot movement, microphone, and ir all in one.
 */
 
-#define WALL_FRONT A2
-#define WALL_LEFT A3
+#define WALL_FRONT 2
+#define WALL_LEFT 3
 #define WAITTIME 800
 
 #include "robot.h"
@@ -16,7 +16,8 @@ enum states : uint8_t {
     AUDIO_DECT,
     IR_DECT,
     ROBOT_SENSE,
-    ROBOT_DETECTED
+    ROBOT_DETECTED,
+    LINE_SENSOR
 };
 
 uint8_t STATE;
@@ -46,6 +47,7 @@ void loop() {
         case START:
             Serial.println(F("start"));
             STATE = AUDIO_DECT;
+            
             break;
         
         case AUDIO_DECT:
@@ -69,7 +71,7 @@ void loop() {
                 Serial.println(F("Robot Detected"));
                 STATE = ROBOT_DETECTED;
             }else{
-                STATE = ROBOT_SENSE;
+                STATE = LINE_SENSOR;//ROBOT_SENSE;
             }
             u32wait = millis();
             break;
@@ -77,8 +79,7 @@ void loop() {
         case ROBOT_SENSE:
         
             Serial.println(F("IN ROBOT_SENSE"));
-            FRONTWALL = analogRead(WALL_FRONT);
-            LEFTWALL = analogRead(WALL_LEFT);
+        
             Serial.print(F("SENSOR0 READING: "));Serial.println(SENSOR0_READING);
             Serial.print(F("SENSOR1 READING: "));Serial.println(SENSOR1_READING);
             if(SENSOR0_READING<400 && SENSOR1_READING<400){
@@ -115,7 +116,16 @@ void loop() {
             robot_move(stop);
             STATE = IR_DECT;
             break;
+
+        case LINE_SENSOR:
         
+            FRONTWALL = OverAnalogRead(WALL_FRONT);
+            //LEFTWALL = analogRead(WALL_LEFT);
+            //Serial.print(F("FRONTWALL: "));Serial.println(FRONTWALL);
+            Serial.print(F("SENSOR0: "));Serial.println(SENSOR0_READING);
+            Serial.print(F("SENSOR1: "));Serial.println(SENSOR1_READING);
+            break;
+            
         default:
             STATE = ROBOT_SENSE;
             Serial.println(F("state broken"));

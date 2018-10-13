@@ -12,9 +12,7 @@ port at 115.2kb.
 
 #include <FFT.h> // include the library
 
-int N = 25;
-uint32_t target_freq = 6080;
-uint32_t smp_freq = 19235*2;
+int N = 10;
 
 void turn_led(int i){
   int pin = LED_BUILTIN;
@@ -27,13 +25,12 @@ void setup() {
   Serial.begin(115200); // use the serial port
   TIMSK0 = 0; // turn off timer0 for lower jitter
   ADCSRA = 0xe5; // set the adc to free running mode
-  ADMUX = 0x40; // use adc0
+  ADMUX = 0x41; // use adc0
   DIDR0 = 0x01; // turn off the digital input for adc0
   
 }
 
 void loop() {
-  uint32_t freq_loc = target_freq*(FFT_N)/smp_freq;
   uint32_t sum = 0;
   //Serial.println(freq_loc);
   for(int j=0;j<N;j++) { // reduces jitter
@@ -55,14 +52,23 @@ void loop() {
     fft_mag_log(); // take the output of the fft
     sei();   
     
-    sum += fft_log_out[40];
+    sum += fft_log_out[40]+fft_log_out[41]+fft_log_out[39];
 
   }
-  sum/=N;
+  sum/=(N*3);
   Serial.println(sum);
   if(sum>55){
       turn_led(1);
     }else{
       turn_led(0);
     }
+  Serial.println("READING ANALOG");
+  while(!(ADCSRA & 0x10)); // wait for adc to be ready
+  ADCSRA = 0xf5; // restart adc
+      byte m = ADCL; // fetch adc data
+      byte j = ADCH;
+      uint16_t k = (j << 8) | m; // form into an int
+      k -= 0x0200; // form into a signed int
+      k <<= 6; // form into a 16b signed int
+  Serial.print("K:");Serial.println(k);
 }

@@ -78,4 +78,17 @@ void calculate_FFT(device d){
     }
     sum /= average;
 }
+
+uint16_t OverAnalogRead(uint8_t pin){
+  ADMUX = 0x40|pin; // use adc pin
+  while(!(ADCSRA & 0x10)); // wait for adc to be ready
+  ADCSRA = 0xf5; // restart adc
+  byte m = ADCL; // fetch adc data
+  byte j = ADCH;
+  uint16_t k = (j << 8) | m; // form into an int
+  k -= 0x0200; // form into a signed int
+  k <<= 6; // form into a 16b signed int
+  return k;
+}
+
      

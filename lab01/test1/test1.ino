@@ -60,13 +60,13 @@ void setup() {
   // Setup the sensors
   setup_sensor(SENSOR0_PIN, &SENSOR0_TIMER);
   setup_sensor(SENSOR1_PIN, &SENSOR1_TIMER);
-
+/*
   R.attach(9);
   L.attach(10);
   delay(1000);
   L.write(180);
   R.write(0);
- 
+ */
 }
 
 void turn_left(){
@@ -88,16 +88,16 @@ void loop() {
   //Serial.print("Sensor Analog: "); Serial.println(analogRead(A0));
   //delay(500);
   Serial.print("Sensor 1: ");Serial.println(SENSOR1_READING);
-  if(SENSOR0_READING<400 && SENSOR1_READING<400){
+  /*if(SENSOR0_READING<350 && SENSOR1_READING<350){
     map1[i%8] ? turn_right() : turn_left();
-    delay(1200);
+    delay(1300);
     i++;
     Serial.println("straight");
-  }else if(SENSOR1_READING < 400){ //turning right
+  }else if(SENSOR1_READING < 350){ //turning right
     L.write(140);
     R.write(90);
     Serial.println("right");
-  }else if(SENSOR0_READING < 400) { //turning left
+  }else if(SENSOR0_READING < 350) { //turning left
     L.write(90);
     R.write(40);
     Serial.println("left");
@@ -106,7 +106,7 @@ void loop() {
     R.write(0);
     Serial.println("forward");
   }
-  
+*/  
 
 }
 
