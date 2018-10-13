@@ -82,7 +82,7 @@ void loop() {
         
             Serial.print(F("SENSOR0 READING: "));Serial.println(SENSOR0_READING);
             Serial.print(F("SENSOR1 READING: "));Serial.println(SENSOR1_READING);
-            if(SENSOR0_READING<400 && SENSOR1_READING<400){
+            if(SENSOR0_READING<400 && SENSOR1_READING<400){ //Sensor0 Threshold: 50; Sensor1 Threshold: 400
                 if(LEFTWALL < 200){
                     robot_move(left);
                     // digitalWrite(RED_LED,HIGH);
@@ -96,9 +96,9 @@ void loop() {
                 } else {
                     robot_move(forward);
                 }
-            }else if(SENSOR1_READING < 400){ //turning right   
+            }else if(SENSOR1_READING < 400){ //Sensor1 Threshold: 400   
                 robot_move(adj_right);
-            }else if(SENSOR0_READING < 400){
+            }else if(SENSOR0_READING < 400){ //Sensor0 Threshold: 50
                 robot_move(adj_left);
             }else{
                 robot_move(forward);
