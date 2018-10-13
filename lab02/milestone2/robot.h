@@ -19,7 +19,7 @@ enum DIRECTIONS {
 
 void robot_move(DIRECTIONS dir){
     if(dir != stop && (!R.attached() || !L.attached())){
-        Serial.println("in if attach");
+        Serial.println(F("in if attach"));
         R.attach(ROBOT_RIGHT_PIN);
         L.attach(ROBOT_LEFT_PIN);
     }else if(dir == stop){
@@ -30,38 +30,38 @@ void robot_move(DIRECTIONS dir){
         case right:
             L.write(180);
             R.write(90);
-            Serial.println("right");
+            Serial.println(F("right"));
             break;
 
         case left:
             L.write(90);
             R.write(0);
-            Serial.println("left");
+            Serial.println(F("left"));
             break;
         case forward:
             L.write(180);
             R.write(0);
-            Serial.println("forward");
+            Serial.println(F("forward"));
             break;
         case stop:
             L.write(90);
             R.write(90);
-            Serial.println("stopped");
+            Serial.println(F("stopped"));
             break;
         case adj_left:
             L.write(95);
             R.write(0);
-            Serial.println("adjust left");
+            Serial.println(F("adjust left"));
             break;
         case adj_right:
             L.write(180);
             R.write(85);
-            Serial.println("adjust right");
+            Serial.println(F("adjust right"));
             break;
         case back:
             L.write(0);
             R.write(180);
-            Serial.println("back");
+            Serial.println(F("back"));
             break;
     }
     

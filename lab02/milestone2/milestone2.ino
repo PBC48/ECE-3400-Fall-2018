@@ -3,37 +3,37 @@ milestone 2 code with FSMs where we integrated line sensor, wall
 sensor, robot movement, microphone, and ir all in one.
 */
 
-#define WALL_FRONT A1
-#define WALL_LEFT A2
+#define WALL_FRONT A2
+#define WALL_LEFT A3
+#define WAITTIME 800
 
 #include "robot.h"
 #include "line_sensor.h"
 #include "fft_lib.h"
 
-enum states {
+enum states : uint8_t {
     START,
     AUDIO_DECT,
     IR_DECT,
-    ROBOT_MOVE,
     ROBOT_SENSE,
     ROBOT_DETECTED
 };
 
 uint8_t STATE;
 uint32_t u32wait;
-uint32_t WAITTIME = 800;
+uint16_t FRONTWALL;
+uint16_t LEFTWALL;
 
 void toggle_LED(uint8_t &pin){
     
-    int set = digitalRead(pin) == LOW ? HIGH : LOW;
+    int set = digitalRead(pin) ? LOW : HIGH;
     digitalWrite(pin, set);
+    pinMode(WALL_FRONT, INPUT_PULLUP);
+    pinMode(WALL_LEFT, INPUT_PULLUP);
 }
 
 void setup() {
   Serial.begin(115200);
-  
-    pinMode(WALL_FRONT,OUTPUT);
-    pinMode(WALL_LEFT,OUTPUT);
     line_sensor_init();
     robot_init();
     STATE = START;
@@ -41,42 +41,46 @@ void setup() {
 }
 
 void loop() {
-    Serial.print("State: ");Serial.println(STATE);
+    Serial.print(F("State: "));Serial.println(STATE);
     switch (STATE){
         case START:
-            Serial.println("start");
+            Serial.println(F("start"));
             STATE = AUDIO_DECT;
             break;
         
         case AUDIO_DECT:
-            microphone_set();
-            calculate_FFT();
-            if(sum>90){
-                Serial.println("660Hz Tone Detected");
+            FFT_device_init(MIC);
+            calculate_FFT(MIC);
+            Serial.print(F("AUDIO SUM: "));Serial.println(sum);
+            if(sum>40){ //originally at 90
+                Serial.println(F("660Hz Tone Detected"));
                 STATE = IR_DECT;
             }else{
                 STATE = AUDIO_DECT;
             }
-            sum = 0;
+            
             break;
         
         case IR_DECT:
-            ir_set();
-            calculate_FFT();
+            FFT_device_init(IR);
+            calculate_FFT(IR);
+            Serial.print(F("IR SUM: ")); Serial.println(sum);
             if(sum > 55){
-                Serial.println("Robot Detected");
+                Serial.println(F("Robot Detected"));
                 STATE = ROBOT_DETECTED;
             }else{
                 STATE = ROBOT_SENSE;
             }
-            sum = 0;
             u32wait = millis();
             break;
 
         case ROBOT_SENSE:
-        {
-            uint16_t FRONTWALL = analogRead(WALL_FRONT);
-            uint16_t LEFTWALL = analogRead(WALL_LEFT);
+        
+            Serial.println(F("IN ROBOT_SENSE"));
+            FRONTWALL = analogRead(WALL_FRONT);
+            LEFTWALL = analogRead(WALL_LEFT);
+            Serial.print(F("SENSOR0 READING: "));Serial.println(SENSOR0_READING);
+            Serial.print(F("SENSOR1 READING: "));Serial.println(SENSOR1_READING);
             if(SENSOR0_READING<400 && SENSOR1_READING<400){
                 if(LEFTWALL < 200){
                     robot_move(left);
@@ -91,16 +95,21 @@ void loop() {
                 } else {
                     robot_move(forward);
                 }
-            }else if(SENSOR1_READING < 400){ //turning right
+            }else if(SENSOR1_READING < 400){ //turning right   
                 robot_move(adj_right);
             }else if(SENSOR0_READING < 400){
                 robot_move(adj_left);
             }else{
                 robot_move(forward);
-                STATE = (millis()-u32wait) > WAITTIME ? IR_DECT : ROBOT_SENSE; 
             }
+            if((millis()-u32wait) > WAITTIME){
+                robot_move(stop);
+                STATE = IR_DECT;
+            }else{
+                STATE = ROBOT_SENSE;
+            } 
             break;
-        }
+        
         
         case ROBOT_DETECTED:
             robot_move(stop);
@@ -109,7 +118,7 @@ void loop() {
         
         default:
             STATE = ROBOT_SENSE;
-            Serial.println("state broken");
+            Serial.println(F("state broken"));
             break;
     }
 }

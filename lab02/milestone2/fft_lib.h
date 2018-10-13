@@ -5,7 +5,8 @@
 
 #define LOG_OUT 1 // use the log output function
 #define FFT_N 256 // set to 256 point fft
-
+#define IR_BIN 40
+#define MIC_BIN 18
 
 #include <FFT.h> // include the library
 
@@ -14,51 +15,52 @@ enum device {
     IR
 };
 
-uint8_t AVERAGE;
-uint8_t FBIN;
-uint8_t ADC_RESTART;
+// uint8_t AVERAGE;
+// uint8_t FBIN;
+// uint8_t ADC_RESTART;
 
 //uint32_t IR_target_freq = 6080;
 //uint32_t smp_freq = 19235*2;
 
 uint32_t sum = 0;
 
-uint16_t IR_BIN = 40;
-uint16_t MIC_BIN = 18;
-
-void ir_set(){
-    TIMSK0 = 0; // turn off timer0 for lower jitter
-    ADCSRA = 0xe7; // set the adc to free running mode
-    ADMUX = 0x41; // use adc1
-    DIDR0 = 0x02; // turn off the digital input for adc1
-    AVERAGE = 2;
-    FBIN = IR_BIN;
-    ADC_RESTART = 0xf5;
+void FFT_device_init(device d){
+    if(d==IR){
+        TIMSK0 = 0; // turn off timer0 for lower jitter
+        ADCSRA = 0xe7; // set the adc to free running mode
+        ADMUX = 0x41; // use adc1
+        DIDR0 = 0x02; // turn off the digital input for adc1
+        //AVERAGE = 2;
+        //FBIN = IR_BIN;
+        //ADC_RESTART = 0xf5;
+    }else{
+        TIMSK0 = 0; // turn off timer0 for lower jitter
+        ADCSRA = 0xe7; // set the adc to free running mode
+        ADMUX = 0x40; // use adc0
+        DIDR0 = 0x01; // turn off the digital input for adc0
+        //AVERAGE = 15;
+        //FBIN = MIC_BIN;
+        //ADC_RESTART = 0xf7;
+    }
+    sum = 0;
 }
 
-void microphone_set(){
-    TIMSK0 = 0; // turn off timer0 for lower jitter
-    ADCSRA = 0xe7; // set the adc to free running mode
-    ADMUX = 0x40; // use adc0
-    DIDR0 = 0x01; // turn off the digital input for adc0
-    AVERAGE = 25;
-    FBIN = MIC_BIN;
-    ADC_RESTART = 0xf7;
-}
 
-void turn_led(int i){
+void turn_led(int &i){
   int pin = 7;
   pinMode(pin,OUTPUT);
   digitalWrite(pin,i?HIGH:LOW);
   
 }
 
-void calculate_FFT(){
-    for(int j=0;j<AVERAGE;j++) { // reduces jitter
+void calculate_FFT(device d){
+    uint8_t index = d == MIC ? MIC_BIN : IR_BIN;
+    uint8_t average = d == MIC ? 15 : 2;
+    for(int j=0;j<average;j++) { // reduces jitter
         cli();  // UDRE interrupt slows this way down on arduino1.0
         for (int i = 0 ; i < 512 ; i += 2) { // save 256 samples
             while(!(ADCSRA & 0x10)); // wait for adc to be ready
-            ADCSRA = ADC_RESTART; // restart adc
+            ADCSRA = d == MIC ? 0xf7 : 0xf5; // restart adc
             byte m = ADCL; // fetch adc data
             byte j = ADCH;
             int k = (j << 8) | m; // form into an int
@@ -72,8 +74,8 @@ void calculate_FFT(){
         fft_run(); // process the data in the fft
         fft_mag_log(); // take the output of the fft
         sei(); 
-        sum+=fft_log_out[FBIN];  
+        sum+=fft_log_out[index];  
     }
-    sum /= AVERAGE;
+    sum /= average;
 }
      
