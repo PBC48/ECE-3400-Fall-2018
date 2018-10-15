@@ -327,7 +327,7 @@ form .row:first-child .floating-label-form-group {
 .footer {
   padding-top: 5rem;
   padding-bottom: 5rem;
-  background-color: #17EA56;
+  background-color: #F3F93B;
   color: #fff;
 }
 
@@ -348,11 +348,11 @@ a:focus, a:hover, a:active {
 }
 
 .bg-primary {
-  background-color: #F3F93B !important;
+  background-color: #17EA56 !important;
 }
 
 .bg-secondary {
-  background-color: #17EA56 !important;
+  background-color: #F3F93B !important;
 }
 
 .text-primary {
@@ -364,8 +364,8 @@ a:focus, a:hover, a:active {
 }
 
 .btn-primary {
-  background-color: #F3F93B;
-  border-color: #F3F93B;
+  background-color: #17EA56;
+  border-color: #17EA56;
 }
 
 .btn-primary:hover, .btn-primary:focus, .btn-primary:active {
@@ -374,8 +374,8 @@ a:focus, a:hover, a:active {
 }
 
 .btn-secondary {
-  background-color: #17EA56;
-  border-color: #17EA56;
+  background-color: #F3F93B;
+  border-color: #F3F93B;
 }
 
 .btn-secondary:hover, .btn-secondary:focus, .btn-secondary:active {
