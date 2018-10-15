@@ -299,47 +299,113 @@
               <hr class="star-dark mb-5">
               <img class="img-fluid mb-5" src="images/bootstrap/lab1-bootstrap.png" alt="">
               <p class="mb-5">
-              <h3>Objectives</h3>
-              <ul ALIGN=LEFT>
-                <li>Familiarize ourselves with the Arduino IDE and Arduino Uno</li>
-                <li>Learn introductory Arduino programming and basic Arduino functionalities</li>
-                <li>Create simple circuits and Arduino programs to explore digital and analog Arduino I/O ports, built-in Arduino functions, and serial communication</li>
-                <li>Construct our robot and write a program to make it move in a square</li>
-              </ul>
-              <h3>Introduction</h3>
-              <p ALIGN=LEFT>In Lab 1, we began with using digital I/O pins to make internal and external LEDs blink.
-                We then used a potentiometer to explore using analog circuits with the Arduino. We started 
-                by simply reading out analog values from the potentiometer on the serial port. Then we used 
-                these values to adjust the brightness of an external LED and the speed of a continuously 
-                rotating servo. The lab culminated in building a functional robot that could drive autonomously in a square.
-              </p>
-              <h3>Blink</h3>
-              <p ALIGN=LEFT>We made the Uno’s built-in LED blink by running an Arduino example code, found as follows:</p>
-              <figure ALIGN=CENTER>
-                <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/blinkAccessScreenshot.png" width="800"/>
-                <font size="2">
-                  <figcaption> Blinking LED example code location
-                  </figcaption>
-                </font>
-              </figure>
-              <p ALIGN=LEFT>The code worked as expected, as can be seen by the 
-                following demonstration of the internal LED blinking:
-              </p>
-              <iframe ALIGN=LEFT width="560" height="315" 
+                <h3>Objectives</h3>
+                <ul ALIGN=LEFT>
+                  <li>Familiarize ourselves with the Arduino IDE and Arduino Uno</li>
+                  <li>Learn introductory Arduino programming and basic Arduino functionalities</li>
+                  <li>Create simple circuits and Arduino programs to explore digital and analog Arduino I/O ports, built-in Arduino functions, and serial communication</li>
+                  <li>Construct our robot and write a program to make it move in a square</li>
+                </ul>
+                <br/>
+                <h3>Introduction</h3>
+                <p ALIGN=LEFT>In Lab 1, we began with using digital I/O pins to make internal and external LEDs blink.
+                  We then used a potentiometer to explore using analog circuits with the Arduino. We started 
+                  by simply reading out analog values from the potentiometer on the serial port. Then we used 
+                  these values to adjust the brightness of an external LED and the speed of a continuously 
+                  rotating servo. The lab culminated in building a functional robot that could drive autonomously in a square.
+                </p>
+                <br/>
+                <h3>Blink</h3>
+                <p ALIGN=LEFT>We made the Uno’s built-in LED blink by running an Arduino example code, found as follows:</p>
+                <figure ALIGN=CENTER>
+                  <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/blinkAccessScreenshot.png" width="800"/>
+                  <font size="2">
+                    <figcaption> Blinking LED example code location
+                    </figcaption>
+                  </font>
+                </figure>
+                <p ALIGN=LEFT>The code worked as expected, as can be seen by the 
+                  following demonstration of the internal LED blinking:
+                </p>
+                <iframe ALIGN=LEFT width="560" height="315" 
                       src="https://www.youtube.com/embed/pbVh3dkpa-c?rel=0&amp;controls=0&amp;showinfo=0" frameborder="0"
                       allow="autoplay; encrypted-media" allowfullscreen>
-              </iframe>
-              <h3>Serial Monitor and Analog Pins</h3>
-              <p ALIGN=LEFT>To experiment with using the serial monitor and analog pins, 
-                we tested reading values from a potentiometer. We connected the potentiometer 
-                to the Arduino by connecting its output to an analog input pin of the Arduino, 
-                and connecting the potentiometer to the Arduino's 5V power and ground. To avoid 
-                accidentally short-circuiting the LED, we also added a 300 Ohm resistance in 
-                series with the potentiometer. We used the analogRead() function to read the 
-                potentiometer values and used the Serial.println() function to print those values 
-                to the serial monitor. These functions are included in the code for the LED analog 
-                output.
-              </p>
+                </iframe>
+                <br/>
+                <h3>Serial Monitor and Analog Pins</h3>
+                <p ALIGN=LEFT>To experiment with using the serial monitor and analog pins, 
+                  we tested reading values from a potentiometer. We connected the potentiometer 
+                  to the Arduino by connecting its output to an analog input pin of the Arduino, 
+                  and connecting the potentiometer to the Arduino's 5V power and ground. To avoid 
+                  accidentally short-circuiting the LED, we also added a 300 Ohm resistance in 
+                  series with the potentiometer. We used the analogRead() function to read the 
+                  potentiometer values and used the Serial.println() function to print those values 
+                  to the serial monitor. These functions are included in the code for the LED analog 
+                  output.
+                </p>
+                <br/>
+                <h3>LED Analog Output</h3>
+                <p ALIGN=LEFT>Next, we used the analog output from the potentiometer to control the 
+                  brightness of the LED. After reading the potentiometer value, we adjusted that value 
+                  and used the analogWrite() function to output it to an Arduino pin with PWM 
+                  capability (pin 10 in the code below). We had to adjust the output value to be within 
+                  the range accepted by the analogWrite() function; the potentiometer readings returned 
+                  values between 0 and 1023, and the analogWrite() function accepts values between 0 and 
+                  255.
+                </p>
+                <figure ALIGN=LEFT>
+                  <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/Code-analog.PNG" width="500">
+                  <font size="2">
+                  <figcaption> Writing Potentiometer Values to LED Code
+                  </figcaption>
+                  </font>
+                </figure>
+                <p ALIGN=LEFT>We set up a circuit according to the following schematic, similar to what we 
+                  had already set up to read the potentiometer values and adding the connection of the LED
+                  to a PWM pin:
+                </p>
+                <figure ALIGN=LEFT>
+                  <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/Schematic-PotentiometerBlink.PNG" width="500">
+                  <font size="2">
+                  <figcaption> Schematic for controlling LED brightness with potentiometer
+                  </figcaption>
+                  </font>
+                </figure>
+                <br/>
+                <h3>Servo</h3>
+                <p ALIGN=LEFT>We used the Arduino analog I/O pins to control the turn direction and speed of
+                  continuously rotating servos. We relied primarily on the Arduino’s servo library to control
+                  the servo. On a high level, we dictated which analog I/O port (PWM pin) would be used to 
+                  control the servos and then used the write function of the servo library to dictate the speed 
+                  and direction of the servo. We combined the servo with the potentiometer in a similar way to 
+                  what we did with the potentiometer and LED, allowing the potentiometer to control the speed 
+                  and direction of the servo by adjusting the value read from the potentiometer and writing it 
+                  to the servo via a PWM pin (pin 10 in the code below).
+                </p>
+                <figure ALIGN=CENTER>
+                  <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/Code-Servo.PNG" width="500">
+                  <font size="2">
+                  <figcaption> Writing Potentiometer Values to Servo Code
+                  </figcaption>
+                  </font>
+                </figure>
+                <p ALIGN=LEFT>We set up a circuit according to the schematic below, similar to what we had 
+                  created for the LED and adding in the servo connection to the PWM pin and the Arduino circuit:
+                </p>
+                <figure ALIGN=CENTER>
+                  <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/Schematic-ServoPotentiometer.PNG" width="500">
+                  <font size="2">
+                  <figcaption> Schematic for controlling servo with potentiometer
+                  </figcaption>
+                  </font>
+                </figure>
+                <p ALIGN=LEFT>Adjusting the potentiometer changed the speed and direction of the servo as we 
+                  expected, and as is shown in the following demonstration of servos controlled via the potentiometer:
+                </p>
+                <iframe ALIGN=CENTER width="560" height="315" 
+                        src="https://www.youtube.com/embed/rJJShOBNLfM?rel=0&amp;controls=0&amp;showinfo=0" 
+                        frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
+                </iframe>
               </p>
               <a class="btn btn-primary btn-lg rounded-pill portfolio-modal-dismiss" href="#">
                 <i class="fa fa-close"></i>
