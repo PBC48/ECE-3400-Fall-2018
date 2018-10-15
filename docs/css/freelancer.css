@@ -327,7 +327,7 @@ form .row:first-child .floating-label-form-group {
 .footer {
   padding-top: 5rem;
   padding-bottom: 5rem;
-  background-color: #2C3E50;
+  background-color: #17EA56;
   color: #fff;
 }
 
@@ -364,8 +364,8 @@ a:focus, a:hover, a:active {
 }
 
 .btn-primary {
-  background-color: #18BC9C;
-  border-color: #18BC9C;
+  background-color: #F3F93B;
+  border-color: #F3F93B;
 }
 
 .btn-primary:hover, .btn-primary:focus, .btn-primary:active {
@@ -374,8 +374,8 @@ a:focus, a:hover, a:active {
 }
 
 .btn-secondary {
-  background-color: #2C3E50;
-  border-color: #2C3E50;
+  background-color: #17EA56;
+  border-color: #17EA56;
 }
 
 .btn-secondary:hover, .btn-secondary:focus, .btn-secondary:active {
