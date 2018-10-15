@@ -332,6 +332,7 @@
                       allow="autoplay; encrypted-media" allowfullscreen>
                 </iframe>
                 <br/>
+                <br/>
                 <h3>Serial Monitor and Analog Pins</h3>
                 <p ALIGN=LEFT>To experiment with using the serial monitor and analog pins, 
                   we tested reading values from a potentiometer. We connected the potentiometer 
@@ -406,6 +407,54 @@
                         src="https://www.youtube.com/embed/rJJShOBNLfM?rel=0&amp;controls=0&amp;showinfo=0" 
                         frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
                 </iframe>
+                <br/>
+                <h3>Robot</h3>
+                <p>We built the robot consisting of a chassis and two servos with wheels attached, and mounted 
+                  the Arduino on top of the chassis.  We also attached a 5V DC phone charging port to power the 
+                  robot.  Finally, we wrote a simple Arduino program for the robot to drive in a square.
+                </p>
+                <figure ALIGN=CENTER>
+                  <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/robot.jpg" width="300">
+                  <font size="2">
+                  <figcaption> Assembled Robot
+                  </figcaption>
+                  </font>
+                </figure>
+
+                <figure ALIGN=CENTER>
+                  <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/Code-robotDrive.PNG" width="300">
+                  <font size="2">
+                  <figcaption> Robot Square Driving Code
+                  </figcaption>
+                  </font>
+                </figure>
+
+                <p ALIGN=LEFT>The circuit on the robot is set up according the following schematic:</p>
+
+                <figure ALIGN=CENTER>
+                  <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/Schematic-Robot.PNG" width="600">
+                  <font size="2">
+                  <figcaption> Schematic for current robot
+                  </figcaption>
+                  </font>
+                </figure>
+                <p ALIGN=LEFT>The robot was able to move autonomously as we had directed, as shown in the following 
+                  demonstration of the robot moving in a square:
+                </p>
+
+                <iframe ALIGN=CENTER width="560" height="315" 
+                        src="https://www.youtube.com/embed/az1fnLFKQlA?rel=0&amp;controls=0&amp;showinfo=0&amp;start=1" 
+                        frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
+                </iframe>
+                <br/>
+                <h3>Conclusion and Result</h3>
+                <p ALIGN=LEFT>The robot moved as expected in the square and there were no problems with the speed of the servos. 
+                  However, we did encounter a problem with the direction of one of the motors.  The orientation of the 
+                  two motors was inconsistent so the right and left wheels spun in opposite directions.  This slightly 
+                  complicated the code to direct the robot, requiring a roundabout solution even to go in a straight line. 
+                  In the next lab section, we will fix the installation of the wheels by reversing the orientation of one 
+                  of the wheels.
+                </p> 
               </p>
               <a class="btn btn-primary btn-lg rounded-pill portfolio-modal-dismiss" href="#">
                 <i class="fa fa-close"></i>
