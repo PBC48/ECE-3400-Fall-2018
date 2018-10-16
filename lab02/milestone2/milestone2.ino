@@ -77,7 +77,6 @@ void loop() {
                 STATE = LINE_SENSOR;//ROBOT_SENSE;
             }*/
             STATE = ROBOT_SENSE;
-            u32wait = millis();
             break;
 
         case ROBOT_SENSE:
@@ -101,6 +100,7 @@ void loop() {
             }else{
                 if((millis()-u32wait) > WAITTIME){
                     robot_move(stop);
+                    u32wait = millis();
                     STATE = IR_DECT;
                 }else{
                     STATE = ROBOT_SENSE;
@@ -116,15 +116,17 @@ void loop() {
 
         case ROBOT_TURN_LEFT:
             robot_move(left);
-            if(millis-u32wait>2000){
+            if(millis()-u32wait>2000){
                 STATE = ROBOT_SENSE;
+                u32wait = millis();
             }
             break;
 
         case ROBOT_TURN_RIGHT:
             robot_move(right);
-            if(millis-u32wait>2000){
+            if(millis()-u32wait>2000){
                 STATE = ROBOT_SENSE;
+                u32wait = millis();
             }
             break;
             
