@@ -22,7 +22,7 @@ enum states : uint8_t {
     ROBOT_TURN_RIGHT
 };
 
-uint8_t STATE;
+uint8_t  STATE;
 uint32_t u32wait;
 uint16_t FRONTWALL;
 uint16_t LEFTWALL;
@@ -76,19 +76,22 @@ void loop() {
             }else{
                 STATE = LINE_SENSOR;//ROBOT_SENSE;
             }*/
+            u32wait = millis();
             STATE = ROBOT_SENSE;
             break;
 
         case ROBOT_SENSE:
             FRONTWALL = analogRead(WALL_FRONT);
             LEFTWALL = analogRead(WALL_LEFT);
-            Serial.println(F("IN ROBOT_SENSE"));
-            Serial.print(F("SENSOR_R READING: "));Serial.println(SENSOR_R_READING);
-            Serial.print(F("SENSOR_L READING: "));Serial.println(SENSOR_L_READING);
+            //Serial.println(F("IN ROBOT_SENSE"));
+            //Serial.print(F("SENSOR_R READING: "));Serial.println(SENSOR_R_READING);
+            //Serial.print(F("SENSOR_L READING: "));Serial.println(SENSOR_L_READING);
             if(SENSOR_R_READING<55 && SENSOR_L_READING<55){ //Sensor_R Threshold: 50; Sensor_L Threshold: 400
                 if(LEFTWALL < 200){
+                  u32wait = millis();
                     STATE = ROBOT_TURN_LEFT;
                 } else if (FRONTWALL > 115) {
+                  u32wait = millis();
                     STATE = ROBOT_TURN_RIGHT;
                 } else {
                     robot_move(forward);
@@ -99,8 +102,7 @@ void loop() {
                 robot_move(adj_left);
             }else{
                 if((millis()-u32wait) > WAITTIME){
-                    robot_move(stop);
-                    u32wait = millis();
+                    //robot_move(rstop);
                     STATE = IR_DECT;
                 }else{
                     STATE = ROBOT_SENSE;
@@ -110,23 +112,21 @@ void loop() {
             break;
               
         case ROBOT_DETECTED:
-            robot_move(stop);
+            robot_move(rstop);
             STATE = IR_DECT;
             break;
 
         case ROBOT_TURN_LEFT:
             robot_move(left);
-            if(millis()-u32wait>2000){
+            if(millis()-u32wait>1000){
                 STATE = ROBOT_SENSE;
-                u32wait = millis();
             }
             break;
 
         case ROBOT_TURN_RIGHT:
             robot_move(right);
-            if(millis()-u32wait>2000){
+            if(millis()-u32wait>1000){
                 STATE = ROBOT_SENSE;
-                u32wait = millis();
             }
             break;
             

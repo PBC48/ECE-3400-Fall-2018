@@ -8,68 +8,72 @@ Servo L;
 
 
 enum DIRECTIONS {
-	right,
-	left,
-	forward,
-    stop,
+  right,
+  left,
+  forward,
+    rstop,
     adj_right,
     adj_left,
     back
 };
 
 void robot_move(DIRECTIONS dir){
-    if(dir != stop && (!R.attached() || !L.attached())){
-        Serial.println(F("in if attach"));
+    /*if(dir != rstop && (!R.attached() || !L.attached())){
+        Serial.println("in if attach");
         R.attach(ROBOT_RIGHT_PIN);
         L.attach(ROBOT_LEFT_PIN);
-    }else if(dir == stop){
+    }else if(dir == rstop){
         R.detach();
         L.detach();
-    }
+    }*/
+    
     switch (dir){ //NEED SOME CALIBRATION
         case right:
             L.write(180);
-            R.write(90);
-            Serial.println(F("right"));
+            R.write(95);
+            Serial.println("right");
             break;
 
         case left:
-            L.write(90);
+            L.write(85);
             R.write(0);
-            Serial.println(F("left"));
+            
+            Serial.println("left");
             break;
         case forward:
             L.write(180);
             R.write(0);
-            Serial.println(F("forward"));
+            //Serial.println("forward");
             break;
-        case stop:
+        case rstop:
             L.write(90);
             R.write(90);
-            Serial.println(F("stopped"));
+            Serial.println("stopped");
             break;
         case adj_left:
             L.write(95);
             R.write(0);
-            Serial.println(F("adjust left"));
+            //Serial.println("adjust left");
             break;
         case adj_right:
             L.write(180);
             R.write(85);
-            Serial.println(F("adjust right"));
+            //Serial.println("adjust right");
             break;
         case back:
             L.write(0);
             R.write(180);
-            Serial.println(F("back"));
+            Serial.println("back");
             break;
     }
-    
+    delay(10);
 }
 
 
 void robot_init(){
-  robot_move(stop);
+    R.attach(ROBOT_RIGHT_PIN);
+        L.attach(ROBOT_LEFT_PIN);
+  robot_move(rstop);
 }
 
 
@@ -80,10 +84,9 @@ void robot_calibrate(){
     delay(10000);
     robot_move(forward);
     delay(10000);
-    robot_move(stop);
+    robot_move(rstop);
     delay(10000);
     robot_move(back);
     delay(10000);
 
 }
-
