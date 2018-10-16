@@ -8,7 +8,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Freelancer - Start Bootstrap Theme</title>
+    <title>The 7-Ups - ECE 3400 Fall 2018 Team 7</title>
 
     <!-- Bootstrap core CSS -->
     <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -72,7 +72,7 @@
             <a class="portfolio-item d-block mx-auto" href="#portfolio-modal-1">
               <div class="portfolio-item-caption d-flex position-absolute h-100 w-100">
                 <div class="portfolio-item-caption-content my-auto w-100 text-center text-white">
-                  <i class="fas fa-search-plus fa-4x"></i>
+                  <i class="fas fa-search-plus fa-3x"></i>
                 </div>
               </div>
               <img class="img-fluid" src="images/bootstrap/lab1-bootstrap.png" alt="">
@@ -82,7 +82,7 @@
             <a class="portfolio-item d-block mx-auto" href="#portfolio-modal-2">
               <div class="portfolio-item-caption d-flex position-absolute h-100 w-100">
                 <div class="portfolio-item-caption-content my-auto w-100 text-center text-white">
-                  <i class="fas fa-search-plus fa-4x"></i>
+                  <i class="fas fa-search-plus fa-3x"></i>
                 </div>
               </div>
               <img class="img-fluid" src="images/bootstrap/lab2-bootstrap.png" alt="">
@@ -92,7 +92,7 @@
             <a class="portfolio-item d-block mx-auto" href="#portfolio-modal-3">
               <div class="portfolio-item-caption d-flex position-absolute h-100 w-100">
                 <div class="portfolio-item-caption-content my-auto w-100 text-center text-white">
-                  <i class="fas fa-search-plus fa-4x"></i>
+                  <i class="fas fa-search-plus fa-3x"></i>
                 </div>
               </div>
               <img class="img-fluid" src="images/bootstrap/lab3-bootstrap.png" alt="">
@@ -102,7 +102,7 @@
             <a class="portfolio-item d-block mx-auto" href="#portfolio-modal-4">
               <div class="portfolio-item-caption d-flex position-absolute h-100 w-100">
                 <div class="portfolio-item-caption-content my-auto w-100 text-center text-white">
-                  <i class="fas fa-search-plus fa-4x"></i>
+                  <i class="fas fa-search-plus fa-3x"></i>
                 </div>
               </div>
               <img class="img-fluid" src="images/bootstrap/lab4-bootstrap.png" alt="">
@@ -112,7 +112,7 @@
             <a class="portfolio-item d-block mx-auto" href="#portfolio-modal-5">
               <div class="portfolio-item-caption d-flex position-absolute h-100 w-100">
                 <div class="portfolio-item-caption-content my-auto w-100 text-center text-white">
-                  <i class="fas fa-search-plus fa-4x"></i>
+                  <i class="fas fa-search-plus fa-3x"></i>
                 </div>
               </div>
               <img class="img-fluid" src="img/portfolio/safe.png" alt="">
@@ -122,7 +122,7 @@
             <a class="portfolio-item d-block mx-auto" href="#portfolio-modal-6">
               <div class="portfolio-item-caption d-flex position-absolute h-100 w-100">
                 <div class="portfolio-item-caption-content my-auto w-100 text-center text-white">
-                  <i class="fas fa-search-plus fa-4x"></i>
+                  <i class="fas fa-search-plus fa-3x"></i>
                 </div>
               </div>
               <img class="img-fluid" src="img/portfolio/submarine.png" alt="">
@@ -132,7 +132,7 @@
             <a class="portfolio-item d-block mx-auto" href="#portfolio-modal-7">
               <div class="portfolio-item-caption d-flex position-absolute h-100 w-100">
                 <div class="portfolio-item-caption-content my-auto w-100 text-center text-white">
-                  <i class="fas fa-search-plus fa-4x"></i>
+                  <i class="fas fa-search-plus fa-3x"></i>
                 </div>
               </div>
               <img class="img-fluid" src="img/portfolio/submarine.png" alt="">
@@ -142,7 +142,7 @@
             <a class="portfolio-item d-block mx-auto" href="#portfolio-modal-8">
               <div class="portfolio-item-caption d-flex position-absolute h-100 w-100">
                 <div class="portfolio-item-caption-content my-auto w-100 text-center text-white">
-                  <i class="fas fa-search-plus fa-4x"></i>
+                  <i class="fas fa-search-plus fa-3x"></i>
                 </div>
               </div>
               <img class="img-fluid" src="img/portfolio/submarine.png" alt="">
@@ -295,10 +295,167 @@
         <div class="container text-center">
           <div class="row">
             <div class="col-lg-6 mx-auto">
-              <h2 class="text-secondary text-uppercase mb-0">Lab 1</h2>
+              <h2 class="text-secondary text-uppercase mb-0">Lab 1: Microcontrollers</h2>
               <hr class="star-dark mb-5">
               <img class="img-fluid mb-5" src="images/bootstrap/lab1-bootstrap.png" alt="">
-              <p class="mb-5">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Mollitia neque assumenda ipsam nihil, molestias magnam, recusandae quos quis inventore quisquam velit asperiores, vitae? Reprehenderit soluta, eos quod consequuntur itaque. Nam.</p>
+              <p class="mb-5">
+                <h3>Objectives</h3>
+                <ul ALIGN=LEFT>
+                  <li>Familiarize ourselves with the Arduino IDE and Arduino Uno</li>
+                  <li>Learn introductory Arduino programming and basic Arduino functionalities</li>
+                  <li>Create simple circuits and Arduino programs to explore digital and analog Arduino I/O ports, built-in Arduino functions, and serial communication</li>
+                  <li>Construct our robot and write a program to make it move in a square</li>
+                </ul>
+                <br/>
+                <h3>Introduction</h3>
+                <p ALIGN=LEFT>In Lab 1, we began with using digital I/O pins to make internal and external LEDs blink.
+                  We then used a potentiometer to explore using analog circuits with the Arduino. We started 
+                  by simply reading out analog values from the potentiometer on the serial port. Then we used 
+                  these values to adjust the brightness of an external LED and the speed of a continuously 
+                  rotating servo. The lab culminated in building a functional robot that could drive autonomously in a square.
+                </p>
+                <br/>
+                <h3>Blink</h3>
+                <p ALIGN=LEFT>We made the Uno’s built-in LED blink by running an Arduino example code, found as follows:</p>
+                <figure ALIGN=CENTER>
+                  <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/blinkAccessScreenshot.png" width="560"/>
+                  <font size="2">
+                    <figcaption> Blinking LED example code location
+                    </figcaption>
+                  </font>
+                </figure>
+                <p ALIGN=LEFT>The code worked as expected, as can be seen by the 
+                  following demonstration of the internal LED blinking:
+                </p>
+                <iframe ALIGN=LEFT width="560" height="315" 
+                      src="https://www.youtube.com/embed/pbVh3dkpa-c?rel=0&amp;controls=0&amp;showinfo=0" frameborder="0"
+                      allow="autoplay; encrypted-media" allowfullscreen>
+                </iframe>
+                <br/>
+                <br/>
+                <h3>Serial Monitor and Analog Pins</h3>
+                <p ALIGN=LEFT>To experiment with using the serial monitor and analog pins, 
+                  we tested reading values from a potentiometer. We connected the potentiometer 
+                  to the Arduino by connecting its output to an analog input pin of the Arduino, 
+                  and connecting the potentiometer to the Arduino's 5V power and ground. To avoid 
+                  accidentally short-circuiting the LED, we also added a 300 Ohm resistance in 
+                  series with the potentiometer. We used the analogRead() function to read the 
+                  potentiometer values and used the Serial.println() function to print those values 
+                  to the serial monitor. These functions are included in the code for the LED analog 
+                  output.
+                </p>
+                <br/>
+                <h3>LED Analog Output</h3>
+                <p ALIGN=LEFT>Next, we used the analog output from the potentiometer to control the 
+                  brightness of the LED. After reading the potentiometer value, we adjusted that value 
+                  and used the analogWrite() function to output it to an Arduino pin with PWM 
+                  capability (pin 10 in the code below). We had to adjust the output value to be within 
+                  the range accepted by the analogWrite() function; the potentiometer readings returned 
+                  values between 0 and 1023, and the analogWrite() function accepts values between 0 and 
+                  255.
+                </p>
+                <figure ALIGN=LEFT>
+                  <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/Code-analog.PNG" width="560">
+                  <font size="2">
+                  <figcaption> Writing Potentiometer Values to LED Code
+                  </figcaption>
+                  </font>
+                </figure>
+                <p ALIGN=LEFT>We set up a circuit according to the following schematic, similar to what we 
+                  had already set up to read the potentiometer values and adding the connection of the LED
+                  to a PWM pin:
+                </p>
+                <figure ALIGN=LEFT>
+                  <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/Schematic-PotentiometerBlink.PNG" width="560">
+                  <font size="2">
+                  <figcaption> Schematic for controlling LED brightness with potentiometer
+                  </figcaption>
+                  </font>
+                </figure>
+                <br/>
+                <h3>Servo</h3>
+                <p ALIGN=LEFT>We used the Arduino analog I/O pins to control the turn direction and speed of
+                  continuously rotating servos. We relied primarily on the Arduino’s servo library to control
+                  the servo. On a high level, we dictated which analog I/O port (PWM pin) would be used to 
+                  control the servos and then used the write function of the servo library to dictate the speed 
+                  and direction of the servo. We combined the servo with the potentiometer in a similar way to 
+                  what we did with the potentiometer and LED, allowing the potentiometer to control the speed 
+                  and direction of the servo by adjusting the value read from the potentiometer and writing it 
+                  to the servo via a PWM pin (pin 10 in the code below).
+                </p>
+                <figure ALIGN=CENTER>
+                  <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/Code-Servo.PNG" width="560">
+                  <font size="2">
+                  <figcaption> Writing Potentiometer Values to Servo Code
+                  </figcaption>
+                  </font>
+                </figure>
+                <p ALIGN=LEFT>We set up a circuit according to the schematic below, similar to what we had 
+                  created for the LED and adding in the servo connection to the PWM pin and the Arduino circuit:
+                </p>
+                <figure ALIGN=CENTER>
+                  <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/Schematic-ServoPotentiometer.PNG" width="560">
+                  <font size="2">
+                  <figcaption> Schematic for controlling servo with potentiometer
+                  </figcaption>
+                  </font>
+                </figure>
+                <p ALIGN=LEFT>Adjusting the potentiometer changed the speed and direction of the servo as we 
+                  expected, and as is shown in the following demonstration of servos controlled via the potentiometer:
+                </p>
+                <iframe ALIGN=CENTER width="560" height="315" 
+                        src="https://www.youtube.com/embed/rJJShOBNLfM?rel=0&amp;controls=0&amp;showinfo=0" 
+                        frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
+                </iframe>
+                <br/>
+                <h3>Robot</h3>
+                <p>We built the robot consisting of a chassis and two servos with wheels attached, and mounted 
+                  the Arduino on top of the chassis.  We also attached a 5V DC phone charging port to power the 
+                  robot.  Finally, we wrote a simple Arduino program for the robot to drive in a square.
+                </p>
+                <figure ALIGN=CENTER>
+                  <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/robot.jpg" width="560">
+                  <font size="2">
+                  <figcaption> Assembled Robot
+                  </figcaption>
+                  </font>
+                </figure>
+
+                <figure ALIGN=CENTER>
+                  <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/Code-robotDrive.PNG" width="560">
+                  <font size="2">
+                  <figcaption> Robot Square Driving Code
+                  </figcaption>
+                  </font>
+                </figure>
+
+                <p ALIGN=LEFT>The circuit on the robot is set up according the following schematic:</p>
+
+                <figure ALIGN=CENTER>
+                  <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/Schematic-Robot.PNG" width="560">
+                  <font size="2">
+                  <figcaption> Schematic for current robot
+                  </figcaption>
+                  </font>
+                </figure>
+                <p ALIGN=LEFT>The robot was able to move autonomously as we had directed, as shown in the following 
+                  demonstration of the robot moving in a square:
+                </p>
+
+                <iframe ALIGN=CENTER width="560" height="315" 
+                        src="https://www.youtube.com/embed/az1fnLFKQlA?rel=0&amp;controls=0&amp;showinfo=0&amp;start=1" 
+                        frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
+                </iframe>
+                <br/>
+                <h3>Conclusion and Result</h3>
+                <p ALIGN=LEFT>The robot moved as expected in the square and there were no problems with the speed of the servos. 
+                  However, we did encounter a problem with the direction of one of the motors.  The orientation of the 
+                  two motors was inconsistent so the right and left wheels spun in opposite directions.  This slightly 
+                  complicated the code to direct the robot, requiring a roundabout solution even to go in a straight line. 
+                  In the next lab section, we will fix the installation of the wheels by reversing the orientation of one 
+                  of the wheels.
+                </p> 
+              </p>
               <a class="btn btn-primary btn-lg rounded-pill portfolio-modal-dismiss" href="#">
                 <i class="fa fa-close"></i>
                 Close Project</a>
