@@ -8,9 +8,9 @@ Servo L;
 
 
 enum DIRECTIONS {
-  right,
-  left,
-  forward,
+    right,
+    left,
+    forward,
     stop,
     adj_right,
     adj_left,
@@ -64,7 +64,6 @@ void robot_move(DIRECTIONS dir){
             Serial.println("back");
             break;
     }
-    
 }
 
 
@@ -84,5 +83,4 @@ void robot_calibrate(){
     delay(10000);
     robot_move(back);
     delay(10000);
-
 }

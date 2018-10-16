@@ -9,7 +9,7 @@ sensor, robot movement, microphone, and ir all in one.
 
 #include "robot.h"
 #include "line_sensor.h"
-#include "fft_lib.h"
+//#include "fft_lib.h"
 
 enum states : uint8_t {
     START,
@@ -17,13 +17,16 @@ enum states : uint8_t {
     IR_DECT,
     ROBOT_SENSE,
     ROBOT_DETECTED,
-    LINE_SENSOR
+    LINE_SENSOR,
+    ROBOT_TURN_LEFT,
+    ROBOT_TURN_RIGHT
 };
 
 uint8_t STATE;
 uint32_t u32wait;
 uint16_t FRONTWALL;
 uint16_t LEFTWALL;
+bool turn_var = false;
 
 void toggle_LED(uint8_t &pin){
     
@@ -51,7 +54,7 @@ void loop() {
             break;
         
         case AUDIO_DECT:
-            FFT_device_init(MIC);
+            /*FFT_device_init(MIC);
             calculate_FFT(MIC);
             Serial.print(F("AUDIO SUM: "));Serial.println(sum);
             if(sum>40){ //originally at 90
@@ -59,12 +62,12 @@ void loop() {
                 STATE = IR_DECT;
             }else{
                 STATE = AUDIO_DECT;
-            }
-            
+            }*/
+            STATE = IR_DECT;
             break;
         
         case IR_DECT:
-            FFT_device_init(IR);
+            /*FFT_device_init(IR);
             calculate_FFT(IR);
             Serial.print(F("IR SUM: ")); Serial.println(sum);
             if(sum > 55){
@@ -72,58 +75,57 @@ void loop() {
                 STATE = ROBOT_DETECTED;
             }else{
                 STATE = LINE_SENSOR;//ROBOT_SENSE;
-            }
+            }*/
+            STATE = ROBOT_SENSE;
             u32wait = millis();
             break;
 
         case ROBOT_SENSE:
-        
+            FRONTWALL = analogRead(WALL_FRONT);
+            LEFTWALL = analogRead(WALL_LEFT);
             Serial.println(F("IN ROBOT_SENSE"));
-        
-            Serial.print(F("SENSOR0 READING: "));Serial.println(SENSOR0_READING);
-            Serial.print(F("SENSOR1 READING: "));Serial.println(SENSOR1_READING);
-            if(SENSOR0_READING<400 && SENSOR1_READING<400){ //Sensor0 Threshold: 50; Sensor1 Threshold: 400
+            Serial.print(F("SENSOR_R READING: "));Serial.println(SENSOR_R_READING);
+            Serial.print(F("SENSOR_L READING: "));Serial.println(SENSOR_L_READING);
+            if(SENSOR_R_READING<55 && SENSOR_L_READING<55){ //Sensor_R Threshold: 50; Sensor_L Threshold: 400
                 if(LEFTWALL < 200){
-                    robot_move(left);
-                    // digitalWrite(RED_LED,HIGH);
-                    delay(1200);
-                    // digitalWrite(RED_LED,LOW);
-                } else if (FRONTWALL > 170) {
-                    robot_move(right);
-                    // digitalWrite(YELLOW_LED,HIGH);
-                    delay(1200);
-                    // digitalWrite(YELLOW_LED,LOW);
+                    STATE = ROBOT_TURN_LEFT;
+                } else if (FRONTWALL > 115) {
+                    STATE = ROBOT_TURN_RIGHT;
                 } else {
                     robot_move(forward);
                 }
-            }else if(SENSOR1_READING < 400){ //Sensor1 Threshold: 400   
+            }else if(SENSOR_L_READING < 55){ //Sensor_L Threshold: 400   
                 robot_move(adj_right);
-            }else if(SENSOR0_READING < 400){ //Sensor0 Threshold: 50
+            }else if(SENSOR_R_READING < 55){ //Sensor_R Threshold: 50
                 robot_move(adj_left);
             }else{
+                if((millis()-u32wait) > WAITTIME){
+                    robot_move(stop);
+                    STATE = IR_DECT;
+                }else{
+                    STATE = ROBOT_SENSE;
+                } 
                 robot_move(forward);
             }
-            if((millis()-u32wait) > WAITTIME){
-                robot_move(stop);
-                STATE = IR_DECT;
-            }else{
-                STATE = ROBOT_SENSE;
-            } 
             break;
-        
-        
+              
         case ROBOT_DETECTED:
             robot_move(stop);
             STATE = IR_DECT;
             break;
 
-        case LINE_SENSOR:
-        
-            FRONTWALL = OverAnalogRead(WALL_FRONT);
-            //LEFTWALL = analogRead(WALL_LEFT);
-            //Serial.print(F("FRONTWALL: "));Serial.println(FRONTWALL);
-            Serial.print(F("SENSOR0: "));Serial.println(SENSOR0_READING);
-            Serial.print(F("SENSOR1: "));Serial.println(SENSOR1_READING);
+        case ROBOT_TURN_LEFT:
+            robot_move(left);
+            if(millis-u32wait>2000){
+                STATE = ROBOT_SENSE;
+            }
+            break;
+
+        case ROBOT_TURN_RIGHT:
+            robot_move(right);
+            if(millis-u32wait>2000){
+                STATE = ROBOT_SENSE;
+            }
             break;
             
         default:
