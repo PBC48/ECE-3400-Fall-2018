@@ -24,7 +24,21 @@ enum device {
 
 uint32_t sum = 0;
 
-void FFT_device_init(device d){
+
+void turn_led(int &i){
+  int pin = 7;
+  pinMode(pin,OUTPUT);
+  digitalWrite(pin,i?HIGH:LOW);
+  
+}
+
+void calculate_FFT(device d){
+
+    byte TIMSK0_temp = TIMSK0;
+    byte ADCSRA_temp = ADCSRA;
+    byte ADMUX_temp = ADMUX;
+    byte DIDR0_temp = DIDR0;
+
     if(d==IR){
         TIMSK0 = 0; // turn off timer0 for lower jitter
         ADCSRA = 0xe7; // set the adc to free running mode
@@ -43,17 +57,7 @@ void FFT_device_init(device d){
         //ADC_RESTART = 0xf7;
     }
     sum = 0;
-}
-
-
-void turn_led(int &i){
-  int pin = 7;
-  pinMode(pin,OUTPUT);
-  digitalWrite(pin,i?HIGH:LOW);
   
-}
-
-void calculate_FFT(device d){
     uint8_t index = d == MIC ? MIC_BIN : IR_BIN;
     uint8_t average = d == MIC ? 15 : 2;
     for(int j=0;j<average;j++) { // reduces jitter
@@ -77,6 +81,12 @@ void calculate_FFT(device d){
         sum+=fft_log_out[index];  
     }
     sum /= average;
+
+    TIMSK0 = TIMSK0_temp;
+    ADCSRA = ADCSRA_temp;
+    ADMUX = ADMUX_temp;
+    DIDR0 = DIDR0_temp;
+        
 }
 
 uint16_t OverAnalogRead(uint8_t pin){
