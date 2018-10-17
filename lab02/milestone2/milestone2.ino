@@ -44,7 +44,7 @@ void setup() {
 }
 
 void loop() {
-    Serial.print(F("State: "));Serial.println(STATE);
+    //Serial.print(F("State: "));Serial.println(STATE);
     switch (STATE){
         case START:
             Serial.println(F("start"));
@@ -67,15 +67,15 @@ void loop() {
         
         case IR_DECT:
             calculate_FFT(IR);
-            Serial.println("IN IR_DECT");
+            //Serial.println("IN IR_DECT");
             Serial.print(F("IR SUM: ")); Serial.println(sum);
-            if(sum > 55){
+            if(sum > 45){
                 Serial.println(F("Robot Detected"));
                 STATE = ROBOT_DETECTED;
             }else{
                 STATE = ROBOT_SENSE;//LINE_SENSOR;
             }
-            STATE = ROBOT_SENSE;
+            u32wait_ir = millis();
             break;
 
         case ROBOT_SENSE:
@@ -84,7 +84,10 @@ void loop() {
             //Serial.println(F("IN ROBOT_SENSE"));
             //Serial.print(F("SENSOR_R READING: "));Serial.println(SENSOR_R_READING);
             //Serial.print(F("SENSOR_L READING: "));Serial.println(SENSOR_L_READING);
+            //Serial.print(F("FRONTWALL: "));Serial.println(FRONTWALL);
+            //Serial.print(F("LEFTWALL: "));Serial.println(LEFTWALL);
             if(SENSOR_R_READING<200 && SENSOR_L_READING<200){ //Sensor_R Threshold: 50; Sensor_L Threshold: 400
+                Serial.println("In intersection");
                 if(LEFTWALL < 200){
                     u32wait = millis();
                     STATE = ROBOT_TURN_LEFT;
@@ -103,13 +106,9 @@ void loop() {
             }
                 
             if((millis()-u32wait_ir) > WAITTIME){
-                    robot_move(rstop);
                     u32wait_ir = millis();
                     STATE = IR_DECT;
-            }else{
-                    STATE = ROBOT_SENSE;
             }
-            
             break;
               
         case ROBOT_DETECTED:
