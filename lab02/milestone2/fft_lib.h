@@ -44,22 +44,16 @@ void calculate_FFT(device d){
         ADCSRA = 0xe7; // set the adc to free running mode
         ADMUX = 0x41; // use adc1
         DIDR0 = 0x02; // turn off the digital input for adc1
-        //AVERAGE = 2;
-        //FBIN = IR_BIN;
-        //ADC_RESTART = 0xf5;
     }else{
         TIMSK0 = 0; // turn off timer0 for lower jitter
         ADCSRA = 0xe7; // set the adc to free running mode
         ADMUX = 0x40; // use adc0
         DIDR0 = 0x01; // turn off the digital input for adc0
-        //AVERAGE = 15;
-        //FBIN = MIC_BIN;
-        //ADC_RESTART = 0xf7;
     }
     sum = 0;
   
     uint8_t index = d == MIC ? MIC_BIN : IR_BIN;
-    uint8_t average = d == MIC ? 15 : 2;
+    uint8_t average = d == MIC ? 15 : 5;
     for(int j=0;j<average;j++) { // reduces jitter
         cli();  // UDRE interrupt slows this way down on arduino1.0
         for (int i = 0 ; i < 512 ; i += 2) { // save 256 samples

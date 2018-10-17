@@ -27,7 +27,6 @@ uint32_t u32wait;
 uint32_t u32wait_ir;
 uint16_t FRONTWALL;
 uint16_t LEFTWALL;
-bool turn_var = false;
 
 void toggle_LED(uint8_t &pin){
     
