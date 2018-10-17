@@ -17,7 +17,6 @@ enum states : uint8_t {
     IR_DECT,
     ROBOT_SENSE,
     ROBOT_DETECTED,
-    LINE_SENSOR,
     ROBOT_TURN_LEFT,
     ROBOT_TURN_RIGHT
 };
