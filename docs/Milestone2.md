@@ -17,8 +17,11 @@
 
 ## Wall Dectection
 
+<iframe width="560" height="315" src="https://www.youtube.com/embed/iyFj-MwOoxo" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
-## Avoidance
+## Robot Avoidance
+
+<iframe width="560" height="315" src="https://youtube.com/embed/DLj0mfdm-ms" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
 ### Coding
 For the coding section, we updated the FSM used in lab 2 integration with addtional states: 
