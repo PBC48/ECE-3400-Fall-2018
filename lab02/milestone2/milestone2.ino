@@ -9,7 +9,7 @@ sensor, robot movement, microphone, and ir all in one.
 
 #include "robot.h"
 #include "line_sensor.h"
-//#include "fft_lib.h"
+#include "fft_lib.h"
 
 enum states : uint8_t {
     START,
@@ -22,8 +22,9 @@ enum states : uint8_t {
     ROBOT_TURN_RIGHT
 };
 
-uint8_t  STATE;
+uint8_t STATE;
 uint32_t u32wait;
+uint32_t u32wait_ir;
 uint16_t FRONTWALL;
 uint16_t LEFTWALL;
 bool turn_var = false;
@@ -32,8 +33,6 @@ void toggle_LED(uint8_t &pin){
     
     int set = digitalRead(pin) ? LOW : HIGH;
     digitalWrite(pin, set);
-    pinMode(WALL_FRONT, INPUT_PULLUP);
-    pinMode(WALL_LEFT, INPUT_PULLUP);
 }
 
 void setup() {
@@ -54,7 +53,7 @@ void loop() {
             break;
         
         case AUDIO_DECT:
-            /*FFT_device_init(MIC);
+            /*
             calculate_FFT(MIC);
             Serial.print(F("AUDIO SUM: "));Serial.println(sum);
             if(sum>40){ //originally at 90
@@ -67,16 +66,15 @@ void loop() {
             break;
         
         case IR_DECT:
-            /*FFT_device_init(IR);
             calculate_FFT(IR);
+            Serial.println("IN IR_DECT");
             Serial.print(F("IR SUM: ")); Serial.println(sum);
             if(sum > 55){
                 Serial.println(F("Robot Detected"));
                 STATE = ROBOT_DETECTED;
             }else{
-                STATE = LINE_SENSOR;//ROBOT_SENSE;
-            }*/
-            u32wait = millis();
+                STATE = ROBOT_SENSE;//LINE_SENSOR;
+            }
             STATE = ROBOT_SENSE;
             break;
 
@@ -86,29 +84,32 @@ void loop() {
             //Serial.println(F("IN ROBOT_SENSE"));
             //Serial.print(F("SENSOR_R READING: "));Serial.println(SENSOR_R_READING);
             //Serial.print(F("SENSOR_L READING: "));Serial.println(SENSOR_L_READING);
-            if(SENSOR_R_READING<55 && SENSOR_L_READING<55){ //Sensor_R Threshold: 50; Sensor_L Threshold: 400
+            if(SENSOR_R_READING<200 && SENSOR_L_READING<200){ //Sensor_R Threshold: 50; Sensor_L Threshold: 400
                 if(LEFTWALL < 200){
-                  u32wait = millis();
+                    u32wait = millis();
                     STATE = ROBOT_TURN_LEFT;
                 } else if (FRONTWALL > 115) {
-                  u32wait = millis();
+                    u32wait = millis();
                     STATE = ROBOT_TURN_RIGHT;
                 } else {
                     robot_move(forward);
                 }
-            }else if(SENSOR_L_READING < 55){ //Sensor_L Threshold: 400   
+            }else if(SENSOR_L_READING < 200){ //Sensor_L Threshold: 400   
                 robot_move(adj_right);
-            }else if(SENSOR_R_READING < 55){ //Sensor_R Threshold: 50
+            }else if(SENSOR_R_READING < 200){ //Sensor_R Threshold: 50
                 robot_move(adj_left);
             }else{
-                if((millis()-u32wait) > WAITTIME){
-                    //robot_move(rstop);
-                    STATE = IR_DECT;
-                }else{
-                    STATE = ROBOT_SENSE;
-                } 
-                robot_move(forward);
+              robot_move(forward);
             }
+                
+            if((millis()-u32wait_ir) > WAITTIME){
+                    robot_move(rstop);
+                    u32wait_ir = millis();
+                    STATE = IR_DECT;
+            }else{
+                    STATE = ROBOT_SENSE;
+            }
+            
             break;
               
         case ROBOT_DETECTED:
@@ -118,14 +119,14 @@ void loop() {
 
         case ROBOT_TURN_LEFT:
             robot_move(left);
-            if(millis()-u32wait>1000){
+            if(millis()-u32wait>700){
                 STATE = ROBOT_SENSE;
             }
             break;
 
         case ROBOT_TURN_RIGHT:
             robot_move(right);
-            if(millis()-u32wait>1000){
+            if(millis()-u32wait>700){
                 STATE = ROBOT_SENSE;
             }
             break;
