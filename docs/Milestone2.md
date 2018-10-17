@@ -1,4 +1,4 @@
-# Milestone 1: Line Follower
+# Milestone 2: Wall and Robot Detection
 
 ## Introduction
 
