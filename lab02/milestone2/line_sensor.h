@@ -5,12 +5,12 @@
 
 // These variables are marked 'volatile' to inform the compiler that they can change
 // at any time (as they are set by hardware interrupts).
-volatile long SENSOR_R_TIMER;
-volatile long SENSOR_L_TIMER;
+volatile uint32_t SENSOR_R_TIMER;
+volatile uint32_t SENSOR_L_TIMER;
 
 // Consider smoothing this value with your favorite smoothing technique (exponential moving average?)
-volatile long SENSOR_R_READING;
-volatile long SENSOR_L_READING;
+volatile uint32_t SENSOR_R_READING;
+volatile uint32_t SENSOR_L_READING;
 
 
 void SENSOR_R_ISR();
