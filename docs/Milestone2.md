@@ -6,6 +6,14 @@ The goal of milestone 2 was to implement wall-detection functionality and make t
 ## Line-Following Improvements
 Line-following functionality was previously implemented in milestone 1, but when we came back to this after working on Lab 2 we discovered that our implementation required some adjustments. Due to the added weight of new components, the power necessary to turn the robot 90 degrees increased; this threw off our initial code, so we re-calibrated the system. We also found that we needed to adjust the height of our line sensors. They were too low to the ground, which (somehow) led to sensing issues at intersections and caused the robot to occasionally stop inexplicably instead of turning. We added a spacer onto the screw that attaches the sensors to the robot, raising the sensors higher, and re-calibrated our white-black threshold.
 
+<figure>
+    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/milestone2/20181017_224046.jpg" width="800"/>
+    <font size="3">
+    <figcaption> <b>Improved Line Sensors</b>
+    </figcaption>
+    </font>
+</figure>
+
 
 ## Wall Dectection
 To avoid walls while navigating the maze, we attached short-range IR sensors to the front and left side of the chassis. These sensors detect objects at distances between 4 cm and 30cm, which is appropriate for our use.
