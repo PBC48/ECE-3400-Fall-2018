@@ -19,14 +19,6 @@ To avoid walls while navigating the maze, we attached short-range IR sensors to 
     </font>
 </figure>
 
-<figure>
-    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/milestone2/IMG_0374.jpg" width="800"/>
-    <font size="3">
-    <figcaption> <b>Front View of Robot</b>
-    </figcaption>
-    </font>
-</figure>
-
 The wall sensors output an analog value corresponding to the distance of an object from the sensor, and our algorithm sets threshold values to determine whether there is a wall in the grid space directly adjacent to the robot.  We implemented a left-hand wall following rule, defaulting to a left turn at an intersection if no wall is detected to the left. If the robot only detects a wall to the left, it goes straight, and if there is a wall both to the left and in front of the robot, it turns right. The following video shows our robot traversing a small maze:
 
 <iframe width="560" height="315" src="https://youtu.be/31nsK4JZrqU" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
@@ -39,6 +31,16 @@ The core of our algorithm is a finite state machine. It has states that make the
 The detecting of other robots was already mostly implemented in Lab 2 by the optical team, but we integrated the robot’s response to the IR hat’s signal this week.  
 
 To increase the sensitivity of the phototransistor, we put the sensor at the head of the robot.
+
+
+<figure>
+    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/milestone2/IMG_0374.jpg" width="800"/>
+    <font size="3">
+    <figcaption> <b>Front View of Robot</b>
+    </figcaption>
+    </font>
+</figure>
+The phototransistor can be seen right in front of the battery.
 
 
 Placing the phototransistor there improved our ability to sense other robots in front, to the right, and to the left of ours. Our main focus is on detecting robots in front of us, while detection of robots to the side is more limited. We chose to have the robot simply stop when it detects another robot. The following video shows our robot stopping when we hold the IR hat in front of it approximately 5.5 inches above the ground:
@@ -136,5 +138,6 @@ The IR sensing occurs every 800 ms, which can be adjusted later based on computa
 ## Demonstration
 We show what our robot is “thinking” by flashing LEDs indicating what outside stimuli the robot has picked up and will be reacting to according to the FSM.  As it navigates the maze, it stays with the wall on its left.  The red LED indicates that the left path is clear, so the robot will turn left.  If the yellow LED has turned on, this indicates that both the front and left wall sensors detect walls, so the robot will respond by turning right. The green LED turns on when the IR sensor has detected a signal from the IR hat (i.e., detected another robot), and the robot will halt to avoid the other robot.
 <iframe width="560" height="315" src="https://youtu.be/aWahZUqSUfI" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+
 ## Conclusion
 We have now made further progress toward our robot being able to successfully navigate the final competition maze. In the future we intend to add a third short-range IR sensor to the right side of the robot to allow it to detect walls on all side for the purpose of mapping the maze. In addition, we would like to implement a more robust turning algorithm that does not rely on hard-coded delays.
