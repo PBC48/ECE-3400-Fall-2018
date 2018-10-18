@@ -1,18 +1,12 @@
 # Milestone 2: Wall and Robot Detection
 
 ## Introduction
-
+The goal of milestone 2 was to implement wall-detection functionality and make the robot avoid other robots, while still successfully line-following in order to traverse the maze. To accomplish this task, we added short-range IR sensors to the robot to detect walls and refined our detection of the 6.08kHz IR signal emitted by the robot IR hat. Our final product was a demonstration of the robot traversing an arbitrary maze using a left-wall-following rule, and stopping whenever it detected the IR hat.
 
 ## Line Tracking
 
 
-<figure>
-    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/milestone1/20180910_213436.jpg" width="800"/>
-    <font size="3">
-    <figcaption> <b>Front View of Robot after Adding a Second Level</b>
-    </figcaption>
-    </font>
-</figure>
+
 
 
 ## Wall Dectection
