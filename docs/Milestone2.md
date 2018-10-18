@@ -45,7 +45,7 @@ The phototransistor can be seen right in front of the battery.
 
 Placing the phototransistor there improved our ability to sense other robots in front, to the right, and to the left of ours. Our main focus is on detecting robots in front of us, while detection of robots to the side is more limited. We chose to have the robot simply stop when it detects another robot. The following video shows our robot stopping when we hold the IR hat in front of it approximately 5.5 inches above the ground:
 
-<iframe width="560" height="315" src="https://youtu.be/5A-XvhphpGg" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/r3OLbq3HsRQ" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
 We updated the FSM used in our lab 2 integration with addtional states: 
 ```cpp
