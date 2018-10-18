@@ -9,7 +9,7 @@ Line-following functionality was previously implemented in milestone 1, but when
 ## Wall Dectection
 To avoid walls while navigating the maze, we attached short-range IR sensors to the front and left side of the chassis. These sensors detect objects at distances between 4 cm and 30cm, which is appropriate for our use.
 
-The wall sensors output an analog value corresponding to the distance of an object from the sensor, and our algorithm sets threshold values to determine whether there is a wall in the grid space directly adjacent to the robot.  We implemented a left-hand wall following rule, defaulting to a left turn at an intersection if no wall is detected to the left. If the robot only detects a wall to the left, it goes straight, and if there is a wall both to the left and in front of the robot, it turns right.
+The wall sensors output an analog value corresponding to the distance of an object from the sensor, and our algorithm sets threshold values to determine whether there is a wall in the grid space directly adjacent to the robot.  We implemented a left-hand wall following rule, defaulting to a left turn at an intersection if no wall is detected to the left. If the robot only detects a wall to the left, it goes straight, and if there is a wall both to the left and in front of the robot, it turns right. The following video shows our robot traversing a small maze:
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/iyFj-MwOoxo" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
@@ -23,7 +23,7 @@ The detecting of other robots was already mostly implemented in Lab 2 by the opt
 To increase the sensitivity of the phototransistor, we put the sensor at the head of the robot.
 
 
-Placing the phototransistor there improved our ability to sense other robots in front, to the right, and to the left of ours. Our main focus is on detecting robots in front of us, while detection of robots to the side is more limited. 
+Placing the phototransistor there improved our ability to sense other robots in front, to the right, and to the left of ours. Our main focus is on detecting robots in front of us, while detection of robots to the side is more limited. We chose to have the robot simply stop when it detects another robot. The following video shows our robot stopping when we hold the IR hat in front of it approximately 5.5 inches above the ground:
 
 <iframe width="560" height="315" src="https://youtube.com/embed/DLj0mfdm-ms" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
