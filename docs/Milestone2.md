@@ -23,8 +23,8 @@
 
 <iframe width="560" height="315" src="https://youtube.com/embed/DLj0mfdm-ms" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
-### Coding
-For the coding section, we updated the FSM used in lab 2 integration with addtional states: 
+### Coding Updates
+We updated the FSM used in lab 2 integration with addtional states: 
 ```cpp
 enum states : uint8_t {
     START,
@@ -37,7 +37,7 @@ enum states : uint8_t {
 };
 
 ```
-We concentrated the FFT and processing of the audio and IR signals into two states. We also had states specifically for robot turning at intersections because we hope to eventually implemnet a more robust robot turning algorithm. The ROBOT_SENSE is main state that the robot will be in where it is following the line and detecting the intersections. ROBOT_DETECTED handles cases when we detect other robots with the IR.
+We concentrated the FFT and processing of the audio and IR signals into two states. We also had states specifically for robot turning at intersections because we hope to eventually implement a more robust robot turning algorithm. The ROBOT_SENSE is main state that the robot will be in where it is following the line and detecting the intersections. ROBOT_DETECTED handles cases when we detect other robots with the IR.
 
 ```cpp
 #define WALL_FRONT 2
@@ -107,13 +107,13 @@ switch (STATE){
         break
     }
 ```
-We have somewhat of a skeleton code for ROBOT_DETECTED, ROBOT_TURN_LEFT, and ROBOT_TURN_RIGHT because we intended to implement them with more complexity than simple waits. However, the current code do the job for this milestone. 
+We have somewhat of a skeleton code for ROBOT_DETECTED, ROBOT_TURN_LEFT, and ROBOT_TURN_RIGHT because we intended to implement them with more complexity than simple waits. However, the current code does the job for this milestone. 
 
-For ROBOT_SENSE, we read from the wall sensors and also the line sensors to tell if we need to either re-adjust the robot to stay on the line or turn. Just like milestone 1, we only consider turning if both sensors detect white line, but this time, we turn based on the readings of the wall sensors. 
+In ROBOT_SENSE, we read from the wall sensors and also the line sensors to tell if we need to either re-adjust the robot to stay on the line or turn. Just like milestone 1, we only consider turning if both sensors detect white line, but this time, we turn based on the readings of the wall sensors. 
 
 We currently perform left wall following so if there is no wall to the left, then we automatically turn left, otherwise we will consider right if we appoarching a wall. 
 
-The IR sensing occurs every 800 ms, which can be adjusted later based on computation needs. Every 800 ms, we switch the state to IR_DECT and run the FFT with a processing algorithm. Currently we only do averages of N FFT cycles but may consider moving averages.   
+The IR sensing occurs every 800 ms, which can be adjusted later based on computation needs. Every 800 ms, we switch the state to IR_DECT and run the FFT with a processing algorithm. Currently, we only do averages of N FFT cycles but may consider moving averages.   
 
 ## Conclusion
 
