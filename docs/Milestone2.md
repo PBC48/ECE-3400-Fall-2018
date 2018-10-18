@@ -113,4 +113,4 @@ We currently perform left wall following so if there is no wall to the left, the
 The IR sensing occurs every 800 ms, which can be adjusted later based on computation needs. Every 800 ms, we switch the state to IR_DECT and run the FFT with a processing algorithm. Currently, we only do averages of N FFT cycles but may consider moving averages.   
 
 ## Conclusion
-
+We have now made further progress toward our robot being able to successfully navigate the final competition maze. In the future we intend to add a third short-range IR sensor to the right side of the robot to allow it to detect walls on all side for the purpose of mapping the maze. In addition, we would like to implement a more robust turning algorithm that does not rely on hard-coded delays.
