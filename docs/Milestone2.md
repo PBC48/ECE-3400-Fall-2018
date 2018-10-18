@@ -6,8 +6,26 @@ The goal of milestone 2 was to implement wall-detection functionality and make t
 ## Line-Following Improvements
 Line-following functionality was previously implemented in milestone 1, but when we came back to this after working on Lab 2 we discovered that our implementation required some adjustments. Due to the added weight of new components, the power necessary to turn the robot 90 degrees increased; this threw off our initial code, so we re-calibrated the system. We also found that we needed to adjust the height of our line sensors. They were too low to the ground, which (somehow) led to sensing issues at intersections and caused the robot to occasionally stop inexplicably instead of turning. We added a spacer onto the screw that attaches the sensors to the robot, raising the sensors higher, and re-calibrated our white-black threshold.
 
+
 ## Wall Dectection
 To avoid walls while navigating the maze, we attached short-range IR sensors to the front and left side of the chassis. These sensors detect objects at distances between 4 cm and 30cm, which is appropriate for our use.
+
+
+<figure>
+    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/milestone2/IMG_0373.jpg" width="800"/>
+    <font size="3">
+    <figcaption> <b>Updated Robot with Wall Scensors</b>
+    </figcaption>
+    </font>
+</figure>
+
+<figure>
+    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/milestone2/IMG_0374.jpg" width="800"/>
+    <font size="3">
+    <figcaption> <b>Front View of Robot</b>
+    </figcaption>
+    </font>
+</figure>
 
 The wall sensors output an analog value corresponding to the distance of an object from the sensor, and our algorithm sets threshold values to determine whether there is a wall in the grid space directly adjacent to the robot.  We implemented a left-hand wall following rule, defaulting to a left turn at an intersection if no wall is detected to the left. If the robot only detects a wall to the left, it goes straight, and if there is a wall both to the left and in front of the robot, it turns right. The following video shows our robot traversing a small maze:
 
