@@ -137,7 +137,8 @@ The IR sensing occurs every 800 ms, which can be adjusted later based on computa
 
 ## Demonstration
 We show what our robot is “thinking” by flashing LEDs indicating what outside stimuli the robot has picked up and will be reacting to according to the FSM.  As it navigates the maze, it stays with the wall on its left.  The red LED indicates that the left path is clear, so the robot will turn left.  If the yellow LED has turned on, this indicates that both the front and left wall sensors detect walls, so the robot will respond by turning right. The green LED turns on when the IR sensor has detected a signal from the IR hat (i.e., detected another robot), and the robot will halt to avoid the other robot.
-<iframe width="560" height="315" src="https://youtu.be/aWahZUqSUfI" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/aWahZUqSUfI?rel=0&amp;controls=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
 ## Conclusion
 We have now made further progress toward our robot being able to successfully navigate the final competition maze. In the future we intend to add a third short-range IR sensor to the right side of the robot to allow it to detect walls on all side for the purpose of mapping the maze. In addition, we would like to implement a more robust turning algorithm that does not rely on hard-coded delays.
