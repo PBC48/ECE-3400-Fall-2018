@@ -21,7 +21,7 @@ To avoid walls while navigating the maze, we attached short-range IR sensors to 
 
 The wall sensors output an analog value corresponding to the distance of an object from the sensor, and our algorithm sets threshold values to determine whether there is a wall in the grid space directly adjacent to the robot.  We implemented a left-hand wall following rule, defaulting to a left turn at an intersection if no wall is detected to the left. If the robot only detects a wall to the left, it goes straight, and if there is a wall both to the left and in front of the robot, it turns right. The following video shows our robot traversing a small maze:
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/31nsK4JZrqU?rel=0&amp;controls=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+<iframe width="840" height="473" src="https://www.youtube.com/embed/31nsK4JZrqU?rel=0&amp;controls=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
 The core of our algorithm is a finite state machine. It has states that make the robot either turn left, turn right, or move forward, adjust the machine to stay on the line, and sense for other robots.
 
