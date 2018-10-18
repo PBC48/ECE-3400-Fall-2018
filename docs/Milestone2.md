@@ -18,6 +18,13 @@ The core of our algorithm is a finite state machine. It has states that make the
 
 ## Robot Avoidance
 
+The detecting of other robots was already mostly implemented in Lab 2 by the optical team, but we integrated the robot’s response to the IR hat’s signal this week.  
+
+To increase the sensitivity of the phototransistor, we put the sensor at the head of the robot.
+
+
+Placing the phototransistor there improved our ability to sense other robots in front, to the right, and to the left of ours. Our main focus is on detecting robots in front of us, while detection of robots to the side is more limited. 
+
 <iframe width="560" height="315" src="https://youtube.com/embed/DLj0mfdm-ms" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
 ### Coding Updates
