@@ -4,10 +4,10 @@
 The goal of milestone 2 was to implement wall-detection functionality and make the robot avoid other robots, while still successfully line-following in order to traverse the maze. To accomplish this task, we added short-range IR sensors to the robot to detect walls and refined our detection of the 6.08kHz IR signal emitted by the robot IR hat. Our final product was a demonstration of the robot traversing an arbitrary maze using a left-wall-following rule, and stopping whenever it detected the IR hat.
 
 ## Line-Following Improvements
-Line-following functionality was previously implemented in milestone 1, but when we came back to this after working on Lab 2 we discovered that our implementation required some adjustments. Due to the added weight of new components, the power necessary to turn the robot 90 degrees increased; this threw off our initial code, so we re-calibrated the system. We also found that we needed to adjust the height of our line sensors. They were too low to the ground, which (somehow) led to sensing issues at intersections and caused the robot to occasionally stop inexplicably instead of turning. We added a spacer onto the screw that attaches the sensors to the robot, raising the sensors higher, and re-calibrated our white-black threshold.
+Line-following functionality was previously implemented in milestone 1, but when we came back to this after working on Lab 2 we discovered that our implementation required some adjustments. Due to the added weight of new components, the power necessary to turn the robot 90 degrees increased; this threw off our initial code, so we re-calibrated the system. We also found that we needed to adjust the height of our line sensors. They were too low to the ground, which (somehow) led to sensing issues at intersections and caused the robot to occasionally stop inexplicably instead of turning. We added nuts to act as a spacer onto the screw that attaches the sensors to the robot, raising the sensors higher, and re-calibrated our white-black threshold.
 
 <figure>
-    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/milestone2/line_sensor_spacers2.jpg" width="350"/>
+    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/milestone2/line_sensor_spacers2.jpg" width="450"/>
     <font size="3">
     <figcaption> <b>Improved Line Sensors</b>
     </figcaption>
@@ -39,7 +39,7 @@ The core of our algorithm is a finite state machine. It has states that make the
 
 The detecting of other robots was already mostly implemented in Lab 2 by the optical team, but we integrated the robot’s response to the IR hat’s signal this week.  
 <figure>
-    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/milestone2/phototransistor2.jpg" width="350"/>
+    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/milestone2/phototransistor2.jpg" width="450"/>
     <font size="3">
     <figcaption> <b>View of Phototransistor</b>
     </figcaption>
