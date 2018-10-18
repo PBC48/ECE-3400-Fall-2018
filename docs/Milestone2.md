@@ -15,6 +15,7 @@ Line-following functionality was previously implemented in milestone 1, but when
 </figure>
 
 
+
 ## Wall Dectection
 To avoid walls while navigating the maze, we attached short-range IR sensors to the front and left side of the chassis. These sensors detect objects at distances between 4 cm and 30cm, which is appropriate for our use.
 
@@ -37,6 +38,13 @@ The core of our algorithm is a finite state machine. It has states that make the
 ## Robot Avoidance
 
 The detecting of other robots was already mostly implemented in Lab 2 by the optical team, but we integrated the robot’s response to the IR hat’s signal this week.  
+<figure>
+    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/milestone2/20181017_224909.jpg" width="800"/>
+    <font size="3">
+    <figcaption> <b>View of Phototransistor</b>
+    </figcaption>
+    </font>
+</figure>
 
 To increase the sensitivity of the phototransistor, we put the sensor at the head of the robot.
 
