@@ -3,15 +3,18 @@
 ## Introduction
 The goal of milestone 2 was to implement wall-detection functionality and make the robot avoid other robots, while still successfully line-following in order to traverse the maze. To accomplish this task, we added short-range IR sensors to the robot to detect walls and refined our detection of the 6.08kHz IR signal emitted by the robot IR hat. Our final product was a demonstration of the robot traversing an arbitrary maze using a left-wall-following rule, and stopping whenever it detected the IR hat.
 
-## Line Tracking
-
-
-
-
+## Line-Following Improvements
+Line-following functionality was previously implemented in milestone 1, but when we came back to this after working on Lab 2 we discovered that our implementation required some adjustments. Due to the added weight of new components, the power necessary to turn the robot 90 degrees increased; this threw off our initial code, so we re-calibrated the system. We also found that we needed to adjust the height of our line sensors. They were too low to the ground, which (somehow) led to sensing issues at intersections and caused the robot to occasionally stop inexplicably instead of turning. We added a spacer onto the screw that attaches the sensors to the robot, raising the sensors higher, and re-calibrated our white-black threshold.
 
 ## Wall Dectection
+To avoid walls while navigating the maze, we attached short-range IR sensors to the front and left side of the chassis. These sensors detect objects at distances between 4 cm and 30cm, which is appropriate for our use.
+
+The wall sensors output an analog value corresponding to the distance of an object from the sensor, and our algorithm sets threshold values to determine whether there is a wall in the grid space directly adjacent to the robot.  We implemented a left-hand wall following rule, defaulting to a left turn at an intersection if no wall is detected to the left. If the robot only detects a wall to the left, it goes straight, and if there is a wall both to the left and in front of the robot, it turns right.
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/iyFj-MwOoxo" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+
+The core of our algorithm is a finite state machine. It has states that make the robot either turn left, turn right, or move forward, adjust the machine to stay on the line, and sense for other robots.
+
 
 ## Robot Avoidance
 
