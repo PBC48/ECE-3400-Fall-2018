@@ -6,10 +6,13 @@ sensor, robot movement, microphone, and ir all in one.
 #define WALL_FRONT 2
 #define WALL_LEFT 3
 #define WAITTIME 800
+#define BUTTON 5 //Ditgital pin for button
 
 #include "robot.h"
 #include "line_sensor.h"
 #include "fft_lib.h"
+#include "radio.h"
+#include "maze.h"
 
 enum states : uint8_t {
     START,
@@ -26,6 +29,7 @@ uint32_t u32wait;
 uint32_t u32wait_ir;
 uint16_t FRONTWALL;
 uint16_t LEFTWALL;
+uint8_t radio_msg;
 
 void toggle_LED(uint8_t &pin){
     
@@ -37,6 +41,7 @@ void setup() {
   Serial.begin(115200);
     line_sensor_init();
     robot_init();
+    radio_init(role_pong_back);
     STATE = START;
     u32wait = millis();
 }
@@ -46,14 +51,17 @@ void loop() {
     switch (STATE){
         case START:
             Serial.println(F("start"));
-            STATE = AUDIO_DECT;
+            radio_msg = 0xFF;
+            radio_transmit(&radio_msg);
+            delay(1000);
+            STATE = START;
             
             break;
         
         case AUDIO_DECT:
             calculate_FFT(MIC);
             Serial.print(F("AUDIO SUM: "));Serial.println(sum);
-            if(sum>40){ //originally at 90
+            if(sum>100 || digitalRead(BUTTON)){ //originally at 90
                 Serial.println(F("660Hz Tone Detected"));
                 STATE = IR_DECT;
             }else{
