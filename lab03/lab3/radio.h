@@ -89,7 +89,7 @@ void radio_init(role_e role){
   radio.printDetails();
 }
 
-void radio_transmit(uint8_t *buff){
+void radio_transmit(uint16_t *buff){
     // First, stop listening so we can talk.
     radio.stopListening();
 

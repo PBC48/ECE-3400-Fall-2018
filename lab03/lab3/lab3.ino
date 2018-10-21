@@ -31,6 +31,18 @@ uint16_t FRONTWALL;
 uint16_t LEFTWALL;
 uint8_t radio_msg;
 
+/*
+ * To determine the direction the robot is going in and update the walls respetively
+ */
+enum direction : uint8_t{
+  NORTH,
+  EAST,
+  SOUTH,
+  WEST
+};
+
+bool is_forward;
+
 void toggle_LED(uint8_t &pin){
     
     int set = digitalRead(pin) ? LOW : HIGH;
