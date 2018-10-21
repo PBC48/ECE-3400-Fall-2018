@@ -82,7 +82,7 @@ void setup(void)
 
   // optionally, reduce the payload size.  seems to
   // improve reliability
-  //radio.setPayloadSize(8);
+  radio.setPayloadSize(2);
 
   //
   // Open pipes to other nodes for communication
@@ -177,16 +177,16 @@ void loop(void)
     if ( radio.available() )
     {
       // Dump the payloads until we've gotten everything
-      unsigned long got_time;
+      uint8_t *buff;
       bool done = false;
       while (!done)
       {
         // Fetch the payload, and see if this was the last one.
-        done = radio.read( &got_time, sizeof(unsigned long) );
-
+        done = radio.read( buff, sizeof(buff) );
+      
         // Spew it
-        printf("Got payload %lu...",got_time);
-
+        printf("Got payload %lu...",buff);
+        //decode the message
         // Delay just a little bit to let the other unit
         // make the transition to receiver
         delay(20);
