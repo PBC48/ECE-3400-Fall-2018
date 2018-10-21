@@ -4,7 +4,7 @@
 
  * Current bit configuration:
  * [3:0] WALLS; true or false NESW
- * [5:4] TREASURE; can go up four bits. 2 shapes * 2 colors = 4 combs
+ * [7:4] TREASURE; can go up four bits. 2 shapes * 2 colors = 4 combs
  * [8]   ROBOT; true or false
 */
 
@@ -24,6 +24,7 @@ int * decoder(int input){
     int output[]={west, north, east, south, robot, tshape, tcolor};
     return output; 
 }
+
 
 int encoder(int &in1, int &in2, int &in3, int &in4, int &in5, int &in6){
     

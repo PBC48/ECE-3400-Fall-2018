@@ -31,9 +31,15 @@ RF24 radio(9,10);
 //
 // Topology
 //
-
+int rows = 2;
+int cols = 3;
+// Starting coordinates
+int x = 0;
+int y = 0;
 // Radio pipe addresses for the 2 nodes to communicate.
 const uint64_t pipes[2] = { 0x0000000014LL, 0x0000000015LL };
+// The map of the stage
+int map[rows][cols];
 
 //
 // Role management
@@ -177,7 +183,7 @@ void loop(void)
     if ( radio.available() )
     {
       // Dump the payloads until we've gotten everything
-      uint8_t *buff;
+      int *buff;
       bool done = false;
       while (!done)
       {
@@ -186,16 +192,17 @@ void loop(void)
       
         // Spew it
         printf("Got payload %lu...",buff);
-        //decode the message
         // Delay just a little bit to let the other unit
         // make the transition to receiver
         delay(20);
 
       }
 
-      // First, stop listening so we can talk
+      // First, stop listening so we can talk and process
       radio.stopListening();
 
+      // Decode message
+      map[x][y] =       
       // Send the final one back.
       radio.write( &got_time, sizeof(unsigned long) );
       printf("Sent response.\n\r");
