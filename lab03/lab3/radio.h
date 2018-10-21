@@ -54,7 +54,7 @@ void radio_init(role_e role){
 
   // optionally, reduce the payload size.  seems to
   // improve reliability
-  //radio.setPayloadSize(8);
+  radio.setPayloadSize(2);
 
   //
   // Open pipes to other nodes for communication
@@ -94,9 +94,9 @@ void radio_transmit(uint8_t *buff){
     radio.stopListening();
 
     // Take the time, and send it.  This will block until complete
-    unsigned long time = millis();
-    printf("Now sending %lu...",time);
-    bool ok = radio.write( &time, sizeof(unsigned long) );
+    //unsigned long time = millis();
+    printf("Now sending %lu...",*buff);
+    bool ok = radio.write( buff, sizeof(buff) );
 
     if (ok)
       printf("ok...");
