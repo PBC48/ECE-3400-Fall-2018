@@ -54,7 +54,7 @@ void radio_init(role_e role){
 
   // optionally, reduce the payload size.  seems to
   // improve reliability
-  radio.setPayloadSize(2);
+  //radio.setPayloadSize(8);
 
   //
   // Open pipes to other nodes for communication
@@ -89,14 +89,15 @@ void radio_init(role_e role){
   radio.printDetails();
 }
 
-void radio_transmit(uint8_t *buff){
+void radio_transmit(uint16_t &buff){
     // First, stop listening so we can talk.
     radio.stopListening();
 
     // Take the time, and send it.  This will block until complete
-    //unsigned long time = millis();
-    printf("Now sending %lu...",*buff);
-    bool ok = radio.write( buff, sizeof(buff) );
+    unsigned long time = millis();
+    //Serial.print("now sending..");Serial.println(buff);
+    printf("Now sending %lu...",buff);
+    bool ok = radio.write( &time, sizeof(unsigned long) );
 
     if (ok)
       printf("ok...");
@@ -121,11 +122,14 @@ void radio_transmit(uint8_t *buff){
     else
     {
       // Grab the response, compare, and send to debugging spew
-      unsigned long got_time;
-      radio.read( &got_time, sizeof(unsigned long) );
+      //unsigned long got_time;
+      uint16_t buffer; 
+      radio.read( &buffer, sizeof(buffer) );
 
       // Spew it
-      printf("Got response %lu, round-trip delay: %lu\n\r",got_time,millis()-got_time);
+      //Serial.print("Got Response.."); Serial.println(buffer);
+      printf("Got response %lu\n\r", (buffer));
+     //printf("Got response %lu, round-trip delay: %lu\n\r",got_time,millis()-got_time);
     }
 }
  

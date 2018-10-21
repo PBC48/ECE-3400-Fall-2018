@@ -29,7 +29,7 @@ uint32_t u32wait;
 uint32_t u32wait_ir;
 uint16_t FRONTWALL;
 uint16_t LEFTWALL;
-uint8_t radio_msg;
+uint16_t radio_msg;
 
 void toggle_LED(uint8_t &pin){
     
@@ -38,10 +38,10 @@ void toggle_LED(uint8_t &pin){
 }
 
 void setup() {
-  Serial.begin(115200);
+  Serial.begin(57600);
     line_sensor_init();
     robot_init();
-    radio_init(role_pong_back);
+    radio_init(role_ping_out);
     STATE = START;
     u32wait = millis();
 }
@@ -51,8 +51,8 @@ void loop() {
     switch (STATE){
         case START:
             Serial.println(F("start"));
-            radio_msg = 0xFF;
-            radio_transmit(&radio_msg);
+            radio_msg = 0x00FF;
+            radio_transmit(radio_msg);
             delay(1000);
             STATE = START;
             

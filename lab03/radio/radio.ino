@@ -82,7 +82,7 @@ void setup(void)
 
   // optionally, reduce the payload size.  seems to
   // improve reliability
-  radio.setPayloadSize(2);
+  //radio.setPayloadSize(2);
 
   //
   // Open pipes to other nodes for communication
