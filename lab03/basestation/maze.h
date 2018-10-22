@@ -12,25 +12,28 @@
 /**
  * Takes input number and outputs array of output with labels. Assume
  * size of array works
- * 0000000|R|LRF|TSC|LRF
+ * 0000000|R|DD|TSC|LRF
 15                   9 8     7    6 5       3 2       0
 +---------------------+-----+------+---------+---------+
 | Reserved            |ROBOT|DIR   |TREASURE | WALLS   |
 +---------------------+-----+------+---------+---------+
 */
-int * decoder(uint16_t input){
-    bool wleft  = input & 0x1;
-    bool wright = (input >> 1) & 0x1;
-    bool wforward  = (input >> 2) & 0x1;
-    bool robot = (input >> 7) & 0x1;
-    bool left = 
-    bool right =
-    bool forward =
-    int treasure = (input >> 4) & 0x7;
-    int tshape = (input>>4) & 0x1;
-    int tcolor =  (input>>5) & 0x1;
-    int direction = (input>>8) & 0x3;
-    int output[]={wleft, wright, wforward, robot, left, right, forward, tshape, tcolor, direction};
+byte * decoder(uint16_t input){
+  //Serial.print("INPUT: ");Serial.println(input);
+    byte wforward  = input & 0x0001;
+    byte wright = (input >> 1) & 0x0001;
+    byte wleft = (input >> 2) & 0x0001;
+    byte robot = (input >> 8) & 0x0001;
+    byte dir = ((unsigned)input >> 6) & 0x0003;
+    byte treasure = (input >> 5) & 0x0001;
+    byte tshape = (input >> 4) & 0x0001;
+    byte tcolor =  (input >> 3) & 0x0001;
+    byte output[]={wleft, wright, wforward, robot, treasure, tshape, tcolor, dir};
+    for(int i =0;i<8;i++){
+      Serial.print(",");Serial.print(output[i]);
+    }
+    Serial.println("");
+    
     return output; 
 }
 

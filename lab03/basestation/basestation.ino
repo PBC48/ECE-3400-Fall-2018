@@ -19,7 +19,6 @@
 #include "nRF24L01.h"
 #include "RF24.h"
 #include "printf.h"
-#include "maze.h"
 //
 // Hardware configuration
 //
@@ -129,7 +128,7 @@ void loop(void)
   //
   // Ping out role.  Repeatedly send the current time
   //
-  uint16_t *buff;
+  uint16_t buff;
   uint8_t * resp;
   //
   // Pong back role.  Receive each packet, dump it out, and send it back
@@ -145,10 +144,10 @@ void loop(void)
       while (!done)
       {
         // Fetch the payload, and see if this was the last one.
-        done = radio.read( buff, sizeof(uint16_t) );
+        done = radio.read( &buff, sizeof(uint16_t) );
       
         // Spew it
-        printf("Got payload %lu...",*buff);
+        printf("Got payload %lu...\n",buff);
         // Delay just a little bit to let the other unit
         // make the transition to receiver
         delay(20);
@@ -163,28 +162,50 @@ void loop(void)
       // Decode message
       //map[x][y] =       
       // Send the final one back.
-      while(!received){
+      //while(!received){
         received = radio.write( &buff, sizeof(uint16_t) );
         //received = radio.write( &resp, sizeof(uint8_t) );
         delay(20);
-      }
+      //}
       
       // Now, resume listening so we catch the next packets.
       radio.startListening();
-    }
     
-    int * output = decoder(*buff);
+    
+    //byte * output = decoder(buff);
+    /*for(int i =0;i<8;i++){
+      Serial.print(",");Serial.print(output[i]);
+    }
+    Serial.println("");*/
+    //Decoding
     bool wall_left,wall_right, wall_front, robot,treasure, west,east,north,south;
-    int direction,tcolor,tshape;
-    wall_left   = output[0];
-    wall_front  = output[1];
-    wall_right  = output[2];
-    treasure = output[3];
-    tshape = output[4];
-    tcolor = output[5];
-    direction = output[6];
-    robot  = output[7];
-
+    uint8_t dir,tcolor,tshape;
+    wall_left   = (buff >> 2) & 0x0001;
+    wall_front  = buff & 0x0001;
+    wall_right  = (buff >> 1) & 0x0001;
+    treasure = (buff >> 5) & 0x0001;
+    tshape = (buff >> 4) & 0x0001;
+    tcolor = (buff >> 3) & 0x0001;
+    dir = ((unsigned)buff >> 6) & 0x0003;
+    robot  = (buff >> 8) & 0x0001;
+    /*wall_left   = output[0];
+    wall_front  = output[2];
+    wall_right  = output[1];
+    treasure = output[4];
+    tshape = output[5];
+    tcolor = output[6];
+    dir = output[7];
+    robot  = output[3];
+*/
+/*
+Serial.print("direction=");Serial.print(dir);
+Serial.print(",wall_left=");Serial.print(wall_left);
+Serial.print(",wall_front=");Serial.print(wall_front);
+Serial.print(",wall_right=");Serial.print(wall_right);
+Serial.print(",treasure=");Serial.print(treasure);
+Serial.print(",tshape=");Serial.print(tshape);
+Serial.print(",tcolor=");Serial.print(tcolor);
+Serial.print(",robot=");Serial.println(robot);*/
     //decode the absolute directions base on the robot's direction and input
     switch(robot_direction){
         case right: //facing right, then left is north, right is south
@@ -233,8 +254,7 @@ void loop(void)
             Serial.print("blue");
     }
     Serial.println("");
-
-    switch (direction){
+    switch (dir){
         case 0: //forward : robot decided to go forward
             if(robot_direction==right){
                 x++;
@@ -279,10 +299,10 @@ void loop(void)
 
         default:
             Serial.println("ROBOT DIRECTION NOT RECOGNIZED");
-            
+        
     }
-
-  
+    //free(output);
+    }
   //added extra delay: but remove when integrate
   delay(500);
 }
