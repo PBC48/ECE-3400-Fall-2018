@@ -195,15 +195,16 @@ void loop(void)
     dir = output[7];
     robot  = output[3];
 */
-/*
+
 Serial.print("direction=");Serial.print(dir);
 Serial.print(",wall_left=");Serial.print(wall_left);
 Serial.print(",wall_front=");Serial.print(wall_front);
 Serial.print(",wall_right=");Serial.print(wall_right);
-Serial.print(",treasure=");Serial.print(treasure);
+/*Serial.print(",treasure=");Serial.print(treasure);
 Serial.print(",tshape=");Serial.print(tshape);
 Serial.print(",tcolor=");Serial.print(tcolor);
 Serial.print(",robot=");Serial.println(robot);*/
+Serial.println("");
     //decode the absolute directions base on the robot's direction and input
     switch(robot_direction){
         case right: //facing right, then left is north, right is south
