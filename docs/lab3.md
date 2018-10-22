@@ -17,7 +17,7 @@
 ```
  15                  9 8     7    6 5       3 2       0
 +---------------------+-----+------+---------+---------+
-| Reserved            |robot| dir  | trea    | WALLS   |
+| Reserved            |ROBOT|DIR   |TREASURE | WALLS   |
 +---------------------+-----+------+---------+---------+
 ```
 ### Base Station-to-GUI Transmission
