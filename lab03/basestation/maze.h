@@ -27,7 +27,7 @@ int * decoder(uint16_t input){
     int tshape = (input>>4) & 0x1;
     int tcolor =  (input>>5) & 0x1;
     int direction = (input>>6) & 0x3;
-    int output[]={left, front, right, robot, treasure, direction};
+    int output[]={left, front, right, robot, tshape, tcolor, direction};
     return output; 
 }
 
