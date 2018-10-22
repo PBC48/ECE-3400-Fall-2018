@@ -100,15 +100,15 @@ void loop() {
                     u32wait = millis();
                     STATE = ROBOT_TURN_LEFT;
                 } else if (FRONTWALL > 115) {
-                    dir = 3;
+                    dir = 1;
                     u32wait = millis();
                     STATE = ROBOT_TURN_RIGHT;
                 } else {
-                    dir = 1;
+                    dir = 0;
                     robot_move(forward);
                 }
                 
-                radio_msg = radio_msg | (dir << 6) | (LEFTWALL > 200) | ((FRONTWALL > 115)<<1); //| ((RIGHTWALL > ###)<<2;
+                radio_msg = radio_msg | (dir << 6) | (LEFTWALL > 200) | ((FRONTWALL > 115)<<1); //| ((RIGHTWALL > ###)<<2);
                 
                 radio_transmit(radio_msg);
                 
