@@ -111,7 +111,7 @@ void loop() {
                 
                 radio_msg = radio_msg | (dir << 8) | (LEFTWALL > 200) | ((FRONTWALL > 115)<<3); //| ((RIGHTWALL > ###)<<2;
                 
-                radio.write(radio_msg,2);
+                radio_transmit(radio_msg);
                 
             }else if(SENSOR_L_READING < 200){ //Sensor_L Threshold: 400   
                 robot_move(adj_right);
