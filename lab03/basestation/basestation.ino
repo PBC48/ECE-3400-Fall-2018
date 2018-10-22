@@ -173,16 +173,46 @@ void loop(void)
     }
     
     int * output = decoder(*buff);
-    bool north, east,west,south,robot;
+    bool wall_left,wall_right, wall_front, robot,treasure, west,east,north,south;
     int direction,tcolor,tshape;
-    west   = output[0];
-    north  = output[1];
-    east   = output[2];
-    south  = output[3];
+    wall_left   = output[0];
+    wall_front  = output[1];
+    wall_right  = output[2];
     robot  = output[4];
+    treasure = output[5];
     tshape = output[5];
     tcolor = output[6];
     direction = output[7];
+
+    //decode the absolute directions base on the robot's direction and input
+    switch(robot_direction){
+        case right: //facing right, then left is north, right is south
+            north = wall_left;
+            south = wall_right;
+            west  = false; //No wall behind robot
+            east  = wall_front;
+            break;
+        case left:
+            north = wall_right;
+            south = wall_left;
+            west  = wall_front;
+            east  = false;
+            break;
+        case up:
+            north = wall_front;
+            south = false;
+            west  = wall_left;
+            east  = wall_right;
+            break;
+        case down:
+            north = false;
+            south = wall_front;
+            west  = wall_right;
+            east  = wall_left;
+            break;
+        default:
+            Serial.println("robot_direction not recognized");
+    }
 
     Serial.print(x);Serial.print(",");Serial.print(y);
     Serial.print(",west=");Serial.print(west);
@@ -190,15 +220,17 @@ void loop(void)
     Serial.print(",north=");Serial.print(north);
     Serial.print(",south=");Serial.println(south);
     Serial.print(",tshape=");
-    if(tshape)
-        Serial.print("circle");
-    else
-        Serial.print("square");
-    Serial.print(",tcolor=");
-    if(tcolor)
-        Serial.print("red");
-    else
-        Serial.print("blue");
+    if(treasure){
+        if(tshape)
+            Serial.print("circle");
+        else
+            Serial.print("square");
+        Serial.print(",tcolor=");
+        if(tcolor)
+            Serial.print("red");
+        else
+            Serial.print("blue");
+    }
     Serial.println("");
 
     switch (direction){

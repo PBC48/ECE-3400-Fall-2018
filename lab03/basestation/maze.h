@@ -12,10 +12,10 @@
  * Takes input number and outputs array of output with labels. Assume
  * size of array works
  * 
- *   15   -------------------  9         7      6    5      3                 0
-//  +-------------------------+---------+-----+-----+------+------------------+
-//  | type------------------- |direction|robot| N/A | trea | WALLS            |
-//  +-------------------------+---------+-----+-----+------+------------------+
+ *   15   -------------------  9         8      7     5      2                0
+//  +-------------------------+---------+-----+------+------+------------------+
+//  | type------------------- |direction|robot| dir  | trea | WALLS            |
+//  +-------------------------+---------+-----+------+------+------------------+
 */
 int * decoder(uint16_t input){
     bool west  = input & 0x1;
@@ -23,7 +23,7 @@ int * decoder(uint16_t input){
     bool east  = (input >> 2) & 0x1;
     bool north = (input >> 3) & 0x1;
     bool robot = (input >> 7) & 0x1;
-    int treasure = (input >> 4) & 0x3;
+    int treasure = (input >> 4) & 0x7;
     int tshape = (input>>4) & 0x1;
     int tcolor =  (input>>5) & 0x1;
     int direction = (input>>8) & 0x3;
