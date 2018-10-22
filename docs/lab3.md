@@ -20,9 +20,12 @@
 | Reserved            |ROBOT|DIR   |TREASURE | WALLS   |
 +---------------------+-----+------+---------+---------+
 
-[2:0]  We reserve three bits for detecting walls. The position of the walls will be relative to the robot. 
+[2:0]  We reserve three bits for detecting walls. The position of the walls will be relative 
+to the robot. 
 
-[5:3]  We reserve three bits for the treasure since there will be two shapes and two colors, giving us four options, we also need to define when there is no treasure. Thus, we have a total of five options.
+[5:3]  We reserve three bits for the treasure since there will be two shapes and two colors, 
+giving us four options, we also need to define when there is no treasure. Thus, we have a 
+total of five options.
 
 [7:6]  The direction the robot has decided to take after hitting the intersection
 
