@@ -110,7 +110,7 @@ void loop() {
                     robot_move(forward);
                 }
                 
-                radio_msg = radio_msg | (dir << 6) | (LEFTWALL > 200) | ((FRONTWALL > 115)<<1); //| ((RIGHTWALL > ###)<<2);
+                radio_msg = radio_msg | (dir << 6) | ((LEFTWALL > 200)<<2) | (FRONTWALL > 115); //| ((RIGHTWALL > ###)<<1);
                 
                 radio_transmit(radio_msg);
                 
