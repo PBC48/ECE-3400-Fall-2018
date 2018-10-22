@@ -82,9 +82,9 @@ void loop() {
 
         case ROBOT_SENSE:
             uint16_t radio_msg = 0;
-                //structure: 000000dd 0tttfrbl
-                // d = direction robot will travel; t = treasure; 
-                // f = front wall; r = right wall; b = back wall; l = left wall
+                //structure: 0000000b ddtttrfl
+                // d = direction robot will travel; t = treasure; b = robot
+                // f = front wall; r = right wall; l = left wall
             uint16_t FRONTWALL = analogRead(WALL_FRONT);
             uint16_t LEFTWALL = analogRead(WALL_LEFT);
             //Serial.println(F("IN ROBOT_SENSE"));
@@ -108,7 +108,7 @@ void loop() {
                     robot_move(forward);
                 }
                 
-                radio_msg = radio_msg | (dir << 8) | (LEFTWALL > 200) | ((FRONTWALL > 115)<<3); //| ((RIGHTWALL > ###)<<2;
+                radio_msg = radio_msg | (dir << 6) | (LEFTWALL > 200) | ((FRONTWALL > 115)<<1); //| ((RIGHTWALL > ###)<<2;
                 
                 radio_transmit(radio_msg);
                 
