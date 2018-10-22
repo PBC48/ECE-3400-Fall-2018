@@ -50,7 +50,7 @@ void toggle_LED(uint8_t &pin){
 }
 
 void setup() {
-  Serial.begin(57600);
+  Serial.begin(57600); // Not 115200?
     line_sensor_init();
     robot_init();
     radio_init(role_ping_out);
@@ -66,14 +66,14 @@ void loop() {
             radio_msg = 0x00FF;
             radio_transmit(radio_msg);
             delay(1000);
-            STATE = START;
+            STATE = AUDIO_DECT;
             
             break;
         
         case AUDIO_DECT:
             calculate_FFT(MIC);
             Serial.print(F("AUDIO SUM: "));Serial.println(sum);
-            if(sum>100 || digitalRead(BUTTON)){ //originally at 90
+            if(sum>85 || digitalRead(BUTTON)){ //originally at 90
                 Serial.println(F("660Hz Tone Detected"));
                 STATE = IR_DECT;
             }else{
