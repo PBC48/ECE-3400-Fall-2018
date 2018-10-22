@@ -115,7 +115,7 @@ void loop(void)
   //
   // Ping out role.  Repeatedly send the current time
   //
-  int *buff;
+  uint16_t *buff;
   //
   // Pong back role.  Receive each packet, dump it out, and send it back
   //
@@ -129,7 +129,7 @@ void loop(void)
       while (!done)
       {
         // Fetch the payload, and see if this was the last one.
-        done = radio.read( buff, sizeof(buff) );
+        done = radio.read( buff, sizeof(uint16_t) );
       
         // Spew it
         printf("Got payload %lu...",*buff);
@@ -146,9 +146,8 @@ void loop(void)
       // Decode message
       //map[x][y] =       
       // Send the final one back.
-      radio.write( &buff, sizeof(unsigned long) );
-      printf("Sent response.\n\r");
-
+      radio.write( &buff, sizeof(uint16_t) );
+     
       // Now, resume listening so we catch the next packets.
       radio.startListening();
     }
@@ -211,7 +210,7 @@ void loop(void)
                 robot_direction = left;
             }
             break;
-        case 2: //left
+        case 2: //left : robot decides to turn left
             if(robot_direction==right){
                 y++;
                 robot_direction = up;
