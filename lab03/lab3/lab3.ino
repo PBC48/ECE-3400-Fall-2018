@@ -27,21 +27,7 @@ enum states : uint8_t {
 uint8_t STATE;
 uint32_t u32wait;
 uint32_t u32wait_ir;
-uint16_t FRONTWALL;
-uint16_t LEFTWALL;
-uint16_t radio_msg;
 
-/*
- * To determine the direction the robot is going in and update the walls respetively
- */
-enum direction : uint8_t{
-  NORTH,
-  EAST,
-  SOUTH,
-  WEST
-};
-
-bool is_forward;
 
 void toggle_LED(uint8_t &pin){
     
@@ -96,8 +82,12 @@ void loop() {
             break;
 
         case ROBOT_SENSE:
-            FRONTWALL = analogRead(WALL_FRONT);
-            LEFTWALL = analogRead(WALL_LEFT);
+            uint16_t radio_msg = 0;
+                //structure: 000000dd 0tttfrbl
+                // d = direction robot will travel; t = treasure; 
+                // f = front wall; r = right wall; b = back wall; l = left wall
+            uint16_t FRONTWALL = analogRead(WALL_FRONT);
+            uint16_t LEFTWALL = analogRead(WALL_LEFT);
             //Serial.println(F("IN ROBOT_SENSE"));
             //Serial.print(F("SENSOR_R READING: "));Serial.println(SENSOR_R_READING);
             //Serial.print(F("SENSOR_L READING: "));Serial.println(SENSOR_L_READING);
@@ -105,15 +95,24 @@ void loop() {
             //Serial.print(F("LEFTWALL: "));Serial.println(LEFTWALL);
             if(SENSOR_R_READING<200 && SENSOR_L_READING<200){ //Sensor_R Threshold: 50; Sensor_L Threshold: 400
                 Serial.println("In intersection");
-                if(LEFTWALL < 200){ //need to turn left.
+                byte dir;
+                if(LEFTWALL < 200){
+                    dir = 2;
                     u32wait = millis();
                     STATE = ROBOT_TURN_LEFT;
                 } else if (FRONTWALL > 115) {
+                    dir = 3;
                     u32wait = millis();
                     STATE = ROBOT_TURN_RIGHT;
                 } else {
+                    dir = 0;
                     robot_move(forward);
                 }
+                
+                radio_msg = radio_msg | (dir << 8) | (LEFTWALL > 200) | ((FRONTWALL > 115)<<3); //| ((RIGHTWALL > ###)<<2;
+                
+                radio_transmit(radio_msg);
+                
             }else if(SENSOR_L_READING < 200){ //Sensor_L Threshold: 400   
                 robot_move(adj_right);
             }else if(SENSOR_R_READING < 200){ //Sensor_R Threshold: 50
