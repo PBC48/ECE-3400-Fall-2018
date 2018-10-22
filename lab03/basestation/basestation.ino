@@ -39,7 +39,10 @@ int y = 0;
 // Radio pipe addresses for the 2 nodes to communicate.
 const uint64_t pipes[2] = { 0x0000000014LL, 0x0000000015LL };
 // The map of the stage
+
 //int map1[2][3];
+int map1[2][3] = {0};
+
 enum r_dir{
     up,
     right,
@@ -51,6 +54,17 @@ r_dir robot_direction;
 // The debug-friendly names of those roles
 const char* role_friendly_name[] = { "invalid", "Ping out", "Pong back"};
 
+/**
+ * 4 bits used: left,right,up,down
+*/
+uint8_t getResp(){
+    uint8_t up,down,left,right;
+    up = (y>0) ? map1[x][y-1] : 1;
+    down = (y<(rows-1)) ? map1[x][y+1] : 1;
+    left = (x>0) ? map1[x-1][y] : 1;
+    right = (y<(cols-1)) ? map1[x+1][y] : 1;
+    return (left<<3)|(right<<2)|(up<<1)|(down);
+}
 
 
 void setup(void)
@@ -116,6 +130,7 @@ void loop(void)
   // Ping out role.  Repeatedly send the current time
   //
   uint16_t *buff;
+  uint8_t * resp;
   //
   // Pong back role.  Receive each packet, dump it out, and send it back
   //
@@ -124,8 +139,9 @@ void loop(void)
     if ( radio.available() )
     {
       // Dump the payloads until we've gotten everything
-      
+      map1[x][y]+=1;
       bool done = false;
+      bool received = false;
       while (!done)
       {
         // Fetch the payload, and see if this was the last one.
@@ -139,29 +155,31 @@ void loop(void)
 
       }
       
-      
+      *resp = getResp();
       // First, stop listening so we can talk and process
       radio.stopListening();
-
+        
       // Decode message
       //map[x][y] =       
       // Send the final one back.
-      radio.write( &buff, sizeof(uint16_t) );
-     
+      while(!received){
+        received = radio.write( &buff, sizeof(uint16_t) );
+        //received = radio.write( &resp, sizeof(uint8_t) );
+        delay(20);
+      }
+      
       // Now, resume listening so we catch the next packets.
       radio.startListening();
     }
-  
-
     
     int * output = decoder(*buff);
     bool north, east,west,south,robot;
     int direction,tcolor,tshape;
-    west = output[0];
+    west   = output[0];
     north  = output[1];
-    east = output[2];
-    south = output[3];
-    robot = output[4];
+    east   = output[2];
+    south  = output[3];
+    robot  = output[4];
     tshape = output[5];
     tcolor = output[6];
     direction = output[7];

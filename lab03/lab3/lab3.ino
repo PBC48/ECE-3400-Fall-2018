@@ -105,7 +105,7 @@ void loop() {
             //Serial.print(F("LEFTWALL: "));Serial.println(LEFTWALL);
             if(SENSOR_R_READING<200 && SENSOR_L_READING<200){ //Sensor_R Threshold: 50; Sensor_L Threshold: 400
                 Serial.println("In intersection");
-                if(LEFTWALL < 200){
+                if(LEFTWALL < 200){ //need to turn left.
                     u32wait = millis();
                     STATE = ROBOT_TURN_LEFT;
                 } else if (FRONTWALL > 115) {

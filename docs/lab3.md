@@ -24,6 +24,8 @@
 
 ### Integration with Mic
 
+### Robot Navigation through the maze
+
 ### Integration with Radio
 
 ## Conclusion 
