@@ -49,9 +49,9 @@ void loop() {
     switch (STATE){
         case START:
             Serial.println(F("start"));
-            radio_msg = 0x00FF;
-            radio_transmit(radio_msg);
-            delay(1000);
+            //radio_msg = 0x00FF;
+            //radio_transmit(radio_msg);
+            //delay(1000);
             STATE = AUDIO_DECT;
             
             break;
@@ -65,7 +65,6 @@ void loop() {
             }else{
                 STATE = AUDIO_DECT;
             }
-            STATE = IR_DECT;
             break;
         
         case IR_DECT:
@@ -105,7 +104,7 @@ void loop() {
                     u32wait = millis();
                     STATE = ROBOT_TURN_RIGHT;
                 } else {
-                    dir = 0;
+                    dir = 1;
                     robot_move(forward);
                 }
                 
