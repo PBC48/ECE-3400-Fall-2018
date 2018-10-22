@@ -4,14 +4,18 @@
 
  * Current bit configuration:
  * [3:0] WALLS; true or false NESW
- * [5:4] TREASURE; can go up four bits. 2 shapes * 2 colors = 4 combs
+ * [7:4] TREASURE; can go up four bits. 2 shapes * 2 colors = 4 combs
  * [8]   ROBOT; true or false
- * [10:9]ROBOT;direction
 */
 
 /**
  * Takes input number and outputs array of output with labels. Assume
  * size of array works
+ * 
+ *   15   -------------------  9         7      6    5      3                 0
+//  +-------------------------+---------+-----+-----+------+------------------+
+//  | type------------------- |direction|robot| N/A | trea | WALLS            |
+//  +-------------------------+---------+-----+-----+------+------------------+
 */
 int * decoder(uint16_t input){
     bool west  = input & 0x1;
@@ -20,8 +24,8 @@ int * decoder(uint16_t input){
     bool north = (input >> 3) & 0x1;
     bool robot = (input >> 7) & 0x1;
     int treasure = (input >> 4) & 0x3;
-    int tshape = (treasure>>1) & 1;
-    int tcolor =  treasure & 1;
+    int tshape = (input>>4) & 0x1;
+    int tcolor =  (input>>5) & 0x1;
     int direction = (input>>8) & 0x3;
     int output[]={west, north, east, south, robot, tshape, tcolor, direction};
     return output; 

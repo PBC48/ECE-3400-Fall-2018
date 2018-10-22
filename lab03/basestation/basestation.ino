@@ -45,22 +45,13 @@ enum r_dir{
     right,
     left,
     down
-}
-//
-// Role management
-//
-// Set up role.  This sketch uses the same software for all the nodes
-// in this system.  Doing so greatly simplifies testing.
-//
+};
 
-// The various roles supported by this sketch
-typedef enum { role_ping_out = 1, role_pong_back } role_e;
-
+r_dir robot_direction;
 // The debug-friendly names of those roles
 const char* role_friendly_name[] = { "invalid", "Ping out", "Pong back"};
 
-// The role of the current running sketch
-role_e role = role_pong_back;
+
 
 void setup(void)
 {
@@ -70,10 +61,6 @@ void setup(void)
 
   Serial.begin(9600);
   printf_begin();
-  printf("\n\rRF24/examples/GettingStarted/\n\r");
-  printf("ROLE: %s\n\r",role_friendly_name[role]);
-  printf("*** PRESS 'T' to begin transmitting to the other node\n\r");
-
   //
   // Setup and configure rf radio
   //
@@ -104,17 +91,8 @@ void setup(void)
   // Open 'our' pipe for writing
   // Open the 'other' pipe for reading, in position #1 (we can have up to 5 pipes open for reading)
 
-  if ( role == role_ping_out )
-  {
-    radio.openWritingPipe(pipes[0]);
-    radio.openReadingPipe(1,pipes[1]);
-  }
-  else
-  {
     radio.openWritingPipe(pipes[1]);
     radio.openReadingPipe(1,pipes[0]);
-  }
-
   //
   // Start listening
   //
@@ -126,7 +104,11 @@ void setup(void)
   //
 
   radio.printDetails();
+
+  robot_direction = right;
 }
+
+
 
 void loop(void)
 {
@@ -134,57 +116,10 @@ void loop(void)
   // Ping out role.  Repeatedly send the current time
   //
   int *buff;
-    
-  if (role == role_ping_out)
-  {
-    // First, stop listening so we can talk.
-    radio.stopListening();
-
-    // Take the time, and send it.  This will block until complete
-    unsigned long time = millis();
-    printf("Now sending %lu...",time);
-    bool ok = radio.write( &time, sizeof(unsigned long) );
-
-    if (ok)
-      printf("ok...");
-    else
-      printf("failed.\n\r");
-
-    // Now, continue listening
-    radio.startListening();
-
-    // Wait here until we get a response, or timeout (250ms)
-    unsigned long started_waiting_at = millis();
-    bool timeout = false;
-    while ( ! radio.available() && ! timeout )
-      if (millis() - started_waiting_at > 200 )
-        timeout = true;
-
-    // Describe the results
-    if ( timeout )
-    {
-      printf("Failed, response timed out.\n\r");
-    }
-    else
-    {
-      // Grab the response, compare, and send to debugging spew
-      unsigned long got_time;
-      radio.read( &got_time, sizeof(unsigned long) );
-
-      // Spew it
-      printf("Got response %lu, round-trip delay: %lu\n\r",got_time,millis()-got_time);
-    }
-
-    // Try again 1s later
-    delay(1000);
-  }
-
   //
   // Pong back role.  Receive each packet, dump it out, and send it back
   //
 
-  if ( role == role_pong_back )
-  {
     // if there is data ready
     if ( radio.available() )
     {
@@ -197,7 +132,7 @@ void loop(void)
         done = radio.read( buff, sizeof(buff) );
       
         // Spew it
-        printf("Got payload %lu...",buff);
+        printf("Got payload %lu...",*buff);
         // Delay just a little bit to let the other unit
         // make the transition to receiver
         delay(20);
@@ -217,63 +152,87 @@ void loop(void)
       // Now, resume listening so we catch the next packets.
       radio.startListening();
     }
-  }
+  
 
-    Serial.print(x);Serial.print(",");Serial.print(y);Serial.print(",");
+    
     int * output = decoder(*buff);
-      bool north, east,west,south,robot;
-      north  = output[1];
-      east = output[2];
-      west = output[0];
-      south = output[3];
-      robot = output[4];
-      direction = output[5];
-      switch (direction){
-          case 0: //forward : robot decided to go forward
-            if(r_dir==right)
+    bool north, east,west,south,robot;
+    int direction,tcolor,tshape;
+    west = output[0];
+    north  = output[1];
+    east = output[2];
+    south = output[3];
+    robot = output[4];
+    tshape = output[5];
+    tcolor = output[6];
+    direction = output[7];
+
+    Serial.print(x);Serial.print(",");Serial.print(y);
+    Serial.print(",west=");Serial.print(west);
+    Serial.print(",east=");Serial.print(east);
+    Serial.print(",north=");Serial.print(north);
+    Serial.print(",south=");Serial.println(south);
+    Serial.print(",tshape=");
+    if(tshape)
+        Serial.print("circle");
+    else
+        Serial.print("square");
+    Serial.print(",tcolor=");
+    if(tcolor)
+        Serial.print("red");
+    else
+        Serial.print("blue");
+    Serial.println("");
+
+    switch (direction){
+        case 0: //forward : robot decided to go forward
+            if(robot_direction==right){
                 x++;
-            if(r_dir==left)
+            }else if(robot_direction==left){
                 x--;
-            if(r_dir==up)
-                y++
-            if(r_dir==down)
-                y--
+            }else if(robot_direction==up){
+                y++;
+            }else if(robot_direction==down){
+                y--;
+            }
             break;
-            case 1: //right
+        case 1: //right : robot decided to turn right
+            if(robot_direction==right){
+                y--;
+                robot_direction = down;
+            }else if(robot_direction==left){
+                y++;
+                robot_direction = up;
+            }else if(robot_direction==up){
+                x++;
+                robot_direction = right;
+            }else if(robot_direction==down){
+                x--;
+                robot_direction = left;
+            }
             break;
-            case 2: //left
+        case 2: //left
+            if(robot_direction==right){
+                y++;
+                robot_direction = up;
+            }else if(robot_direction==left){
+                y--;
+                robot_direction = down;
+            }else if(robot_direction==up){
+                x--;
+                robot_direction = left;
+            }else if(robot_direction==down){
+                x++;
+                robot_direction = right;
+            }
             break;
-      }
-      Serial.print("west=");Serial.print(west);
-      Serial.print(",east=");Serial.print(east);
-      Serial.print(",north=");Serial.print(north);
-      Serial.print(",south=");Serial.println(south);
-  //
-  // Change roles
-  //
 
-  if ( Serial.available() )
-  {
-    char c = toupper(Serial.read());
-    if ( c == 'T' && role == role_pong_back )
-    {
-      printf("*** CHANGING TO TRANSMIT ROLE -- PRESS 'R' TO SWITCH BACK\n\r");
-
-      // Become the primary transmitter (ping out)
-      role = role_ping_out;
-      radio.openWritingPipe(pipes[0]);
-      radio.openReadingPipe(1,pipes[1]);
+        default:
+            Serial.println("ROBOT DIRECTION NOT RECOGNIZED");
+            
     }
-    else if ( c == 'R' && role == role_ping_out )
-    {
-      printf("*** CHANGING TO RECEIVE ROLE -- PRESS 'T' TO SWITCH BACK\n\r");
 
-      // Become the primary receiver (pong back)
-      role = role_pong_back;
-      radio.openWritingPipe(pipes[1]);
-      radio.openReadingPipe(1,pipes[0]);
-    }
-  }
+  
   //added extra delay: but remove when integrate
   delay(1000);
 }

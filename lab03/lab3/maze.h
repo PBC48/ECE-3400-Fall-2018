@@ -11,6 +11,11 @@
 /**
  * Takes input number and outputs array of output with labels. Assume
  * size of array works
+ * 
+ *   15   -------------------  9         7      6    5      3                 0
+//  +-------------------------+---------+-----+-----+------+------------------+
+//  | type------------------- |direction|robot| N/A | trea | WALLS            |
+//  +-------------------------+---------+-----+-----+------+------------------+
 */
 int * decoder(int input){
     bool west  = input & 0x1;
