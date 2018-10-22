@@ -31,8 +31,8 @@ RF24 radio(9,10);
 //
 // Topology
 //
-int rows = 2;
-int cols = 3;
+int rows = 2; //need to adjust based on robot position
+int cols = 3; 
 // Starting coordinates
 int x = 0;
 int y = 0;
@@ -42,6 +42,11 @@ const uint64_t pipes[2] = { 0x0000000014LL, 0x0000000015LL };
 
 //int map1[2][3];
 int map1[2][3] = {0};
+
+/**
+ *  |0,0,0|
+ *  |0,0,0|
+*/
 
 enum r_dir{
     up,
@@ -104,21 +109,16 @@ void setup(void)
   // back and forth.
   // Open 'our' pipe for writing
   // Open the 'other' pipe for reading, in position #1 (we can have up to 5 pipes open for reading)
-
     radio.openWritingPipe(pipes[1]);
     radio.openReadingPipe(1,pipes[0]);
   //
   // Start listening
   //
-
   radio.startListening();
-
   //
   // Dump the configuration of the rf unit for debugging
   //
-
   radio.printDetails();
-
   robot_direction = right;
 }
 
@@ -139,7 +139,7 @@ void loop(void)
     if ( radio.available() )
     {
       // Dump the payloads until we've gotten everything
-      map1[x][y]+=1;
+      map1[x][y]=1; //Explored robot
       bool done = false;
       bool received = false;
       while (!done)
@@ -218,9 +218,9 @@ void loop(void)
     Serial.print(",west=");Serial.print(west);
     Serial.print(",east=");Serial.print(east);
     Serial.print(",north=");Serial.print(north);
-    Serial.print(",south=");Serial.println(south);
-    Serial.print(",tshape=");
+    Serial.print(",south=");Serial.print(south);
     if(treasure){
+        Serial.print(",tshape=");
         if(tshape)
             Serial.print("circle");
         else
