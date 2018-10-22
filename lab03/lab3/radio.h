@@ -56,7 +56,7 @@ void radio_init(role_e role){
 
   // optionally, reduce the payload size.  seems to
   // improve reliability
-  //radio.setPayloadSize(8);
+  radio.setPayloadSize(2);
 
   //
   // Open pipes to other nodes for communication
@@ -99,7 +99,7 @@ void radio_transmit(uint16_t &buff){
 
     // Take the time, and send it.  This will block until complete
     //Serial.print("now sending..");Serial.println(buff);
-    printf("Now sending %lu...",buff);
+    printf("Now sending %d...",buff);
     bool ok = radio.write( &buff, sizeof(uint16_t) );
 
     if (ok)

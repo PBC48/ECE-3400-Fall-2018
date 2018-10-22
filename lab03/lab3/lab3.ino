@@ -14,8 +14,6 @@ sensor, robot movement, microphone, and ir all in one.
 #include "radio.h"
 #include "maze.h"
 
-uint16_t FRONTWALL;
-uint16_t LEFTWALL;
 enum states : uint8_t {
     START,
     AUDIO_DECT,
@@ -29,7 +27,9 @@ enum states : uint8_t {
 uint8_t STATE;
 uint32_t u32wait;
 uint32_t u32wait_ir;
-
+uint16_t radio_msg = 0;
+uint16_t FRONTWALL;
+uint16_t LEFTWALL;
 
 void toggle_LED(uint8_t &pin){
     
@@ -51,10 +51,11 @@ void loop() {
     switch (STATE){
         case START:
             Serial.println(F("start"));
-            //radio_msg = 0x00FF;
-            //radio_transmit(radio_msg);
-            //delay(1000);
-            STATE = AUDIO_DECT;
+            radio_msg = 0;
+            radio_msg = 0x1FF | 1<<6|0<<2;
+            radio_transmit(radio_msg);
+            delay(1000);
+            //STATE = AUDIO_DECT;
             
             break;
         
@@ -83,12 +84,12 @@ void loop() {
             break;
 
         case ROBOT_SENSE:
-            uint16_t radio_msg = 0;
+            radio_msg = 0;
                 //structure: 0000000b ddtttrfl
                 // d = direction robot will travel; t = treasure; b = robot
                 // f = front wall; r = right wall; l = left wall
-            uint16_t FRONTWALL = analogRead(WALL_FRONT);
-            uint16_t LEFTWALL = analogRead(WALL_LEFT);
+            FRONTWALL = analogRead(WALL_FRONT);
+            LEFTWALL = analogRead(WALL_LEFT);
             //Serial.println(F("IN ROBOT_SENSE"));
             //Serial.print(F("SENSOR_R READING: "));Serial.println(SENSOR_R_READING);
             //Serial.print(F("SENSOR_L READING: "));Serial.println(SENSOR_L_READING);
