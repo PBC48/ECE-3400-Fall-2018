@@ -19,7 +19,7 @@
 #include "nRF24L01.h"
 #include "RF24.h"
 #include "printf.h"
-
+#include "maze.h"
 //
 // Hardware configuration
 //
@@ -39,8 +39,13 @@ int y = 0;
 // Radio pipe addresses for the 2 nodes to communicate.
 const uint64_t pipes[2] = { 0x0000000014LL, 0x0000000015LL };
 // The map of the stage
-int map[rows][cols];
-
+//int map1[2][3];
+enum r_dir{
+    up,
+    right,
+    left,
+    down
+}
 //
 // Role management
 //
@@ -63,7 +68,7 @@ void setup(void)
   // Print preamble
   //
 
-  Serial.begin(57600);
+  Serial.begin(9600);
   printf_begin();
   printf("\n\rRF24/examples/GettingStarted/\n\r");
   printf("ROLE: %s\n\r",role_friendly_name[role]);
@@ -88,7 +93,7 @@ void setup(void)
 
   // optionally, reduce the payload size.  seems to
   // improve reliability
-  radio.setPayloadSize(2);
+  //radio.setPayloadSize(2);
 
   //
   // Open pipes to other nodes for communication
@@ -128,7 +133,8 @@ void loop(void)
   //
   // Ping out role.  Repeatedly send the current time
   //
-
+  int *buff;
+    
   if (role == role_ping_out)
   {
     // First, stop listening so we can talk.
@@ -183,7 +189,7 @@ void loop(void)
     if ( radio.available() )
     {
       // Dump the payloads until we've gotten everything
-      int *buff;
+      
       bool done = false;
       while (!done)
       {
@@ -197,14 +203,15 @@ void loop(void)
         delay(20);
 
       }
-
+      
+      
       // First, stop listening so we can talk and process
       radio.stopListening();
 
       // Decode message
-      map[x][y] =       
+      //map[x][y] =       
       // Send the final one back.
-      radio.write( &got_time, sizeof(unsigned long) );
+      radio.write( &buff, sizeof(unsigned long) );
       printf("Sent response.\n\r");
 
       // Now, resume listening so we catch the next packets.
@@ -212,6 +219,35 @@ void loop(void)
     }
   }
 
+    Serial.print(x);Serial.print(",");Serial.print(y);Serial.print(",");
+    int * output = decoder(*buff);
+      bool north, east,west,south,robot;
+      north  = output[1];
+      east = output[2];
+      west = output[0];
+      south = output[3];
+      robot = output[4];
+      direction = output[5];
+      switch (direction){
+          case 0: //forward : robot decided to go forward
+            if(r_dir==right)
+                x++;
+            if(r_dir==left)
+                x--;
+            if(r_dir==up)
+                y++
+            if(r_dir==down)
+                y--
+            break;
+            case 1: //right
+            break;
+            case 2: //left
+            break;
+      }
+      Serial.print("west=");Serial.print(west);
+      Serial.print(",east=");Serial.print(east);
+      Serial.print(",north=");Serial.print(north);
+      Serial.print(",south=");Serial.println(south);
   //
   // Change roles
   //
@@ -238,4 +274,6 @@ void loop(void)
       radio.openReadingPipe(1,pipes[0]);
     }
   }
+  //added extra delay: but remove when integrate
+  delay(1000);
 }
