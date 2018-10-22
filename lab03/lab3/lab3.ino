@@ -4,9 +4,9 @@ sensor, robot movement, microphone, and ir all in one.
 */
 
 #define WALL_FRONT 2
-#define WALL_LEFT 3
+#define WALL_LEFT 4
 #define WAITTIME 800
-#define BUTTON 5 //Ditgital pin for button
+#define BUTTON 3 //Digital pin for button
 
 #include "robot.h"
 #include "line_sensor.h"
@@ -82,9 +82,9 @@ void loop() {
 
         case ROBOT_SENSE:
             uint16_t radio_msg = 0;
-                //structure: 000000dd 0tttfrbl
-                // d = direction robot will travel; t = treasure; 
-                // f = front wall; r = right wall; b = back wall; l = left wall
+                //structure: 0000000b ddtttrfl
+                // d = direction robot will travel; t = treasure; b = robot
+                // f = front wall; r = right wall; l = left wall
             uint16_t FRONTWALL = analogRead(WALL_FRONT);
             uint16_t LEFTWALL = analogRead(WALL_LEFT);
             //Serial.println(F("IN ROBOT_SENSE"));
@@ -100,15 +100,15 @@ void loop() {
                     u32wait = millis();
                     STATE = ROBOT_TURN_LEFT;
                 } else if (FRONTWALL > 115) {
-                    dir = 3;
+                    dir = 1;
                     u32wait = millis();
                     STATE = ROBOT_TURN_RIGHT;
                 } else {
-                    dir = 1;
+                    dir = 0;
                     robot_move(forward);
                 }
                 
-                radio_msg = radio_msg | (dir << 8) | (LEFTWALL > 200) | ((FRONTWALL > 115)<<3); //| ((RIGHTWALL > ###)<<2;
+                radio_msg = radio_msg | (dir << 6) | (LEFTWALL > 200) | ((FRONTWALL > 115)<<1); //| ((RIGHTWALL > ###)<<2);
                 
                 radio_transmit(radio_msg);
                 

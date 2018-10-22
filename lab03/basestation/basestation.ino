@@ -179,11 +179,11 @@ void loop(void)
     wall_left   = output[0];
     wall_front  = output[1];
     wall_right  = output[2];
-    robot  = output[4];
-    treasure = output[5];
-    tshape = output[5];
-    tcolor = output[6];
-    direction = output[7];
+    treasure = output[3];
+    tshape = output[4];
+    tcolor = output[5];
+    direction = output[6];
+    robot  = output[7];
 
     //decode the absolute directions base on the robot's direction and input
     switch(robot_direction){

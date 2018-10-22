@@ -53,7 +53,7 @@ void calculate_FFT(device d){
     sum = 0;
   
     uint8_t index = d == MIC ? MIC_BIN : IR_BIN;
-    uint8_t average = d == MIC ? 15 : 5;
+    uint8_t average = d == MIC ? 15 : 1;
     for(int j=0;j<average;j++) { // reduces jitter
         cli();  // UDRE interrupt slows this way down on arduino1.0
         for (int i = 0 ; i < 512 ; i += 2) { // save 256 samples

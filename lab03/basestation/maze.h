@@ -3,8 +3,9 @@
  * 
 
  * Current bit configuration:
- * [3:0] WALLS; true or false NESW
- * [7:4] TREASURE; can go up four bits. 2 shapes * 2 colors = 4 combs
+ * [2:0] WALLS; true or false / left, front, right
+ * [5:3] TREASURE; y/n, circle/square, red/blue
+ * [7:6] ROBOT DIRECTION; forward, right, left
  * [8]   ROBOT; true or false
 */
 
