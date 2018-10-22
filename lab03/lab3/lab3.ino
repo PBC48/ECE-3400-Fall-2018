@@ -4,9 +4,9 @@ sensor, robot movement, microphone, and ir all in one.
 */
 
 #define WALL_FRONT 2
-#define WALL_LEFT 3
+#define WALL_LEFT 4
 #define WAITTIME 800
-#define BUTTON 5 //Ditgital pin for button
+#define BUTTON 3 //Digital pin for button
 
 #include "robot.h"
 #include "line_sensor.h"

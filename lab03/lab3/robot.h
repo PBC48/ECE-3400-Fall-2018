@@ -1,7 +1,7 @@
 #include <Servo.h>
 
-#define ROBOT_RIGHT_PIN 9
-#define ROBOT_LEFT_PIN 10
+#define ROBOT_RIGHT_PIN 5
+#define ROBOT_LEFT_PIN 6
 
 Servo R;
 Servo L;
