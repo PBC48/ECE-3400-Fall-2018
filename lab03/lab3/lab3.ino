@@ -3,10 +3,10 @@ milestone 2 code with FSMs where we integrated line sensor, wall
 sensor, robot movement, microphone, and ir all in one.
 */
 
-#define WALL_FRONT 2
-#define WALL_LEFT 4
+#define WALL_FRONT A2
+#define WALL_LEFT A3
 #define WAITTIME 800
-#define BUTTON 3 //Digital pin for button
+#define BUTTON 7 //Digital pin for button
 
 #include "robot.h"
 #include "line_sensor.h"
@@ -51,18 +51,18 @@ void loop() {
     switch (STATE){
         case START:
             Serial.println(F("start"));
-            radio_msg = 0;
-            radio_msg = 0x1FF | 1<<6|0<<2;
-            radio_transmit(radio_msg);
-            delay(1000);
-            //STATE = AUDIO_DECT;
+            //radio_msg = 0;
+            //radio_msg = 0x1FF & (1<<6|0<<2);
+            //radio_transmit(radio_msg);
+            //delay(1000);
+            STATE = AUDIO_DECT;
             
             break;
         
         case AUDIO_DECT:
             calculate_FFT(MIC);
             Serial.print(F("AUDIO SUM: "));Serial.println(sum);
-            if(sum>85 || digitalRead(BUTTON)){ //originally at 90
+            if(sum>85) { //|| digitalRead(BUTTON)){ //originally at 90
                 Serial.println(F("660Hz Tone Detected"));
                 STATE = IR_DECT;
             }else{
