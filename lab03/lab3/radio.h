@@ -35,6 +35,8 @@ const char* role_friendly_name[] = { "invalid", "Ping out", "Pong back"};
 // The role of the current running sketch
 //role_e role = role_pong_back;
 
+
+
 void radio_init(role_e role){
     printf_begin();
   printf("\n\rRF24/examples/GettingStarted/\n\r");
@@ -89,15 +91,16 @@ void radio_init(role_e role){
   radio.printDetails();
 }
 
+
+
 void radio_transmit(uint16_t &buff){
     // First, stop listening so we can talk.
     radio.stopListening();
 
     // Take the time, and send it.  This will block until complete
-    unsigned long time = millis();
     //Serial.print("now sending..");Serial.println(buff);
     printf("Now sending %lu...",buff);
-    bool ok = radio.write( &time, sizeof(unsigned long) );
+    bool ok = radio.write( &buff, sizeof(uint16_t) );
 
     if (ok)
       printf("ok...");
