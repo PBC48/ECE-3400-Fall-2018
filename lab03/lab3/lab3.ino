@@ -14,6 +14,8 @@ sensor, robot movement, microphone, and ir all in one.
 #include "radio.h"
 #include "maze.h"
 
+uint16_t FRONTWALL;
+uint16_t LEFTWALL;
 enum states : uint8_t {
     START,
     AUDIO_DECT,
@@ -108,7 +110,7 @@ void loop() {
                     robot_move(forward);
                 }
                 
-                radio_msg = radio_msg | (dir << 6) | (LEFTWALL > 200) | ((FRONTWALL > 115)<<1); //| ((RIGHTWALL > ###)<<2);
+                radio_msg = radio_msg | (dir << 6) | ((LEFTWALL > 200)<<2) | (FRONTWALL > 115); //| ((RIGHTWALL > ###)<<1);
                 
                 radio_transmit(radio_msg);
                 
