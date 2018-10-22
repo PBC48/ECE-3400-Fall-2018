@@ -1,10 +1,10 @@
 /**
  * decoder.h
  * 
-
  * Current bit configuration:
- * [3:0] WALLS; true or false NESW
- * [7:4] TREASURE; can go up four bits. 2 shapes * 2 colors = 4 combs
+ * [2:0] WALLS; true or false / left, front, right
+ * [5:3] TREASURE; y/n, circle/square, red/blue
+ * [7:6] ROBOT DIRECTION; forward, right, left
  * [8]   ROBOT; true or false
 */
 
@@ -12,24 +12,23 @@
  * Takes input number and outputs array of output with labels. Assume
  * size of array works
  * 
- *   15   -------------------  9         7      6    5      3                 0
-//  +-------------------------+---------+-----+-----+------+------------------+
-//  | type------------------- |direction|robot| N/A | trea | WALLS            |
-//  +-------------------------+---------+-----+-----+------+------------------+
+ *   15   -------------------  9         8      7     5      2                0
+//  +-------------------------+---------+-----+------+------+------------------+
+//  | type------------------- |direction|robot| dir  | trea | WALLS            |
+//  +-------------------------+---------+-----+------+------+------------------+
 */
-int * decoder(int input){
-    bool west  = input & 0x1;
-    bool south = (input >> 1) & 0x1;
-    bool east  = (input >> 2) & 0x1;
-    bool north = (input >> 3) & 0x1;
-    bool robot = (input >> 7) & 0x1;
-    int treasure = (input >> 4) & 0x3;
-    int tshape = (treasure>>1) & 1;
-    int tcolor =  treasure & 1;
-    int output[]={west, north, east, south, robot, tshape, tcolor};
+int * decoder(uint16_t input){
+    bool left  = input & 0x1;
+    bool front = (input >> 1) & 0x1;
+    bool right  = (input >> 2) & 0x1;
+    int treasure = (input >> 3) & 0x1;
+    int tshape = (input>>4) & 0x1;
+    int tcolor =  (input>>5) & 0x1;
+    int direction = (input>>6) & 0x3;
+    bool robot = (input >> 8) & 0x1;
+    int output[]={left, front, right, treasure, tshape, tcolor, direction, robot};
     return output; 
 }
-
 
 int encoder(int &in1, int &in2, int &in3, int &in4, int &in5, int &in6){
     
