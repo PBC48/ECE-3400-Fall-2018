@@ -147,7 +147,7 @@ void loop(void)
         done = radio.read( &buff, sizeof(uint16_t) );
       
         // Spew it
-        printf("Got payload %lu...\n",buff);
+        printf("Got payload %d...\n",buff);
         // Delay just a little bit to let the other unit
         // make the transition to receiver
         delay(20);
@@ -155,7 +155,7 @@ void loop(void)
       }
       
       *resp = getResp();
-      *resp = *resp & 0x0F;
+      *resp = *resp & 0x000F;
       // First, stop listening so we can talk and process
       radio.stopListening();
         
@@ -163,8 +163,8 @@ void loop(void)
       //map[x][y] =       
       // Send the final one back.
       //while(!received){
-        received = radio.write( &buff, sizeof(uint16_t) );
-        //received = radio.write( &resp, sizeof(uint8_t) );
+        //received = radio.write( &buff, sizeof(uint16_t) );
+        received = radio.write( &resp, sizeof(uint8_t) );
         delay(20);
       //}
       
@@ -183,9 +183,7 @@ void loop(void)
     wall_left   = (buff >> 2) & 0x0001;
     wall_front  = buff & 0x0001;
     wall_right  = (buff >> 1) & 0x0001;
-    treasure = (buff >> 5) & 0x0001;
-    tshape = (buff >> 4) & 0x0001;
-    tcolor = (buff >> 3) & 0x0001;
+    treasure = (buff >> 3) & 0x0007;
     dir = ((unsigned)buff >> 6) & 0x0003;
     robot  = (buff >> 8) & 0x0001;
     /*wall_left   = output[0];
@@ -241,9 +239,9 @@ Serial.print(",robot=");Serial.println(robot);*/
     Serial.print(",east=");Serial.print(east);
     Serial.print(",north=");Serial.print(north);
     Serial.print(",south=");Serial.print(south);
-    if(treasure){
+    /*if(treasure!=0){
         Serial.print(",tshape=");
-        if(tshape)
+        if(treasure>=0 && treasure <3)
             Serial.print("circle");
         else
             Serial.print("square");
@@ -252,7 +250,7 @@ Serial.print(",robot=");Serial.println(robot);*/
             Serial.print("red");
         else
             Serial.print("blue");
-    }
+    }*/
     Serial.println("");
     switch (dir){
         case 0: //forward : robot decided to go forward
