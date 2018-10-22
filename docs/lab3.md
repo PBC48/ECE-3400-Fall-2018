@@ -14,12 +14,12 @@
 ### Simulating the Robot
 
 #### Data Structure
-
+```
  15                  9 8     7    6 5       3 2       0
 +---------------------+-----+------+---------+---------+
 | Reserved            |robot| dir  | trea    | WALLS   |
 +---------------------+-----+------+---------+---------+
-
+```
 ### Base Station-to-GUI Transmission
 
 
