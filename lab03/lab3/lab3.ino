@@ -52,7 +52,7 @@ void loop() {
         case START:
             Serial.println(F("start"));
             radio_msg = 0;
-            radio_msg = 0x1FF &( 1<<6|0<<2);
+            radio_msg = 0x1FF | 1<<6|0<<2;
             radio_transmit(radio_msg);
             delay(1000);
             //STATE = AUDIO_DECT;
