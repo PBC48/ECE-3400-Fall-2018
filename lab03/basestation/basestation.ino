@@ -156,6 +156,7 @@ void loop(void)
       }
       
       *resp = getResp();
+      *resp = *resp & 0x0F;
       // First, stop listening so we can talk and process
       radio.stopListening();
         
