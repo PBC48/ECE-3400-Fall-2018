@@ -233,5 +233,5 @@ void loop(void)
 
   
   //added extra delay: but remove when integrate
-  delay(1000);
+  delay(500);
 }
