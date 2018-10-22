@@ -13,6 +13,11 @@
 
 ### Simulating the Robot
 
+### Base Station-to-GUI Transmission
+
+
+## Robot Integration
+
 #### Data Structure
 This is the two byte communication message the robot sends to the base station.
 ```
@@ -50,11 +55,6 @@ or not
 
 ```
 The message sent back to the robot allows the robot to make decisions based on the state of the maze. The robot can make decisions based on whether the locations near it has been explored or not. This can affect which direction the robot turns in an intersection. This comes at a cost of implementing additional decoders for the robot on the system.
-
-### Base Station-to-GUI Transmission
-
-
-## Robot Integration
 
 ### Robot State Machine
 

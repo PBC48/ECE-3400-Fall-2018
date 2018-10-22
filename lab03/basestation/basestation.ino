@@ -68,7 +68,7 @@ uint8_t getResp(){
     down = (y<(rows-1)) ? map1[x][y+1] : 1;
     left = (x>0) ? map1[x-1][y] : 1;
     right = (y<(cols-1)) ? map1[x+1][y] : 1;
-    return (left<<3)|(right<<2)|(up<<1)|(down);
+    return ((left<<3)|(right<<2)|(up<<1)|(down)) & 0x0F;
 }
 
 
