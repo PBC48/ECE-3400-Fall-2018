@@ -6,25 +6,21 @@
 * Integrate all microphone, radio, and IR components into the robot.
 
 ## Introduction
-
+For this lab we integrated all of the robot’s capabilities that we have previously implemented into a cohesive system that communicates wirelessly with the provided GUI.  We first worked on creating an algorithm that would efficiently store all the information our robot detects as it navigates through the maze.  Next, one subteam (Patrick and Chrissy) worked on adding the radio component to the robot, setting up the two Nordic nRF24L01+ transceivers that we would use to communicate wirelessly between two Arduinos, one on the robot and one on a base station connected to the GUI.  Meanwhile the other subteam (Tara and Xiaoyu) integrated all the robot’s other functionalities: starting on detection of a 660 Hz tone, line following, wall detection, and detection of other robots while ignoring decoys. At the end of the lab we combined all of the work so that the robot can autonomously explore the maze and update the GUI in real time.
 ## Radio
+To test out the initial connection between the two radios, we ran the initial “GetStarted” code between the two radios, and made sure they properly communicated. After that, we integrated the radios onto both the base station and the robot. Since our arduinos don’t have strong enough voltage sources, we implemented a 3.3V voltage regulator into each.
+
+We tested the radios with these power sources and they worked.
 
 ### Sending Maze Info Between Arduinos
 <iframe width="560" height="315" src="https://www.youtube.com/embed/flzf6dUwdMM" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 ### Simulating the Robot
-
+To simulate the robot on the base station, we take the information that the robot sends and structure it into a format that the GUI can pick up.
 ### Base Station-to-GUI Transmission
 
 
 ## Robot Integration
-
-<figure>
-    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab03/IMG_0386.jpg" width="800"/>
-    <font size="2">
-    <figcaption> <b> Adding the Radio to the Robot </b>
-    </figcaption>
-    </font>
-</figure>
+The robot subteam’s task was to integrate all the pieces we’ve been implementing into one cohesive system. A fair amount of this had already been completed for Milestone 2. What remained was to add the functionality of starting at a 660 Hz tone, as well as sending signals between radios to the base station. We also had to make sure all the necessary hardware was integrated on the robot.
 
 #### Data Structure
 This is the two byte communication message the robot sends to the base station.
@@ -66,18 +62,14 @@ been explored or not
 The message sent back to the robot allows the robot to make decisions based on the state of the maze. The robot can make decisions based on whether the locations near it has been explored or not. This can affect which direction the robot turns in an intersection. This comes at a cost of implementing additional decoders for the robot on the system.
 
 ### Robot State Machine
-<figure>
-    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab03/FSM.PNG" width="800"/>
-    <font size="2">
-    <figcaption> <b> State Machine for the Robot     </b>
-    </figcaption>
-    </font>
-</figure>
+We updated the FSM from Milestone 2 to activate the MIC_DECT state, rather than skipping over it.
 
 ### Integration with Mic
-<iframe width="560" height="315" src="https://www.youtube.com/embed/zy4pa3PNozo" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+In order to make the robot start exploring the maze when we play the 660Hz tone, as it will in the actual competition, we added the audio portion of lab 2 onto the robot. We moved the circuitry and microphone onto the robot’s breadboard and connected the output signal to the Arduino.
+We had previously been having trouble with the range of our 660Hz tone detection; the microphone was only able to distinguish it from background noise when we played the tone from or phones about an inch away. We learned that if we unplugged the power from our wall sensors our results improved significantly, presumably because this gave more power to the microphone and allowed it to better pick up audio signals. To solve this problem, we decided to move the microphone power to the arduino, while keeping the wall sensor power on the main breadboard circuit powered by the battery.
 ### Robot Navigation through the maze
-
+Since we had already implemented a left-wall-following rule in milestone 2, our navigation implementation was already complete, and we did not have to change any of our code involving our wall and line sensors or turning conditionals. 
+<iframe width="560" height="315" src="https://www.youtube.com/embed/zy4pa3PNozo" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 ### Integration with Radio
 For the integration with the radio, we decided to do most of the decoding and data processing on the base station and off the robot system because we are already running low on memory and we can delegate some of the maze processing to the base station and have it send back a response. The robot only needs to send the readings from its wall sensors, treasure detection, and direction it intents to move. The base station will take the data and come up with absolute coordinates and wall locations based on robots previous locations. The base station can then update the GUI accordingly. 
 
