@@ -26,23 +26,6 @@ This allows us to check that the radio delivers its package correctly and also a
 ### Sending Maze Info Between Arduinos
 <iframe width="560" height="315" src="https://www.youtube.com/embed/flzf6dUwdMM" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
-### Simulating the Robot
-To simulate the robot on the base station, we take the information that the robot sends and structure it into a format that the GUI can pick up.
-
-### Base Station-to-GUI Transmission
-
-
-## Robot Integration
-The robot subteam’s task was to integrate all the pieces we’ve been implementing into one cohesive system. A fair amount of this had already been completed for Milestone 2. What remained was to add the functionality of starting at a 660 Hz tone, as well as sending signals between radios to the base station. We also had to make sure all the necessary hardware was integrated on the robot.
-<figure>
-    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab03/IMG_0386.jpg" width="800"/>
-    <font size="2">
-    <figcaption> <b> Adding the Radio to the Robot </b>
-    </figcaption>
-    </font>
-</figure>
-
-We added
 
 #### Data Structure
 This is the two byte communication message the robot sends to the base station.
@@ -82,6 +65,55 @@ been explored or not
 
 ```
 The message sent back to the robot allows the robot to make decisions based on the state of the maze. The robot can make decisions based on whether the locations near it has been explored or not. This can affect which direction the robot turns in an intersection. This comes at a cost of implementing additional decoders for the robot on the system.
+
+### Simulating the Robot
+To simulate the robot on the base station, we take the information that the robot sends and structure it into a format that the GUI can pick up.
+
+### Base Station-to-GUI Transmission
+We simulated the base station to GUI transmission by using print statements in the base station. The base station receives messages from the robot and decodes the message with the absolute directions in North, West, East, and South. The base station also prints out any detected treasures. The base station uses both the robot's wall sensor values and the direction the robot decides to go to deduce the next square the robot will be. Then it uses the robot's facing direction to figure out the absolute position on the maze. We always start our maze with the robot facing 'right'. As the robot moves through the maze, we update the GUI one intersection at a time. 
+``` cpp
+byte * decoder(uint16_t input){
+    byte wforward  = input & 0x0001;
+    byte wright = (input >> 1) & 0x0001;
+    byte wleft = (input >> 2) & 0x0001;
+    byte robot = (input >> 8) & 0x0001;
+    byte dir = ((unsigned)input >> 6) & 0x0003;
+    byte treasure = (input >> 3) & 0x0007;
+    byte output[]={wleft, wright, wforward, robot, treasure, dir};
+    return output; 
+}
+```
+This is the decoder we used to get all the necessary values. We use the wall directions in combination with the direction the robot decided to take to update the robot's position on the maze for the GUI.
+
+To update the robot's absolute position in the maze, we use the direction the robot is facing and where the robot decide go towards in the intersection to up date the robot.
+
+Code snippet for updating the maze locations.
+```cpp
+        case forward: //forward : robot decided to go forward
+            if(robot_direction==right){
+                x++;
+            }else if(robot_direction==left){
+                x--;
+            }else if(robot_direction==up){
+                y--;
+            }else if(robot_direction==down){
+                y++;
+            }
+            break;
+```
+
+
+## Robot Integration
+The robot subteam’s task was to integrate all the pieces we’ve been implementing into one cohesive system. A fair amount of this had already been completed for Milestone 2. What remained was to add the functionality of starting at a 660 Hz tone, as well as sending signals between radios to the base station. We also had to make sure all the necessary hardware was integrated on the robot.
+
+<figure>
+    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab03/IMG_0386.jpg" width="800"/>
+    <font size="2">
+    <figcaption> <b> Adding the Radio to the Robot </b>
+    </figcaption>
+    </font>
+</figure>
+
 
 ### Robot State Machine
 <figure>
