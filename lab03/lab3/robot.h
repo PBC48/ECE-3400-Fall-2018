@@ -5,72 +5,70 @@
 
 Servo R;
 Servo L;
-
-
-enum DIRECTIONS {
-  right,
-  left,
-  forward,
+enum DIRECTIONS : uint8_t {
+    right,
+    left,
+    forward,
     rstop,
     adj_right,
     adj_left,
     back
 };
 
-void robot_move(DIRECTIONS dir){
-    if(dir != rstop && (!R.attached() || !L.attached())){
-        Serial.println("in if attach");
-        R.attach(ROBOT_RIGHT_PIN);
-        L.attach(ROBOT_LEFT_PIN);
-    }else if(dir == rstop){
-        R.detach();
-        L.detach();
-        Serial.println("stopped");
-    }
-    switch (dir){ //NEED SOME CALIBRATION
-        case right:
-            L.write(180);
-            R.write(95);
-            //Serial.println("right");
-            break;
+DIRECTIONS current_state;
 
-        case left:
-            L.write(85);
-            R.write(0);
-            //Serial.println("left");
-            break;
-        case forward:
-            L.write(180);
-            R.write(0);
-            //Serial.println("forward");
-            break;
-        case rstop:
-            L.write(90);
-            R.write(90);
-            Serial.println("stopped");
-            break;
-        case adj_left:
-            L.write(95);
-            R.write(0);
-            //Serial.println("adjust left");
-            break;
-        case adj_right:
-            L.write(180);
-            R.write(85);
-            //Serial.println("adjust right");
-            break;
-        case back:
-            L.write(0);
-            R.write(180);
-            Serial.println("back");
-            break;
+void robot_move(DIRECTIONS dir){
+    if(current_state!=dir){
+        switch (dir){ //NEED SOME CALIBRATION
+            case right:
+                L.write(180);
+                R.write(95);
+                //Serial.println("right");
+                break;
+            case left:
+                L.write(85);
+                R.write(0);
+                //Serial.println("left");
+                break;
+            case forward:
+                L.write(150);
+                R.write(30);
+                // L.write(180);
+                // R.write(0);
+                //Serial.println("forward");
+                break;
+            case rstop:
+                L.write(90);
+                R.write(90);
+                Serial.println("stopped");
+                break;
+            case adj_left:
+                L.write(95);
+                R.write(0);
+                //Serial.println("adjust left");
+                break;
+            case adj_right:
+                L.write(180);
+                R.write(85);
+                //Serial.println("adjust right");
+                break;
+            case back:
+                L.write(0);
+                R.write(180);
+                Serial.println("back");
+                break;
+        }
+        delay(20);  
+        current_state = dir;
     }
-  delay(10);  
 }
 
 
 void robot_init(){
-  robot_move(rstop);
+    R.attach(ROBOT_RIGHT_PIN);
+    L.attach(ROBOT_LEFT_PIN);
+    current_state = 0xF;
+    robot_move(rstop);
 }
 
 

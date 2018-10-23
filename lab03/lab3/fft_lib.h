@@ -25,13 +25,6 @@ enum device {
 uint32_t sum = 0;
 
 
-void turn_led(int &i){
-  int pin = 7;
-  pinMode(pin,OUTPUT);
-  digitalWrite(pin,i?HIGH:LOW);
-  
-}
-
 void calculate_FFT(device d){
 
     byte TIMSK0_temp = TIMSK0;
