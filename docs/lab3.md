@@ -7,10 +7,21 @@
 
 ## Introduction
 For this lab we integrated all of the robot’s capabilities that we have previously implemented into a cohesive system that communicates wirelessly with the provided GUI.  We first worked on creating an algorithm that would efficiently store all the information our robot detects as it navigates through the maze.  Next, one subteam (Patrick and Chrissy) worked on adding the radio component to the robot, setting up the two Nordic nRF24L01+ transceivers that we would use to communicate wirelessly between two Arduinos, one on the robot and one on a base station connected to the GUI.  Meanwhile the other subteam (Tara and Xiaoyu) integrated all the robot’s other functionalities: starting on detection of a 660 Hz tone, line following, wall detection, and detection of other robots while ignoring decoys. At the end of the lab we combined all of the work so that the robot can autonomously explore the maze and update the GUI in real time.
-## Radio
-To test out the initial connection between the two radios, we ran the initial “GetStarted” code between the two radios, and made sure they properly communicated. After that, we integrated the radios onto both the base station and the robot. Since our arduinos don’t have strong enough voltage sources, we implemented a 3.3V voltage regulator into each.
 
-We tested the radios with these power sources and they worked.
+## Radio
+To test out the initial connection between the two radios, we ran the initial “GetStarted” code between the two radios, and made sure they properly communicated. After that, we integrated the radios onto both the base station and the robot. While the Arduino does have a 3.3V power supply, it cannot support the current to power the radio. The 5V power supply can support the current, thus, we implemented a 3.3V voltage regulator into each so that we can step down from the 5v. This made the radios more portable since we won't need to rely on the 3.3V DC supply from the signal generator. We tested the radios with these power sources and they worked.
+
+The code for the radio involved setting the correct pipe to send our message into through the radio. Since we are team 7, our pin values are ```const uint64_t pipes[2] = { 0x0000000014LL, 0x0000000015LL };```. The transmitter writes to pipe 0x14 while reading from pipe 0x15; the receiver reads and writes the other way around. The RF24 library abstracts many of the complexities of radio transmission such that we only need to call some functions to send to radio.
+
+To write, we have to call ```bool ok = radio.write( &buff, sizeof(buff) );``` where the buffer can be an integer. 
+After writing, the transmitter has the option to hear back from the receiver which is done using:
+```cpp
+      radio.startListening();
+      uint16_t buffer; 
+      radio.read( &buffer, sizeof(buffer) );
+      radio.stopListening();
+```
+This allows us to check that the radio delivers its package correctly and also allows us to send feedback between the robot and the base station.
 
 ### Sending Maze Info Between Arduinos
 <iframe width="560" height="315" src="https://www.youtube.com/embed/flzf6dUwdMM" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
@@ -84,10 +95,14 @@ The message sent back to the robot allows the robot to make decisions based on t
 ### Integration with Mic
 In order to make the robot start exploring the maze when we play the 660Hz tone, as it will in the actual competition, we added the audio portion of lab 2 onto the robot. We moved the circuitry and microphone onto the robot’s breadboard and connected the output signal to the Arduino.
 We had previously been having trouble with the range of our 660Hz tone detection; the microphone was only able to distinguish it from background noise when we played the tone from or phones about an inch away. We learned that if we unplugged the power from our wall sensors our results improved significantly, presumably because this gave more power to the microphone and allowed it to better pick up audio signals. To solve this problem, we decided to move the microphone power to the arduino, while keeping the wall sensor power on the main breadboard circuit powered by the battery.
+
 ### Robot Navigation through the maze
 Since we had already implemented a left-wall-following rule in milestone 2, our navigation implementation was already complete, and we did not have to change any of our code involving our wall and line sensors or turning conditionals. 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/zy4pa3PNozo" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+
 ### Integration with Radio
 For the integration with the radio, we decided to do most of the decoding and data processing on the base station and off the robot system because we are already running low on memory and we can delegate some of the maze processing to the base station and have it send back a response. The robot only needs to send the readings from its wall sensors, treasure detection, and direction it intents to move. The base station will take the data and come up with absolute coordinates and wall locations based on robots previous locations. The base station can then update the GUI accordingly. 
 
 ## Conclusion 
+Overall, Lab 3 proved to be quite a challenge. We learned a lot about wireless communication, bit optimization, and integration and testing. With the addition of new components, we needed to better optimize the circuit layout on our robot and the power supplies for each component. Through the *frustration* of component faults and other issues, we’ve learned how to better debug our problems.
+
