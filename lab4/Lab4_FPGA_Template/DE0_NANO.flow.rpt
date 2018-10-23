@@ -1,5 +1,5 @@
 Flow report for DE0_NANO
-Wed Oct 10 18:08:04 2018
+Mon Oct 22 22:06:09 2018
 Quartus Prime Version 17.0.0 Build 595 04/25/2017 SJ Lite Edition
 
 
@@ -41,22 +41,22 @@ agreement for further details.
 +----------------------------------------------------------------------------------+
 ; Flow Summary                                                                     ;
 +------------------------------------+---------------------------------------------+
-; Flow Status                        ; Successful - Wed Oct 10 18:08:01 2018       ;
+; Flow Status                        ; Successful - Mon Oct 22 22:06:06 2018       ;
 ; Quartus Prime Version              ; 17.0.0 Build 595 04/25/2017 SJ Lite Edition ;
 ; Revision Name                      ; DE0_NANO                                    ;
 ; Top-level Entity Name              ; DE0_NANO                                    ;
 ; Family                             ; Cyclone IV E                                ;
 ; Device                             ; EP4CE22F17C6                                ;
 ; Timing Models                      ; Final                                       ;
-; Total logic elements               ; 0 / 22,320 ( 0 % )                          ;
-;     Total combinational functions  ; 0 / 22,320 ( 0 % )                          ;
-;     Dedicated logic registers      ; 0 / 22,320 ( 0 % )                          ;
-; Total registers                    ; 0                                           ;
+; Total logic elements               ; 190 / 22,320 ( < 1 % )                      ;
+;     Total combinational functions  ; 190 / 22,320 ( < 1 % )                      ;
+;     Dedicated logic registers      ; 54 / 22,320 ( < 1 % )                       ;
+; Total registers                    ; 54                                          ;
 ; Total pins                         ; 51 / 154 ( 33 % )                           ;
 ; Total virtual pins                 ; 0                                           ;
-; Total memory bits                  ; 0 / 608,256 ( 0 % )                         ;
+; Total memory bits                  ; 202,752 / 608,256 ( 33 % )                  ;
 ; Embedded Multiplier 9-bit elements ; 0 / 132 ( 0 % )                             ;
-; Total PLLs                         ; 0 / 4 ( 0 % )                               ;
+; Total PLLs                         ; 1 / 4 ( 25 % )                              ;
 +------------------------------------+---------------------------------------------+
 
 
@@ -65,7 +65,7 @@ agreement for further details.
 +-------------------+---------------------+
 ; Option            ; Setting             ;
 +-------------------+---------------------+
-; Start date & time ; 10/10/2018 18:07:46 ;
+; Start date & time ; 10/22/2018 22:05:48 ;
 ; Main task         ; Compilation         ;
 ; Revision Name     ; DE0_NANO            ;
 +-------------------+---------------------+
@@ -76,9 +76,12 @@ agreement for further details.
 +-------------------------------------+----------------------------------------+---------------+-------------+------------+
 ; Assignment Name                     ; Value                                  ; Default Value ; Entity Name ; Section Id ;
 +-------------------------------------+----------------------------------------+---------------+-------------+------------+
-; COMPILER_SIGNATURE_ID               ; 268891670445637.153920926605044        ; --            ; --          ; --         ;
+; COMPILER_SIGNATURE_ID               ; 268891670445637.154026034806084        ; --            ; --          ; --         ;
 ; MAX_CORE_JUNCTION_TEMP              ; 85                                     ; --            ; --          ; --         ;
 ; MIN_CORE_JUNCTION_TEMP              ; 0                                      ; --            ; --          ; --         ;
+; MISC_FILE                           ; ahhhPLL_inst.v                         ; --            ; --          ; --         ;
+; MISC_FILE                           ; ahhhPLL_bb.v                           ; --            ; --          ; --         ;
+; MISC_FILE                           ; ahhhPLL.ppf                            ; --            ; --          ; --         ;
 ; PARTITION_COLOR                     ; -- (Not supported for targeted family) ; --            ; --          ; Top        ;
 ; PARTITION_FITTER_PRESERVATION_LEVEL ; -- (Not supported for targeted family) ; --            ; --          ; Top        ;
 ; PARTITION_NETLIST_TYPE              ; -- (Not supported for targeted family) ; --            ; --          ; Top        ;
@@ -92,11 +95,11 @@ agreement for further details.
 +---------------------------+--------------+-------------------------+---------------------+------------------------------------+
 ; Module Name               ; Elapsed Time ; Average Processors Used ; Peak Virtual Memory ; Total CPU Time (on all processors) ;
 +---------------------------+--------------+-------------------------+---------------------+------------------------------------+
-; Analysis & Synthesis      ; 00:00:09     ; 1.0                     ; 610 MB              ; 00:00:22                           ;
-; Fitter                    ; 00:00:03     ; 1.0                     ; 1388 MB             ; 00:00:05                           ;
-; Assembler                 ; 00:00:01     ; 1.0                     ; 562 MB              ; 00:00:01                           ;
-; TimeQuest Timing Analyzer ; 00:00:02     ; 1.0                     ; 665 MB              ; 00:00:01                           ;
-; Total                     ; 00:00:15     ; --                      ; --                  ; 00:00:29                           ;
+; Analysis & Synthesis      ; 00:00:10     ; 1.0                     ; 693 MB              ; 00:00:23                           ;
+; Fitter                    ; 00:00:05     ; 1.0                     ; 1416 MB             ; 00:00:06                           ;
+; Assembler                 ; 00:00:01     ; 1.0                     ; 566 MB              ; 00:00:01                           ;
+; TimeQuest Timing Analyzer ; 00:00:02     ; 1.0                     ; 671 MB              ; 00:00:02                           ;
+; Total                     ; 00:00:18     ; --                      ; --                  ; 00:00:32                           ;
 +---------------------------+--------------+-------------------------+---------------------+------------------------------------+
 
 

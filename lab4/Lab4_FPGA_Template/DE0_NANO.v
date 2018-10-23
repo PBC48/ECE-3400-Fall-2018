@@ -30,8 +30,7 @@ input 		    [33:20]		GPIO_1_D;
 input 		     [1:0]		KEY;
 
 ///// PIXEL DATA /////
-reg [7:0]	pixel_data_RGB332 = 8'd0;
-
+reg [7:0]	pixel_data_RGB332 = RED | GREEN | BLUE;
 ///// READ/WRITE ADDRESS /////
 reg [14:0] X_ADDR;
 reg [14:0] Y_ADDR;
@@ -60,9 +59,16 @@ wire [8:0] RESULT;
 reg W_EN;
 
 ///////* CREATE ANY LOCAL WIRES YOU NEED FOR YOUR PLL *///////
-
+wire clk24_PLL;
+wire clk25_PLL;
+wire clk50_PLL;
 ///////* INSTANTIATE YOUR PLL HERE *///////
-
+ahhhPLL	ahhhPLL_inst (
+	.inclk0 ( CLOCK_50 ),
+	.c0 ( clk24_PLL ),
+	.c1 ( clk25_PLL ),
+	.c2 ( clk50_PLL )
+	);
 ///////* M9K Module *///////
 Dual_Port_RAM_M9K mem(
 	.input_data(pixel_data_RGB332),
@@ -70,14 +76,14 @@ Dual_Port_RAM_M9K mem(
 	.r_addr(READ_ADDRESS),
 	.w_en(W_EN),
 	.clk_W(CLOCK_50),
-	.clk_R(/* REPLACE THIS THE 25MHZ SIGNAL FROM YOUR PLL */), // DO WE NEED TO READ SLOWER THAN WRITE??
+	.clk_R(clk25_PLL), // DO WE NEED TO READ SLOWER THAN WRITE??
 	.output_data(MEM_OUTPUT)
 );
 
 ///////* VGA Module *///////
 VGA_DRIVER driver (
 	.RESET(VGA_RESET),
-	.CLOCK(/*REPLACE THIS THE 25MHZ SIGNAL FROM YOUR PLL*/),
+	.CLOCK(clk25_PLL),
 	.PIXEL_COLOR_IN(VGA_READ_MEM_EN ? MEM_OUTPUT : BLUE),
 	.PIXEL_X(VGA_PIXEL_X),
 	.PIXEL_Y(VGA_PIXEL_Y),
@@ -89,14 +95,43 @@ VGA_DRIVER driver (
 ///////* Image Processor *///////
 IMAGE_PROCESSOR proc(
 	.PIXEL_IN(MEM_OUTPUT),
-	.CLK(/*REPLACE THIS THE 25MHZ SIGNAL FROM YOUR PLL*/),
+	.CLK(clk25_PLL),
 	.VGA_PIXEL_X(VGA_PIXEL_X),
 	.VGA_PIXEL_Y(VGA_PIXEL_Y),
 	.VGA_VSYNC_NEG(VGA_VSYNC_NEG),
 	.RESULT(RESULT)
 );
 
+always @ (posedge clk25_PLL) begin
+	if (VGA_RESET) begin
+		Y_ADDR <= 10'b0;
+		X_ADDR <= 10'b0;
+	end
+	else if (Y_ADDR == `SCREEN_HEIGHT) begin
+		Y_ADDR <= 10'b0;
+		X_ADDR <= 10'b0;
+   end
+	else if(X_ADDR < `SCREEN_WIDTH) begin
+		X_ADDR <= X_ADDR + 1;
+   end
+	else begin
+	   X_ADDR <= 10'b0;
+		Y_ADDR <= Y_ADDR + 1;
+	end
+	
+	if (!VGA_RESET) begin
+		W_EN <= 1;
+	end
+end
 
+always @ (posedge clk25_PLL) begin
+	if (X_ADDR < `SCREEN_WIDTH/2 && Y_ADDR < `SCREEN_HEIGHT/2) begin
+		pixel_data_RGB332 = 8'b000_111_00;
+	end
+	else begin
+		pixel_data_RGB332 = RED | BLUE;
+	end
+end
 ///////* Update Read Address *///////
 always @ (VGA_PIXEL_X, VGA_PIXEL_Y) begin
 		READ_ADDRESS = (VGA_PIXEL_X + VGA_PIXEL_Y*`SCREEN_WIDTH);
