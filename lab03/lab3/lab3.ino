@@ -143,13 +143,12 @@ void loop()
         }
         else
         {
-
             if (SENSOR_L_READING < 200)
-            { //Sensor_L Threshold: 400
+            { 
                 robot_move(adj_right);
             }
             else if (SENSOR_R_READING < 200)
-            { //Sensor_R Threshold: 50
+            { 
                 robot_move(adj_left);
             }
             else
