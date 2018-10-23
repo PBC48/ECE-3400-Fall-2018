@@ -19,7 +19,7 @@
 ## Robot Integration
 
 <figure>
-    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab02/frequency%20of%20ADC.PNG" width="800"/>
+    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab03/IMG_0386.jpg" width="800"/>
     <font size="2">
     <figcaption> <b> Adding the Radio to the Robot </b>
     </figcaption>
@@ -67,7 +67,7 @@ The message sent back to the robot allows the robot to make decisions based on t
 
 ### Robot State Machine
 <figure>
-    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab02/frequency%20of%20ADC.PNG" width="800"/>
+    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab03/FSM.PNG" width="800"/>
     <font size="2">
     <figcaption> <b> State Machine for the Robot     </b>
     </figcaption>
