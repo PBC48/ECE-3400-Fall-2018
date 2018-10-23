@@ -69,7 +69,7 @@ The message sent back to the robot allows the robot to make decisions based on t
 <figure>
     <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab02/frequency%20of%20ADC.PNG" width="800"/>
     <font size="2">
-    <figcaption> <b> State Machine for the Robot so far </b>
+    <figcaption> <b> State Machine for the Robot     </b>
     </figcaption>
     </font>
 </figure>
