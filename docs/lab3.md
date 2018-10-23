@@ -10,13 +10,14 @@
 ## Radio
 
 ### Sending Maze Info Between Arduinos
-
+<iframe width="560" height="315" src="https://www.youtube.com/embed/flzf6dUwdMM" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 ### Simulating the Robot
 
 ### Base Station-to-GUI Transmission
 
 
 ## Robot Integration
+
 
 #### Data Structure
 This is the two byte communication message the robot sends to the base station.
@@ -60,7 +61,7 @@ The message sent back to the robot allows the robot to make decisions based on t
 ### Robot State Machine
 
 ### Integration with Mic
-
+<iframe width="560" height="315" src="https://www.youtube.com/embed/zy4pa3PNozo" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 ### Robot Navigation through the maze
 
 ### Integration with Radio
