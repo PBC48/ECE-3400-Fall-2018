@@ -47,28 +47,57 @@ void SENSOR1_ISR() {
 }
 
 
+uint16_t OverAnalogRead(uint8_t pin){
+  byte TIMSK0_temp = TIMSK0;
+    byte ADCSRA_temp = ADCSRA;
+    byte ADMUX_temp = ADMUX;
+    byte DIDR0_temp = DIDR0;
+ADCSRA = 0xe7; // set the adc to free running mode
+    DIDR0 = 0x30; 
+  ADMUX = 0x40|pin; // use adc pin
+  Serial.println("START");
+  while(!(ADCSRA & 0x10)); // wait for adc to be ready
+  ADCSRA = 0xf7; // restart adc
+  byte m = ADCL; // fetch adc data
+  byte j = ADCH;
+  uint16_t k = (j << 8) | m; // form into an int
+  k -= 0x0200; // form into a signed int
+  k <<= 6; // form into a 16b signed int
+  return k;
+
+  TIMSK0 = TIMSK0_temp;
+    ADCSRA = ADCSRA_temp;
+    ADMUX = ADMUX_temp;
+    DIDR0 = DIDR0_temp;
+}
+
 
 void setup() {
   Serial.begin(115200);
 
   // Tell the compiler which pin to associate with which ISR
-  attachInterrupt(digitalPinToInterrupt(SENSOR0_PIN), SENSOR0_ISR, LOW);
-  attachInterrupt(digitalPinToInterrupt(SENSOR1_PIN), SENSOR1_ISR, LOW);
+  //attachInterrupt(digitalPinToInterrupt(SENSOR0_PIN), SENSOR0_ISR, LOW);
+  //attachInterrupt(digitalPinToInterrupt(SENSOR1_PIN), SENSOR1_ISR, LOW);
 
   // Setup the sensors
-  setup_sensor(SENSOR0_PIN, &SENSOR0_TIMER);
-  setup_sensor(SENSOR1_PIN, &SENSOR1_TIMER);
+  //setup_sensor(SENSOR0_PIN, &SENSOR0_TIMER);
+  //setup_sensor(SENSOR1_PIN, &SENSOR1_TIMER);
 
 }
 
 void loop() {
     
-    FRONTWALL = analogRead(WALL_FRONT);
-    LEFTWALL = analogRead(WALL_LEFT);
-    Serial.print(F("LEFT WALL READING: "));Serial.println(LEFTWALL);
-    Serial.print(F("FRONT WALL READING: "));Serial.println(FRONTWALL);
-    Serial.print(F("SENSOR0 READING: "));Serial.println(SENSOR0_READING);
-    Serial.print(F("SENSOR1 READING: "));Serial.println(SENSOR1_READING);
+    //FRONTWALL = analogRead(WALL_FRONT);
+    //LEFTWALL = analogRead(WALL_LEFT);
+    
+    uint16_t SENSOR_LEFT = OverAnalogRead(5);
+    uint16_t SENSOR_RIGHT = OverAnalogRead(4);
+    //Serial.print(F("LEFT WALL READING: "));Serial.println(LEFTWALL);
+    //Serial.print(F("FRONT WALL READING: "));Serial.println(FRONTWALL);
+    Serial.print(F("SENSOR_LEFT READING: "));Serial.println(SENSOR_LEFT);
+    Serial.print(F("SENSOR_RIGHT READING: "));Serial.println(SENSOR_RIGHT);
+    //Serial.print(F("SENSOR0 READING: "));Serial.println(SENSOR0_READING);
+    //Serial.print(F("SENSOR1 READING: "));Serial.println(SENSOR1_READING);
     Serial.println(" ");
     delay(500);
     
