@@ -54,13 +54,13 @@ void loop() {
             //radio_msg = 0;
             //radio_msg = 0x1FF & (1<<6|0<<2);
             //radio_transmit(radio_msg);
-            //delay(1000);
+            delay(1000);
             STATE = AUDIO_DECT;
             
             break;
         
         case AUDIO_DECT:
-            calculate_FFT(MIC);
+            /*calculate_FFT(MIC);
             Serial.print(F("AUDIO SUM: "));Serial.println(sum);
             if(sum>85) { //|| digitalRead(BUTTON)){ //originally at 90
                 Serial.println(F("660Hz Tone Detected"));
@@ -68,6 +68,9 @@ void loop() {
             }else{
                 STATE = AUDIO_DECT;
             }
+            //radio_msg = 0x1FF & (1<<6|0<<2);
+            //radio_transmit(radio_msg);*/
+            STATE = IR_DECT;
             break;
         
         case IR_DECT:
@@ -100,11 +103,9 @@ void loop() {
                 byte dir;
                 if(LEFTWALL < 200){
                     dir = 2;
-                    u32wait = millis();
                     STATE = ROBOT_TURN_LEFT;
                 } else if (FRONTWALL > 115) {
                     dir = 1;
-                    u32wait = millis();
                     STATE = ROBOT_TURN_RIGHT;
                 } else {
                     dir = 0;
@@ -112,8 +113,10 @@ void loop() {
                 }
                 
                 radio_msg = radio_msg | (dir << 6) | ((LEFTWALL > 200)<<2) | (FRONTWALL > 115); //| ((RIGHTWALL > ###)<<1);
-                
+
+                robot_move(rstop);
                 radio_transmit(radio_msg);
+                u32wait = millis();
                 
             }else if(SENSOR_L_READING < 200){ //Sensor_L Threshold: 400   
                 robot_move(adj_right);
@@ -154,5 +157,4 @@ void loop() {
             break;
     }
 }
-
 
