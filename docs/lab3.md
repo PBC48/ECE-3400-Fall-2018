@@ -44,7 +44,7 @@ This is the two byte communication message the robot sends to the base station.
 [2:0]  We reserve three bits for detecting walls. The position of the walls 
 will be relative to the robot. 
 
-[5:3]  We reserve three bits for the treasure since there will be two shapes and 
+[5:3]  We reserve three bits for the treasure since there will be three shapes and 
 two colors, giving us four options, we also need to define when there is no 
 treasure. Thus, we have a total of five options.
 
