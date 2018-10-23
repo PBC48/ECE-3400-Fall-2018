@@ -99,7 +99,7 @@ void loop() {
             //Serial.print(F("FRONTWALL: "));Serial.println(FRONTWALL);
             //Serial.print(F("LEFTWALL: "));Serial.println(LEFTWALL);
             
-            if(SENSOR_R_READING<200 && SENSOR_R_READING<200){ 
+            if(SENSOR_R_READING<200 && SENSOR_L_READING<200){ 
                 Serial.println(F("In intersection"));
                 byte dir;
                 if(LEFTWALL < 200){
@@ -127,7 +127,7 @@ void loop() {
                 }else{
                     robot_move(forward);
                 }
-                if((millis()-u32wait_ir) > WAITTIME{
+                if((millis()-u32wait_ir) > WAITTIME){
                     STATE = IR_DECT;
                 }
             }

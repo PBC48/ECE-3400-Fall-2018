@@ -58,7 +58,7 @@ void robot_move(DIRECTIONS dir){
                 Serial.println("back");
                 break;
         }
-        delay(20);  
+        delay(25);   //update the PWM every 20-30 ms.
         current_state = dir;
     }
 }
