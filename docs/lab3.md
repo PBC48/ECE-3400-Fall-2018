@@ -18,6 +18,13 @@
 
 ## Robot Integration
 
+<figure>
+    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab02/frequency%20of%20ADC.PNG" width="800"/>
+    <font size="2">
+    <figcaption> <b> Adding the Radio to the Robot </b>
+    </figcaption>
+    </font>
+</figure>
 
 #### Data Structure
 This is the two byte communication message the robot sends to the base station.
@@ -59,6 +66,13 @@ been explored or not
 The message sent back to the robot allows the robot to make decisions based on the state of the maze. The robot can make decisions based on whether the locations near it has been explored or not. This can affect which direction the robot turns in an intersection. This comes at a cost of implementing additional decoders for the robot on the system.
 
 ### Robot State Machine
+<figure>
+    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab02/frequency%20of%20ADC.PNG" width="800"/>
+    <font size="2">
+    <figcaption> <b> State Machine for the Robot so far </b>
+    </figcaption>
+    </font>
+</figure>
 
 ### Integration with Mic
 <iframe width="560" height="315" src="https://www.youtube.com/embed/zy4pa3PNozo" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
