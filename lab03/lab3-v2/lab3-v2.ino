@@ -10,6 +10,7 @@ sensor, robot movement, microphone, and ir all in one.
 #include "robot.h"
 #include "line_sensor.h"
 #include "fft_lib.h"
+//#include "radio.h"
 
 enum states : uint8_t {
     START,
@@ -66,7 +67,7 @@ void loop() {
         case IR_DECT:
             calculate_FFT(IR);
             //Serial.println("IN IR_DECT");
-            Serial.print(F("IR SUM: ")); Serial.println(sum);
+            //Serial.print(F("IR SUM: ")); Serial.println(sum);
             if(sum > 60){
                 Serial.println(F("Robot Detected"));
                 STATE = ROBOT_DETECTED;
@@ -86,15 +87,22 @@ void loop() {
             //Serial.print(F("LEFTWALL: "));Serial.println(LEFTWALL);
             if(SENSOR_R_READING<200 && SENSOR_L_READING<200){ //Sensor_R Threshold: 50; Sensor_L Threshold: 400
                 Serial.println("In intersection");
+                byte dir;
                 if(LEFTWALL < 200){
-                    u32wait = millis();
+                    dir = 2;
+                    
                     STATE = ROBOT_TURN_LEFT;
                 } else if (FRONTWALL > 115) {
-                    u32wait = millis();
+                    dir = 1;
                     STATE = ROBOT_TURN_RIGHT;
                 } else {
+                    dir = 0;
                     robot_move(forward);
+                    //delay(200);
                 }
+                radio_msg = radio_msg | (dir << 6) | ((LEFTWALL > 200)<<2) | (FRONTWALL > 115);
+                u32wait = millis();
+
             }else if(SENSOR_L_READING < 200){ //Sensor_L Threshold: 400   
                 robot_move(adj_right);
             }else if(SENSOR_R_READING < 200){ //Sensor_R Threshold: 50
@@ -107,6 +115,7 @@ void loop() {
                     u32wait_ir = millis();
                     STATE = IR_DECT;
             }
+           
             break;
               
         case ROBOT_DETECTED:

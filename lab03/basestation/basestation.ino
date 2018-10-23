@@ -92,13 +92,13 @@ void setup(void)
   radio.setChannel(0x50);
   // set the power
   // RF24_PA_MIN=-18dBm, RF24_PA_LOW=-12dBm, RF24_PA_MED=-6dBM, and RF24_PA_HIGH=0dBm.
-  radio.setPALevel(RF24_PA_MIN);
+  radio.setPALevel(RF24_PA_HIGH);
   //RF24_250KBPS for 250kbs, RF24_1MBPS for 1Mbps, or RF24_2MBPS for 2Mbps
   radio.setDataRate(RF24_250KBPS);
 
   // optionally, reduce the payload size.  seems to
   // improve reliability
-  //radio.setPayloadSize(2);
+  radio.setPayloadSize(8);
 
   //
   // Open pipes to other nodes for communication
@@ -196,15 +196,17 @@ void loop(void)
     robot  = output[3];
 */
 
-Serial.print("direction=");Serial.print(dir);
-Serial.print(",wall_left=");Serial.print(wall_left);
-Serial.print(",wall_front=");Serial.print(wall_front);
-Serial.print(",wall_right=");Serial.print(wall_right);
-/*Serial.print(",treasure=");Serial.print(treasure);
-Serial.print(",tshape=");Serial.print(tshape);
-Serial.print(",tcolor=");Serial.print(tcolor);
-Serial.print(",robot=");Serial.println(robot);*/
-Serial.println("");
+    Serial.print("direction=");Serial.print(dir);
+    Serial.print(",wall_left=");Serial.print(wall_left);
+    Serial.print(",wall_front=");Serial.print(wall_front);
+    Serial.print(",wall_right=");Serial.print(wall_right);
+    Serial.print(",robot_direction=");Serial.print(robot_direction);
+    
+    /*Serial.print(",treasure=");Serial.print(treasure);
+    Serial.print(",tshape=");Serial.print(tshape);
+    Serial.print(",tcolor=");Serial.print(tcolor);
+    Serial.print(",robot=");Serial.println(robot);*/
+    Serial.println("");
     //decode the absolute directions base on the robot's direction and input
     switch(robot_direction){
         case right: //facing right, then left is north, right is south
@@ -260,17 +262,17 @@ Serial.println("");
             }else if(robot_direction==left){
                 x--;
             }else if(robot_direction==up){
-                y++;
-            }else if(robot_direction==down){
                 y--;
+            }else if(robot_direction==down){
+                y++;
             }
             break;
         case 1: //right : robot decided to turn right
             if(robot_direction==right){
-                y--;
+                y++;
                 robot_direction = down;
             }else if(robot_direction==left){
-                y++;
+                y--;
                 robot_direction = up;
             }else if(robot_direction==up){
                 x++;
@@ -282,10 +284,10 @@ Serial.println("");
             break;
         case 2: //left : robot decides to turn left
             if(robot_direction==right){
-                y++;
+                y--;
                 robot_direction = up;
             }else if(robot_direction==left){
-                y--;
+                y++;
                 robot_direction = down;
             }else if(robot_direction==up){
                 x--;
@@ -303,5 +305,5 @@ Serial.println("");
     //free(output);
     }
   //added extra delay: but remove when integrate
-  delay(500);
+  //delay(500);
 }

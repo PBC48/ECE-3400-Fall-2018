@@ -31,13 +31,13 @@ void robot_move(DIRECTIONS dir){
         case right:
             L.write(180);
             R.write(95);
-            Serial.println("right");
+            //Serial.println("right");
             break;
 
         case left:
             L.write(85);
             R.write(0);
-            Serial.println("left");
+            //Serial.println("left");
             break;
         case forward:
             L.write(180);
