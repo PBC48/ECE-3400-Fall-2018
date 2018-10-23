@@ -101,8 +101,6 @@ void loop() {
             
             if(SENSOR_R_READING<200 && SENSOR_R_READING<200){ 
                 Serial.println(F("In intersection"));
-                //Serial.print(F("SENSOR_R READING: "));Serial.println(SENSOR_R_READING);
-                //Serial.print(F("SENSOR_L READING: "));Serial.println(SENSOR_L_READING);
                 byte dir;
                 if(LEFTWALL < 200){
                     dir = 2;
@@ -116,23 +114,22 @@ void loop() {
                     dir = 0;
                     robot_move(forward);
                 }
-                
                 radio_msg = radio_msg | (dir << 6) | ((LEFTWALL > 200)<<2) | (FRONTWALL > 115); //| ((RIGHTWALL > ###)<<1);
-
                 //robot_move(rstop);
                 //radio_transmit(radio_msg);
                 u32wait = millis();
-            }else if(SENSOR_L_READING < 200){ //Sensor_L Threshold: 400   
-                robot_move(adj_right);
-            }else if(SENSOR_R_READING < 200){ //Sensor_R Threshold: 50
-                robot_move(adj_left);
-            }else{
-                robot_move(forward);
-            }
+            }else {
                 
-            if((millis()-u32wait_ir) > WAITTIME){
-                    u32wait_ir = millis();
+                if(SENSOR_L_READING < 200){ //Sensor_L Threshold: 400   
+                    robot_move(adj_right);
+                }else if(SENSOR_R_READING < 200){ //Sensor_R Threshold: 50
+                    robot_move(adj_left);
+                }else{
+                    robot_move(forward);
+                }
+                if((millis()-u32wait_ir) > WAITTIME{
                     STATE = IR_DECT;
+                }
             }
             break;
               
@@ -142,14 +139,12 @@ void loop() {
             break;
 
         case ROBOT_TURN_LEFT:
-            
             if(millis()-u32wait>700){
                 STATE = ROBOT_SENSE;
             }
             break;
 
         case ROBOT_TURN_RIGHT:
-            
             if(millis()-u32wait>700){
                 STATE = ROBOT_SENSE;
             }

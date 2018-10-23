@@ -104,8 +104,8 @@ void loop() {
             }
                 
             if((millis()-u32wait_ir) > WAITTIME){
-                    u32wait_ir = millis();
-                    STATE = IR_DECT;
+                u32wait_ir = millis();
+                STATE = IR_DECT;
             }
             break;
               
