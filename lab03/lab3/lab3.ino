@@ -28,7 +28,7 @@ enum states : uint8_t
 uint8_t STATE;
 uint32_t u32wait;
 uint32_t u32wait_ir;
-//uint16_t radio_msg = 0;
+uint16_t radio_msg = 0;
 uint16_t FRONTWALL;
 uint16_t LEFTWALL;
 
@@ -43,8 +43,8 @@ void setup()
 {
     Serial.begin(115200); // Not 115200?
     line_sensor_init();
-    robot_init();
-    //radio_init(role_ping_out);
+    
+    radio_init(role_ping_out);
     STATE = START;
     u32wait = millis();
 }
@@ -56,7 +56,7 @@ void loop()
     case START:
         Serial.println(F("start"));
         //radio_msg = 0;
-        //radio_msg = 0x1FF & (1<<6|0<<2);
+        //radio_msg = millis();
         //radio_transmit(radio_msg);
 
         delay(1000);
@@ -65,17 +65,18 @@ void loop()
         break;
 
     case AUDIO_DECT:
-        /*calculate_FFT(MIC);
+        calculate_FFT(MIC);
             Serial.print(F("AUDIO SUM: "));Serial.println(sum);
-            if(sum>85) { //|| digitalRead(BUTTON)){ //originally at 90
+            if(sum>90) { //|| digitalRead(BUTTON)){ //originally at 90
                 Serial.println(F("660Hz Tone Detected"));
                 STATE = IR_DECT;
+                robot_init();
             }else{
                 STATE = AUDIO_DECT;
             }
-            //radio_msg = 0x1FF & (1<<6|0<<2);
-            //radio_transmit(radio_msg);*/
-        STATE = IR_DECT;
+            //STATE = IR_DECT;
+            //radio_msg = millis();
+            //radio_transmit(radio_msg);
         break;
 
     case IR_DECT:
@@ -106,7 +107,7 @@ void loop()
         //Serial.print(F("FRONTWALL: "));Serial.println(FRONTWALL);
         //Serial.print(F("LEFTWALL: "));Serial.println(LEFTWALL);
 
-        if (AVERAGE_L < 150 && AVERAGE_R < 150 && VALID_L && VALID_R)
+        if (AVERAGE_L < 200 && AVERAGE_R < 200 && VALID_L && VALID_R)
         {
             Serial.print(F("SENSOR_R READING: "));
             Serial.println(AVERAGE_R);
@@ -120,23 +121,23 @@ void loop()
             if (LEFTWALL < 200)
             {
                 dir = 2;
-                robot_move(left);
                 STATE = ROBOT_TURN_LEFT;
             }
-            else if (FRONTWALL > 115)
+            else if (FRONTWALL > 100)
             {
                 dir = 1;
-                robot_move(right);
                 STATE = ROBOT_TURN_RIGHT;
             }
             else
             {
                 dir = 0;
-                robot_move(forward);
+                //robot_move(forward);
             }
             radio_msg = radio_msg | (dir << 6) | ((LEFTWALL > 200) << 2) | (FRONTWALL > 115); //| ((RIGHTWALL > ###)<<1);
-            //robot_move(rstop);
-            //radio_transmit(radio_msg);
+            robot_move(rstop);
+            line_sensor_detach();
+            radio_transmit(radio_msg);
+            line_sensor_init();
             u32wait = millis();
             VALID_L = false;
             VALID_R = false;
@@ -145,15 +146,15 @@ void loop()
         {
             if (SENSOR_L_READING < 200)
             { 
-                robot_move(adj_right);
+                //robot_move(adj_right);
             }
             else if (SENSOR_R_READING < 200)
             { 
-                robot_move(adj_left);
+                //robot_move(adj_left);
             }
             else
             {
-                robot_move(forward);
+                //robot_move(forward);
             }
             if ((millis() - u32wait_ir) > WAITTIME)
             {
@@ -170,7 +171,8 @@ void loop()
 
     case ROBOT_TURN_LEFT:
         if (millis() - u32wait > 700)
-        {
+        {        
+            //robot_move(left);
             STATE = ROBOT_SENSE;
         }
         break;
@@ -178,6 +180,7 @@ void loop()
     case ROBOT_TURN_RIGHT:
         if (millis() - u32wait > 700)
         {
+            //robot_move(right);
             STATE = ROBOT_SENSE;
         }
         break;
