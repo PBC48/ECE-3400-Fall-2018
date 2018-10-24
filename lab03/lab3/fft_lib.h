@@ -87,5 +87,3 @@ uint16_t OverAnalogRead(uint8_t pin){
   k <<= 6; // form into a 16b signed int
   return k;
 }
-
-     
