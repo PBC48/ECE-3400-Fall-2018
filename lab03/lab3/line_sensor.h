@@ -39,7 +39,7 @@ void SENSOR_R_ISR()
     {
         VALID_R = true;
         AVERAGE_R = SUM_R >> (COUNT_R/4);
-        AVERAGE_R = 0;
+        SUM_R = 0;
         COUNT_R = 0;
     }
 }
@@ -90,4 +90,9 @@ void line_sensor_init()
     // Setup the sensors
     setup_sensor(SENSOR_R_PIN, &SENSOR_R_TIMER);
     setup_sensor(SENSOR_L_PIN, &SENSOR_L_TIMER);
+}
+
+void line_sensor_detach() {
+  detachInterrupt(digitalPinToInterrupt(SENSOR_R_PIN));
+  detachInterrupt(digitalPinToInterrupt(SENSOR_L_PIN));
 }
