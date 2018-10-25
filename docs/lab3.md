@@ -1,34 +1,37 @@
 # Lab 3: System Integration and Radio Communication
 
 ## Objectives
-* Radio communication between two arduinos.
-* Communicate with the GUI to displayed explored vs unexplored areas.
-* Integrate all microphone, radio, and IR components into the robot.
+* Design an efficient data scheme to store all maze information on an Arduino
+* Familiarize ourselves with Nordic radio transceivers and the RF24 Arduino library in order to communicate between radios on two different Arduinos and send maze information wirelessly
+* Communicate with the GUI and update it from a wirelessly connected Arduino to display explored vs unexplored areas of the maze
+* Fully ntegrate all components onto the robot so it starts on a 660 Hz tone, explores the entire maze, stops if it sees another robot but ignores decoys, and displays maze information on the GUI via radio communication with the base station
+
 
 ## Introduction
-For this lab we integrated all of the robot’s capabilities that we have previously implemented into a cohesive system that communicates wirelessly with the provided GUI.  We first worked on creating an algorithm that would efficiently store all the information our robot detects as it navigates through the maze.  Next, one subteam (Patrick and Chrissy) worked on adding the radio component to the robot, setting up the two Nordic nRF24L01+ transceivers that we would use to communicate wirelessly between two Arduinos, one on the robot and one on a base station connected to the GUI.  Meanwhile the other subteam (Tara and Xiaoyu) integrated all the robot’s other functionalities: starting on detection of a 660 Hz tone, line following, wall detection, and detection of other robots while ignoring decoys. At the end of the lab we combined all of the work so that the robot can autonomously explore the maze and update the GUI in real time.
+For this lab we integrated all of the robot’s capabilities that we had previously implemented into a cohesive system that communicates wirelessly with the provided GUI.  We first worked on creating an algorithm that would efficiently store all the information our robot detects as it navigates through the maze.  Next, one subteam (Patrick and Chrissy) worked on adding the radio component to the robot, setting up the two Nordic nRF24L01+ transceivers that we would use to communicate wirelessly between two Arduinos, one on the robot and one on a base station connected to the GUI.  Meanwhile the other subteam (Tara and Xiaoyu) integrated all the robot’s other functionalities: starting on detection of a 660 Hz tone, line following, wall detection, and detection of other robots while ignoring decoys. At the end of the lab we combined all of the work so that the robot can autonomously explore the maze and update the GUI in real time.
 
 ## Radio
-To test out the initial connection between the two radios, we ran the initial “GetStarted” code between the two radios, and made sure they properly communicated. After that, we integrated the radios onto both the base station and the robot. While the Arduino does have a 3.3V power supply, it cannot support the current to power the radio. The 5V power supply can support the current, thus, we implemented a 3.3V voltage regulator into each so that we can step down from the 5v. This made the radios more portable since we won't need to rely on the 3.3V DC supply from the signal generator. We tested the radios with these power sources and they worked.
+For the radio portion of the lab we implemented two Nordic nRF24l01+ transceivers. To test out the connection between the two radios, we ran the example “GettingStarted” code on two separate Arduinos to which we attached one radio each, and made sure they properly communicated. After that, we integrated othe radios onto the base station (an Arduino connected to a computer) and the Arduino on the robot. While the Arduino does have a 3.3V power supply, it cannot support the current necessary to power the radio. The Arduino's 5V power supply can, however, and therefore we implemented a 3.3V voltage regulator for each radio so that we can step down from the 5V to power the radios. This made the radios more portable since we do not need to rely on the 3.3V from the DC power supply. We tested the radios with these power sources and they worked.
 
-The code for the radio involved setting the correct pipe to send our message into through the radio. Since we are team 7, our pin values are ```const uint64_t pipes[2] = { 0x0000000014LL, 0x0000000015LL };```. The transmitter writes to pipe 0x14 while reading from pipe 0x15; the receiver reads and writes the other way around. The RF24 library abstracts many of the complexities of radio transmission such that we only need to call some functions to send to radio.
+The code for the radio involved setting the correct pipes to send our messages through the radio. Since we are team 7, our pin values are ```const uint64_t pipes[2] = { 0x0000000014LL, 0x0000000015LL };```. The transmitter writes to pipe 0x14 while reading from pipe 0x15; the receiver reads and writes the other way around. The RF24 library abstracts many of the complexities of radio transmission so that we only need to call some already-written functions to send messages with the radio.
 
-To write, we have to call ```bool ok = radio.write( &buff, sizeof(buff) );``` where the buffer can be an integer. 
-After writing, the transmitter has the option to hear back from the receiver which is done using:
+To transmit, we call ```radio.write( &buff, sizeof(buff) )```, where the buffer can be an integer. 
+After writing, the transmitter has the option to hear back from the receiver, which is done with the code shown below. This allows us to check that the radio has delivered its package correctly, as well as send feedback between the robot and the base station.
+
 ```cpp
       radio.startListening();
       uint16_t buffer; 
       radio.read( &buffer, sizeof(buffer) );
       radio.stopListening();
 ```
-This allows us to check that the radio delivers its package correctly and also allows us to send feedback between the robot and the base station.
 
-### Sending Maze Info Between Arduinos
+
+### Sending Maze Information Between Arduinos
 <iframe width="560" height="315" src="https://www.youtube.com/embed/flzf6dUwdMM" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
 
 #### Data Structure
-This is the two byte communication message the robot sends to the base station.
+The two byte communication message that the robot sends to the base station is structured like this:
 ```
  15                  9 8     7    6 5       3 2       0
 +---------------------+-----+------+---------+---------+
@@ -51,7 +54,7 @@ intersection
 
 ```
 
-This is the one byte communication message the base station sends back to the robot.
+The one byte communication message that the base station sends back to the robot is structured like this:
 ```
  7           4 3          0
 +-------------+------------+
