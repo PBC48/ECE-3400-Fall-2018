@@ -86,6 +86,11 @@ void robot_init()
     robot_move(rstop);
 }
 
+void servo_detach(){
+  R.detach();
+  L.detach();
+}
+
 void robot_calibrate()
 {
     robot_move(right);
