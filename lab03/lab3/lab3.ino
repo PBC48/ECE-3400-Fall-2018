@@ -46,6 +46,7 @@ void send_to_baseStation()
     line_sensor_detach();
     radio_transmit(radio_msg);
     line_sensor_init();
+    radio_msg = radio_msg & 0x1FF;
 }
 
 void setup()
