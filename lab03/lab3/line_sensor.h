@@ -91,3 +91,8 @@ void line_sensor_init()
     setup_sensor(SENSOR_R_PIN, &SENSOR_R_TIMER);
     setup_sensor(SENSOR_L_PIN, &SENSOR_L_TIMER);
 }
+
+void line_sensor_detach() {
+  detachInterrupt(digitalPinToInterrupt(SENSOR_R_PIN));
+  detachInterrupt(digitalPinToInterrupt(SENSOR_L_PIN));
+}
