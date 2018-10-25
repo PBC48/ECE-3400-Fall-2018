@@ -39,7 +39,7 @@ void SENSOR_R_ISR()
     {
         VALID_R = true;
         AVERAGE_R = SUM_R >> (COUNT_R/4);
-        AVERAGE_R = 0;
+        SUM_R = 0;
         COUNT_R = 0;
     }
 }

@@ -98,7 +98,7 @@ void setup(void)
 
   // optionally, reduce the payload size.  seems to
   // improve reliability
-  radio.setPayloadSize(8);
+  //radio.setPayloadSize(8);
 
   //
   // Open pipes to other nodes for communication
@@ -186,22 +186,14 @@ void loop(void)
     treasure = (buff >> 3) & 0x0007;
     dir = ((unsigned)buff >> 6) & 0x0003;
     robot  = (buff >> 8) & 0x0001;
-    /*wall_left   = output[0];
-    wall_front  = output[2];
-    wall_right  = output[1];
-    treasure = output[4];
-    tshape = output[5];
-    tcolor = output[6];
-    dir = output[7];
-    robot  = output[3];
-*/
 
+/*
     Serial.print("direction=");Serial.print(dir);
     Serial.print(",wall_left=");Serial.print(wall_left);
     Serial.print(",wall_front=");Serial.print(wall_front);
     Serial.print(",wall_right=");Serial.print(wall_right);
     Serial.print(",robot_direction=");Serial.print(robot_direction);
-    
+    */
     /*Serial.print(",treasure=");Serial.print(treasure);
     Serial.print(",tshape=");Serial.print(tshape);
     Serial.print(",tcolor=");Serial.print(tcolor);
