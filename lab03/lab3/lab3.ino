@@ -211,6 +211,7 @@ void loop()
 
     case TRANSMIT:
         send_to_baseStation();
+        STATE = ROBOT_SENSE;
         break;
 
     default:
