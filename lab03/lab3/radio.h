@@ -98,18 +98,20 @@ void radio_transmit(uint16_t &buff){
     radio.stopListening();
 
     // Take the time, and send it.  This will block until complete
-    //Serial.print("now sending..");Serial.println(buff);
-    printf("Now sending %d...",buff);
+    Serial.print("now sending..");Serial.println(buff);
+ //   printf("Now sending %d...", buff);
     bool ok = false;
     //while (!ok) {
       ok = radio.write( &buff, sizeof(uint16_t) );
      // printf("sending");
     //}
 
-    if (ok)
+    if (ok) {
       printf("ok...");
-    else
+    }
+    else {
       printf("failed.\n\r");
+    }
 
     // Now, continue listening
     radio.startListening();
@@ -118,8 +120,9 @@ void radio_transmit(uint16_t &buff){
     unsigned long started_waiting_at = millis();
     bool timeout = false;
     while ( ! radio.available() && ! timeout )
-      if (millis() - started_waiting_at > 200 )
+      if (millis() - started_waiting_at > 200 ) {
         timeout = true;
+      }
 
     // Describe the results
     if ( timeout )
