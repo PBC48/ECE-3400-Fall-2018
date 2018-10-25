@@ -32,7 +32,6 @@ void robot_move(DIRECTIONS dir)
         {
             R.detach();
             L.detach();
-            Serial.println("stopped");
         }
         switch (dir)
         { //NEED SOME CALIBRATION

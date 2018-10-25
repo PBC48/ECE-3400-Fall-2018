@@ -12,10 +12,6 @@
  * Takes input number and outputs array of output with labels. Assume
  * size of array works
  * 
- *   15   -------------------  9         8      7     5      2                0
-//  +-------------------------+---------+-----+------+------+------------------+
-//  | type------------------- |direction|robot| dir  | trea | WALLS            |
-//  +-------------------------+---------+-----+------+------+------------------+
 */
 int * decoder(uint16_t input){
     bool left  = input & 0x1;
