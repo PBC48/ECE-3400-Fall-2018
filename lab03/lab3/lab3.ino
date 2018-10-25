@@ -42,7 +42,8 @@ void toggle_LED(uint8_t &pin)
 
 void send_to_baseStation()
 {
-    robot_move(rstop);
+    //robot_move(rstop);
+    servo_detach();
     line_sensor_detach();
     radio_transmit(radio_msg);
     line_sensor_init();
@@ -121,6 +122,11 @@ void loop()
         //Serial.print(F("FRONTWALL: "));Serial.println(FRONTWALL);
         //Serial.print(F("LEFTWALL: "));Serial.println(LEFTWALL);
 
+        //Serial.print(F("SENSOR_R READING: "));
+        //Serial.println(AVERAGE_R);
+        //Serial.print(F("SENSOR_L READING: "));
+        //Serial.println(AVERAGE_L);
+            
         if (AVERAGE_L < 200 && AVERAGE_R < 200 && VALID_L && VALID_R)
         {
             Serial.print(F("SENSOR_R READING: "));
@@ -148,8 +154,10 @@ void loop()
                 STATE = ROBOT_FORWARD;
                 //robot_move(forward);
             }
-            radio_msg = 0x81FF & ((1 << 15) |                                                //setting valid bit.
-                                  (dir << 6) | ((LEFTWALL > 200) << 2) | (FRONTWALL > 115)); //| ((RIGHTWALL > ###)<<1);
+            
+            radio_msg = millis();
+            //radio_msg = 0x81FF & ((1 << 15) |                                                //setting valid bit.
+                                  //(dir << 6) | ((LEFTWALL > 200) << 2) | (FRONTWALL > 115)); //| ((RIGHTWALL > ###)<<1);
 
             u32wait = millis();
             VALID_L = false;
@@ -160,23 +168,26 @@ void loop()
             if (SENSOR_L_READING < 200)
             {
                 robot_move(adj_right);
+                //Serial.println("Adjust right");
             }
             else if (SENSOR_R_READING < 200)
             {
                 robot_move(adj_left);
+                //Serial.println("Adjust left");
             }
             else
             {
                 robot_move(forward);
+                //Serial.println("Moving");
             }
             if ((millis() - u32wait_ir) > WAITTIME)
             {
                 STATE = IR_DECT;
             }
-            else if ((radio_msg >> 15) & 0x1)
+            /*else if ((radio_msg >> 15) & 0x1)
             {
                 STATE = TRANSMIT;
-            }
+            }*/
         }
 
         break;
@@ -187,18 +198,18 @@ void loop()
         break;
 
     case ROBOT_TURN_LEFT:
-        //robot_move(left);
+        robot_move(left);
         if (millis() - u32wait > 700)
         {
-            STATE = ROBOT_SENSE;
+            STATE = TRANSMIT;
         }
         break;
 
     case ROBOT_TURN_RIGHT:
-        //robot_move(right);
+        robot_move(right);
         if (millis() - u32wait > 700)
         {
-            STATE = ROBOT_SENSE;
+            STATE = TRANSMIT;
         }
         break;
 
@@ -206,11 +217,12 @@ void loop()
         robot_move(forward);
         if (millis() - u32wait > 200)
         {
-            STATE = ROBOT_SENSE;
+            STATE = TRANSMIT;
         }
         break;
 
     case TRANSMIT:
+        //radio_transmit(radio_msg);
         send_to_baseStation();
         STATE = ROBOT_SENSE;
         break;
