@@ -93,7 +93,7 @@ void radio_init(role_e role){
 
 
 
-void radio_transmit(uint16_t &buff){
+bool radio_transmit(uint16_t &buff){
     // First, stop listening so we can talk.
     radio.stopListening();
 
@@ -108,9 +108,11 @@ void radio_transmit(uint16_t &buff){
 
     if (ok) {
       printf("ok...");
+      return true;
     }
     else {
       printf("failed.\n\r");
+      return false;
     }
 
     // Now, continue listening
@@ -141,5 +143,6 @@ void radio_transmit(uint16_t &buff){
       printf("Got response %d\n\r", (buffer));
      //printf("Got response %lu, round-trip delay: %lu\n\r",got_time,millis()-got_time);
     }
+    return true;
 }
  

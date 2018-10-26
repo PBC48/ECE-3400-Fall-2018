@@ -2,7 +2,7 @@
  * decoder.h
  * 
  * Current bit configuration:
- * [2:0] WALLS; true or false / left, front, right
+ * [2:0] WALLS; true or false / right,front, left
  * [5:3] TREASURE; y/n, circle/square, red/blue
  * [7:6] ROBOT DIRECTION; forward, right, left
  * [8]   ROBOT; true or false

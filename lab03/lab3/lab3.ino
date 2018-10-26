@@ -42,10 +42,10 @@ void toggle_LED(uint8_t &pin)
 
 void send_to_baseStation()
 {
-    //robot_move(rstop);
+    robot_move(rstop);
     servo_detach();
     line_sensor_detach();
-    radio_transmit(radio_msg);
+    while(!radio_transmit(radio_msg));
     line_sensor_init();
     radio_msg = radio_msg & 0x1FF;
 }
@@ -78,7 +78,7 @@ void loop()
         calculate_FFT(MIC);
         Serial.print(F("AUDIO SUM: "));
         Serial.println(sum);
-        if (sum > 90)
+        if (sum > 60)
         { //|| digitalRead(BUTTON)){ //originally at 90
             Serial.println(F("660Hz Tone Detected"));
             STATE = IR_DECT;
@@ -111,7 +111,7 @@ void loop()
 
     case ROBOT_SENSE:
 
-        //structure: v000000b ddtttrfl
+        //structure: 000000vb ddtttrfl
         // d = direction robot will travel; t = treasure; b = robot
         // f = front wall; r = right wall; l = left wall; v = valid
         // we add a valid bit so that the robot wouldn't stall at intersection.
@@ -155,9 +155,9 @@ void loop()
                 //robot_move(forward);
             }
             
-            radio_msg = millis();
-            //radio_msg = 0x81FF & ((1 << 15) |                                                //setting valid bit.
-                                  //(dir << 6) | ((LEFTWALL > 200) << 2) | (FRONTWALL > 115)); //| ((RIGHTWALL > ###)<<1);
+            //radio_msg = millis();
+            radio_msg = 0x3FF & ((1 << 9) | radio_msg |                                              //setting valid bit.
+                                  (dir << 6) | ((LEFTWALL > 115)) | (FRONTWALL > 115)<<1); //| ((RIGHTWALL > ###)<<1);
 
             u32wait = millis();
             VALID_L = false;
@@ -184,10 +184,10 @@ void loop()
             {
                 STATE = IR_DECT;
             }
-            /*else if ((radio_msg >> 15) & 0x1)
+            else if ((radio_msg >> 9) & 0x1)
             {
                 STATE = TRANSMIT;
-            }*/
+            }
         }
 
         break;
@@ -199,17 +199,17 @@ void loop()
 
     case ROBOT_TURN_LEFT:
         robot_move(left);
-        if (millis() - u32wait > 700)
+        if (millis() - u32wait > 900)
         {
-            STATE = TRANSMIT;
+            STATE = ROBOT_SENSE;
         }
         break;
 
     case ROBOT_TURN_RIGHT:
         robot_move(right);
-        if (millis() - u32wait > 700)
+        if (millis() - u32wait > 900)
         {
-            STATE = TRANSMIT;
+            STATE = ROBOT_SENSE;
         }
         break;
 
@@ -217,13 +217,14 @@ void loop()
         robot_move(forward);
         if (millis() - u32wait > 200)
         {
-            STATE = TRANSMIT;
+            STATE = ROBOT_SENSE;
         }
         break;
 
     case TRANSMIT:
         //radio_transmit(radio_msg);
         send_to_baseStation();
+        
         STATE = ROBOT_SENSE;
         break;
 
