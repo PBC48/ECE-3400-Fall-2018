@@ -41,8 +41,9 @@ The two byte communication message that the robot sends to the base station is s
 ```
 [2:0]  We reserve three bits for detecting walls. The position of the walls 
 will be relative to the robot. 
+
 |bits[2:0]| wall locations |  
-|---|--|
+|---|---|
 |001|left_wall = true| 
 |010|front_wall = true|
 |100|right_wall = true|
@@ -55,6 +56,7 @@ treasure. Thus, we have a total of five options.
 
 [7:6]  The direction the robot has decided to take after hitting the 
 intersection
+
 |bits[7:6]|directions|
 |---------|----------|
 |0|forward|
@@ -76,12 +78,13 @@ The one byte communication message that the base station sends back to the robot
 |Reserved     | EXPLORED   |
 +-------------+------------+
 
+```
+
 [3:0]  Three bits for whether the relative locations next to the robot has 
 been explored or not
 
 [7:4]  Reserved for later usage. Allows filled with zeros
 
-```
 The message sent back to the robot allows the robot to make decisions based on the state of the maze. The robot can make decisions based on whether the locations near it has been explored or not. This can affect which direction the robot turns in an intersection. This comes at a cost of implementing additional decoders for the robot on the system.
 
 ### Simulating the Robot
@@ -123,12 +126,22 @@ Code snippet for updating the maze locations.
 Once the logic is set in place, we print the required values to the monitor so that the GUI can pick it up. We call ```python main.py COM# --rows 3 --cols 2``` for a 3x2 maze
 
 <figure>
-    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab03/IMG_0386.jpg" width="800"/>
+    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab03/maze.PNG" width="400"/>
     <font size="2">
-    <figcaption> <b> Adding the Radio to the Robot </b>
+    <figcaption> <b> GUI of the 3x2 Maze </b>
     </figcaption>
     </font>
 </figure>
+There is a missing wall because the robot haven't explored that wall yet since the robot starts facing away from the wall.
+
+<figure>
+    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab03/mazeResp.PNG" width="400"/>
+    <font size="2">
+    <figcaption> <b> Printout for GUI</b>
+    </figcaption>
+    </font>
+</figure>
+The base station prints these values to the GUI for interpretation.
 
 ## Robot Integration
 The robot subteam’s task was to integrate all the pieces we’ve been implementing into one cohesive system. A fair amount of this had already been completed for Milestone 2. What remained was to add the functionality of starting at a 660 Hz tone, as well as sending signals between radios to the base station. We also had to make sure all the necessary hardware was integrated on the robot.
