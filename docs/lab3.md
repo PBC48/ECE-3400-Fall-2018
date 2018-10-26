@@ -42,11 +42,16 @@ The two byte communication message that the robot sends to the base station is s
 [2:0]  We reserve three bits for detecting walls. The position of the walls 
 will be relative to the robot. 
 
-|bits[2:0]| wall locations |  
+|bits[2:0]| Wall Locations |  
 |---|---|
+|000|left_wall, front_wall, right_wall = false|
 |001|left_wall = true| 
 |010|front_wall = true|
+|011|left_wall, front_wall = true|
 |100|right_wall = true|
+|101|left_wall, right_wall = true|
+|110|left_wall, front_wall = true|
+|111|left_wall, front_wall, right_wall = true|
 
 [5:3]  We reserve three bits for the treasure since there will be three shapes and 
 two colors, giving us four options, we also need to define when there is no 
@@ -57,7 +62,7 @@ treasure. Thus, we have a total of five options.
 [7:6]  The direction the robot has decided to take after hitting the 
 intersection
 
-|bits[7:6]|directions|
+|bits[7:6]|Directions|
 |---------|----------|
 |0|forward|
 |1|right|
@@ -135,7 +140,7 @@ Once the logic is set in place, we print the required values to the monitor so t
 There is a missing wall because the robot haven't explored that wall yet since the robot starts facing away from the wall.
 
 <figure>
-    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab03/mazeResp.PNG" width="400"/>
+    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab03/mazeResp.PNG" width="800"/>
     <font size="2">
     <figcaption> <b> Printout for GUI</b>
     </figcaption>
