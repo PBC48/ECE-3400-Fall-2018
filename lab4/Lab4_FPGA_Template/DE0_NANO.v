@@ -12,7 +12,7 @@ module DE0_NANO(
 //=======================================================
 //  PARAMETER declarations
 //=======================================================
-localparam RED = 8'b111_000_00;
+localparam RED = 8'b111_00_00;
 localparam GREEN = 8'b000_111_00;
 localparam BLUE = 8'b000_000_11;
 
@@ -51,7 +51,6 @@ reg			VGA_READ_MEM_EN;
 
 assign GPIO_0_D[5] = VGA_VSYNC_NEG;
 assign VGA_RESET = ~KEY[0];
-
 ///// I/O for Img Proc /////
 wire [8:0] RESULT;
 
@@ -69,9 +68,12 @@ ahhhPLL	ahhhPLL_inst (
 	.c1 ( clk25_PLL ),
 	.c2 ( clk50_PLL )
 	);
+//assign clock to GPIO port
+assign GPIO_0_D[0] = clk24_PLL;
+
 ///////* M9K Module *///////
 Dual_Port_RAM_M9K mem(
-	.input_data(pixel_data_RGB332),
+   .input_data(pixel_data_RGB332),
 	.w_addr(WRITE_ADDRESS),
 	.r_addr(READ_ADDRESS),
 	.w_en(W_EN),
@@ -102,7 +104,7 @@ IMAGE_PROCESSOR proc(
 	.RESULT(RESULT)
 );
 
-always @ (posedge clk25_PLL) begin
+always @ (posedge clk24_PLL) begin
 	if (VGA_RESET) begin
 		Y_ADDR <= 10'b0;
 		X_ADDR <= 10'b0;
@@ -126,7 +128,7 @@ end
 
 always @ (posedge clk25_PLL) begin
 	if (X_ADDR < `SCREEN_WIDTH/2 && Y_ADDR < `SCREEN_HEIGHT/2) begin
-		pixel_data_RGB332 = 8'b000_111_00;
+		pixel_data_RGB332 = 8'b000_111_11;
 	end
 	else begin
 		pixel_data_RGB332 = RED | BLUE;
