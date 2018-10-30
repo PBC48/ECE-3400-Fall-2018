@@ -5,6 +5,7 @@ sensor, robot movement, microphone, and ir all in one.
 
 #define WALL_FRONT A2
 #define WALL_LEFT A3
+#define WALL_RIGHT A4
 #define WAITTIME 800
 #define BUTTON 7 //Digital pin for button
 
@@ -24,6 +25,7 @@ enum states : uint8_t
     ROBOT_TURN_LEFT,
     ROBOT_TURN_RIGHT,
     ROBOT_FORWARD,
+    ROBOT_U_TURN,
     TRANSMIT
 };
 
@@ -33,6 +35,7 @@ uint32_t u32wait_ir;
 uint16_t radio_msg = 0;
 uint16_t FRONTWALL;
 uint16_t LEFTWALL;
+uint16_t RIGHTWALL;
 
 void toggle_LED(uint8_t &pin)
 {
@@ -138,6 +141,13 @@ void loop()
             radio_msg = 0;
             FRONTWALL = analogRead(WALL_FRONT);
             LEFTWALL = analogRead(WALL_LEFT);
+            RIGHTWALL = analogRead(WALL_RIGHT);
+
+            if(LEFTWALL > 100 && FRONTWALL > 100 && RIGHTWALL >100){
+                dir = 3;
+                STATE = ROBOT_U_TURN;
+            }
+
             if (LEFTWALL < 200)
             {
                 dir = 2;
@@ -157,7 +167,7 @@ void loop()
             
             //radio_msg = millis();
             radio_msg = 0x3FF & ((1 << 9) | radio_msg |                                              //setting valid bit.
-                                  (dir << 6) | ((LEFTWALL > 115)) | (FRONTWALL > 115)<<1); //| ((RIGHTWALL > ###)<<1);
+                                  (dir << 6) | ((LEFTWALL > 115)) | (FRONTWALL > 115)<<1)| ((RIGHTWALL > 115)<<2);
 
             u32wait = millis();
             VALID_L = false;
@@ -199,7 +209,7 @@ void loop()
 
     case ROBOT_TURN_LEFT:
         robot_move(left);
-        if (millis() - u32wait > 900)
+        if (millis() - u32wait > 700)
         {
             STATE = ROBOT_SENSE;
         }
@@ -207,7 +217,7 @@ void loop()
 
     case ROBOT_TURN_RIGHT:
         robot_move(right);
-        if (millis() - u32wait > 900)
+        if (millis() - u32wait > 700)
         {
             STATE = ROBOT_SENSE;
         }
@@ -220,6 +230,13 @@ void loop()
             STATE = ROBOT_SENSE;
         }
         break;
+
+    case ROBOT_U_TURN:
+        robot_move(right);
+        if(millis()-u32wait > 1400)
+        {
+            STATE = ROBOT_SENSE;
+        }
 
     case TRANSMIT:
         //radio_transmit(radio_msg);

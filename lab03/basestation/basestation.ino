@@ -118,8 +118,8 @@ void setup(void)
     //
     // Dump the configuration of the rf unit for debugging
     //
-    radio.printDetails();
-    robot_direction = right;
+    //radio.printDetails();
+    robot_direction = down;
 }
 
 void loop(void)
@@ -137,7 +137,7 @@ void loop(void)
     if (radio.available())
     {
         // Dump the payloads until we've gotten everything
-        map1[x][y] = 1; //Explored robot
+        //map1[x][y] = 1; //Explored robot
         bool done = false;
         bool received = false;
         while (!done)
@@ -324,6 +324,27 @@ void loop(void)
                 robot_direction = right;
             }
             break;
+        case 3: //Uturn: robot reverses
+          if (robot_direction == right)
+            {
+                x--;
+                robot_direction = left;
+            }
+            else if (robot_direction == left)
+            {
+                x++;
+                robot_direction = right;
+            }
+            else if (robot_direction == up)
+            {
+                y++;
+                robot_direction = down;
+            }
+            else if (robot_direction == down)
+            {
+                y--;
+                robot_direction = up;
+            }
 
         default:
             Serial.println("ROBOT DIRECTION NOT RECOGNIZED");
