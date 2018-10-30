@@ -147,8 +147,7 @@ void loop()
                 dir = 3;
                 STATE = ROBOT_U_TURN;
             }
-
-            if (LEFTWALL < 200)
+            else if (LEFTWALL < 200)
             {
                 dir = 2;
                 STATE = ROBOT_TURN_LEFT;
@@ -237,6 +236,7 @@ void loop()
         {
             STATE = ROBOT_SENSE;
         }
+        break;
 
     case TRANSMIT:
         //radio_transmit(radio_msg);
