@@ -524,7 +524,6 @@
                   The FFT libraries takes care of the actual calculations of frequencies from the analog input to FFT outputs. 
                   We had to take the necessary samples for the library to calculate:
                 </p>
-                <pre ALIGN=LEFT>
                   <code>
                     for (int i = 0 ; i < 512 ; i += 2) { // save 256 samples
                         while(!(ADCSRA & 0x10)); // wait for adc to be ready
@@ -542,12 +541,11 @@
                     fft_run(); // process the data in the fft
                     fft_mag_log(); // take the output of the fft
                   </code>
-                </pre>
                 <p ALIGN=LEFT>
                   Once this is down we can grab our data using<br/><code>fft_log_out</code><br/>
                   which hosts the stored data in bins with a specific frequency range per bin.
                 </p>
-                <h3><Acoustic Team/h3>
+                <h3><Acoustic Team</h3>
                 <p ALIGN=LEFT>
                   From our analysis of the FFT and our determination of the frequency bin width, 
                   we determined that our 660Hz audio signal should fall in the fifth bin. We 
@@ -625,7 +623,6 @@
                   As a finishing touch, we created a placeholder “robot start” function by lighting an LED whenever 
                   the 660Hz tone was detected, which we did by setting a threshold intensity value for bin 19 as shown 
                   in the following code:
-                  <pre ALIGN=LEFT>
                     <code>
                       if(fft_log_out[18] > 90){
                         digitalWrite(LED,HIGH);
@@ -633,7 +630,6 @@
                         digitalWrite(LED,LOW);
                       }
                     </code>
-                  </pre>
                   A demonstration of this detection is shown in the following video:
                 </p>
                 <iframe width="560" height="315" src="https://www.youtube.com/embed/JvM9OUa2xY0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
@@ -783,7 +779,6 @@
                   here, we continue to recording and running the FFT on the IR. If the IR surpasses its threshold 
                   (meaning a robot is detected), it writes to the serial monitor and goes back to the start. Else, it 
                   keeps recording IR. 
-                  <pre ALIGN=LEFT>
                     <code>
                         enum states{
                             START,
@@ -840,7 +835,6 @@
                           }  
                         }
                     </code>
-                  </pre>
                 </p>
                 <h3>Conclusion</h3>
                 <p ALIGN=LEFT>
