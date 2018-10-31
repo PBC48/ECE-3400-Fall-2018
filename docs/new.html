@@ -639,7 +639,221 @@
                 <iframe width="560" height="315" src="https://www.youtube.com/embed/JvM9OUa2xY0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
                 <h3>Optical</h3>
                 <h4>Initial Design</h4>
-                <p></p>
+                <p ALIGN=LEFT>We used the OP598A phototransistor to detect IR signals. The phototransistor was built exactly 
+                like the schemamtic from the lab, with a 1.8k reistor connected to 5V power supply and the 
+                photoresistor connected to ground. We first put that output into the oscilioscope and got the 
+                following reading for FFT: 
+                <figure ALIGN=LEFT>
+                    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab02/IR_FFT_without%20opamp.PNG" width="560"/>
+                    <font size="2">
+                    <figcaption> <b>Oscilloscope FFT of IR Sensor without augmentations</b>
+                    </figcaption>
+                    </font>
+                </figure>
+                <br/>
+                The result is from turning the IR hat near the sensor. The signal strength appears to be pretty 
+                strong as there are clearly readings at the 6kHz mark and all its harmonics. For the Arduino, 
+                we used FFT library from Music Labs' FFT. With the library, we can check the intensity of a desired 
+                frequency range to see if the it recieved any signals. We chose a 256 point FFT with a known ADC 
+                sampling frequency of 38.5kHz. Therefore, each bin of the FFT has a frequency range of Fs/N or 
+                around 150Hz per bin. Thus the 6.08kHz desired frequency is located at bin 40. Thus, all we have 
+                to call is
+                <br/>
+                <code ALIGN=LEFT>fft_log_out[40]; //fft_log_out is the strength of the signal converted to dB.</code>
+                <br/>
+                to get our readings.
+                </p>
+                <h4>Upgraded Design</h4>
+                <p ALIGN=LEFT>
+                  The signal strength of the FFT at our desired bin was already strong but we wanted to implement 
+                  noise filtering which means we need a filter. We also want to amplify the values in order to 
+                  utilize all 10 bits of the ADC for a higher resolution reading. The Arduino Analog input can 
+                  only take in voltage values from 0 to 5 volts which means that any the input voltage can’t be 
+                  negative or higher than that which will result in cut off and possibly damaging the circuit. 
+                  Thus, this is the resulting schematic:
+                  <figure ALIGN=LEFT>
+                      <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab02/schematic-Phototransistor%20with%20OpAmp.PNG" width="560"/>
+                      <font size="2">
+                      <figcaption> <b>Schematic of IR with OpAmp and bandpass filter</b>
+                      </figcaption>
+                      </font>
+                  </figure>
+                  <br/>
+                  We opted with using a high pass filter to remove any DC bias inherent in the output of the sensor 
+                  because the DC bias is already high at around 4v. We then amplified the filtered signal by a factor 
+                  of 20 which can be adjusted as needed. The amplification seems like a good amount based on the 
+                  detection strength of the IR sensor. After we amplified the signal, we ran the output through a 
+                  low pass filter that removes any high frequency noise and harmonics. We chose the values of the 
+                  capacitor and resistor such that the bandpass filter contains a lower cutoff frequency of 5.5kHz 
+                  and higher cuttoff frequency of 6.5kHz. The formula to calculate the cutoff frequency is 1/(2*pi*RC). 
+                  This completes our bandpass filter.
+                </p>
+                <h4>Testing</h4>
+                <p ALIGN=LEFT>
+                  For testing we started with unit tests by turning on the hat and holding it a certain distance from 
+                  the phototransistor and check the output of the FFT printing to serial. We also implemented a blinking 
+                  LED that would increase blinking rate as the IR gets closer to the phototransistor. The frequency of 
+                  the blink rates tell us how close the hat is to the IR sensor. This tells us that the sensor is working 
+                  as intended. In the video, the blinking is from the Arduino's internal LED although we should have used 
+                  an external instead for demostration purposes.
+                  <br/>
+                  <iframe width="560" height="315" src="https://www.youtube.com/embed/_hD_c_GUQas?rel=0&amp;controls=0" 
+                  frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                  <br/>
+                  We also reedited the FFT library's codes to record FFT values in a single FFT cycle for better side by 
+                  side comparison. Here are the results:
+                  We divided the tests as such:
+                  <ul ALIGN=LEFT>
+                    <li> off: IR hat turned off
+                    <li> far: IR hat 1.5 intersections away from sensor
+                    <li> mid: IR hat 0.5 intersections away from sensor
+                    <li> close: IR hat right next to sensor
+                  </ul>
+                  <br/>
+                  <figure ALIGN=LEFT>
+                      <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab02/IRnoOpAmp.PNG" width="560"/>
+                      <font size="2">
+                      <figcaption> <b>FFT of IR without Op Amp</b>
+                      </figcaption>
+                      </font>
+                  </figure>
+                  <br/>
+                  <figure ALIGN=LEFT>
+                      <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab02/IROpAmp.PNG" width="560"/>
+                      <font size="2">
+                      <figcaption> <b>FFT of IR with Op Amp</b>
+                      </figcaption>
+                      </font>
+                  </figure>
+                  <br/>
+                  From these two comparisons, we can see that the op amp increases mid range performance of the IR sensor 
+                  by detecting more of the IR hat's correct frequency signal whereas the harmonics appears to be more 
+                  filtered out as a result of the installed bandpass filters. The long range performance appears to be 
+                  unaffected by the augmentation and the close range performance clearly increased slightly.
+                  <br/>
+                  After testing that the sensor could detect the desired signal, we then tested the robustness of our 
+                  filtering software and hardware by giving it decoy signals. We used a decoy IR signal at around 12kHz 
+                  placed next to the sensor and read its FFT's. We also used the decoy to test our sensor for detecting 
+                  different frequencies. 
+                  <br/>
+                  <figure ALIGN=LEFT>
+                      <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab02/DecoyOpAmp.PNG" width="560"/>
+                      <font size="2">
+                      <figcaption> <b>FFT of Decoy </b>
+                      </figcaption>
+                      </font>
+                  </figure>
+                  <br/>
+                  <figure ALIGN=LEFT>
+                      <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab02/Decoy.PNG" width="560"/>
+                      <font size="2">
+                      <figcaption> <b>FFT of Decoy with Op Amp </b>
+                      </figcaption>
+                      </font>
+                  </figure>
+                  <br/>
+                  We reached two conclusions with this test. The augmented sensor worked with different frequencies because 
+                  the signal strengths were clearly amplified. Although for this test, it appears some of the noise were 
+                  amplified as well but it was not significant. We also see that the 40th bin of the FFT is contains only 
+                  background signals. This means that the signal strength will not be enough for the threshhold to detect 
+                  a false positive. With these two tests, we proved that the IR sensor's hardware and software can detect 
+                  the desired frequency amount and augmented it so that it detect farther away signals.  
+                </p>
+                <h3>Integration</h3>
+                <p ALIGN=LEFT>
+                  <figure ALIGN=LEFT>
+                      <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab02/20181003_164149.jpg"/>
+                      <font size="2">
+                      <figcaption> <b>The IR sensor and microphone together!</b>
+                      </figcaption>
+                      </font>
+                  </figure>
+                  <br/>
+                  To integrate both the optical and the acoustic sensors, we first read input from the acoustic sensor 
+                  through pin A0. Once we get a hit from the acoustic sensor, we switch to reading input from the IR sensor 
+                  at pin A1. Both of these inputs rely on the same FFT function.
+                  <br/>
+                  <iframe width="560" height="315" src="https://www.youtube.com/embed/v4Z3QcfFZ4k" frameborder="0" 
+                  allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                  <br/>
+                  In order to properly incorporate this, we have put in a 5-part finite state machine. The state starts. 
+                  It then moves on to recording and running the FFT on the audio. Once we record the audio, we go to 
+                  process it. If the bin containing 660Hz passes its intensity threshold (meaning we've detected the 
+                  tone and we need to start), we start recording IR. If not, then we go back to recording audio. From 
+                  here, we continue to recording and running the FFT on the IR. If the IR surpasses its threshold 
+                  (meaning a robot is detected), it writes to the serial monitor and goes back to the start. Else, it 
+                  keeps recording IR. 
+                  <pre ALIGN=LEFT>
+                    <code>
+                        enum states{
+                            START,
+                            AUDIO_FFT,
+                            AUDIO_PROC,
+                            IR_FFT,
+                            IR_PROC
+                        };
+                        uint8_t state;
+                        void loop() {
+
+                            switch (state){   
+                                case START:
+                                    //check point
+                                    state = AUDIO_FFT; //next state
+                                    break;
+                                case AUDIO_FFT:
+                                    ADMUX = 0x40; // use adc0
+                                    /*
+                                        Some FFT array from ADC generating code....
+                                    */
+                                    state = AUDIO_PROC;
+                                    break;
+
+                                case AUDIO_PROC:
+                                    /*
+                                        Processing FFT result code and check threshhold...
+                                    */
+                                    if(past_some_threshhold){
+                                        state = IR_PROC; //past threshhold so we move on
+                                    }else{
+                                        state = AUDIO_FFT; //recalculate FFT with new samples
+                                    }
+                                    break;
+
+                                case IR_FFT:
+                                    ADMUX = 0x41; // use adc1
+                                    /*
+                                        Some FFT array from ADC generating code....
+                                    */
+                                    state = IR_PROC;
+                                    break;
+
+                                case IR_PROC:
+                                    /*
+                                        Processing FFT result code and check threshhold...
+                                    */
+                                    if(past_some_threshhold){
+                                        state = START; //past threshhold so we move on
+                                    }else{
+                                        state = IR_FFT; //recalculate FFT with new samples
+                                    }
+                                    break;
+                          }  
+                        }
+                    </code>
+                  </pre>
+                </p>
+                <h3>Conclusion</h3>
+                <p ALIGN=LEFT>
+                  We were able to integrate both the IR and microphone sensors to a single code base. This step is 
+                  important as we will need to integrate all of the code from the different modules we made into the 
+                  arduino. Looking forward, we would like to increase the ranges of the microphone sensors and IR 
+                  sensors such that they will be able to detect the correct freqencies from farther away. This is 
+                  important since the IR is used to detect other robots and the microphone is used to start the robot. 
+                  We also want to explore ways to schedule our code because the sensing is a hard real time process 
+                  where we have to stop the robot if it is in danger of collision and thus, we must find a way to 
+                  quickly calculate the FFT and then have the robot react quick enough. A likely solution will be 
+                  to use interrupts.
+                </p>
               </p>
               <a class="btn btn-primary btn-lg rounded-pill portfolio-modal-dismiss" href="#">
                 <i class="fa fa-close"></i>
