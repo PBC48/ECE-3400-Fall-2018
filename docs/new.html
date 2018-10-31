@@ -623,7 +623,7 @@
                 </p>
                 <h5>Code Snippet for Reading from the Line Sensor Using Digital Pins<h5>
                 <pre>
-                  <code>
+                  <code ALIGN=LEFT>
                   volatile int SENSOR0_READING;
                   volatile int SENSOR0_TIMER;
                   int SENSOR0_PIN=2;
@@ -659,7 +659,7 @@
                 </p>
                 <h5>Code Snippet for Following the Line</h5>
                 <pre>
-                  <code>
+                  <code ALIGN=LEFT>
                       if(SENSOR0_READING<400 && SENSOR1_READING<400){ //continue straight
                           forward();
                       }else if(SENSOR1_READING < 400){ //turning right
@@ -670,6 +670,7 @@
                           forward();
                       }
                   </code>
+                </pre>
                 </p>
                 <h5>Demonstration of Robot Following the Line</h5>
                 <a><img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/milestone1/gif-followLine.gif"
@@ -693,7 +694,7 @@
                   repeatable such that the robot will continuously move in a figure-8 formation.
                 </p>
                 <pre>
-                  <code>
+                  <code ALIGN=LEFT>
                     char map1[] = {right,left,left,left,left,right,right,right}; //dependent on 
                     //where robot starts
                     int i=0; 
