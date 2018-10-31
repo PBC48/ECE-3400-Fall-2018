@@ -460,10 +460,187 @@
         <div class="container text-center">
           <div class="row">
             <div class="col-lg-6 mx-auto">
-              <h2 class="text-secondary text-uppercase mb-0">Lab 2</h2>
+              <h2 class="text-secondary text-uppercase mb-0">Lab 2 : Analog Circuitry and FFTs</h2>
               <hr class="star-dark mb-5">
               <img class="img-fluid mb-5" src="images/bootstrap/lab2-bootstrap.png" alt="">
-              <p class="mb-5">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Mollitia neque assumenda ipsam nihil, molestias magnam, recusandae quos quis inventore quisquam velit asperiores, vitae? Reprehenderit soluta, eos quod consequuntur itaque. Nam.</p>
+              <p class="mb-5">
+                <h3>Objectives</h3>
+                <ul ALIGN=LEFT>
+                  <li>Understand and Utilize the FFT Library
+                  <li>Implement 660Hz Tone Detection
+                  <li>Implement 6.08kHz IR signal detection, ignoring decoys
+                </ul>
+                <h3>Introduction</h3>
+                <p ALIGN=LEFT>
+                  In lab 2, we added hardware sensors and signal processing capabilities to the robot. 
+                  We split into two subteams, with Tara and Chrissy working on acoustics and Xiaoyu and 
+                  Patrick on optical sensing. The start of our final maze will commence with a 660 Hz 
+                  whistle blow, so the acoustic team used an Electret microphone and an amplifying circuit 
+                  to detect the tone and distinguish it from background noise.  The optical group used an 
+                  IR transistor to detect other robots emitting IR at 6.08kHz, and ignore decoys (18kHz).
+                </p>
+                <h3>FFT Analysis</h3>
+                <p ALIGN=LEFT>
+                  The “Fast Fourier Transform” is an operation that uses the Discrete Time Fourier Transform 
+                  in a time-efficient method to sample a signal over time and return its frequency components. 
+                  Because both sub teams had to implement algorithms to detect specific frequencies in a noisy 
+                  environment, we began the lab by familiarizing ourselves with the Arduino Open Music Labs FFT 
+                  library in order to allow us to use digital filters to process these signals. We each 
+                  installed the library in our Arduino IDE and studied the example script fft_adc_serial, 
+                  with the goal of understanding how to use the FFT library and identifying the frequency 
+                  bin where we should look for our signal. First, we looked at the sampling frequency of 
+                  the ADC. There are two ways to identify this rate -- the first is to use the oscilloscope
+                  and the <code>digitalWrite()</code> function to change the state of the digital pin whenever the ADC 
+                  finishes one conversion. The scope will then measure the frequency of the output wave. 
+                  Based on our implementation, we know that the ADC converts two values per period, so the 
+                  frequency is about 38 kHz.  
+                </p>
+                <figure ALIGN-LEFT>
+                    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab02/frequency%20of%20ADC.PNG" width="560"/>
+                    <font size="2">
+                    <figcaption> <b> Frequency of the ADC </b>
+                    </figcaption>
+                    </font>
+                </figure>
+                <br/>
+                <p ALIGN=LEFT>
+                  To confirm this result, we referenced Section 28 of the ATmega328 datasheet, which provides 
+                  information about the ADC. It indicates that the last 3 bits of the ADC Control and Status 
+                  Register A determine a prescalar by which the Arduino clock frequency is divided to determine 
+                  the ADC clock frequency. The example script fft_adc_serial sets this division factor to 32 in 
+                  the second line of the code snippet below.  Given the 16MHz Arduino system clock frequency and 
+                  the 13 clock cycles it takes the ADC to convert, we used the formula (Arduino clock cycle / 
+                  total conversion clock cycles / prescalar) to find the 38 kHz sampling frequency. 
+                  <br/>
+                  Calling the FFT function is simple using the Music Labs' library where we first must setup the ADC settings:
+                </p>
+                <pre ALIGN=LEFT>
+                  <code>
+                    ADMUX = 0x40; // use adc0
+                    ADCSRA = 0xe5; // adc prescalar
+                  </code>
+                </pre>
+                <p ALIGN=LEFT>
+                  The FFT libraries takes care of the actual calculations of frequencies from the analog input to FFT outputs. 
+                  We had to take the necessary samples for the library to calculate:
+                </p>
+                <pre ALIGN=LEFT>
+                  <code>
+                    for (int i = 0 ; i < 512 ; i += 2) { // save 256 samples
+                        while(!(ADCSRA & 0x10)); // wait for adc to be ready
+                        ADCSRA = 0xf7; // restart adc
+                        byte m = ADCL; // fetch adc data
+                        byte j = ADCH;
+                        int k = (j << 8) | m; // form into an int
+                        k -= 0x0200; // form into a signed int
+                        k <<= 6; // form into a 16b signed int
+                        fft_input[i] = k; // put real data into even bins
+                        fft_input[i+1] = 0; // set odd bins to 0
+                    }
+                    fft_window(); // window the data for better frequency response
+                    fft_reorder(); // reorder the data before doing the fft
+                    fft_run(); // process the data in the fft
+                    fft_mag_log(); // take the output of the fft
+                  </code>
+                </pre>
+                <p ALIGN=LEFT>
+                  Once this is down we can grab our data using<br/><code>fft_log_out</code><br/>
+                  which hosts the stored data in bins with a specific frequency range per bin.
+                </p>
+                <h3><Acoustic Team/h3>
+                <p ALIGN=LEFT>
+                  From our analysis of the FFT and our determination of the frequency bin width, 
+                  we determined that our 660Hz audio signal should fall in the fifth bin. We 
+                  confirmed this by inputting a 660Hz sine wave from a function generator through 
+                  a 330-ohm resistor into an analog Arduino pin and running the example fft_adc_serial 
+                  code. We graphed the FFT output, as shown below. From this graph we saw our expected 
+                  peak in the fifth bin.
+                </p>
+                <figure ALIGN=LEFT>
+                    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab02/fft_660.PNG" width="560"/>
+                    <font size="2">
+                    <figcaption> <b>FFT output from fft_adc_serial example code with 660Hz Signal from Function Generator </b>
+                    </figcaption>
+                    </font>
+                </figure>
+                <p ALIGN=LEFT>Next we created the simple microphone circuit from the lab document:</p>
+                <figure ALIGN=LEFT>
+                    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab02/simple_microphone.PNG" width="300"/>
+                    <font size="2">
+                    <figcaption><b> Basic Microphone Circuit from Lab Document</b>
+                    </figcaption>
+                    </font>
+                </figure>
+                <p ALIGN=LEFT>
+                  Although we had trouble getting any signal out of the microphone at first, we eventually 
+                  were able to see a response on the oscilloscope when we played a 660Hz tone near the 
+                  microphone from a tone generator on our phones. We observed that the amplitude of the 
+                  signal was around 40 mV, and the output was unsteady and weak. 
+                  <br/>
+                  To amplify this signal to a more detectable and readable value, we created a simple 
+                  non-inverting amplifier, starting with a modest gain of around 5 to be safe. We first 
+                  tested the amplifier with an input signal from the function generator, reading the output 
+                  on the oscilloscope. For a while we were not able to obtain any output signal at all. 
+                  After switching our op amp from an LF353 to LM358AN, the amplifier worked as expected; 
+                  we saw the desired output and amplification.
+                  <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab02/amp_input.jpg" width = "560"/>
+                  <br/>
+                  <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab02/amp_output3.jpg" width = "560"/>
+                  <br/>
+                  We then put the microphone output through the amplifier. We again were not able to obtain 
+                  any output signal, so we re-examined our connection between the microphone and amplifier 
+                  and added a DC bias. Rather than send the simple microphone circuit output straight into 
+                  the amplifier, we decided to keep the capacitor from the example circuit to remove its DC 
+                  offset, and use a voltage divider to create a small, 50mV bias at the input to the amplifier. 
+                  This allowed us to control our DC offset and left room for a large amplification. After 
+                  solving this problem, we successfully increased our amplification to around 52. We played 
+                  the 660Hz tone near the microphone and read the output to the scope to confirm that the 
+                  signal was what we expected it to be. Our final design was the following amplifier circuit:
+                </p>
+                <figure ALIGN=LEFT>
+                    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab02/Acoustic.png" width="600"/>
+                    <font size="2">
+                    <figcaption> <b>Acoustic Amplifier Circuit Design</b>
+                    </figcaption>
+                    </font>
+                </figure>
+                <p ALIGN-LEFT>
+                  Finally, we connected the output from the amplified microphone signal to an analog Arduino 
+                  pin and ran the FFT code. For clarity, we plotted only the bin 5 output on the serial plotter, 
+                  and watched it spike when we brought the 660Hz tone near the microphone. In an effort to 
+                  filter out more ambient noise, we narrowed the bin frequency width by changing the prescalar 
+                  for the ADC clock input to 128. This was done by changing the ADC Control and Status Register A:
+                  <br/>
+                  <code ALIGN=LEFT>ADCSRA = 0xe5;</code>
+                  <br/>
+                  Re-calculating the frequency bin width we determined we should find our 660Hz frequency in bin 19, 
+                  and we confirmed this by running the FFT and plotting the results:
+                  <figure ALIGN=LEFT>
+                      <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab02/fft_660_128.PNG" width="560"/>
+                      <font size="2">
+                      <figcaption><b> Acoustic Amplifier Circuit Design</b>
+                      </figcaption>
+                      </font>
+                  </figure>
+                  As a finishing touch, we created a placeholder “robot start” function by lighting an LED whenever 
+                  the 660Hz tone was detected, which we did by setting a threshold intensity value for bin 19 as shown 
+                  in the following code:
+                  <pre ALIGN=LEFT>
+                    <code>
+                      if(fft_log_out[18] > 90){
+                        digitalWrite(LED,HIGH);
+                      } else {
+                        digitalWrite(LED,LOW);
+                      }
+                    </code>
+                  </pre>
+                  A demonstration of this detection is shown in the following video:
+                </p>
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/JvM9OUa2xY0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                <h3>Optical</h3>
+                <h4>Initial Design</h4>
+                <p></p>
+              </p>
               <a class="btn btn-primary btn-lg rounded-pill portfolio-modal-dismiss" href="#">
                 <i class="fa fa-close"></i>
                 Close Project</a>
