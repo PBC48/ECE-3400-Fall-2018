@@ -49,6 +49,15 @@ wire			VGA_VSYNC_NEG;
 wire			VGA_HSYNC_NEG;
 reg			VGA_READ_MEM_EN;
 
+/// CAMERA INPUTS/OUTPUTS //
+wire [7:0] D;
+wire       CAM_VSYNC;
+wire       CAM_HREF;
+
+assign D = GPIO_1_D[33:26];
+assign CAM_VSYNC = GPIO_1_D[25];
+assign CAM_HREF = GPIO_1_D[24];
+
 assign GPIO_0_D[5] = VGA_VSYNC_NEG;
 assign VGA_RESET = ~KEY[0];
 ///// I/O for Img Proc /////
@@ -71,6 +80,8 @@ ahhhPLL	ahhhPLL_inst (
 //assign clock to GPIO port
 assign GPIO_0_D[0] = clk24_PLL;
 
+/////// DOWNSAMPLER  ///////
+
 ///////* M9K Module *///////
 Dual_Port_RAM_M9K mem(
    .input_data(pixel_data_RGB332),
@@ -85,7 +96,7 @@ Dual_Port_RAM_M9K mem(
 ///////* VGA Module *///////
 VGA_DRIVER driver (
 	.RESET(VGA_RESET),
-	.CLOCK(clk25_PLL),
+	.CLOCK(clk24_PLL),
 	.PIXEL_COLOR_IN(VGA_READ_MEM_EN ? MEM_OUTPUT : BLUE),
 	.PIXEL_X(VGA_PIXEL_X),
 	.PIXEL_Y(VGA_PIXEL_Y),

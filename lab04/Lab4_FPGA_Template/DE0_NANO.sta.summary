@@ -2,64 +2,64 @@
 TimeQuest Timing Analyzer Summary
 ------------------------------------------------------------
 
-Type  : Slow 1200mV 85C Model Setup 'CLOCK_50'
-Slack : -3.726
-TNS   : -197.733
-
 Type  : Slow 1200mV 85C Model Setup 'ahhhPLL_inst|altpll_component|auto_generated|pll1|clk[1]'
-Slack : -0.914
-TNS   : -1.513
+Slack : -5.656
+TNS   : -120.831
+
+Type  : Slow 1200mV 85C Model Setup 'CLOCK_50'
+Slack : -3.603
+TNS   : -190.417
 
 Type  : Slow 1200mV 85C Model Setup 'ahhhPLL_inst|altpll_component|auto_generated|pll1|clk[0]'
-Slack : 36.374
-TNS   : 0.000
-
-Type  : Slow 1200mV 85C Model Hold 'ahhhPLL_inst|altpll_component|auto_generated|pll1|clk[1]'
-Slack : 0.381
+Slack : 37.049
 TNS   : 0.000
 
 Type  : Slow 1200mV 85C Model Hold 'ahhhPLL_inst|altpll_component|auto_generated|pll1|clk[0]'
-Slack : 0.389
+Slack : 0.525
+TNS   : 0.000
+
+Type  : Slow 1200mV 85C Model Hold 'ahhhPLL_inst|altpll_component|auto_generated|pll1|clk[1]'
+Slack : 0.741
 TNS   : 0.000
 
 Type  : Slow 1200mV 85C Model Hold 'CLOCK_50'
-Slack : 1.538
+Slack : 1.487
 TNS   : 0.000
 
 Type  : Slow 1200mV 85C Model Minimum Pulse Width 'CLOCK_50'
-Slack : 9.488
+Slack : 9.489
 TNS   : 0.000
 
 Type  : Slow 1200mV 85C Model Minimum Pulse Width 'ahhhPLL_inst|altpll_component|auto_generated|pll1|clk[1]'
-Slack : 19.748
+Slack : 19.747
 TNS   : 0.000
 
 Type  : Slow 1200mV 85C Model Minimum Pulse Width 'ahhhPLL_inst|altpll_component|auto_generated|pll1|clk[0]'
-Slack : 20.581
+Slack : 20.578
 TNS   : 0.000
 
-Type  : Slow 1200mV 0C Model Setup 'CLOCK_50'
-Slack : -3.200
-TNS   : -169.105
-
 Type  : Slow 1200mV 0C Model Setup 'ahhhPLL_inst|altpll_component|auto_generated|pll1|clk[1]'
-Slack : -0.663
-TNS   : -1.037
+Slack : -4.874
+TNS   : -103.391
+
+Type  : Slow 1200mV 0C Model Setup 'CLOCK_50'
+Slack : -3.114
+TNS   : -163.594
 
 Type  : Slow 1200mV 0C Model Setup 'ahhhPLL_inst|altpll_component|auto_generated|pll1|clk[0]'
-Slack : 36.883
+Slack : 37.530
 TNS   : 0.000
 
 Type  : Slow 1200mV 0C Model Hold 'ahhhPLL_inst|altpll_component|auto_generated|pll1|clk[0]'
-Slack : 0.346
+Slack : 0.468
 TNS   : 0.000
 
 Type  : Slow 1200mV 0C Model Hold 'ahhhPLL_inst|altpll_component|auto_generated|pll1|clk[1]'
-Slack : 0.376
+Slack : 0.704
 TNS   : 0.000
 
 Type  : Slow 1200mV 0C Model Hold 'CLOCK_50'
-Slack : 1.446
+Slack : 1.406
 TNS   : 0.000
 
 Type  : Slow 1200mV 0C Model Minimum Pulse Width 'CLOCK_50'
@@ -67,43 +67,43 @@ Slack : 9.489
 TNS   : 0.000
 
 Type  : Slow 1200mV 0C Model Minimum Pulse Width 'ahhhPLL_inst|altpll_component|auto_generated|pll1|clk[1]'
-Slack : 19.744
+Slack : 19.743
 TNS   : 0.000
 
 Type  : Slow 1200mV 0C Model Minimum Pulse Width 'ahhhPLL_inst|altpll_component|auto_generated|pll1|clk[0]'
-Slack : 20.577
+Slack : 20.571
 TNS   : 0.000
-
-Type  : Fast 1200mV 0C Model Setup 'CLOCK_50'
-Slack : -1.315
-TNS   : -67.370
 
 Type  : Fast 1200mV 0C Model Setup 'ahhhPLL_inst|altpll_component|auto_generated|pll1|clk[1]'
-Slack : 0.254
-TNS   : 0.000
+Slack : -2.475
+TNS   : -48.703
+
+Type  : Fast 1200mV 0C Model Setup 'CLOCK_50'
+Slack : -1.348
+TNS   : -66.280
 
 Type  : Fast 1200mV 0C Model Setup 'ahhhPLL_inst|altpll_component|auto_generated|pll1|clk[0]'
-Slack : 38.588
-TNS   : 0.000
-
-Type  : Fast 1200mV 0C Model Hold 'ahhhPLL_inst|altpll_component|auto_generated|pll1|clk[1]'
-Slack : 0.199
+Slack : 39.042
 TNS   : 0.000
 
 Type  : Fast 1200mV 0C Model Hold 'ahhhPLL_inst|altpll_component|auto_generated|pll1|clk[0]'
-Slack : 0.204
+Slack : 0.283
+TNS   : 0.000
+
+Type  : Fast 1200mV 0C Model Hold 'ahhhPLL_inst|altpll_component|auto_generated|pll1|clk[1]'
+Slack : 0.388
 TNS   : 0.000
 
 Type  : Fast 1200mV 0C Model Hold 'CLOCK_50'
-Slack : 0.751
+Slack : 0.690
 TNS   : 0.000
 
 Type  : Fast 1200mV 0C Model Minimum Pulse Width 'CLOCK_50'
-Slack : 9.208
+Slack : 9.209
 TNS   : 0.000
 
 Type  : Fast 1200mV 0C Model Minimum Pulse Width 'ahhhPLL_inst|altpll_component|auto_generated|pll1|clk[1]'
-Slack : 19.754
+Slack : 19.755
 TNS   : 0.000
 
 Type  : Fast 1200mV 0C Model Minimum Pulse Width 'ahhhPLL_inst|altpll_component|auto_generated|pll1|clk[0]'

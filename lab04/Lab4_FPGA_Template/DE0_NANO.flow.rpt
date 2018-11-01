@@ -1,5 +1,5 @@
 Flow report for DE0_NANO
-Mon Oct 29 22:28:16 2018
+Thu Nov 01 18:44:29 2018
 Quartus Prime Version 17.0.0 Build 595 04/25/2017 SJ Lite Edition
 
 
@@ -41,14 +41,14 @@ agreement for further details.
 +----------------------------------------------------------------------------------+
 ; Flow Summary                                                                     ;
 +------------------------------------+---------------------------------------------+
-; Flow Status                        ; Successful - Mon Oct 29 22:28:13 2018       ;
+; Flow Status                        ; Successful - Thu Nov 01 18:44:27 2018       ;
 ; Quartus Prime Version              ; 17.0.0 Build 595 04/25/2017 SJ Lite Edition ;
 ; Revision Name                      ; DE0_NANO                                    ;
 ; Top-level Entity Name              ; DE0_NANO                                    ;
 ; Family                             ; Cyclone IV E                                ;
 ; Device                             ; EP4CE22F17C6                                ;
 ; Timing Models                      ; Final                                       ;
-; Total logic elements               ; 192 / 22,320 ( < 1 % )                      ;
+; Total logic elements               ; 195 / 22,320 ( < 1 % )                      ;
 ;     Total combinational functions  ; 187 / 22,320 ( < 1 % )                      ;
 ;     Dedicated logic registers      ; 54 / 22,320 ( < 1 % )                       ;
 ; Total registers                    ; 54                                          ;
@@ -65,7 +65,7 @@ agreement for further details.
 +-------------------+---------------------+
 ; Option            ; Setting             ;
 +-------------------+---------------------+
-; Start date & time ; 10/29/2018 22:27:52 ;
+; Start date & time ; 11/01/2018 18:44:07 ;
 ; Main task         ; Compilation         ;
 ; Revision Name     ; DE0_NANO            ;
 +-------------------+---------------------+
@@ -76,7 +76,7 @@ agreement for further details.
 +-------------------------------------+----------------------------------------+---------------+-------------+------------+
 ; Assignment Name                     ; Value                                  ; Default Value ; Entity Name ; Section Id ;
 +-------------------------------------+----------------------------------------+---------------+-------------+------------+
-; COMPILER_SIGNATURE_ID               ; 268891670445149.154086647200684        ; --            ; --          ; --         ;
+; COMPILER_SIGNATURE_ID               ; 268891670445149.154111224709652        ; --            ; --          ; --         ;
 ; MAX_CORE_JUNCTION_TEMP              ; 85                                     ; --            ; --          ; --         ;
 ; MIN_CORE_JUNCTION_TEMP              ; 0                                      ; --            ; --          ; --         ;
 ; MISC_FILE                           ; ahhhPLL_inst.v                         ; --            ; --          ; --         ;
@@ -95,11 +95,11 @@ agreement for further details.
 +---------------------------+--------------+-------------------------+---------------------+------------------------------------+
 ; Module Name               ; Elapsed Time ; Average Processors Used ; Peak Virtual Memory ; Total CPU Time (on all processors) ;
 +---------------------------+--------------+-------------------------+---------------------+------------------------------------+
-; Analysis & Synthesis      ; 00:00:11     ; 1.0                     ; 694 MB              ; 00:00:26                           ;
+; Analysis & Synthesis      ; 00:00:10     ; 1.0                     ; 695 MB              ; 00:00:24                           ;
 ; Fitter                    ; 00:00:06     ; 1.0                     ; 1418 MB             ; 00:00:09                           ;
-; Assembler                 ; 00:00:01     ; 1.0                     ; 566 MB              ; 00:00:01                           ;
-; TimeQuest Timing Analyzer ; 00:00:02     ; 1.0                     ; 672 MB              ; 00:00:02                           ;
-; Total                     ; 00:00:20     ; --                      ; --                  ; 00:00:38                           ;
+; Assembler                 ; 00:00:02     ; 1.0                     ; 566 MB              ; 00:00:01                           ;
+; TimeQuest Timing Analyzer ; 00:00:02     ; 1.0                     ; 669 MB              ; 00:00:02                           ;
+; Total                     ; 00:00:20     ; --                      ; --                  ; 00:00:36                           ;
 +---------------------------+--------------+-------------------------+---------------------+------------------------------------+
 
 
