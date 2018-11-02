@@ -22,6 +22,6 @@
 
 ### Communicating with FPGA
 
-##Camera System Integration
+## Camera System Integration
 
 ## Conclusion
