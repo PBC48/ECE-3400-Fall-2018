@@ -35,10 +35,10 @@ reg [7:0]	pixel_data_RGB332 = RED | GREEN | BLUE;
 reg [14:0] X_ADDR;
 reg [14:0] Y_ADDR;
 wire [14:0] WRITE_ADDRESS;
-reg [14:0] READ_ADDRESS; 
+reg [14:0] READ_ADDRESS;
 
+//assign WRITE_ADDRESS = X_ADDR + Y_ADDR*(`SCREEN_WIDTH);
 assign WRITE_ADDRESS = X_ADDR + Y_ADDR*(`SCREEN_WIDTH);
-
 ///// VGA INPUTS/OUTPUTS /////
 wire 			VGA_RESET;
 wire [7:0]	VGA_COLOR_IN;
@@ -54,7 +54,7 @@ wire [7:0] D;
 wire       CAM_VSYNC;
 wire       CAM_HREF;
 
-assign D = GPIO_1_D[33:26];
+assign Data = GPIO_1_D[33:26];
 assign CAM_VSYNC = GPIO_1_D[25];
 assign CAM_HREF = GPIO_1_D[24];
 
@@ -70,6 +70,9 @@ reg W_EN;
 wire clk24_PLL;
 wire clk25_PLL;
 wire clk50_PLL;
+wire pclk;
+
+assign pclk = GPIO_1_D[0];
 ///////* INSTANTIATE YOUR PLL HERE *///////
 ahhhPLL	ahhhPLL_inst (
 	.inclk0 ( CLOCK_50 ),
@@ -81,7 +84,16 @@ ahhhPLL	ahhhPLL_inst (
 assign GPIO_0_D[0] = clk24_PLL;
 
 /////// DOWNSAMPLER  ///////
-
+DOWNSAMPLER down(
+	.RES(VGA_RESET),
+	.CLK(clk24_PLL),
+	.D(Data),
+//	.HREF(CAM_HREF),
+//	.VSYNC(CAM_VSYNC),
+	.PIXEL(pixel_data_RGB332)
+//	.XADDR(X_ADDR),
+//	.YADDR(Y_ADDR)
+);
 ///////* M9K Module *///////
 Dual_Port_RAM_M9K mem(
    .input_data(pixel_data_RGB332),
