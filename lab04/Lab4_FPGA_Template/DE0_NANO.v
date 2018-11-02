@@ -71,8 +71,10 @@ wire clk24_PLL;
 wire clk25_PLL;
 wire clk50_PLL;
 wire pclk;
+wire pixel_data_val;
+wire [7:0] down_sample_output;
 
-assign pclk = GPIO_1_D[0];
+assign pclk = GPIO_1_D[20];
 ///////* INSTANTIATE YOUR PLL HERE *///////
 ahhhPLL	ahhhPLL_inst (
 	.inclk0 ( CLOCK_50 ),
@@ -86,17 +88,18 @@ assign GPIO_0_D[0] = clk24_PLL;
 /////// DOWNSAMPLER  ///////
 DOWNSAMPLER down(
 	.RES(VGA_RESET),
-	.CLK(clk24_PLL),
+	.CLK(pclk),
 	.D(Data),
-//	.HREF(CAM_HREF),
+	.HREF(CAM_HREF),
 //	.VSYNC(CAM_VSYNC),
-	.PIXEL(pixel_data_RGB332)
+	.PIXEL(down_sample_output),
+    .valid(pixel_data_val)
 //	.XADDR(X_ADDR),
 //	.YADDR(Y_ADDR)
 );
 ///////* M9K Module *///////
 Dual_Port_RAM_M9K mem(
-   .input_data(pixel_data_RGB332),
+   .input_data(down_sample_output),
 	.w_addr(WRITE_ADDRESS),
 	.r_addr(READ_ADDRESS),
 	.w_en(W_EN),
@@ -108,7 +111,7 @@ Dual_Port_RAM_M9K mem(
 ///////* VGA Module *///////
 VGA_DRIVER driver (
 	.RESET(VGA_RESET),
-	.CLOCK(clk24_PLL),
+	.CLOCK(clk25_PLL),
 	.PIXEL_COLOR_IN(VGA_READ_MEM_EN ? MEM_OUTPUT : BLUE),
 	.PIXEL_X(VGA_PIXEL_X),
 	.PIXEL_Y(VGA_PIXEL_Y),
@@ -126,26 +129,36 @@ IMAGE_PROCESSOR proc(
 	.VGA_VSYNC_NEG(VGA_VSYNC_NEG),
 	.RESULT(RESULT)
 );
+reg   new_row;
+reg 	new_image;
 
-always @ (posedge clk24_PLL) begin
-	if (VGA_RESET) begin
+always @ (negedge pclk) begin
+	new_image <= CAM_VSYNC==1 ? 1 : 0;
+	new_row   <= CAM_HREF ==1 ? 1 : 0;
+end
+
+always @ (posedge pclk)begin//(posedge clk24_PLL) begin
+	if (VGA_RESET || new_image) begin
 		Y_ADDR <= 10'b0;
 		X_ADDR <= 10'b0;
-	end
+	end	
 	else if (Y_ADDR == `SCREEN_HEIGHT) begin
 		Y_ADDR <= 10'b0;
 		X_ADDR <= 10'b0;
-   end
-	else if(X_ADDR < `SCREEN_WIDTH) begin
+   end 
+	else if(X_ADDR < `SCREEN_WIDTH && pixel_data_val) begin
 		X_ADDR <= X_ADDR + 1;
    end
-	else begin
+	else if (Y_ADDR < `SCREEN_HEIGHT && new_row) begin
 	   X_ADDR <= 10'b0;
 		Y_ADDR <= Y_ADDR + 1;
 	end
 	
-	if (!VGA_RESET) begin
-		W_EN <= 1;
+	if (!VGA_RESET && pixel_data_val) begin
+		W_EN <= 1'b1;
+	end
+	else begin
+		W_EN <= 1'b0;
 	end
 end
 

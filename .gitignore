@@ -43,3 +43,11 @@ vs-readme.txt
 
 #ignore build
 build/
+
+#verilog files
+*.pin
+*.cdf
+*.rpt
+*.ppf
+*.qip
+*.done
