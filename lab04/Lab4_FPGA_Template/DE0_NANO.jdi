@@ -1,8 +1,8 @@
 <sld_project_info>
   <project>
-    <hash md5_digest_80b="e782fb84231c444c3bac"/>
+    <hash md5_digest_80b="7b06722c96d3f07e31fe"/>
   </project>
   <file_info>
-    <file device="EP4CE22F17C6" path="DE0_NANO.sof" usercode="0xFFFFFFFF"/>
+    <file device="EP4CE6E22C6" path="DE0_NANO.sof" usercode="0xFFFFFFFF"/>
   </file_info>
 </sld_project_info>

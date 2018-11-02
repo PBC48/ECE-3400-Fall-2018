@@ -1,0 +1,1 @@
+Warning (10268): Verilog HDL information at downsampler.v(35): always construct contains both blocking and non-blocking assignments File: C:/Users/labuser/Desktop/Lab4_FPGA_Template/downsampler.v Line: 35

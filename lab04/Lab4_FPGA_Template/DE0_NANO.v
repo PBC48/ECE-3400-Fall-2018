@@ -74,7 +74,7 @@ wire pclk;
 wire pixel_data_val;
 wire [7:0] down_sample_output;
 
-assign pclk = GPIO_1_D[20];
+assign pclk = GPIO_0_D[1];
 ///////* INSTANTIATE YOUR PLL HERE *///////
 ahhhPLL	ahhhPLL_inst (
 	.inclk0 ( CLOCK_50 ),
