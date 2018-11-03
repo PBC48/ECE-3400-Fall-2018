@@ -28,7 +28,7 @@ output 		    [33:0]		GPIO_0_D;
 //////////// GPIO_0, GPIO_1 connect to GPIO Default //////////
 input 		    [33:20]		GPIO_1_D;
 input 		     [1:0]		KEY;
-
+///////////////////////////PROVIDED CODE////////////////////////////////
 ///// PIXEL DATA /////
 reg [7:0]	pixel_data_RGB332 = RED | GREEN | BLUE;
 ///// READ/WRITE ADDRESS /////
@@ -41,23 +41,13 @@ reg [14:0] READ_ADDRESS;
 assign WRITE_ADDRESS = X_ADDR + Y_ADDR*(`SCREEN_WIDTH);
 ///// VGA INPUTS/OUTPUTS /////
 wire 			VGA_RESET;
-wire [7:0]	VGA_COLOR_IN;
-wire [9:0]	VGA_PIXEL_X;
-wire [9:0]	VGA_PIXEL_Y;
-wire [7:0]	MEM_OUTPUT;
+wire [7:0]	    VGA_COLOR_IN;
+wire [9:0]	    VGA_PIXEL_X;
+wire [9:0]	    VGA_PIXEL_Y;
+wire [7:0]	    MEM_OUTPUT;
 wire			VGA_VSYNC_NEG;
 wire			VGA_HSYNC_NEG;
-reg			VGA_READ_MEM_EN;
-
-/// CAMERA INPUTS/OUTPUTS //
-wire [7:0] D;
-wire       CAM_VSYNC;
-wire       CAM_HREF;
-
-assign Data = GPIO_1_D[33:26];
-assign CAM_VSYNC = GPIO_1_D[25];
-assign CAM_HREF = GPIO_1_D[24];
-
+reg			    VGA_READ_MEM_EN;
 assign GPIO_0_D[5] = VGA_VSYNC_NEG;
 assign VGA_RESET = ~KEY[0];
 ///// I/O for Img Proc /////
@@ -65,14 +55,7 @@ wire [8:0] RESULT;
 
 /* WRITE ENABLE */
 reg W_EN;
-
-///////* CREATE ANY LOCAL WIRES YOU NEED FOR YOUR PLL *///////
-wire clk24_PLL;
-wire clk25_PLL;
-wire clk50_PLL;
-wire pclk;
-wire pixel_data_val;
-wire [7:0] down_sample_output;
+///////////////////////////END PROVIDED CODE///////////////////////
 
 
 ///////* INSTANTIATE YOUR PLL HERE *///////
@@ -82,22 +65,17 @@ ahhhPLL	ahhhPLL_inst (
 	.c1 ( clk25_PLL ),
 	.c2 ( clk50_PLL )
 	);
-//assign clock to GPIO port
-assign GPIO_0_D[0] = clk24_PLL;
-assign pclk = GPIO_0_D[1]; 
 
 
 /////// DOWNSAMPLER  ///////
 DOWNSAMPLER down(
-	.RES(VGA_RESET),
+	.RES(down_sample_reset),
 	.CLK(pclk),
 	.D(Data),
 	.HREF(CAM_HREF),
- 	.vsync(CAM_VSYNC),
+ 	.VSYNC(CAM_VSYNC),
 	.PIXEL(down_sample_output),
-    .valid(pixel_data_val)
-//	.XADDR(X_ADDR),
-//	.YADDR(Y_ADDR)
+    .SAMP_RDY(downsampler_rdy)
 );
 ///////* M9K Module *///////
 Dual_Port_RAM_M9K mem(
@@ -131,68 +109,130 @@ IMAGE_PROCESSOR proc(
 	.VGA_VSYNC_NEG(VGA_VSYNC_NEG),
 	.RESULT(RESULT)
 );
-reg   new_row;
-reg 	new_image;
 
-reg prev_vsync;
-reg curr_vsync;
-reg prev_href;
-reg curr_href;
+/// CAMERA INPUTS/OUTPUTS //
+wire       CAM_VSYNC;
+wire       CAM_HREF;
+assign Data = GPIO_1_D[33:26];
+assign CAM_VSYNC = GPIO_1_D[25];
+assign CAM_HREF = GPIO_1_D[24];
 
-always @(posedge pclk) begin
-	if(VGA_RESET) begin
-		prev_vsync = 0;
-		curr_vsync = 0;
-		prev_href  = 0;
-		curr_href  = 0;
-	end
-	else begin
-		prev_vsync = curr_vsync;
-		curr_vsync = CAM_VSYNC;
-		prev_href  = curr_href;
-		curr_href  = CAM_HREF;
-	end
-	
-	if (prev_vsync == 0 && curr_vsync==1) begin 
-		new_image = 1;
-	end
-	else begin
-		new_image = 0;
-	end
-	
-	if (prev_href==0 && curr_href==1) begin
-		new_row = 1;
-	end
-	else begin
-		new_row = 0;
-	end
+//assign clock to GPIO port
+assign GPIO_0_D[0] = clk24_PLL; //Output clock for camera
+assign pclk = GPIO_0_D[1];      //clk from camera
+
+///////* CREATE ANY LOCAL WIRES YOU NEED FOR YOUR PLL *///////
+wire        clk24_PLL;
+wire        clk25_PLL;
+wire        clk50_PLL;
+wire        pclk;
+wire        downsampler_rdy;
+wire [7:0]  down_sample_output;
+reg         down_sample_reset;
+reg  [1:0]  control_state;
+reg  [1:0]  next_state;
+
+//ALways start in IDLE in case camera begins to transmit when FPGA not ready
+//Then we wait for next frame
+localparam  STATE_IDLE          = 3'd0; //wait for camera to send start of frame
+localparam  STATE_NEW_FRAME     = 3'd1; //new frame incoming
+localparam  STATE_POLL	        = 3'd2; //get downsample data from camera, update x-addr
+localparam  STATE_UPDATE_ROW    = 3'd3; //increase y-addr and reset x-addr for next row
+localparam  STATE_WAIT          = 3'd4; //wait for next row
+
+//state transition
+always @(negedge pclk) begin
+	 if (VGA_RESET)
+        control_state = STATE_IDLE;
+    else
+        control_state = next_state;
 end
 
+//next state logic
+always @(*) begin
+	case (control_state)
+        STATE_IDLE: begin
+            next_state                  = CAM_VSYNC ? STATE_NEW_FRAME : STATE_IDLE;
+        end
+        STATE_NEW_FRAME: begin
+            next_state                  = CAM_HREF ? STATE_POLL : STATE_NEW_FRAME;
+        end
+        STATE_POLL: begin
+            next_state                  = CAM_HREF ? STATE_POLL : STATE_UPDATE_ROW;
+        end
+        
+        STATE_UPDATE_ROW: begin
+            next_state                  = STATE_WAIT;
+        end
+        STATE_WAIT: begin
+            if (CAM_VSYNC) next_state       	= STATE_NEW_FRAME;
+            else if (CAM_HREF) next_state   	= STATE_POLL;
+            else next_state             		= STATE_WAIT;
+        end
+        default: begin
+            next_state = STATE_IDLE;
+        end
+    endcase
+end
 
+// output logic
+always @(*) begin
+    case (control_state)
+        STATE_IDLE: begin
+            W_EN                = 1'b0;
+            down_sample_reset   = 1'b1;
+        end
+        STATE_NEW_FRAME: begin
+            down_sample_reset   = 1'b1;
+            W_EN                = 1'b0;
+        end
+        STATE_POLL: begin
+            down_sample_reset   = 1'b0;
+            W_EN                = 1'b1;
+				
+        end
+        STATE_UPDATE_ROW: begin
+            down_sample_reset   = 1'b1;
+            W_EN                = 1'b0;
+        end
+        STATE_WAIT: begin
+            down_sample_reset   = 1'b1;
+            W_EN                = 1'b0;
+        end
+        default: begin
+            W_EN                = 1'b0;
+            down_sample_reset   = 1'b1;
+        end
+    endcase
+end
 
-always @ (posedge pclk)begin//(posedge clk24_PLL) begin
-	if (VGA_RESET || new_image) begin
-		Y_ADDR <= 10'b0;
-		X_ADDR <= 10'b0;
-	end	
-	else if (Y_ADDR == `SCREEN_HEIGHT) begin
-		Y_ADDR <= 10'b0;
-		X_ADDR <= 10'b0;
-   end 
-	else if(X_ADDR < `SCREEN_WIDTH && pixel_data_val) begin
-		X_ADDR <= X_ADDR + 1;
-   end
-	else if (Y_ADDR < `SCREEN_HEIGHT && new_row) begin
-	   X_ADDR <= 10'b0;
-		Y_ADDR <= Y_ADDR + 1;
-	end
-	
-	if (!VGA_RESET && pixel_data_val) begin
-		W_EN <= 1'b1;
-	end
-	else begin
-		W_EN <= 1'b0;
-	end
+// clked output logic
+always @(negedge pclk) begin
+	case (control_state)
+        STATE_IDLE: begin
+        end
+        STATE_NEW_FRAME: begin
+            X_ADDR              = 15'b0;
+            Y_ADDR              = 15'b0;
+         
+        end
+        STATE_POLL: begin
+				if (downsampler_rdy) 
+				//increments xaddr after downsampler finishes and writes to mem
+					X_ADDR			 <= X_ADDR + 1; 
+        end
+
+        STATE_UPDATE_ROW: begin
+				Y_ADDR				 <= Y_ADDR + 1;
+            X_ADDR             <= 15'b0;
+        end
+        STATE_WAIT: begin
+            
+        end
+        default: begin
+            
+        end
+    endcase
 end
 
 /*always @ (posedge clk25_PLL) begin

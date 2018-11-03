@@ -1,24 +1,15 @@
 
 module DOWNSAMPLER (
-	RES,
-	CLK,
-	D,
-	HREF,
-	PIXEL,
-	valid,
-	vsync
-	//XADDR,
-	//YADDR
+	input           RES,
+	input           CLK,
+	input  [7:0]    D,
+	input           HREF,
+	input           VSYNC,
+    output [7:0]    PIXEL,
+	output          SAMP_RDY
 );
 /// I/O ///
 
-input        RES;
-input        CLK;
-input  [7:0] D;
-input 		 HREF;
-input 		 vsync;
-output [7:0] PIXEL;
-output       valid;
 
 
 reg [7:0]    OUT = 0;
@@ -27,7 +18,7 @@ reg 			 reg_valid;
 reg 			 fsm;
 
 assign PIXEL = OUT;
-assign valid = reg_valid;
+assign SAMP_RDY = reg_valid;
 
 localparam IDLE = 0;
 localparam READ = 1;
@@ -35,17 +26,19 @@ localparam READ = 1;
 always @ (negedge CLK) begin
 	case (fsm)
 		IDLE: begin
-			fsm <= !vsync && !RES ? READ : IDLE;
-			count_bit <= 0;
-			reg_valid <= 1'b0;
-		end
+ 
+            fsm <= !VSYNC && !RES ? READ : IDLE;
+            count_bit <= 0;
+            reg_valid <= 1'b0;
+
+ 		end
 		READ: begin
-			fsm <= vsync || RES ? IDLE : READ;
+			fsm <= VSYNC || RES ? IDLE : READ;
 			reg_valid <= (HREF && count_bit) ? 1: 0;
 			if(HREF) begin
 				count_bit = ~count_bit;
-				if(count_bit) OUT[7:3] <= {D[7:5], D[2:1]};
-				else OUT[2:0] <= {{5'b0},D[4:2]};
+				if(count_bit) OUT[7:3] = {D[7:5], D[2:1]};
+				else OUT[2:0] = D[4:2];
 			end
 		end
 	endcase
@@ -67,6 +60,6 @@ always @ (negedge CLK) begin
 //		 else begin
 //			  reg_valid <= 1'b0;
 //		 end
-end
+	end
    
 endmodule
