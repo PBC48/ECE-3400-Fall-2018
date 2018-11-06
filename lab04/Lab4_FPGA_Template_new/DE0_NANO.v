@@ -70,7 +70,7 @@ ahhhPLL	ahhhPLL_inst (
 /////// DOWNSAMPLER  ///////
 DOWNSAMPLER down(
 	.RES(down_sample_reset),
-	.CLK(pclk),
+	.CLK(clk24_PLL),
 	.D(Data),
 	.HREF(CAM_HREF),
  	.VSYNC(CAM_VSYNC),
@@ -129,8 +129,9 @@ wire        pclk;
 wire        downsampler_rdy;
 wire [7:0]  down_sample_output;
 reg         down_sample_reset;
-reg  [1:0]  control_state;
-reg  [1:0]  next_state;
+reg  [2:0]  control_state;
+reg  [2:0]  next_state;
+wire [7:0]	Data;
 
 //ALways start in IDLE in case camera begins to transmit when FPGA not ready
 //Then we wait for next frame
@@ -141,7 +142,7 @@ localparam  STATE_UPDATE_ROW    = 3'd3; //increase y-addr and reset x-addr for n
 localparam  STATE_WAIT          = 3'd4; //wait for next row
 
 //state transition
-always @(negedge pclk) begin
+always @(posedge clk24_PLL) begin
 	 if (VGA_RESET)
         control_state = STATE_IDLE;
     else
@@ -179,47 +180,48 @@ end
 always @(*) begin
     case (control_state)
         STATE_IDLE: begin
-            W_EN                = 1'b0;
-            down_sample_reset   = 1'b1;
+            W_EN                <= 1'b0;
+            down_sample_reset   <= 1'b1;
         end
         STATE_NEW_FRAME: begin
-            down_sample_reset   = 1'b1;
-            W_EN                = 1'b0;
+            down_sample_reset   <= 1'b1;
+            W_EN                <= 1'b0;
         end
         STATE_POLL: begin
-            down_sample_reset   = 1'b0;
-            W_EN                = 1'b1;
+            down_sample_reset   <= 1'b0;
+				W_EN					  <= downsampler_rdy ? 1'b1 : 1'b0;
 				
         end
         STATE_UPDATE_ROW: begin
-            down_sample_reset   = 1'b1;
-            W_EN                = 1'b0;
+            down_sample_reset   <= 1'b1;
+            W_EN                <= 1'b0;
         end
         STATE_WAIT: begin
-            down_sample_reset   = 1'b1;
-            W_EN                = 1'b0;
+            down_sample_reset   <= 1'b1;
+            W_EN                <= 1'b0;
         end
         default: begin
-            W_EN                = 1'b0;
-            down_sample_reset   = 1'b1;
+            W_EN                <= 1'b0;
+            down_sample_reset   <= 1'b1;
         end
     endcase
 end
 
 // clked output logic
-always @(negedge pclk) begin
+always @(posedge clk24_PLL) begin
 	case (control_state)
         STATE_IDLE: begin
         end
         STATE_NEW_FRAME: begin
-            X_ADDR              = 15'b0;
-            Y_ADDR              = 15'b0;
+            X_ADDR              <= 15'b0;
+            Y_ADDR              <= 15'b0;
          
         end
         STATE_POLL: begin
-				if (downsampler_rdy) 
+				
 				//increments xaddr after downsampler finishes and writes to mem
-					X_ADDR			 <= X_ADDR + 1; 
+				X_ADDR			 	<= downsampler_rdy ? X_ADDR + 1 : X_ADDR; 
+				
         end
 
         STATE_UPDATE_ROW: begin
@@ -234,15 +236,15 @@ always @(negedge pclk) begin
         end
     endcase
 end
-
-/*always @ (posedge clk25_PLL) begin
+/*
+always @ (posedge clk25_PLL) begin
 	if (X_ADDR < `SCREEN_WIDTH/2 && Y_ADDR < `SCREEN_HEIGHT/2) begin
 		pixel_data_RGB332 = 8'b000_111_11;
 	end
 	else begin
 		pixel_data_RGB332 = RED | BLUE;
 	end
-end*/
+end */
 ///////* Update Read Address *///////
 always @ (VGA_PIXEL_X, VGA_PIXEL_Y) begin
 		READ_ADDRESS = (VGA_PIXEL_X + VGA_PIXEL_Y*`SCREEN_WIDTH);

@@ -385,6 +385,7 @@ set_global_assignment -name MIN_CORE_JUNCTION_TEMP 0
 set_global_assignment -name MAX_CORE_JUNCTION_TEMP 85
 set_global_assignment -name POWER_PRESET_COOLING_SOLUTION "23 MM HEAT SINK WITH 200 LFPM AIRFLOW"
 set_global_assignment -name POWER_BOARD_THERMAL_MODEL "NONE (CONSERVATIVE)"
+set_global_assignment -name VERILOG_FILE DOWNSAMPLER.v
 set_global_assignment -name VERILOG_FILE VGA_DRIVER.v
 set_global_assignment -name VERILOG_FILE DE0_NANO.v
 set_global_assignment -name SDC_FILE DE0_NANO.SDC

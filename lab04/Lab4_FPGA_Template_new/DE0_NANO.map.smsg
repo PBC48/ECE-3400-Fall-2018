@@ -1,2 +1,1 @@
-Warning (10268): Verilog HDL information at DE0_NANO.v(208): always construct contains both blocking and non-blocking assignments File: C:/Users/xiaoy/Documents/GitHub/ECE-3400-Fall-2018/lab04/Lab4_FPGA_Template_new/DE0_NANO.v Line: 208
-Warning (10268): Verilog HDL information at downsampler.v(26): always construct contains both blocking and non-blocking assignments File: C:/Users/xiaoy/Documents/GitHub/ECE-3400-Fall-2018/lab04/Lab4_FPGA_Template_new/downsampler.v Line: 26
+Warning (10268): Verilog HDL information at DOWNSAMPLER.v(26): always construct contains both blocking and non-blocking assignments File: C:/Users/xiaoy/Documents/GitHub/ECE-3400-Fall-2018/lab04/Lab4_FPGA_Template_new/DOWNSAMPLER.v Line: 26

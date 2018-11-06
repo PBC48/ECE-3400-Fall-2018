@@ -50,16 +50,24 @@ void setup() {
   //Init_OV7670();
   // TODO: WRITE KEY REGISTERS
   
+  /*
+   * 
+   * 
+   */
+//  Init_OV7670();
   Serial.println(OV7670_write_register(0x12,0x80)); //COM7 reset all regs
-  
+//  Serial.println(OV7670_write_register(0x12,0x06)); //color bar test
+
   Serial.println(OV7670_write_register(0x12,0x0E)); //COM7 enable color bar test and QCIF
-  //Serial.println(OV7670_write_register(0x12,0x0C)); //COM7 QCIF 176x144 resolution
+//  Serial.println(OV7670_write_register(0x12,0x0c)); //COM7 QCIF 176x144 resolution
+
+  
   Serial.println(OV7670_write_register(0x0c,0x08)); //COM3 Enable Scaling
-  Serial.println(OV7670_write_register(0x14,0x01)); //COM9 reduce noise
+  Serial.println(OV7670_write_register(0x14,0x11)); //COM9 reduce noise
   Serial.println(OV7670_write_register(0x40,0xD0)); //COM15 select output range and RGB565
   Serial.println(OV7670_write_register(0x42,0x08)); //COM17 enables color bar DSP
   Serial.println(OV7670_write_register(0x11,0xC0)); //CLKRC two clk both same speed, use external clk
-  Serial.println(OV7670_write_register(0x1E,0x00)); //MVFP flip/mirror | was at 0x30
+  Serial.println(OV7670_write_register(0x1E,0x30)); //MVFP flip/mirror | was at 0x30
 
   
   Serial.println("Wrote registers");
@@ -72,6 +80,27 @@ void loop(){
     delay(1);
  }
 
+void Init_OV7670(){
+  //Reset All Register Values
+  WriteOV7670(0x12,0x80);
+  delay(100);
+  WriteOV7670(0x3A, 0x04); //TSLB
+ 
+  WriteOV7670(0x13, 0xC0); //COM8
+  WriteOV7670(0x00, 0x00); //GAIN
+  WriteOV7670(0x10, 0x00); //AECH
+  WriteOV7670(0x0D, 0x40); //COM4
+  WriteOV7670(0x14, 0x18); //COM9
+  WriteOV7670(0x24, 0x95); //AEW
+  WriteOV7670(0x25, 0x33); //AEB
+  WriteOV7670(0x13, 0xC5); //COM8
+  WriteOV7670(0x6A, 0x40); //GGAIN
+  WriteOV7670(0x01, 0x40); //BLUE
+  WriteOV7670(0x02, 0x60); //RED
+  WriteOV7670(0x13, 0xC7); //COM8
+  WriteOV7670(0x41, 0x08); //COM16
+  WriteOV7670(0x15, 0x20); //COM10 - PCLK does not toggle on HBLANK
+  }
 
 ///////// Function Definition //////////////
 void read_key_registers(){
@@ -116,6 +145,18 @@ void set_color_matrix(){
     OV7670_write_register(0x6f, 0x9f);
     OV7670_write_register(0xb0, 0x84);
 }
+
+void WriteOV7670(byte regID, byte regVal){
+  // Slave 7-bit address is 0x21.
+  // R/W bit set automatically by Wire functions
+  // dont write 0x42 or 0x43 for slave address
+  Wire.beginTransmission(0x21);
+  // Reset all register values
+  Wire.write(regID);
+  Wire.write(regVal);
+  Wire.endTransmission();
+  delay(1);
+  }
 
   void ReadOV7670(byte regID){
   // Reading from a register is done in two steps

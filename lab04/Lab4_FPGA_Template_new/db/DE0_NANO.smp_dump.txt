@@ -1,0 +1,8 @@
+
+State Machine - |DE0_NANO|control_state
+Name control_state.STATE_UPDATE_ROW control_state.STATE_POLL control_state.STATE_NEW_FRAME control_state.STATE_IDLE control_state.STATE_WAIT 
+control_state.STATE_IDLE 0 0 0 0 0 
+control_state.STATE_NEW_FRAME 0 0 1 1 0 
+control_state.STATE_POLL 0 1 0 1 0 
+control_state.STATE_UPDATE_ROW 1 0 0 1 0 
+control_state.STATE_WAIT 0 0 0 1 1 
