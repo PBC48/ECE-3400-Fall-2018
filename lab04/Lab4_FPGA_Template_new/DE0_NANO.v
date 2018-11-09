@@ -70,7 +70,7 @@ ahhhPLL	ahhhPLL_inst (
 /////// DOWNSAMPLER  ///////
 DOWNSAMPLER down(
 	.RES(down_sample_reset),
-	.CLK(clk24_PLL),
+	.CLK(pclk),
 	.D(Data),
 	.HREF(CAM_HREF),
  	.VSYNC(CAM_VSYNC),
@@ -119,7 +119,7 @@ assign CAM_HREF = GPIO_1_D[24];
 
 //assign clock to GPIO port
 assign GPIO_0_D[0] = clk24_PLL; //Output clock for camera
-assign pclk = GPIO_0_D[1];      //clk from camera
+assign pclk = GPIO_1_D[23];      //clk from camera
 
 ///////* CREATE ANY LOCAL WIRES YOU NEED FOR YOUR PLL *///////
 wire        clk24_PLL;
@@ -142,7 +142,7 @@ localparam  STATE_UPDATE_ROW    = 3'd3; //increase y-addr and reset x-addr for n
 localparam  STATE_WAIT          = 3'd4; //wait for next row
 
 //state transition
-always @(posedge clk24_PLL) begin
+always @(posedge pclk) begin
 	 if (VGA_RESET)
         control_state = STATE_IDLE;
     else
@@ -208,7 +208,7 @@ always @(*) begin
 end
 
 // clked output logic
-always @(posedge clk24_PLL) begin
+always @(posedge pclk) begin
 	case (control_state)
         STATE_IDLE: begin
         end
