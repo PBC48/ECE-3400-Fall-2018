@@ -35,6 +35,7 @@
     </figcaption>
     </font>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/0lKN7Tkrx0Q" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    
 ### Color Detection
 
 #### Color Bar First attempt
@@ -44,6 +45,7 @@
     <figcaption> <b> First attempt at the color bar test </b>
     </figcaption>
     </font>
+    
 <iframe width="560" height="315" src="https://www.youtube.com/embed/0lKN7Tkrx0Q" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 ### Integrating
