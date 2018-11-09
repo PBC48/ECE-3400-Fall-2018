@@ -8,20 +8,49 @@
 
 ### Setup
 
-### Downsampler
+### Receiving data from the Camera
 
-### Color Detection
-
+#### Polling from camera
 <figure>
-    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab03/maze.PNG" width="400"/>
+    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab04/cam_fsm.PNG" width="400"/>
     <font size="2">
-    <figcaption> <b> GUI of the 3x2 Maze </b>
+    <figcaption> <b> Timing Diagram for the OV7670 camera </b>
     </figcaption>
     </font>
 
+<figure>
+    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab04/cam_fsm.PNG" width="400"/>
+    <font size="2">
+    <figcaption> <b> FSM for getting data from camera </b>
+    </figcaption>
+    </font>
+
+
+#### Downsampler
+
+<figure>
+    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab04/cam_fsm.PNG" width="400"/>
+    <font size="2">
+    <figcaption> <b> Timing Diagram for Outputing RGB565 </b>
+    </figcaption>
+    </font>
+
+### Color Detection
+
+#### Color Bar First attempt
+<figure>
+    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab04/IMG_1161.jpg" width="400"/>
+    <font size="2">
+    <figcaption> <b> First attempt at the color bar test </b>
+    </figcaption>
+    </font>
+
+
 ### Integrating
 
+
 ## Arduino
+
 
 ### Disabling Arduino's Internal Pullup resistor
 
