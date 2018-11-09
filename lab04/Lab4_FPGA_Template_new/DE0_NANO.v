@@ -107,7 +107,8 @@ IMAGE_PROCESSOR proc(
 	.VGA_PIXEL_X(VGA_PIXEL_X),
 	.VGA_PIXEL_Y(VGA_PIXEL_Y),
 	.VGA_VSYNC_NEG(VGA_VSYNC_NEG),
-	.RESULT(RESULT)
+	.RESULT(RESULT),
+	.RDY(image_proc_rdy)
 );
 
 /// CAMERA INPUTS/OUTPUTS //
@@ -127,6 +128,7 @@ wire        clk25_PLL;
 wire        clk50_PLL;
 wire        pclk;
 wire        downsampler_rdy;
+wire			image_proc_rdy;
 wire [7:0]  down_sample_output;
 reg         down_sample_reset;
 reg  [2:0]  control_state;
@@ -184,8 +186,8 @@ always @(*) begin
             down_sample_reset   <= 1'b1;
         end
         STATE_NEW_FRAME: begin
-            down_sample_reset   <= 1'b1;
-            W_EN                <= 1'b0;
+            down_sample_reset   <= 1'b0; //we need to poll as soon as HREF hits high
+            W_EN                <= downsampler_rdy ? 1'b1 : 1'b0;
         end
         STATE_POLL: begin
             down_sample_reset   <= 1'b0;

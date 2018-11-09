@@ -6,3 +6,12 @@ control_state.STATE_NEW_FRAME 0 0 1 1 0
 control_state.STATE_POLL 0 1 0 1 0 
 control_state.STATE_UPDATE_ROW 1 0 0 1 0 
 control_state.STATE_WAIT 0 0 0 1 1 
+
+State Machine - |DE0_NANO|IMAGE_PROCESSOR:proc|current_state
+Name current_state.STATE_WAIT current_state.STATE_CALC current_state.STATE_CHECK_BAR3 current_state.STATE_CHECK_BAR2 current_state.STATE_CHECK_BAR1 current_state.STATE_IDLE 
+current_state.STATE_IDLE 0 0 0 0 0 0 
+current_state.STATE_CHECK_BAR1 0 0 0 0 1 1 
+current_state.STATE_CHECK_BAR2 0 0 0 1 0 1 
+current_state.STATE_CHECK_BAR3 0 0 1 0 0 1 
+current_state.STATE_CALC 0 1 0 0 0 1 
+current_state.STATE_WAIT 1 0 0 0 0 1 

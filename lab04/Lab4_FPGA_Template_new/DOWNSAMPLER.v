@@ -52,24 +52,7 @@ always @ (posedge CLK) begin
 			end
 		end
 	endcase
-//		if(RES || !vsync) begin
-//			OUT 	 <= 8'b1;
-//			count_bit <= 0;
-//			reg_valid <= 1'b0;
-//		end else if (HREF) begin
-//			if (count_bit) begin
-//				OUT[2:0] <= {{5'b0},D[4:2]};
-//				count_bit <= 1'b0;
-//				reg_valid = 1'b1;
-//			end else begin
-//				OUT[7:3] <= {D[7:5], D[2:1]};
-//				count_bit <= 1'b1;
-//				reg_valid <= 1'b0;
-//			end
-//		 end
-//		 else begin
-//			  reg_valid <= 1'b0;
-//		 end
-	end
+
+end
    
 endmodule
