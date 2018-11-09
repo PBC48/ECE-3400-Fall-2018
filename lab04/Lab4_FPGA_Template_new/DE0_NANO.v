@@ -51,7 +51,7 @@ reg			    VGA_READ_MEM_EN;
 assign GPIO_0_D[5] = VGA_VSYNC_NEG;
 assign VGA_RESET = ~KEY[0];
 ///// I/O for Img Proc /////
-wire [8:0] RESULT;
+wire [7:0] RESULT;
 
 /* WRITE ENABLE */
 reg W_EN;
@@ -110,13 +110,16 @@ IMAGE_PROCESSOR proc(
 	.RESULT(RESULT),
 	.RDY(image_proc_rdy)
 );
+assign GPIO_0_D[33]= RESULT[0]; //1st part of treasure bit;  D1
+assign GPIO_0_D[32]= RESULT[1]; //treasure; 		  				 D4
+assign GPIO_0_D[31]= RESULT[2]; //color; 				 			 D0
 
 /// CAMERA INPUTS/OUTPUTS //
 wire       CAM_VSYNC;
 wire       CAM_HREF;
-assign Data = GPIO_1_D[33:26];
-assign CAM_VSYNC = GPIO_1_D[25];
-assign CAM_HREF = GPIO_1_D[24];
+assign Data 		= GPIO_1_D[33:26];
+assign CAM_VSYNC 	= GPIO_1_D[25];
+assign CAM_HREF 	= GPIO_1_D[24];
 
 //assign clock to GPIO port
 assign GPIO_0_D[0] = clk24_PLL; //Output clock for camera
