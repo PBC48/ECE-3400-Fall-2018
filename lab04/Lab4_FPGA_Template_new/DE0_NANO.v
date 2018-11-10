@@ -110,9 +110,9 @@ IMAGE_PROCESSOR proc(
 	.RESULT(RESULT),
 	.RDY(image_proc_rdy)
 );
-assign GPIO_0_D[33]= RESULT[0]; //1st part of treasure bit;  D1
-assign GPIO_0_D[32]= RESULT[1]; //treasure; 		  				 D4
-assign GPIO_0_D[31]= RESULT[2]; //color; 				 			 D0
+assign GPIO_0_D[33]= image_proc_rdy && RESULT[0]; //1st part of treasure bit;  D1
+assign GPIO_0_D[32]= image_proc_rdy && RESULT[1]; //treasure; 		  				 D4
+assign GPIO_0_D[31]= image_proc_rdy && RESULT[2]; //color; 				 			 D0
 
 /// CAMERA INPUTS/OUTPUTS //
 wire       CAM_VSYNC;
@@ -241,15 +241,7 @@ always @(posedge pclk) begin
         end
     endcase
 end
-/*
-always @ (posedge clk25_PLL) begin
-	if (X_ADDR < `SCREEN_WIDTH/2 && Y_ADDR < `SCREEN_HEIGHT/2) begin
-		pixel_data_RGB332 = 8'b000_111_11;
-	end
-	else begin
-		pixel_data_RGB332 = RED | BLUE;
-	end
-end */
+
 ///////* Update Read Address *///////
 always @ (VGA_PIXEL_X, VGA_PIXEL_Y) begin
 		READ_ADDRESS = (VGA_PIXEL_X + VGA_PIXEL_Y*`SCREEN_WIDTH);

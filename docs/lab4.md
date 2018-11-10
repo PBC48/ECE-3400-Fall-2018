@@ -14,7 +14,7 @@
 #### Polling from camera
 
 <figure>
-    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab04/vgatiming.PNG" width="400"/>
+    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab04/vgatiming.PNG" width="500"/>
     <font size="2">
     <figcaption> <b> Timing Diagram for the OV7670 camera </b>
     </figcaption>
@@ -22,7 +22,7 @@
 </figure>
 
 <figure>
-    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab04/cam_fsm.PNG" width="400"/>
+    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab04/cam_fsm.PNG" width="800"/>
     <font size="2">
     <figcaption> <b> FSM for getting data from camera </b>
     </figcaption>
@@ -50,7 +50,7 @@ always @(*) begin
         end
         STATE_POLL: begin
             down_sample_reset   <= 1'b0;
-				W_EN					  <= downsampler_rdy ? 1'b1 : 1'b0;
+			W_EN                <= downsampler_rdy ? 1'b1 : 1'b0;
 				
         end
         STATE_UPDATE_ROW: begin
@@ -78,9 +78,8 @@ always @(posedge pclk) begin
          
         end
         STATE_POLL: begin
-				
 				//increments xaddr after downsampler finishes and writes to mem
-				X_ADDR			 	<= downsampler_rdy ? X_ADDR + 1 : X_ADDR; 
+				X_ADDR <= downsampler_rdy ? X_ADDR + 1 : X_ADDR; 
 				
         end
 
@@ -101,7 +100,7 @@ end
 #### Downsampler
 
 <figure>
-    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab04/timingdiagram565.PNG" width="400"/>
+    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab04/timingdiagram565.PNG" width="700"/>
     <font size="2">
     <figcaption> <b> Timing Diagram for Outputing RGB565 </b>
     </figcaption>
@@ -165,22 +164,17 @@ void setup() {
     Wire.begin();
     Serial.begin(9600);
     delay(100);
-    Serial.println(OV7670_write_register(0x12,0x80)); //COM7 reset all regs
-    //  Serial.println(OV7670_write_register(0x12,0x06)); //color bar test
-
-    //  Serial.println(OV7670_write_register(0x12,0x0E)); //COM7 enable color bar test and QCIF
-    Serial.println(OV7670_write_register(0x12,0x0c)); //COM7 QCIF 176x144 resolution
-
-    
-    Serial.println(OV7670_write_register(0x0c,0x08)); //COM3 Enable Scaling
-    Serial.println(OV7670_write_register(0x14,0x11)); //COM9 reduce noise
-    Serial.println(OV7670_write_register(0x40,0xD0)); //COM15 select output range and RGB565
-    //  Serial.println(OV7670_write_register(0x42,0x08)); //COM17 enables color bar DSP
-    Serial.println(OV7670_write_register(0x11,0xC0)); //CLKRC two clk both same speed, use external clk
-    Serial.println(OV7670_write_register(0x1E,0x30)); //MVFP flip/mirror
-
+    Serial.println(OV7670_write_register(0x12,0x80));  
+    //color bar test
+    //  Serial.println(OV7670_write_register(0x12,0x0E)); 
+    Serial.println(OV7670_write_register(0x12,0x0c)); 
+    Serial.println(OV7670_write_register(0x0c,0x08)); 
+    Serial.println(OV7670_write_register(0x14,0x11)); 
+    Serial.println(OV7670_write_register(0x40,0xD0)); 
+    //  Serial.println(OV7670_write_register(0x42,0x08));
+    Serial.println(OV7670_write_register(0x11,0xC0)); 
+    Serial.println(OV7670_write_register(0x1E,0x30));
     set_color_matrix();
-    
 }
 ```
 

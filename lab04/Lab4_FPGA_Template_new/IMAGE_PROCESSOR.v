@@ -1,13 +1,13 @@
 `define SCREEN_WIDTH 176
 `define SCREEN_HEIGHT 144
-`define NUM_BARS 3
 `define BAR1 48
 `define BAR2 72
 `define BAR3 96
 `define HIGH_THRESH 300
-`define MED_THRESH 200
-`define LOW_THRESH 100
-
+`define TRIANGLE_THRESH 50
+`define DIAMOND_THRESH  50
+`define SQUARE_THRESH   50
+`define X_THRESH 			30
 
 module IMAGE_PROCESSOR (
 	PIXEL_IN,
@@ -37,6 +37,7 @@ reg 	[2:0]	 current_state;
 reg 	[2:0]	 next_state;
 reg	[7:0]	 out;
 reg 			 done;
+
 reg 	[15:0] red1;
 reg 	[15:0] blue1;
 
@@ -48,9 +49,11 @@ reg 	[15:0] blue3;
 
 reg   [15:0] redTotal;
 reg   [15:0] blueTotal;
+reg	[15:0] greenTotal;
 
 wire	[2:0]	 red;
 wire	[2:0]	 blue;
+wire	[1:0]  green;
 assign red 	=	PIXEL_IN[7:5];
 assign green=  PIXEL_IN[4:3];
 assign blue =  PIXEL_IN[2:0];
@@ -90,19 +93,15 @@ always @(*) begin
 				next_state 			= STATE_CHECK_BAR3;
 			else
 				next_state 		   = STATE_IDLE;
-
 		end
 		STATE_CHECK_BAR1: begin
-			if (!(VGA_PIXEL_Y == `BAR1 || VGA_PIXEL_Y == `BAR2 ||VGA_PIXEL_Y == `BAR3))
-				next_state 			= STATE_WAIT;
+			next_state   			= (VGA_PIXEL_Y == `BAR1) ? STATE_CHECK_BAR1 : STATE_WAIT;
 		end
 		STATE_CHECK_BAR2: begin
-			if (!(VGA_PIXEL_Y == `BAR1 || VGA_PIXEL_Y == `BAR2 ||VGA_PIXEL_Y == `BAR3))
-				next_state 			= STATE_WAIT;
+			next_state   			= (VGA_PIXEL_Y == `BAR2) ? STATE_CHECK_BAR2 : STATE_WAIT;
 		end
 		STATE_CHECK_BAR3: begin
-			if (!(VGA_PIXEL_Y == `BAR1 || VGA_PIXEL_Y == `BAR2 ||VGA_PIXEL_Y == `BAR3))
-				next_state 			= STATE_CALC;
+			next_state   			= (VGA_PIXEL_Y == `BAR3) ? STATE_CHECK_BAR3 : STATE_CALC;
 		end
 		STATE_CALC: begin
 			next_state				= STATE_IDLE;
@@ -119,6 +118,7 @@ always @(*) begin
 		end
 		
 		default:begin
+			next_state				= STATE_IDLE;
 		end
 	endcase
 end
@@ -128,52 +128,61 @@ always @(*) begin
 		STATE_IDLE: begin
 			out 						= 1'b0;
 			done						= 1'b0;
+			redTotal					= 0;
+			blueTotal				= 0;
 		end
 		STATE_CHECK_BAR1: begin
 			out 						= 1'b0;
 			done						= 1'b0;
+			redTotal					= 0;
+			blueTotal				= 0;
 		end
 		STATE_CHECK_BAR2: begin
 			out 						= 1'b0;
 			done						= 1'b0;
+			redTotal					= 0;
+			blueTotal				= 0;
 		end
 		STATE_CHECK_BAR3: begin
 			out 						= 1'b0;
 			done						= 1'b0;
+			redTotal					= 0;
+			blueTotal				= 0;
 		end
 		STATE_CALC: begin
 			redTotal					= red1 + red2 + red3;
 			blueTotal				= blue1 + blue2 + blue3;
-			if (blueTotal > redTotal) begin
-				if ((blue3 > `HIGH_THRESH) && (blue2 > `HIGH_THRESH)	&& (blue1 > `HIGH_THRESH))
-					out  				= {5'd0, BLUE, SQUARE};
-				else if ((blue3 > `HIGH_THRESH) && (blue2 > `MID_THRESH)	&& (blue1 > `LOW_THRESH))
+			if (blueTotal > redTotal && (blueTotal > `HIGH_THRESH || (redTotal > `HIGH_THRESH)))  begin
+				if (((blue3 > blue2) && (blue2 > blue1)) && ((blue3 - blue2)>`TRIANGLE_THRESH) && ((blue2-blue1)>`TRIANGLE_THRESH))
 				   out            = {5'b0, BLUE, TRIANGLE};
-				else if ((blue3 > `LOW_THRESH) && (blue2 > `MID_THRESH)	&& (blue1 > `LOW_THRESH))
+				else if (((blue2 > blue1) && (blue2 > blue3)) && ((blue2-blue1) > `DIAMOND_THRESH) && ((blue2-blue3)>`DIAMOND_THRESH))
 				   out            = {5'b0, BLUE, DIAMOND};
-				else
-				   out            = 8'b0;
+				else 
+					out  				= {5'd0, BLUE, SQUARE};	
 			end
-			else begin
-			   if (red3 > `HIGH_THRESH && red2 > `HIGH_THRESH	&& red1 > `HIGH_THRESH)
-				   out            = {5'b0, RED, SQUARE};
-				else if (red3 > `HIGH_THRESH && red2 > `MID_THRESH	&& red1 > `LOW_THRESH)
+			else if (redTotal > blueTotal && (blueTotal > `HIGH_THRESH || (redTotal > `HIGH_THRESH)))begin
+			   if (((red3 > red2) && (red2 > red1)) && ((red3 - red2)>`TRIANGLE_THRESH) && ((red2-red1)>`TRIANGLE_THRESH))
 				   out            = {5'b0, RED, TRIANGLE};
-				else if (red3 > `LOW_THRESH && red2 > `MID_THRESH	&& red1 > `LOW_THRESH)
-				   out            = {5'b0, RED, DIAMOND};  
-				else
-					out            = 8'b0;
-				
+				else if (((red2 > red1) && (red2 > red3)) && ((red2-red1) > `DIAMOND_THRESH) && ((red2-red3)>`DIAMOND_THRESH))
+				   out            = {5'b0, RED, DIAMOND};
+				else 
+					out  				= {5'd0, RED, SQUARE};	
 			end
+			else 
+				out					= 8'd0;
 			done						= 1'b1;
 		end
 		STATE_WAIT: begin
 			out 						= 1'b0;
 			done						= 1'b0;
+			redTotal					= redTotal;
+			blueTotal				= blueTotal;
 		end
 		default: begin
 			out 						= 1'b0;
 			done						= 1'b0;
+			redTotal					= 0;
+			blueTotal				= 0;
 		end
 	endcase
 end
@@ -181,25 +190,25 @@ end
 always @(posedge CLK) begin
 	case (current_state)
 		STATE_IDLE: begin
-			red1						= 0;
-			blue1						= 0;
-			red2						= 0;
-			blue2						= 0;
-			red3						= 0;
-			blue3						= 0;
+			red1						<= 0;
+			blue1						<= 0;
+			red2						<= 0;
+			blue2						<= 0;
+			red3						<= 0;
+			blue3						<= 0;
 		end
 		
 		STATE_CHECK_BAR1: begin
-			red1						= red1 + red*(3-green);
-			blue1						= blue1+ blue*(3-green);
+			red1						<= (VGA_PIXEL_X > `X_THRESH) ? red1 + red*(3-green) : red1;
+			blue1						<= (VGA_PIXEL_X > `X_THRESH) ? blue1+ blue*(3-green): blue1;
 		end
 		STATE_CHECK_BAR2: begin
-			red2						= red2 + red*(3-green);
-			blue2						= blue2+ blue*(3-green);
+			red2						<= (VGA_PIXEL_X > `X_THRESH) ? red2 + red*(3-green) : red2;
+			blue2						<= (VGA_PIXEL_X > `X_THRESH) ? blue2+ blue*(3-green): blue2;
 		end
 		STATE_CHECK_BAR3: begin
-			red3						= red3 + red*(3-green);
-			blue3						= blue3+ blue*(3-green);
+			red3						<= (VGA_PIXEL_X > `X_THRESH) ? red3 + red*(3-green) : red3;
+			blue3						<= (VGA_PIXEL_X > `X_THRESH) ? blue3+ blue*(3-green): blue3;
 		end
 		
 		STATE_WAIT: begin
@@ -209,6 +218,7 @@ always @(posedge CLK) begin
 		
 		end
 		default: begin
+			
 		end
 	endcase
 end

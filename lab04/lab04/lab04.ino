@@ -49,7 +49,8 @@ void setup() {
 
 
 void loop(){
-    //decoder();
+    decoder();
+    delay(1000);
  }
 ///////// Function Definition //////////////
 
