@@ -4,6 +4,10 @@
 `define BAR1 48
 `define BAR2 72
 `define BAR3 96
+`define HIGH_THRESH 300
+`define MED_THRESH 200
+`define LOW_THRESH 100
+
 
 module IMAGE_PROCESSOR (
 	PIXEL_IN,
@@ -26,12 +30,12 @@ input [9:0] VGA_PIXEL_X;
 input [9:0] VGA_PIXEL_Y;
 input			VGA_VSYNC_NEG;
 
-output [8:0] RESULT;
+output [7:0] RESULT;
 output		 RDY;
 
 reg 	[2:0]	 current_state;
 reg 	[2:0]	 next_state;
-reg	[8:0]	 out;
+reg	[7:0]	 out;
 reg 			 done;
 reg 	[15:0] red1;
 reg 	[15:0] blue1;
@@ -48,7 +52,8 @@ reg   [15:0] blueTotal;
 wire	[2:0]	 red;
 wire	[2:0]	 blue;
 assign red 	=	PIXEL_IN[7:5];
-assign blue =  PIXEL_IN[1:0];
+assign green=  PIXEL_IN[4:3];
+assign blue =  PIXEL_IN[2:0];
 
 localparam  STATE_IDLE 			= 3'd0;
 localparam  STATE_CHECK_BAR1 	= 3'd1;
@@ -138,11 +143,29 @@ always @(*) begin
 		end
 		STATE_CALC: begin
 			redTotal					= red1 + red2 + red3;
-			blueTotal				= blue1+blue2+blue3;
+			blueTotal				= blue1 + blue2 + blue3;
 			if (blueTotal > redTotal) begin
-				out 						= 1'b1;
-				done						= 1'b1;
+				if ((blue3 > `HIGH_THRESH) && (blue2 > `HIGH_THRESH)	&& (blue1 > `HIGH_THRESH))
+					out  				= {5'd0, BLUE, SQUARE};
+				else if ((blue3 > `HIGH_THRESH) && (blue2 > `MID_THRESH)	&& (blue1 > `LOW_THRESH))
+				   out            = {5'b0, BLUE, TRIANGLE};
+				else if ((blue3 > `LOW_THRESH) && (blue2 > `MID_THRESH)	&& (blue1 > `LOW_THRESH))
+				   out            = {5'b0, BLUE, DIAMOND};
+				else
+				   out            = 8'b0;
 			end
+			else begin
+			   if (red3 > `HIGH_THRESH && red2 > `HIGH_THRESH	&& red1 > `HIGH_THRESH)
+				   out            = {5'b0, RED, SQUARE};
+				else if (red3 > `HIGH_THRESH && red2 > `MID_THRESH	&& red1 > `LOW_THRESH)
+				   out            = {5'b0, RED, TRIANGLE};
+				else if (red3 > `LOW_THRESH && red2 > `MID_THRESH	&& red1 > `LOW_THRESH)
+				   out            = {5'b0, RED, DIAMOND};  
+				else
+					out            = 8'b0;
+				
+			end
+			done						= 1'b1;
 		end
 		STATE_WAIT: begin
 			out 						= 1'b0;
@@ -167,16 +190,16 @@ always @(posedge CLK) begin
 		end
 		
 		STATE_CHECK_BAR1: begin
-			red1						= red1 + red;
-			blue1						= blue1+ blue;
+			red1						= red1 + red*(3-green);
+			blue1						= blue1+ blue*(3-green);
 		end
 		STATE_CHECK_BAR2: begin
-			red2						= red2 + red;
-			blue2						= blue2+ blue;
+			red2						= red2 + red*(3-green);
+			blue2						= blue2+ blue*(3-green);
 		end
 		STATE_CHECK_BAR3: begin
-			red3						= red3 + red;
-			blue3						= blue3+ blue;
+			red3						= red3 + red*(3-green);
+			blue3						= blue3+ blue*(3-green);
 		end
 		
 		STATE_WAIT: begin

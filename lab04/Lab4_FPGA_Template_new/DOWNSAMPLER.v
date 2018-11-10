@@ -36,13 +36,13 @@ always @ (posedge CLK) begin
 			
 			if(HREF) begin
 				count_bit 		= ~count_bit;
-				if(count_bit) begin
-					reg_valid		<= 1'b0;
-					OUT[7:2]		 	<= {D[7:5], D[2:0]};
+				if(!count_bit) begin
+					reg_valid		<= 1'b1;
+					OUT[7:3]		 	<= {D[7:5], D[2:1]};
 				end
 				else begin 
-					reg_valid 		<= 1'b1;
-					OUT[1:0]			<= D[4:3];
+					reg_valid 		<= 1'b0;
+					OUT[2:0]			<= D[4:2];
 				end
 			end
 			else begin

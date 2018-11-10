@@ -68,9 +68,10 @@ void loop()
     {
     case START:
         Serial.println(F("start"));
-        //radio_msg = 0;
+        radio_msg = 0;
         //radio_msg = millis();
         //radio_transmit(radio_msg);
+        //send_to_baseStation();
 
         delay(1000);
         STATE = AUDIO_DECT;
@@ -81,7 +82,7 @@ void loop()
         calculate_FFT(MIC);
         Serial.print(F("AUDIO SUM: "));
         Serial.println(sum);
-        if (sum > 60)
+        if (sum > 100)
         { //|| digitalRead(BUTTON)){ //originally at 90
             Serial.println(F("660Hz Tone Detected"));
             STATE = IR_DECT;
@@ -98,8 +99,8 @@ void loop()
 
     case IR_DECT:
         calculate_FFT(IR);
-        //Serial.println("IN IR_DECT");
-        //Serial.print(F("IR SUM: ")); Serial.println(sum);
+        Serial.println("IN IR_DECT");
+        Serial.print(F("IR SUM: ")); Serial.println(sum);
         if (sum > 100)
         {
             Serial.println(F("Robot Detected"));
@@ -240,6 +241,7 @@ void loop()
 
     case TRANSMIT:
         //radio_transmit(radio_msg);
+        Serial.println("Transmitting");
         send_to_baseStation();
         
         STATE = ROBOT_SENSE;
