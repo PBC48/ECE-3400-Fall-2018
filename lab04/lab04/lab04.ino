@@ -1,38 +1,17 @@
 #include <Wire.h>
 
 #define OV7670_I2C_ADDRESS 0x21 // For Write/*TODO: write this in hex (eg. 0xAB) */
+#define T1 1  //GPIO 33 treasure[0]
+#define T2 4  //GPIO 32 treasure[1]
+#define C  0  //GPIO 31 color ; blue or red
+#define RED 0
+#define BLUE 1
+#define NONE 0
+#define SQUARE 2
+#define TRIANGLE 1
+#define DIAMOND 3
+ 
 
-
-String OV7670_write(int start, const byte *pData, int size){
-    int n,error;
-    Wire.beginTransmission(OV7670_I2C_ADDRESS);
-    n = Wire.write(start);
-    if(n != 1){
-      return "I2C ERROR WRITING START ADDRESS";   
-    }
-    n = Wire.write(pData, size);
-    if(n != size){
-      return "I2C ERROR WRITING DATA";
-    }
-    error = Wire.endTransmission(true);
-    if(error != 0){
-      return String(error);
-    }
-    return "no errors :)";
- }
-
-byte read_register_value(int register_address){
-  byte data = 0;
-  Wire.beginTransmission(OV7670_I2C_ADDRESS);
-  Wire.write(register_address);
-  Wire.endTransmission();
-  Wire.requestFrom(OV7670_I2C_ADDRESS,1);
-  Serial.println("b4 while");
-  while(Wire.available()<1);
-  Serial.println("after while");
-  data = Wire.read();
-  return data;
-}
 
 
 ///////// Main Program //////////////
@@ -42,30 +21,20 @@ void setup() {
   
   // TODO: READ KEY REGISTERS
   Serial.println("Before writing Key Registers");
-  
   read_key_registers();
-
   delay(100);
   Serial.println("Writing Key Registers");
-  //Init_OV7670();
-  // TODO: WRITE KEY REGISTERS
-  
-  /*
-   * 
-   * 
-   */
 //  Init_OV7670();
   Serial.println(OV7670_write_register(0x12,0x80)); //COM7 reset all regs
 //  Serial.println(OV7670_write_register(0x12,0x06)); //color bar test
-
-//  Serial.println(OV7670_write_register(0x12,0x0E)); //COM7 enable color bar test and QCIF
-  Serial.println(OV7670_write_register(0x12,0x0c)); //COM7 QCIF 176x144 resolution
+  Serial.println(OV7670_write_register(0x12,0x0E)); //COM7 enable color bar test and QCIF
+//  Serial.println(OV7670_write_register(0x12,0x0c)); //COM7 QCIF 176x144 resolution
 
   
   Serial.println(OV7670_write_register(0x0c,0x08)); //COM3 Enable Scaling
   Serial.println(OV7670_write_register(0x14,0x11)); //COM9 reduce noise
   Serial.println(OV7670_write_register(0x40,0xD0)); //COM15 select output range and RGB565
-//  Serial.println(OV7670_write_register(0x42,0x08)); //COM17 enables color bar DSP
+  Serial.println(OV7670_write_register(0x42,0x08)); //COM17 enables color bar DSP
   Serial.println(OV7670_write_register(0x11,0xC0)); //CLKRC two clk both same speed, use external clk
   Serial.println(OV7670_write_register(0x1E,0x30)); //MVFP flip/mirror | was at 0x30
 
@@ -74,35 +43,42 @@ void setup() {
   set_color_matrix();
   read_key_registers();
   Serial.println("finished");
+  init_com();
 }
 
+
+
 void loop(){
-    delay(1);
+    //decoder();
  }
-
-void Init_OV7670(){
-  //Reset All Register Values
-  WriteOV7670(0x12,0x80);
-  delay(100);
-  WriteOV7670(0x3A, 0x04); //TSLB
- 
-  WriteOV7670(0x13, 0xC0); //COM8
-  WriteOV7670(0x00, 0x00); //GAIN
-  WriteOV7670(0x10, 0x00); //AECH
-  WriteOV7670(0x0D, 0x40); //COM4
-  WriteOV7670(0x14, 0x18); //COM9
-  WriteOV7670(0x24, 0x95); //AEW
-  WriteOV7670(0x25, 0x33); //AEB
-  WriteOV7670(0x13, 0xC5); //COM8
-  WriteOV7670(0x6A, 0x40); //GGAIN
-  WriteOV7670(0x01, 0x40); //BLUE
-  WriteOV7670(0x02, 0x60); //RED
-  WriteOV7670(0x13, 0xC7); //COM8
-  WriteOV7670(0x41, 0x08); //COM16
-  WriteOV7670(0x15, 0x20); //COM10 - PCLK does not toggle on HBLANK
-  }
-
 ///////// Function Definition //////////////
+
+void init_com(){
+  pinMode(T1,INPUT);
+  pinMode(T2,INPUT);
+  pinMode(C,INPUT);
+}
+
+uint8_t decoder(){
+  uint8_t treasure1 = digitalRead(T1);
+  uint8_t treasure2 = digitalRead(T2);
+  uint8_t color     = digitalRead(C);
+  uint8_t treasure  = (treasure2 << 1)|treasure1;
+  Serial.print("COLOR: ");
+  if(color) Serial.print("BLUE");
+  else    Serial.print("RED");
+  Serial.print( "Treasure: ");
+  if( treasure == SQUARE)
+      Serial.print("SQUARE");
+  else if( treasure == TRIANGLE)
+      Serial.print("TRIANGLE");
+  else if( treasure == DIAMOND)
+      Serial.print("DIAMOND");
+  else
+      Serial.print("NONE");
+  Serial.println("");
+}
+
 void read_key_registers(){
   Serial.println("read key regs");
 
@@ -113,8 +89,6 @@ void read_key_registers(){
     ReadOV7670(0x42);
     ReadOV7670(0x11);
     ReadOV7670(0x1e);
-
-
 }
 
 String OV7670_write_register(int reg_address, byte data){
@@ -145,19 +119,6 @@ void set_color_matrix(){
     OV7670_write_register(0x6f, 0x9f);
     OV7670_write_register(0xb0, 0x84);
 }
-
-void WriteOV7670(byte regID, byte regVal){
-  // Slave 7-bit address is 0x21.
-  // R/W bit set automatically by Wire functions
-  // dont write 0x42 or 0x43 for slave address
-  Wire.beginTransmission(0x21);
-  // Reset all register values
-  Wire.write(regID);
-  Wire.write(regVal);
-  Wire.endTransmission();
-  delay(1);
-  }
-
   void ReadOV7670(byte regID){
   // Reading from a register is done in two steps
   // Step 1: Write register address to the slave
@@ -174,3 +135,35 @@ void WriteOV7670(byte regID, byte regVal){
   Serial.print(":");
   Serial.println(Wire.read(),HEX);
   }
+
+  
+String OV7670_write(int start, const byte *pData, int size){
+    int n,error;
+    Wire.beginTransmission(OV7670_I2C_ADDRESS);
+    n = Wire.write(start);
+    if(n != 1){
+      return "I2C ERROR WRITING START ADDRESS";   
+    }
+    n = Wire.write(pData, size);
+    if(n != size){
+      return "I2C ERROR WRITING DATA";
+    }
+    error = Wire.endTransmission(true);
+    if(error != 0){
+      return String(error);
+    }
+    return "no errors :)";
+ }
+
+byte read_register_value(int register_address){
+  byte data = 0;
+  Wire.beginTransmission(OV7670_I2C_ADDRESS);
+  Wire.write(register_address);
+  Wire.endTransmission();
+  Wire.requestFrom(OV7670_I2C_ADDRESS,1);
+  Serial.println("b4 while");
+  while(Wire.available()<1);
+  Serial.println("after while");
+  data = Wire.read();
+  return data;
+}
