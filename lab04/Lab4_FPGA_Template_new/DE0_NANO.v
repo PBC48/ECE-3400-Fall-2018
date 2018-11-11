@@ -112,7 +112,7 @@ IMAGE_PROCESSOR proc(
 );
 assign GPIO_0_D[33]= image_proc_rdy && RESULT[0]; //1st part of treasure bit;  D1
 assign GPIO_0_D[32]= image_proc_rdy && RESULT[1]; //treasure; 		  				 D4
-assign GPIO_0_D[31]= image_proc_rdy && RESULT[2]; //color; 				 			 D0
+assign GPIO_0_D[31]= RESULT[2]; //color; 				 			 D0
 
 /// CAMERA INPUTS/OUTPUTS //
 wire       CAM_VSYNC;
@@ -198,8 +198,8 @@ always @(*) begin
 				
         end
         STATE_UPDATE_ROW: begin
-            down_sample_reset   <= 1'b1;
-            W_EN                <= 1'b0;
+            down_sample_reset   <= 1'b0;
+            W_EN                <= downsampler_rdy ? 1'b1 : 1'b0;
         end
         STATE_WAIT: begin
             down_sample_reset   <= 1'b1;
