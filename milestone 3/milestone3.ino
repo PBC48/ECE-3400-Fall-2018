@@ -15,7 +15,7 @@ sensor, robot movement, microphone, and ir all in one.
 #include "radio.h"
 //#include "maze.h"
 
-uint8_t maze[9][9];
+
 uint8_t robot_pos;
 
 
