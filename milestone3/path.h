@@ -1,15 +1,6 @@
 #include <Vector.h>
-#include <frontier.h>
+#include "frontier.h"
 
-
-struct Frontier{
-  bool is_parent;
-  uint16_t info;
-  frontier north;
-  frontier west;
-  frontier east;
-  frontier south; 
-};
 //dir: 00 is north, 01 is south, 10 is east, 11 is west
 
 uint8_t maze[9][9];
