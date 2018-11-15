@@ -1,4 +1,7 @@
-
+/* 
+ *  the frontier data structure is a 4-tree that contains the position in the maze,
+ *  the best direction to go in at the point, 
+*/
 typedef struct frontier{
   bool is_parent;
   byte pos;
@@ -65,27 +68,47 @@ void set_cost(frontier* front,byte cost){
 void set_dir(frontier* front, int dir){
   front->dircost = ((front->dircost)&&0x3f)||(byte(dir<<6));
 }
-void add_frontier(frontier* head, int dir){
+void add_frontier(frontier* head, int dir, bool wall){
   head->is_parent = true;
   switch (dir){
     case 0: //front
       frontier* front = init_frontier(get_x(head),get_y(head),0);
-      set_cost(front,get_cost(head) + 0);
+      if(wall){
+        set_cost(front,0x3f);
+      }
+      else{
+        set_cost(front,get_cost(head) + 0);
+      }
       head->front = front;
     break;
     case 1: //left
     frontier* left = init_frontier(get_x(head),get_y(head),0);
-      set_cost(left,get_cost(head) + 1);
+      if(wall){
+        set_cost(left,0x3f);
+      }
+      else{
+        set_cost(left,get_cost(head) + 1);
+      }
       head->left = left;
     break;
     case 2: //right
     frontier* right = init_frontier(get_x(head),get_y(head),0);
-      set_cost(right,get_cost(head) + 2);
+      if(wall){
+        set_cost(right,0x3f);
+      }
+      else{
+        set_cost(right,get_cost(head) + 2);
+      }
       head->right = right;
     break;
     case 3: //back
     frontier* back = init_frontier(get_x(head),get_y(head),0);
-      set_cost(back, get_cost(head) + 3);
+      if(wall){
+        set_cost(back,0x3f);
+      }
+      else{
+        set_cost(back,get_cost(head) + 3);
+      }
       head->back = back;
     break;
     default:
