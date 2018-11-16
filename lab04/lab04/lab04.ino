@@ -3,7 +3,7 @@
 #define OV7670_I2C_ADDRESS 0x21 // For Write/*TODO: write this in hex (eg. 0xAB) */
 #define T1 1  //GPIO 33 treasure[0]
 #define T2 4  //GPIO 32 treasure[1]
-#define C  0  //GPIO 31 color ; blue or red
+#define C  2  //GPIO 31 color ; blue or red
 #define RED 0
 #define BLUE 1
 #define NONE 0
@@ -26,19 +26,22 @@ void setup() {
   Serial.println("Writing Key Registers");
 //  Init_OV7670();
   Serial.println(OV7670_write_register(0x12,0x80)); //COM7 reset all regs
-//  Serial.println(OV7670_write_register(0x12,0x06)); //color bar test
-  Serial.println(OV7670_write_register(0x12,0x0E)); //COM7 enable color bar test and QCIF
-//  Serial.println(OV7670_write_register(0x12,0x0c)); //COM7 QCIF 176x144 resolution
-
+//  Serial.println(OV7670_write_register(0x12,0x0E)); //COM7 enable color bar test and QCIF
+//  Serial.println(OV7670_write_register(0x42,0x08)); //COM17 enables color bar DSP
   
+  Serial.println(OV7670_write_register(0x12,0x0c)); //COM7 QCIF 176x144 resolution  
   Serial.println(OV7670_write_register(0x0c,0x08)); //COM3 Enable Scaling
   Serial.println(OV7670_write_register(0x14,0x11)); //COM9 reduce noise
   Serial.println(OV7670_write_register(0x40,0xD0)); //COM15 select output range and RGB565
-  Serial.println(OV7670_write_register(0x42,0x08)); //COM17 enables color bar DSP
   Serial.println(OV7670_write_register(0x11,0xC0)); //CLKRC two clk both same speed, use external clk
   Serial.println(OV7670_write_register(0x1E,0x30)); //MVFP flip/mirror | was at 0x30
-
+//  Serial.println(OV7670_write_register(0x3B,0x80)); //night mode
+//   Serial.println(OV7670_write_register(0x69,0xff)); //fixed gain control
   
+  //Serial.println(OV7670_write_register(0x41,0x07)); //AWB Gain Enable
+  
+//  Serial.println(OV7670_write_register(0x02,0x00)); //Gain control red
+//  Serial.println(OV7670_write_register(0x01,0x00)); //Gain control blue
   Serial.println("Wrote registers");
   set_color_matrix();
   read_key_registers();
@@ -64,11 +67,16 @@ uint8_t decoder(){
   uint8_t treasure1 = digitalRead(T1);
   uint8_t treasure2 = digitalRead(T2);
   uint8_t color     = digitalRead(C);
+  Serial.print("T1: ");Serial.print(treasure1);
+  Serial.print(" T2: ");Serial.print(treasure2);
+  Serial.print(" C: ");Serial.print(color);
+  
   uint8_t treasure  = (treasure2 << 1)|treasure1;
-  Serial.print("COLOR: ");
+  Serial.print("---COLOR: ");
+  //if (treasure==NONE) Serial.print("N/A");
   if(color) Serial.print("BLUE");
   else    Serial.print("RED");
-  Serial.print( "Treasure: ");
+  Serial.print( " Treasure: ");
   if( treasure == SQUARE)
       Serial.print("SQUARE");
   else if( treasure == TRIANGLE)

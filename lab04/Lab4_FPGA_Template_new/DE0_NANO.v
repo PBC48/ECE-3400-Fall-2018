@@ -158,17 +158,22 @@ end
 always @(*) begin
 	case (control_state)
         STATE_IDLE: begin
-            next_state                  = CAM_VSYNC ? STATE_NEW_FRAME : STATE_IDLE;
+            next_state                  		= CAM_VSYNC ? STATE_NEW_FRAME : STATE_IDLE;
         end
         STATE_NEW_FRAME: begin
-            next_state                  = CAM_HREF ? STATE_POLL : STATE_NEW_FRAME;
+            next_state           		      = CAM_HREF ? STATE_POLL : STATE_NEW_FRAME;
         end
         STATE_POLL: begin
-            next_state                  = CAM_HREF ? STATE_POLL : STATE_UPDATE_ROW;
+				if (CAM_VSYNC) 
+					next_state							= STATE_NEW_FRAME;
+				else	
+					next_state                  	= CAM_HREF ? STATE_POLL : STATE_UPDATE_ROW;
         end
-        
         STATE_UPDATE_ROW: begin
-            next_state                  = STATE_WAIT;
+				if (CAM_VSYNC) 
+					next_state							= STATE_NEW_FRAME;
+            else
+					next_state                 	= STATE_WAIT;
         end
         STATE_WAIT: begin
             if (CAM_VSYNC) next_state       	= STATE_NEW_FRAME;
@@ -185,29 +190,29 @@ end
 always @(*) begin
     case (control_state)
         STATE_IDLE: begin
-            W_EN                <= 1'b0;
-            down_sample_reset   <= 1'b1;
+            down_sample_reset   = 1'b1;
+            W_EN                = 1'b0;
         end
         STATE_NEW_FRAME: begin
-            down_sample_reset   <= 1'b0; //we need to poll as soon as HREF hits high
-            W_EN                <= downsampler_rdy ? 1'b1 : 1'b0;
+            down_sample_reset   = 1'b0; //we need to poll as soon as HREF hits high
+            W_EN                = downsampler_rdy ? 1'b1 : 1'b0;
         end
         STATE_POLL: begin
-            down_sample_reset   <= 1'b0;
-				W_EN					  <= downsampler_rdy ? 1'b1 : 1'b0;
+            down_sample_reset   = 1'b0;
+				W_EN					  = downsampler_rdy ? 1'b1 : 1'b0;
 				
         end
         STATE_UPDATE_ROW: begin
-            down_sample_reset   <= 1'b0;
-            W_EN                <= downsampler_rdy ? 1'b1 : 1'b0;
+            down_sample_reset   = 1'b0;
+            W_EN                = downsampler_rdy ? 1'b1 : 1'b0;
         end
-        STATE_WAIT: begin
+			STATE_WAIT: begin
             down_sample_reset   <= 1'b1;
             W_EN                <= 1'b0;
         end
         default: begin
-            W_EN                <= 1'b0;
-            down_sample_reset   <= 1'b1;
+            down_sample_reset   = 1'b1;
+            W_EN                = 1'b0;
         end
     endcase
 end
@@ -218,23 +223,19 @@ always @(posedge pclk) begin
         STATE_IDLE: begin
         end
         STATE_NEW_FRAME: begin
-            X_ADDR              <= 15'b0;
-            Y_ADDR              <= 15'b0;
-         
+            X_ADDR              = 15'd0;
+            Y_ADDR              = 15'd0;
         end
         STATE_POLL: begin
 				
 				//increments xaddr after downsampler finishes and writes to mem
-				X_ADDR			 	<= downsampler_rdy ? X_ADDR + 1 : X_ADDR; 
+				X_ADDR			 	= downsampler_rdy ? X_ADDR + 1 : X_ADDR; 
 				
         end
 
         STATE_UPDATE_ROW: begin
-				Y_ADDR				 <= Y_ADDR + 1;
-            X_ADDR             <= 15'b0;
-        end
-        STATE_WAIT: begin
-            
+				Y_ADDR				 = Y_ADDR + 1;
+            X_ADDR             = 15'd0;
         end
         default: begin
             

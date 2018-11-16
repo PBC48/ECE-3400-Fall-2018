@@ -1,11 +1,22 @@
 # Lab 4: FPGA and Color Detection
 
 ## Objectives
+- Implement a camera and FPGA into a system for detecting treasures
+- Develop an FPGA module capable of detecting shapes and colors from a camera input
+- Communicate treasure detection from the FPGA to the Arduino
+- Display images from the camera onto a screen
 
 
 ## Introduction
 
+For this lab we began working with an FPGA to implement treasure-detection capabilities for the robot. The system consists of an FPGA, a camera, and an Arduino. To divide the work for this lab, Patrick and Chrissy worked with the FPGA, and Xiaoyu and Tara worked with the Arduino. The FPGA team worked on implementing PLL, downsampler, and image processor modules in Verilog for the FPGA, and the Arduino team worked on writing to appropriate registers in the camera in order to set it up properly for taking images. Then, the two teams came together to integrate the components to take image input from the camera, send the images to the memory of the FPGA and process the image to detect shape and color, and then send treasure information from the FPGA to the Arduino so that the robot can eventually send that information back to the base station.
+
+
 ## FPGA
+
+First, we implemented a phase-locked loop to clock the FPGA.  ~~show some code~~
+Using the provided Verliog project, we set up the interface our system would use for shape detection.
+
 
 ### Setup
 
@@ -154,11 +165,28 @@ end
 
 ## Arduino
 
-
 ### Disabling Arduino's Internal Pullup resistor
+In the prelab, we determined what registers we needed to set and what values we needed to set them to in order to properly set up the camera to do what we need it to. Before starting anything, we disabled the internal pullup resistors in the Arduino’s I2C interface so as not to damage the camera by sending 5V to it. We then downloaded the provided Lab 4 Arduino template in order to use the functions provided in it to write to and read from registers in the camera. With these functions, we 
+
+This is done by going to the Arduino library on our hard drive. This is done by going to *twi.c* at *C:\Program Files (x86)\Arduino\hardware\arduino\avr\libraries\Wire\src\utility* and commenting out 
+```cpp
+    //activate internal pullups for twi
+    digitalWrite(SDA,1);
+    digitalWrite(SCL,1);
+```
+This will allow the I2C interface to communicate with the camera without sending 5v to the camera.
 
 ### Writing Registers
 
+We use the I2C communication protocol to talk to the camera. This is setup using Arduino's *Wire* library which supports I2C interfaces. We set up the Arduino as the master and the camera as slave. The camera have a set slave address of 0x21 after we ignore the least significant bit because that is used to distinguish between read and writes. The *Wire* library already set this up for us. All we have to do is pass the upper seven bits of the slave address of the camera to the I2C interface. We write to the camera by calling:
+```cpp
+    Wire.beginTransmission(0x21); // 7-bit Slave address
+    Wire.write(value_to_write);   
+    Wire.endTransmission();
+```
+The library makes it super simple to communicate with the camera using I2C.
+
+To have the camera capture the images we want, we must set some registers on the camera that deal with resolution, and camera clock. The following show how we wrote to the registers.
 ```cpp
 void setup() {
     Wire.begin();
@@ -167,11 +195,12 @@ void setup() {
     Serial.println(OV7670_write_register(0x12,0x80));  
     //color bar test
     //  Serial.println(OV7670_write_register(0x12,0x0E)); 
+    //  Serial.println(OV7670_write_register(0x42,0x08));
+
     Serial.println(OV7670_write_register(0x12,0x0c)); 
     Serial.println(OV7670_write_register(0x0c,0x08)); 
     Serial.println(OV7670_write_register(0x14,0x11)); 
     Serial.println(OV7670_write_register(0x40,0xD0)); 
-    //  Serial.println(OV7670_write_register(0x42,0x08));
     Serial.println(OV7670_write_register(0x11,0xC0)); 
     Serial.println(OV7670_write_register(0x1E,0x30));
     set_color_matrix();
@@ -188,9 +217,17 @@ void setup() {
 |0x11|CLKRC|Use 24 MHz clk from FPGA; pclk can be as high as xclk|
 |0x1E|MVFP|flip and mirror image|
 
+We set the camera to QCIF resolution which is 176 x 144 screen size. This is the smallest resolution the camera supports. We use this resolution because we lack memory to store any larger sizes on the FPGA. For the first part of the lab, we tested the camera and our FPGA polling code by using the camera color bar to make sure we can display the correct colors on the VGA screen. This means we have to set COM7 to display the color bar and enable DSP color bar in COM 17. The other important setting is the camera clock. This camera clock determines the rate a which each pixel is sent to the FPGA. We drive the camera with the 24 MHz FPGA clock. This gives the camera the ability to go up to 24 MHz for pixel transmissions. 
+
 
 ### Communicating with FPGA
 
+Communication with the FPGA is done by wiring the GPIO pins on the FPGA to the arduino in parallel. We use combinational logic in this case since we set the FPGA to output the results of the image processing immediately while having the Arduino constantly decode the message for the four pins. 
+
 ## Camera System Integration
 
+
+
 ## Conclusion
+
+Overall, this lab is one of the harder labs this semester. Getting the camera to display an image correctly was a challenge due to the complexities in timing the camera pixel transmission correctly. While getting the image itself wasn't too difficult to display, getting the right colors for the image was difficult. We often had inverted colors or colors that were too dark or faded displaying on the screen. Both hardware and software contributed to the difficulty. We had to set the software to poll the bytes from the camera correctly but also make sure we wire the camera to the FPGA in a way that won't introduce noise, especially with a 24 MHz clock driving the transmission. 

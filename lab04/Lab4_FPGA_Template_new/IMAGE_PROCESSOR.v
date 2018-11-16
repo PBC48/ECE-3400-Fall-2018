@@ -35,6 +35,7 @@ output		 RDY;
 
 reg 	[2:0]	 current_state;
 reg 	[2:0]	 next_state;
+
 reg	[7:0]	 out;
 reg 			 done;
 
