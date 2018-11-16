@@ -14,13 +14,14 @@ For this lab we began working with an FPGA to implement treasure-detection capab
 
 ## FPGA
 
-First, we implemented a phase-locked loop to clock the FPGA.  ~~show some code~~
+First, we implemented a phase-locked loop to clock the FPGA. 
 Using the provided Verliog project, we set up the interface our system would use for shape detection.
 
-
 ### Setup
+We first use the PLL, which are not suceptible to clock skew, to produce different clocks to drive the camera, VGA, M9k block memory read and write. We use the 24 MHz clock to drive the camera, we plug that as XCLK. We use the 50 MHz clock for memory write and 25 MHz clock for read. We want write to be faster than read because writing to the block needs to be done before we read. We don't want to accidentally read blocks before they are updated. We also use the 25 MHz clock for VGA display. 
 
 ### Camera FPGA Communication
+The camera contains 20 pins total. We have 8 pins for parallel data which sends one byte of the two bytes for pixel during each clcok cycle. These eight pins are connected to input GPIO pins on the FPGA. In addition, we also have HREF and VSYNC pins which are also connected as input to the FPGA. The camera also has PCLK and XCLK pins. The XCLK is for external clock. We use an output pin from the FPGA and put it to the camera. The PCLK is camera clock; we route that back to the FPGA for analysis. 
 
 #### Polling from camera
 
@@ -31,6 +32,8 @@ Using the provided Verliog project, we set up the interface our system would use
     </figcaption>
     </font>
 </figure>
+
+The timing diagram above shows us how images from the camera are passed sent. When we have a new frame incoming, the VSYNC goes high. After some time, the HREF will go high, signalling the start of the first byte of data. The camera can send data in RGB565 which is 5 bits of red, 6 bits of green, and 5 bits of blue color. This is divided into two transmissions due to the camera's one byte communication line. When the HREF goes high, the camera is transmitting the data for the first row of data. A low HREF means that we finished transmitting data for one row. At this point, the VSYNC can go high to signal the end of the image or the HREF can go high again when the camera is sending data for the next row of pixels.
 
 <figure>
     <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab04/cam_fsm.PNG" width="800"/>
