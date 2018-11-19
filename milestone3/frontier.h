@@ -6,36 +6,40 @@ typedef struct frontier{
   bool is_parent;
   byte pos;
   byte dircost;
-  frontier* front;
-  frontier* left;
-  frontier* right;
-  frontier* back;
+  bool done;
+  frontier* head;
+  frontier* north;
+  frontier* south;
+  frontier* east;
+  frontier* west;
 }frontier;
 
-frontier* init_frontier(byte x,byte y, int dir){
+frontier* init_frontier(byte x,byte y, int dir, int cost){
   frontier* front = (frontier*) malloc(sizeof(frontier));
   front->is_parent = false;
   front->pos = x<<4 + y;
-  front->dircost = byte(dir)<<6;
-  front->front = NULL;
-  front->left = NULL;
-  front->right = NULL;
-  front->back = NULL;
+  front->done = false;
+  front->dircost = byte(dir)<<6 + byte(cost);
+  front->head = NULL;
+  front->north = NULL;
+  front->south = NULL;
+  front->east  = NULL;
+  front->west  = NULL;
   return front;
 }
 
 void destroy_frontier(frontier* head){
-  if(head->front != NULL){
-    destroy_frontier(head->front);
+  if(head->north != NULL){
+    destroy_frontier(head->north);
   }
-  if(head->left != NULL){
-    destroy_frontier(head->left);
+  if(head->south != NULL){
+    destroy_frontier(head->south);
   }
-  if(head->right != NULL){
-    destroy_frontier(head->right);
+  if(head->east != NULL){
+    destroy_frontier(head->east);
   }
-  if(head->back != NULL){
-    destroy_frontier(head->back);
+  if(head->west != NULL){
+    destroy_frontier(head->west);
   }
   free(head);
 }
@@ -53,6 +57,15 @@ byte get_cost(frontier* front){
 int get_dir(frontier* front){
   return int(front->dircost>>6);
 }
+
+frontier* get_head(frontier* front){
+  return front->head;
+}
+
+bool get_done(frontier* front){
+  return front->done;
+}
+
 void set_x(frontier* front,byte x){
   front->pos = (front->pos&&0xf)||(x<<4);  
 }
@@ -68,48 +81,61 @@ void set_cost(frontier* front,byte cost){
 void set_dir(frontier* front, int dir){
   front->dircost = ((front->dircost)&&0x3f)||(byte(dir<<6));
 }
-void add_frontier(frontier* head, int dir, bool wall){
+
+void set_head(frontier* front, frontier* head){
+  front->head = head;
+}
+
+void set_done(frontier* front){
+  front->done = true;
+}
+void add_frontier(frontier* head, int dir, bool wall, int cost){
   head->is_parent = true;
   switch (dir){
-    case 0: //front
-      frontier* front = init_frontier(get_x(head),get_y(head),0);
+    case 0: //north
+      frontier* north = init_frontier(get_x(head),get_y(head),0,0);
       if(wall){
-        set_cost(front,0x3f);
+        set_cost(north,0x3f);
       }
       else{
-        set_cost(front,get_cost(head) + 0);
+        set_cost(north,get_cost(head) + cost);
       }
-      head->front = front;
+      head->north = north;
+      north->head = head;
     break;
     case 1: //left
-    frontier* left = init_frontier(get_x(head),get_y(head),0);
+    frontier* south = init_frontier(get_x(head),get_y(head),0,0);
       if(wall){
-        set_cost(left,0x3f);
+        set_cost(south,0x3f);
       }
       else{
-        set_cost(left,get_cost(head) + 1);
+        set_cost(south,get_cost(head) + cost);
       }
-      head->left = left;
+      south->head = head;
+      head->south = south;
     break;
     case 2: //right
-    frontier* right = init_frontier(get_x(head),get_y(head),0);
+    frontier* east = init_frontier(get_x(head),get_y(head),0,0);
       if(wall){
-        set_cost(right,0x3f);
+        set_cost(east,0x3f);
       }
       else{
-        set_cost(right,get_cost(head) + 2);
+        set_cost(east,get_cost(head) + cost);
       }
-      head->right = right;
+      east->head = head;
+      head->east = east;
+      
     break;
     case 3: //back
-    frontier* back = init_frontier(get_x(head),get_y(head),0);
+    frontier* west = init_frontier(get_x(head),get_y(head),0,0);
       if(wall){
-        set_cost(back,0x3f);
+        set_cost(west,0x3f);
       }
       else{
-        set_cost(back,get_cost(head) + 3);
+        set_cost(west,get_cost(head) + cost);
       }
-      head->back = back;
+      west->head = head;
+      head->west = west;
     break;
     default:
     break;
@@ -121,36 +147,36 @@ frontier* find_frontier(frontier* head, byte x, byte y){
     return NULL;
   }
   else{
-    if(head->front!=NULL){
+    if(head->north!=NULL){
       if((get_x(head)==x)&&(get_y(head)==y-1)){
-        return head->front;
+        return head->north;
       }
       else{
-        find_frontier(head->front, get_x(head), get_y(head)+1);
+        find_frontier(head->north, get_x(head), get_y(head)+1);
       }
     }
-    if(head->left!=NULL){
+    if(head->south!=NULL){
       if((get_x(head)==x+1)&&(get_y(head)==y)){
-        return head->left;
+        return head->south;
       }
       else{
-        find_frontier(head->left, get_x(head)-1, get_y(head));
+        find_frontier(head->south, get_x(head)-1, get_y(head));
       }
     }
-    if(head->right!=NULL){
+    if(head->east!=NULL){
       if((get_x(head)==x-1)&&(get_y(head)==y)){
-        return head->right;
+        return head->east;
       }
       else{
-        find_frontier(head->right, get_x(head)+1, get_y(head));
+        find_frontier(head->east, get_x(head)+1, get_y(head));
       }
     }
-    if(head->back!=NULL){
+    if(head->west!=NULL){
       if((get_x(head)==x)&&(get_y(head)==y+1)){
-        return head->back;
+        return head->west;
       }
       else{
-        find_frontier(head->back, get_x(head), get_y(head)-1);
+        find_frontier(head->west, get_x(head), get_y(head)-1);
       }
     }
   }
