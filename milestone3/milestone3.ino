@@ -3,9 +3,11 @@ milestone 2 code with FSMs where we integrated line sensor, wall
 sensor, robot movement, microphone, and ir all in one.
 */
 
-#define WALL_FRONT A2
-#define WALL_LEFT A3
-#define WALL_RIGHT A4
+#define MUX_OUT A0
+#define MUX_0 A1
+#define MUX_1 A2
+#define MUX_2 A3
+
 #define WAITTIME 800
 #define BUTTON 7 //Digital pin for button
 
@@ -58,6 +60,53 @@ void send_to_baseStation()
     radio_msg = radio_msg & 0x1FF;
 }
 
+void set_mux_select(byte device)
+{
+  switch(device) {
+
+    case 0: // MICROPHONE
+      digitalWrite(MUX_0,LOW);
+      digitalWrite(MUX_1,LOW);
+      digitalWrite(MUX_2,LOW);
+      Serial.println("Set mux: microphone");
+      break; 
+
+    case 1: // IR SENSOR
+      digitalWrite(MUX_0,HIGH);
+      digitalWrite(MUX_1,LOW);
+      digitalWrite(MUX_2,LOW);
+      Serial.println("Set mux: IR sensor");
+      break;
+
+    case 2: // WALL SENSOR FRONT
+      digitalWrite(MUX_0,LOW);
+      digitalWrite(MUX_1,HIGH);
+      digitalWrite(MUX_2,LOW);
+      Serial.println("Set mux: front wall sensor");
+      break;
+
+    case 3: // WALL SENSOR LEFT
+      digitalWrite(MUX_0,HIGH);
+      digitalWrite(MUX_1,HIGH);
+      digitalWrite(MUX_2,LOW);
+      Serial.println("Set mux: left wall sensor");
+      break;
+
+    case 4: // WALL SENSOR RIGHT
+      digitalWrite(MUX_0,LOW);
+      digitalWrite(MUX_1,LOW);
+      digitalWrite(MUX_2,HIGH);
+      Serial.println("Set mux: right wall sensor");
+      break;
+
+    default:
+      Serial.println("Mux not set");
+      break;
+  }
+  delay(0.5); //1 to be safe? (500ns)
+}
+
+
 void setup()
 {
     Serial.begin(115200); // Not 115200?
@@ -70,7 +119,12 @@ void setup()
         maze[i][j] = 0;
       }
     }
+    pinMode(MUX_0, OUTPUT);
+    pinMode(MUX_1, OUTPUT);
+    pinMode(MUX_2, OUTPUT);
 }
+
+
 void loop()
 {
     //Serial.print(F("State: "));Serial.println(STATE);
@@ -78,6 +132,7 @@ void loop()
     {
     case START:
         Serial.println(F("start"));
+        set_mux_select(0);
         //radio_msg = 0;
         //radio_msg = millis();
         //radio_transmit(radio_msg);
@@ -91,7 +146,7 @@ void loop()
         calculate_FFT(MIC);
         Serial.print(F("AUDIO SUM: "));
         Serial.println(sum);
-        if (sum > 100)
+        if (sum > 145)
         { //|| digitalRead(BUTTON)){ //originally at 90
             Serial.println(F("660Hz Tone Detected"));
             STATE = IR_DECT;
@@ -107,6 +162,7 @@ void loop()
         break;
 
     case IR_DECT:
+        set_mux_select(1);
         calculate_FFT(IR);
         Serial.println("IN IR_DECT");
         Serial.print(F("IR SUM: ")); Serial.println(sum);
@@ -149,9 +205,15 @@ void loop()
             Serial.println(F("In intersection"));
             byte dir;
             radio_msg = 0;
-            FRONTWALL = analogRead(WALL_FRONT);
-            LEFTWALL = analogRead(WALL_LEFT);
-            RIGHTWALL = analogRead(WALL_RIGHT);
+            set_mux_select(2);
+            FRONTWALL = analogRead(MUX_OUT);
+            //Serial.print(F("FRONTWALL: "));Serial.println(FRONTWALL);
+            set_mux_select(3);
+            LEFTWALL = analogRead(MUX_OUT);
+            //Serial.print(F("LEFTWALL: "));Serial.println(LEFTWALL);
+            set_mux_select(4);
+            RIGHTWALL = analogRead(MUX_OUT);
+            //Serial.print(F("RIGHTWALL: "));Serial.println(RIGHTWALL);
 
             /*
              * if (unexplored){
