@@ -1,10 +1,11 @@
 #include <Wire.h>
 
 #define OV7670_I2C_ADDRESS 0x21 // For Write/*TODO: write this in hex (eg. 0xAB) */
-#define T1 1  //GPIO 33 treasure[0]
+#define T1 3  //GPIO 33 treasure[0]
 #define T2 4  //GPIO 32 treasure[1]
-#define C  2  //GPIO 31 color ; blue or red
-#define RED 0
+#define C1  5  //GPIO 31 color ; blue or red
+#define C2  6  //GPIO 30 color ; blue or red
+#define RED 2
 #define BLUE 1
 #define NONE 0
 #define SQUARE 2
@@ -31,7 +32,7 @@ void setup() {
   
   Serial.println(OV7670_write_register(0x12,0x0c)); //COM7 QCIF 176x144 resolution  
   Serial.println(OV7670_write_register(0x0c,0x08)); //COM3 Enable Scaling
-  Serial.println(OV7670_write_register(0x14,0x11)); //COM9 reduce noise
+  Serial.println(OV7670_write_register(0x14,0x01)); //COM9 reduce noise
   Serial.println(OV7670_write_register(0x40,0xD0)); //COM15 select output range and RGB565
   Serial.println(OV7670_write_register(0x11,0xC0)); //CLKRC two clk both same speed, use external clk
   Serial.println(OV7670_write_register(0x1E,0x30)); //MVFP flip/mirror | was at 0x30
@@ -60,22 +61,27 @@ void loop(){
 void init_com(){
   pinMode(T1,INPUT);
   pinMode(T2,INPUT);
-  pinMode(C,INPUT);
+  pinMode(C1,INPUT);
+  pinMode(C2,INPUT);
 }
 
 uint8_t decoder(){
   uint8_t treasure1 = digitalRead(T1);
   uint8_t treasure2 = digitalRead(T2);
-  uint8_t color     = digitalRead(C);
+  uint16_t color1     = digitalRead(C1);
+  uint16_t color2     = digitalRead(C2);
   Serial.print("T1: ");Serial.print(treasure1);
   Serial.print(" T2: ");Serial.print(treasure2);
-  Serial.print(" C: ");Serial.print(color);
+  Serial.print(" C1: ");Serial.print(color1);
+  Serial.print(" C2: ");Serial.print(color2);
   
   uint8_t treasure  = (treasure2 << 1)|treasure1;
+  uint8_t color   =   (color2<<1)|(color1);
+  Serial.println("");
   Serial.print("---COLOR: ");
-  //if (treasure==NONE) Serial.print("N/A");
-  if(color) Serial.print("BLUE");
-  else    Serial.print("RED");
+  if(color==BLUE) Serial.print("BLUE");
+  else if(color==RED)    Serial.print("RED");
+  else             Serial.print("NONE");
   Serial.print( " Treasure: ");
   if( treasure == SQUARE)
       Serial.print("SQUARE");

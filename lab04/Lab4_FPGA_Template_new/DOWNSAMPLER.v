@@ -24,7 +24,7 @@ assign SAMP_RDY = reg_valid;
 
 localparam IDLE = 0;
 localparam READ = 1;
-/*
+
 always @ (posedge CLK) begin
 	if(RES) begin
 		count_bit <= 1'b0;
@@ -43,9 +43,9 @@ always @ (posedge CLK) begin
 		end
 	end
 	
-end*/
+end
 
-
+/*
 always @ (posedge CLK) begin
 	case (fsm)
 		IDLE: begin
@@ -88,6 +88,6 @@ always @ (posedge CLK) begin
 		end
 	endcase
 
-end
+end*/
    
 endmodule

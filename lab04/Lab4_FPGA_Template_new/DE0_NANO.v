@@ -161,7 +161,7 @@ always @(*) begin
             next_state                  		= CAM_VSYNC ? STATE_NEW_FRAME : STATE_IDLE;
         end
         STATE_NEW_FRAME: begin
-            next_state           		      = CAM_HREF ? STATE_POLL : STATE_NEW_FRAME;
+            next_state           		      = STATE_POLL;
         end
         STATE_POLL: begin
 				if (CAM_VSYNC) 
@@ -173,13 +173,13 @@ always @(*) begin
 				if (CAM_VSYNC) 
 					next_state							= STATE_NEW_FRAME;
             else
-					next_state                 	= STATE_WAIT;
+					next_state                 	= STATE_POLL;
         end
-        STATE_WAIT: begin
-            if (CAM_VSYNC) next_state       	= STATE_NEW_FRAME;
-            else if (CAM_HREF) next_state   	= STATE_POLL;
-            else next_state             		= STATE_WAIT;
-        end
+//        STATE_WAIT: begin
+//            if (CAM_VSYNC) next_state       	= STATE_NEW_FRAME;
+//            else if (CAM_HREF) next_state   	= STATE_POLL;
+//            else next_state             		= STATE_WAIT;
+//        end
         default: begin
             next_state = STATE_IDLE;
         end
@@ -194,22 +194,22 @@ always @(*) begin
             W_EN                = 1'b0;
         end
         STATE_NEW_FRAME: begin
-            down_sample_reset   = 1'b0; //we need to poll as soon as HREF hits high
-            W_EN                = downsampler_rdy ? 1'b1 : 1'b0;
+            down_sample_reset   = 1'b1; //we need to poll as soon as HREF hits high
+            W_EN                = downsampler_rdy;
         end
         STATE_POLL: begin
             down_sample_reset   = 1'b0;
-				W_EN					  = downsampler_rdy ? 1'b1 : 1'b0;
+				W_EN					  = downsampler_rdy;
 				
         end
         STATE_UPDATE_ROW: begin
-            down_sample_reset   = 1'b0;
-            W_EN                = downsampler_rdy ? 1'b1 : 1'b0;
+            down_sample_reset   = 1'b1;
+            W_EN                = downsampler_rdy;
         end
-			STATE_WAIT: begin
-            down_sample_reset   <= 1'b1;
-            W_EN                <= 1'b0;
-        end
+//		  STATE_WAIT: begin
+//            down_sample_reset   <= 1'b1;
+//            W_EN                <= 1'b0;
+//        end
         default: begin
             down_sample_reset   = 1'b1;
             W_EN                = 1'b0;

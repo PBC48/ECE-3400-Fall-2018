@@ -1,0 +1,2 @@
+Info (10281): Verilog HDL Declaration information at IMAGE_PROCESSOR.v(66): object "red" differs only in case from object "RED" in the same scope File: C:/Users/xiaoy/Documents/GitHub/ECE-3400-Fall-2018/lab04/Lab4_FPGA_sol/IMAGE_PROCESSOR.v Line: 66
+Info (10281): Verilog HDL Declaration information at IMAGE_PROCESSOR.v(67): object "blue" differs only in case from object "BLUE" in the same scope File: C:/Users/xiaoy/Documents/GitHub/ECE-3400-Fall-2018/lab04/Lab4_FPGA_sol/IMAGE_PROCESSOR.v Line: 67

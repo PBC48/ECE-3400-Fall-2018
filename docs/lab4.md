@@ -42,6 +42,7 @@ The timing diagram above shows us how images from the camera are passed sent. Wh
     </figcaption>
     </font>
 </figure>
+Based on the timing diagram, we created this state machine to model the behavior of the camera transmissions. 
 
 |states|Function|
 |---------|----------|
