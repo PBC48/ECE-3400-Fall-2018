@@ -23,6 +23,22 @@ We first use the PLL, which are not suceptible to clock skew, to produce differe
 ### Camera FPGA Communication
 The camera contains 20 pins total. We have 8 pins for parallel data which sends one byte of the two bytes for pixel during each clcok cycle. These eight pins are connected to input GPIO pins on the FPGA. In addition, we also have HREF and VSYNC pins which are also connected as input to the FPGA. The camera also has PCLK and XCLK pins. The XCLK is for external clock. We use an output pin from the FPGA and put it to the camera. The PCLK is camera clock; we route that back to the FPGA for analysis. 
 
+<figure>
+    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab04/schematic.PNG" width="500"/>
+    <font size="2">
+    <figcaption> <b> Wiring Diagram for FPGA, Arduino Uno, and Camera </b>
+    </figcaption>
+    </font>
+</figure>
+
+In the FPGA, we must set the camera communication pins, HREF, VSYNC, and PCLK to input for the FPGA. We set the the communication pins with the Arduino as output. In quartus, this is done as such
+```vdhl
+//////////// GPIO_0, GPIO_0 connect to GPIO Default //////////
+output 		    [33:0]		GPIO_0_D;
+//////////// GPIO_0, GPIO_1 connect to GPIO Default //////////
+input 		    [33:20]		GPIO_1_D;
+```
+
 #### Polling from camera
 
 <figure>
@@ -88,19 +104,19 @@ always @(posedge pclk) begin
         STATE_IDLE: begin
         end
         STATE_NEW_FRAME: begin
-            X_ADDR              <= 15'b0;
-            Y_ADDR              <= 15'b0;
+            X_ADDR          <= 15'b0;
+            Y_ADDR          <= 15'b0;
          
         end
         STATE_POLL: begin
-				//increments xaddr after downsampler finishes and writes to mem
-				X_ADDR <= downsampler_rdy ? X_ADDR + 1 : X_ADDR; 
+			//increments xaddr after downsampler finishes and writes to mem
+			X_ADDR <= downsampler_rdy ? X_ADDR + 1 : X_ADDR; 
 				
         end
 
         STATE_UPDATE_ROW: begin
-				Y_ADDR				 <= Y_ADDR + 1;
-            X_ADDR             <= 15'b0;
+			Y_ADDR			<= Y_ADDR + 1;
+            X_ADDR          <= 15'b0;
         end
         STATE_WAIT: begin
             
@@ -112,8 +128,11 @@ always @(posedge pclk) begin
 end
 ```
 
+We must save the data from the camera into a memory location so that it may be read by the VGA and the image processor later for analysis. This is done with two variables, X_ADDR and Y_ADDR. 
+
 #### Downsampler
 
+The camera's eight parallel data pins output color per pixel at a clocked rate. For RGB, it uses the configuration for RGB565 or RGB555. Both configurations are two bytes in length total which means that each pixel captured by the camera are two bytes. We must downsample the two byte data from the camera to 1 byte data because of memory constraints on the M9k memory blocks on the FPGA. We can only store one byte of data per memory address. Thus we must convert to RGB332 or RGB323. We used RGB332 for debugging and displaying the camera data on the VGA screen since the VGA only takes in RGB332 values. For treasure detection, we changed to RGB323 to get more bits out of the blue pixel since we are only detecting blue and red treasures. Thus, the goal of the downsampler is to take the two byte pixel from the camera and converted it to a one byte pixel. This one byte pixel will be saved into the M9k memory block at the correct memory address which is relative to the pixel location on the screen. 
 <figure>
     <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab04/timingdiagram565.PNG" width="700"/>
     <font size="2">
@@ -149,20 +168,28 @@ READ: begin
     end
 end
 ```
- 
-### Color Detection
 
-#### Color Bar First attempt
-
+#### Color Bar
+To get the color bar to display, we must set the appropriate registers in the Camera. The main registers involved are COM 7 and COM 17 for color bar enable and color bar DSP enable. With the downsampler above, we are able to decode the bytes coming from the camera and display the color bar onto the VGA screen. The downsampler takes in input from the camera.
 <figure>
-    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab04/IMG_1161.jpg" width="400"/>
+    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab04/IMG_1163.jpg" width="400"/>
     <font size="2">
-    <figcaption> <b> First attempt at the color bar test </b>
+    <figcaption> <b> Color Bar Test </b>
     </figcaption>
     </font>
 </figure>
 
+
+
+The colors in the bar are different from the example in the lab but when we use the camera to capture, we found that the colors where passable. Thus, the colors where not a huge issue.
+
 <iframe width="560" height="315" src="https://www.youtube.com/embed/0lKN7Tkrx0Q" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+ 
+
+### Color Detection
+
+For color detection, we 
+
 
 ### Integrating
 
