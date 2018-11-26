@@ -22,7 +22,7 @@ int * decoder(uint16_t input){
     int tcolor =  (input>>5) & 0x1;
     int direction = (input>>6) & 0x3;
     bool robot = (input >> 8) & 0x1;
-    int output[]={left, front, right, treasure, tshape, tcolor, direction, robot};
+    int output[] ={left, front, right, treasure, tshape, tcolor, direction, robot};
     return output; 
 }
 

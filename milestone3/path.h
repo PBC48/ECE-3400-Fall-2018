@@ -6,6 +6,8 @@
 uint8_t maze[9][9];
   // [4] explored/unexplored, [3:0] walls NSEW
 
+Vector<byte> path;
+
 
 byte conv_x(byte x, int i){
   switch (i){
@@ -84,7 +86,6 @@ void find_path(uint8_t pos, byte dir) {
   frontier* front = init_frontier(byte(pos)>>4,byte(pos),dir,0); //figure this out
     // [15:13] xpos, [12:10] ypos, [9:8] dir, [7:0] cost
   bool visited[9][9];
-  Vector<byte> path; //somehow return list of directions to go
   uint8_t n = 0;
 
   for (byte i = 0; i < 9; i++) {
@@ -92,22 +93,24 @@ void find_path(uint8_t pos, byte dir) {
       visited[i][j] = 0;
     }
   }
+  
   visited[pos>>3][pos&00000111] = 1; //or cost
   frontier *next = front;
   int l = 0;
   while (l<100)
     {
-      uint16_t n_state = next; //pull n from frontier: 
           // somehow pull x coordinates out of vector / store n from previous loop
       
-      byte x = (n_state&0xe000)>>13;
-      byte y = (n_state&0x1c00)>>10;
+      byte x = get_x(next);
+      byte y = get_y(next);
       byte xi;
       byte yi;
       byte cost_i;
       if( !((maze[x][y])>>4) ) {
         return path;
       } else {
+        byte min_cost = 0x3f;
+        byte next_dir;
         for(byte i = 0; i < 4; i++) {
           xi = conv_x(x,i); yi = conv_y(y,i);
           if(!wall_present(xi,yi,i)){
@@ -115,16 +118,41 @@ void find_path(uint8_t pos, byte dir) {
             // find dir
           }
           if(visited[xi][yi]){
-            frontier* find_node = get_cost(find_frontier(next,xi,yi));
-            if (find_node != NULL){
-              if (cost_i < (get_cost(find_node))){
-                set_cost(find_node,cost_i);
+            if (find_frontier(next,xi,yi) != NULL){
+              if (cost_i < (get_cost(find_frontier(next,xi,yi)))){
+                set_cost(find_frontier(next,xi,yi),cost_i);
+                find_frontier(next,xi,yi)-> parent = next;
+                if(get_cost(find_frontier(next,xi,yi))<min_cost){
+                  next_dir = i;
+                  min_cost = get_cost(find_frontier(next,xi,yi));
+                }
               }
             }
             else{
               add_frontier(next,i,false,get_cost(next) + cost_i);
+              if(get_cost(next) + cost_i < min_cost){
+                min_cost = get_cost(next) + cost_i;
+                next_dir = i;
+              }
             }
           }
+        }
+        switch(next_dir){
+          case 0:
+            next = next->north;
+          break;
+          case 1:
+            next = next->south;
+          break;
+          case 2:
+            next = next->east;
+          break;
+          case 3:
+            next = next->west;
+          break;
+          default:
+            next = next;
+          break;
         }
       }
     l = l+1;
