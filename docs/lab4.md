@@ -190,6 +190,42 @@ The colors in the bar are different from the example in the lab but when we use 
 ### Color Detection
 For color detection, we use a module call the Image Processor. The image processor samples at the same rate as the VGA board at 25 MHz. We set a boundary within the resolution of each image and then count the number of blue and red in each pixel. 
 
+```vhdl
+always @(posedge CLK) begin
+
+	if (VGA_PIXEL_Y <=20) begin
+		blueCount  = 0;
+		redCount   = 0;
+		greenCount = 0;
+		done_color = 1'b0;
+	end
+	else if (VGA_PIXEL_X > `X_LOW_THRESH && VGA_PIXEL_X < `X_HIGH_THRESH && VGA_PIXEL_Y > `Y_LOW_THRESH && VGA_PIXEL_Y < `Y_HIGH_THRESH) begin
+		blueCount = blueCount + blue;
+		redCount  = redCount  + red;
+		greenCount = greenCount + green;
+	end
+	else if(VGA_PIXEL_Y >= `Y_HIGH_THRESH && !done_color) begin
+		if (greenCount > 15'd5000 && blueCount > 15'd20000 && redCount > 15'd20000) begin
+			color = NONE;
+		end
+		else if (blueCount > redCount && (blueCount - redCount) > 30 && blueCount > 15'd200) begin
+			color = BLUE;
+		end
+		else if (redCount > blueCount && (redCount - blueCount) > 30 && redCount > 15'd200) begin
+			color = RED;
+		end
+		else begin
+			color = NONE;
+		end
+		blueCount = 0;
+		redCount  = 0;
+		greenCount = 0;
+		done_color = 1'b1;
+	end
+end
+```
+This implementation use a lot of variables. We needed a counter for the three colors. We used the counter to count the values of the blue and red pixels if they are within a set of boundary. The boundary was used as a filter so that we can get the values that are near the center of the camera screen since that was where the shapes are most likely going to be. We judge as soon as the VGA X and Y axis exit the high threshold which means that we are approaching the end of our image. As shown above, we compare the counters of red and blue pixels and see if one is greater than the other by some threshold. We need the green counter because if the green counter is high while red and blue are also high, it likely means that we are viewing a white wall since there are no green color shapes. The judging only occurs once which was done using a fliping bit. We also reset the counters for the next frame. 
+
 
 ## Arduino
 
