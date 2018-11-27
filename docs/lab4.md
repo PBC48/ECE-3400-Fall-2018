@@ -230,6 +230,9 @@ always @(posedge CLK) begin
 	end
 end
 ```
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/nbeuPRgot2Y" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
 This implementation use a lot of variables. We needed a counter for the three colors. We used the counter to count the values of the blue and red pixels if they are within a set of boundary. The boundary was used as a filter so that we can get the values that are near the center of the camera screen since that was where the shapes are most likely going to be. We judge as soon as the VGA X and Y axis exit the high threshold which means that we are approaching the end of our image. As shown above, we compare the counters of red and blue pixels and see if one is greater than the other by some threshold. We need the green counter because if the green counter is high while red and blue are also high, it likely means that we are viewing a white wall since there are no green color shapes. The judging only occurs once which was done using a fliping bit. We also reset the counters for the next frame. 
 
 
