@@ -184,8 +184,12 @@ To get the color bar to display, we must set the appropriate registers in the Ca
 
 The colors in the bar are different from the example in the lab but when we use the camera to capture, we found that the colors where passable. Thus, the colors where not a huge issue.
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/0lKN7Tkrx0Q" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
- 
+
+#### Display Camera Capture
+
+To display the images captured by the camera, we must set the registers from the Arduino. We can disable the DSP for color bar and the color bar test itself. The FPGA code is exactly the same.
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/0lKN7Tkrx0Q?controls=0" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 ### Color Detection
 For color detection, we use a module call the Image Processor. The image processor samples at the same rate as the VGA board at 25 MHz. We set a boundary within the resolution of each image and then count the number of blue and red in each pixel. 
