@@ -20,11 +20,11 @@ Using the provided Verliog project, we set up the interface our system would use
 ### Setup
 We first use the PLL, which are not suceptible to clock skew, to produce different clocks to drive the camera, VGA, M9k block memory read and write. We use the 24 MHz clock to drive the camera, we plug that as XCLK. We use the 50 MHz clock for memory write and 25 MHz clock for read. We want write to be faster than read because writing to the block needs to be done before we read. We don't want to accidentally read blocks before they are updated. We also use the 25 MHz clock for VGA display. 
 
-### Camera FPGA Communication
+### Camera, FPGA and Arduino Communication
 The camera contains 20 pins total. We have 8 pins for parallel data which sends one byte of the two bytes for pixel during each clcok cycle. These eight pins are connected to input GPIO pins on the FPGA. In addition, we also have HREF and VSYNC pins which are also connected as input to the FPGA. The camera also has PCLK and XCLK pins. The XCLK is for external clock. We use an output pin from the FPGA and put it to the camera. The PCLK is camera clock; we route that back to the FPGA for analysis. 
 
 <figure>
-    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab04/schematic.PNG" width="500"/>
+    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab04/schematic.PNG" width="800"/>
     <font size="2">
     <figcaption> <b> Wiring Diagram for FPGA, Arduino Uno, and Camera </b>
     </figcaption>
@@ -38,6 +38,7 @@ output 		    [33:0]		GPIO_0_D;
 //////////// GPIO_0, GPIO_1 connect to GPIO Default //////////
 input 		    [33:20]		GPIO_1_D;
 ```
+We also use four parallel wires for the FPGA to communicate with the Arduino. We have two bits for treasure shape and two bits for color. 
 
 #### Polling from camera
 
@@ -148,17 +149,17 @@ The camera's eight parallel data pins output color per pixel at a clocked rate. 
 
 ``` vhdl
 READ: begin
-    fsm 					= (VSYNC || RES) ? IDLE : READ;
+    fsm 		= (VSYNC || RES) ? IDLE : READ;
     
     if(HREF) begin
         count_bit 		= ~count_bit;
         if(count_bit) begin
             reg_valid		<= 1'b0;
-            OUT[7:2]		 	<= {D[7:5], D[2:0]};
+            OUT[7:2]		<= {D[7:5], D[2:0]};
         end
         else begin 
             reg_valid 		<= 1'b1;
-            OUT[1:0]			<= D[4:3];
+            OUT[1:0]		<= D[4:3];
         end
     end
     else begin
@@ -187,11 +188,7 @@ The colors in the bar are different from the example in the lab but when we use 
  
 
 ### Color Detection
-
-For color detection, we 
-
-
-### Integrating
+For color detection, we use a module call the Image Processor. The image processor samples at the same rate as the VGA board at 25 MHz. We set a boundary within the resolution of each image and then count the number of blue and red in each pixel. 
 
 
 ## Arduino
@@ -253,12 +250,52 @@ We set the camera to QCIF resolution which is 176 x 144 screen size. This is the
 
 ### Communicating with FPGA
 
-Communication with the FPGA is done by wiring the GPIO pins on the FPGA to the arduino in parallel. We use combinational logic in this case since we set the FPGA to output the results of the image processing immediately while having the Arduino constantly decode the message for the four pins. 
+Communication with the FPGA is done by wiring the GPIO pins on the FPGA to the arduino in parallel. We use combinational logic in this case since we set the FPGA to output the results of the image processing immediately while having the Arduino constantly decode the message for the four pins. Even though the voltage of the Arduino pins are 5V while FPGA pins are 3.3V, we can connect the pins together without voltage divider because the Arduino pins are set as input and is capable of reading the 3.3V from the FPGA as high. 
 
-## Camera System Integration
+Initially, we define the input communication pins on the Arduino and the decoding treasure numbers.
+```cpp
+#define T1 3   //GPIO 33 treasure[0]
+#define T2 4   //GPIO 32 treasure[1]
+#define C1  5  //GPIO 31 color ; blue or red
+#define C2  6  //GPIO 30 color ; blue or red
+#define RED 2
+#define BLUE 1
+#define NONE 0
+#define SQUARE 2
+#define TRIANGLE 1
+#define DIAMOND 3
 
+uint8_t decoder(){
+  uint8_t treasure1 = digitalRead(T1); //read from pins
+  uint8_t treasure2 = digitalRead(T2); 
+  uint16_t color1   = digitalRead(C1);
+  uint16_t color2   = digitalRead(C2);
+  Serial.print("T1: ");Serial.print(treasure1);
+  Serial.print(" T2: ");Serial.print(treasure2);
+  Serial.print(" C1: ");Serial.print(color1);
+  Serial.print(" C2: ");Serial.print(color2);
+  uint8_t treasure  = (treasure2 << 1)|treasure1; //combine treasure bits
+  uint8_t color   =   (color2<<1)|(color1);
+  Serial.println("");
+  Serial.print("---COLOR: ");
+  if(color==BLUE) Serial.print("BLUE");
+  else if(color==RED)    Serial.print("RED");
+  else             Serial.print("NONE");
+  Serial.print( " Treasure: ");
+  if( treasure == SQUARE)
+      Serial.print("SQUARE");
+  else if( treasure == TRIANGLE)
+      Serial.print("TRIANGLE");
+  else if( treasure == DIAMOND)
+      Serial.print("DIAMOND");
+  else
+      Serial.print("NONE");
+  Serial.println("");
+}
 
+```
+This code is the decoder for communication from the FPGA. The code is very simple because of the extra hardware used. With this method, we used up to four pins from the Arudino. We could have used a serial communication protocol using two pins to send the four bits of messages but we have extra pins from the Arduino left over so simplicity at the cost of hardware was chosed to save time.
 
 ## Conclusion
 
-Overall, this lab is one of the harder labs this semester. Getting the camera to display an image correctly was a challenge due to the complexities in timing the camera pixel transmission correctly. While getting the image itself wasn't too difficult to display, getting the right colors for the image was difficult. We often had inverted colors or colors that were too dark or faded displaying on the screen. Both hardware and software contributed to the difficulty. We had to set the software to poll the bytes from the camera correctly but also make sure we wire the camera to the FPGA in a way that won't introduce noise, especially with a 24 MHz clock driving the transmission. 
+Overall, this lab is one of the harder labs this semester. Getting the camera to display an image correctly was a challenge due to the complexities in timing the camera pixel transmission correctly. While getting the image itself wasn't too difficult to display, getting the right colors for the image was difficult. We often had inverted colors or colors that were too dark or faded displaying on the screen. Both hardware and software contributed to the difficulty. We had to set the software to poll the bytes from the camera correctly but also make sure we wire the camera to the FPGA in a way that won't introduce noise, especially with a 24 MHz clock driving the transmission. Looking forward, we will be integrating the FPGA camera system into our robot. This will likely result in more states and updates to our radio messages to support communicating treasure shapes and colors. We also will need to update the basestation so that it can receive messages from the radio.

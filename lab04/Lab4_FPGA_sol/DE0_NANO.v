@@ -124,12 +124,12 @@ IMAGE_PROCESSOR proc(
 );
 assign GPIO_0_D[33]= image_proc_rdy && RESULT[0]; //1st part of treasure bit;  D3
 assign GPIO_0_D[32]= image_proc_rdy && RESULT[1]; //treasure; 		  				 D4
-assign GPIO_0_D[31]= image_proc_rdy && RESULT[2] ; //color; 				 			 D5
+assign GPIO_0_D[31]= image_proc_rdy && RESULT[2]; //color; 				 			 D5
 assign GPIO_0_D[30]= image_proc_rdy && RESULT[3]; //color; 				 			 D6
 /// CAMERA INPUTS/OUTPUTS //
 wire       CAM_VSYNC;
 wire       CAM_HREF;
-assign Data 		= GPIO_1_D[33:26];
+assign Data 		= GPIO_1_D[33:26]; //33-D7. 32-D6. 31-D5. 30-D4. 29-D3. 28-D2. 27-D1. 26-D0
 assign CAM_VSYNC 	= GPIO_1_D[25];
 assign CAM_HREF 	= GPIO_1_D[24];
 

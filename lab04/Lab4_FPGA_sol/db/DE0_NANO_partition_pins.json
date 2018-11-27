@@ -100,6 +100,10 @@
 					"strict" : false
 				},
 				{
+					"name" : "GPIO_1_D[26]",
+					"strict" : false
+				},
+				{
 					"name" : "GPIO_1_D[30]",
 					"strict" : false
 				},
