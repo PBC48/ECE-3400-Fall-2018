@@ -31,6 +31,8 @@ The camera contains 20 pins total. We have 8 pins for parallel data which sends 
     </font>
 </figure>
 
+In the figure above, the color rectanges means that the pins are wired together.
+
 In the FPGA, we must set the camera communication pins, HREF, VSYNC, and PCLK to input for the FPGA. We set the the communication pins with the Arduino as output. In quartus, this is done as such
 ```vdhl
 //////////// GPIO_0, GPIO_0 connect to GPIO Default //////////
