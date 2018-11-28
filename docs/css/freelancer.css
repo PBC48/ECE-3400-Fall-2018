@@ -349,6 +349,7 @@ a:focus, a:hover, a:active {
 
 .bg-primary {
   background-color: #17EA56 !important;
+  background-image: url("background-bubbles.jpg");
 }
 
 .bg-secondary {
