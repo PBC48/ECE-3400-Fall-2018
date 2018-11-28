@@ -529,7 +529,7 @@
                   The FFT libraries takes care of the actual calculations of frequencies from the analog input to FFT outputs. 
                   We had to take the necessary samples for the library to calculate:
                 </p>
-                <p ALIGN=LEFT>
+                <pre>
                   <code>
                     for (int i = 0 ; i < 512 ; i += 2) { // save 256 samples
                         while(!(ADCSRA & 0x10)); // wait for adc to be ready
@@ -547,7 +547,7 @@
                     fft_run(); // process the data in the fft
                     fft_mag_log(); // take the output of the fft
                   </code>
-                </p>
+                </pre>
                 <p ALIGN=LEFT>
                   Once this is down we can grab our data using<br/><code>fft_log_out</code><br/>
                   which hosts the stored data in bins with a specific frequency range per bin.
