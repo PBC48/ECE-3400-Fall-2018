@@ -133,6 +133,14 @@ end
 
 We must save the data from the camera into a memory location so that it may be read by the VGA and the image processor later for analysis. This is done with two variables, X_ADDR and Y_ADDR. 
 
+<figure>
+    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab04/IMG_1174.jpg" width="400"/>
+    <font size="2">
+    <figcaption> <b> Camera Connection to FPGA </b>
+    </figcaption>
+    </font>
+</figure>
+
 #### Downsampler
 
 The camera's eight parallel data pins output color per pixel at a clocked rate. For RGB, it uses the configuration for RGB565 or RGB555. Both configurations are two bytes in length total which means that each pixel captured by the camera are two bytes. We must downsample the two byte data from the camera to 1 byte data because of memory constraints on the M9k memory blocks on the FPGA. We can only store one byte of data per memory address. Thus we must convert to RGB332 or RGB323. We used RGB332 for debugging and displaying the camera data on the VGA screen since the VGA only takes in RGB332 values. For treasure detection, we changed to RGB323 to get more bits out of the blue pixel since we are only detecting blue and red treasures. Thus, the goal of the downsampler is to take the two byte pixel from the camera and converted it to a one byte pixel. This one byte pixel will be saved into the M9k memory block at the correct memory address which is relative to the pixel location on the screen. 
@@ -182,8 +190,6 @@ To get the color bar to display, we must set the appropriate registers in the Ca
     </font>
 </figure>
 
-
-
 The colors in the bar are different from the example in the lab but when we use the camera to capture, we found that the colors where passable. Thus, the colors where not a huge issue.
 
 
@@ -231,10 +237,17 @@ always @(posedge CLK) begin
 end
 ```
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/nbeuPRgot2Y" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/nbeuPRgot2Y?controls=0" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 This implementation use a lot of variables. We needed a counter for the three colors. We used the counter to count the values of the blue and red pixels if they are within a set of boundary. The boundary was used as a filter so that we can get the values that are near the center of the camera screen since that was where the shapes are most likely going to be. We judge as soon as the VGA X and Y axis exit the high threshold which means that we are approaching the end of our image. As shown above, we compare the counters of red and blue pixels and see if one is greater than the other by some threshold. We need the green counter because if the green counter is high while red and blue are also high, it likely means that we are viewing a white wall since there are no green color shapes. The judging only occurs once which was done using a fliping bit. We also reset the counters for the next frame. 
 
+<figure>
+    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab04/IMG_1171.jpg" width="400"/>
+    <font size="2">
+    <figcaption> <b> Overview of FPGA and Camera </b>
+    </figcaption>
+    </font>
+</figure>
 
 ## Arduino
 
@@ -292,6 +305,13 @@ void setup() {
 
 We set the camera to QCIF resolution which is 176 x 144 screen size. This is the smallest resolution the camera supports. We use this resolution because we lack memory to store any larger sizes on the FPGA. For the first part of the lab, we tested the camera and our FPGA polling code by using the camera color bar to make sure we can display the correct colors on the VGA screen. This means we have to set COM7 to display the color bar and enable DSP color bar in COM 17. The other important setting is the camera clock. This camera clock determines the rate a which each pixel is sent to the FPGA. We drive the camera with the 24 MHz FPGA clock. This gives the camera the ability to go up to 24 MHz for pixel transmissions. 
 
+<figure>
+    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab04/IMG_1172.jpg" width="400"/>
+    <font size="2">
+    <figcaption> <b> Setup of the Arduino and FPGA </b>
+    </figcaption>
+    </font>
+</figure>
 
 ### Communicating with FPGA
 

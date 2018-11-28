@@ -15,7 +15,8 @@
 `define Y_LOW_THRESH  20
 `define Y_HIGH_THRESH  125
 
-
+`define LOW_THR 20
+`define HIGH_THR 40
 
 module IMAGE_PROCESSOR (
 	PIXEL_IN,
@@ -167,17 +168,17 @@ always @(posedge CLK) begin
 	end
 	if (VGA_PIXEL_Y == `SCREEN_HEIGHT-3 && done_color && !done_treasure) begin
 		if (color == RED) begin
-			if (g3 && g2 && g1 && diffr3 > 40 && diffr2 > 20 && diffr1 > 20)
+			if (g3 && g2 && g1 && diffr3 > `HIGH_THR && diffr2 > `LOW_THR && diffr1 > `LOW_THR)
 				treasure = TRIANGLE;
-			else if(g1 && diffr1 > 20 && !g2 && diffr2 > 20)
+			else if(g1 && diffr1 > `LOW_THR && !g2 && diffr2 > `LOW_THR && diffr3 < `LOW_THR)
 				treasure = DIAMOND;
 			else
 				treasure = SQUARE;
 		end
 		else if (color == BLUE) begin
-			if (g4 && g5 && g6 && diffb3 > 40 && diffb2 > 20 && diffb1 > 20)
+			if (g4 && g5 && g6 && diffb3 > `HIGH_THR && diffb2 > `LOW_THR && diffb1 > `LOW_THR)
 				treasure = TRIANGLE;
-			else if(g4 && !g5 && diffb1 > 20 && diffb2 > 20)
+			else if(g4 && !g5 && diffb1 > `LOW_THR && diffb2 > `LOW_THR && diffb3 < `LOW_THR)
 				treasure = DIAMOND;
 			else
 				treasure = SQUARE;
