@@ -44,9 +44,9 @@
             <li class="nav-item mx-0 mx-lg-1">
               <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#milestones">Milestones</a>
             </li>
-            <li class="nav-item mx-0 mx-lg-1">
+            <!--<li class="nav-item mx-0 mx-lg-1">
               <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#contact">Contact</a>
-            </li>
+            </li>-->
           </ul>
         </div>
       </div>
@@ -58,7 +58,7 @@
         <img class="img-fluid mb-5 d-block mx-auto" src="images/bootstrap/header.png" alt="">
         <h1 class="text-uppercase mb-0">The 7-Ups</h1>
         <hr class="star-light">
-        <h2 class="font-weight-light mb-0">ECE 3400 2018 Lab 7</h2>
+        <h2 class="font-weight-light mb-0">ECE 3400 2018 Lab Group 7</h2>
       </div>
     </header>
 
@@ -161,6 +161,7 @@
     </section>
 
     <!-- Contact Section -->
+<!--
     <section id="contact">
       <div class="container">
         <h2 class="text-center text-uppercase text-secondary mb-0">Contact Me</h2>
@@ -169,7 +170,7 @@
           <div class="col-lg-8 mx-auto">
             <!-- To configure the contact form email address, go to mail/contact_me.php and update the email address in the PHP file on line 19. -->
             <!-- The form should work on most web servers, but if the form is not working you may need to configure your web server differently. -->
-            <form name="sentMessage" id="contactForm" novalidate="novalidate">
+<!--            <form name="sentMessage" id="contactForm" novalidate="novalidate">
               <div class="control-group">
                 <div class="form-group floating-label-form-group controls mb-0 pb-2">
                   <label>Name</label>
@@ -208,9 +209,10 @@
         </div>
       </div>
     </section>
+-->
 
     <!-- Footer -->
-    <footer class="footer text-center">
+<!--    <footer class="footer text-center">
       <div class="container">
         <div class="row">
           <div class="col-md-4 mb-5 mb-lg-0">
@@ -256,7 +258,7 @@
         </div>
       </div>
     </footer>
-
+-->
     <div class="copyright py-4 text-center text-white">
       <div class="container">
         <small>Copyright &copy; Your Website 2018</small>
@@ -524,6 +526,7 @@
                   The FFT libraries takes care of the actual calculations of frequencies from the analog input to FFT outputs. 
                   We had to take the necessary samples for the library to calculate:
                 </p>
+                <p ALIGN=LEFT>
                   <code>
                     for (int i = 0 ; i < 512 ; i += 2) { // save 256 samples
                         while(!(ADCSRA & 0x10)); // wait for adc to be ready
@@ -541,11 +544,14 @@
                     fft_run(); // process the data in the fft
                     fft_mag_log(); // take the output of the fft
                   </code>
+                </p>
                 <p ALIGN=LEFT>
                   Once this is down we can grab our data using<br/><code>fft_log_out</code><br/>
                   which hosts the stored data in bins with a specific frequency range per bin.
                 </p>
-                <h3><Acoustic Team</h3>
+                
+                <h3>Acoustic Team </h3>
+                
                 <p ALIGN=LEFT>
                   From our analysis of the FFT and our determination of the frequency bin width, 
                   we determined that our 660Hz audio signal should fall in the fifth bin. We 
