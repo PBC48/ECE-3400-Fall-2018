@@ -32,7 +32,7 @@ void setup() {
   
   Serial.println(OV7670_write_register(0x12,0x0c)); //COM7 QCIF 176x144 resolution  
   Serial.println(OV7670_write_register(0x0c,0x08)); //COM3 Enable Scaling
-  Serial.println(OV7670_write_register(0x14,0x01)); //COM9 reduce noise
+  Serial.println(OV7670_write_register(0x14,0x61)); //COM9 reduce noise
   Serial.println(OV7670_write_register(0x40,0xD0)); //COM15 select output range and RGB565
   Serial.println(OV7670_write_register(0x11,0xC0)); //CLKRC two clk both same speed, use external clk
   Serial.println(OV7670_write_register(0x1E,0x30)); //MVFP flip/mirror | was at 0x30

@@ -10,16 +10,13 @@
 `define Y_BARthirdTop 97
 `define Y_BARthirdBot 102
 
-`define X_HIGH_THRESH 141
-`define X_LOW_THRESH  35
-`define Y_LOW_THRESH  28
-`define Y_HIGH_THRESH  116
+`define X_HIGH_THRESH 150
+`define X_LOW_THRESH  30
+`define Y_LOW_THRESH  20
+`define Y_HIGH_THRESH  125
 
-`define HIGH_THRESH 300
-`define TRIANGLE_THRESH 1000
-`define DIAMOND_THRESH  25
-`define SQUARE_THRESH   50
-
+`define LOW_THR 20
+`define HIGH_THR 40
 
 module IMAGE_PROCESSOR (
 	PIXEL_IN,
@@ -122,7 +119,7 @@ always @(posedge CLK) begin
 		greenCount = greenCount + green;
 	end
 	else if(VGA_PIXEL_Y >= `Y_HIGH_THRESH && !done_color) begin
-		if (greenCount > 15'd5000 && blueCount > 15'd20000 && redCount > 15'd20000) begin
+		if (greenCount > 15'd10000 && blueCount > 15'd20000 && redCount > 15'd20000) begin
 			color = NONE;
 		end
 		else if (blueCount > redCount && (blueCount - redCount) > 30 && blueCount > 15'd200) begin
@@ -171,18 +168,18 @@ always @(posedge CLK) begin
 	end
 	if (VGA_PIXEL_Y == `SCREEN_HEIGHT-3 && done_color && !done_treasure) begin
 		if (color == RED) begin
-			if(diffr2 > diffr1 && diffr2>diffr3)
-				treasure = DIAMOND;
-			else if (diffr1<diffr2 && diffr2<diffr3)
+			if (g3 && g2 && g1 && diffr3 > `HIGH_THR && diffr2 > `LOW_THR && diffr1 > `LOW_THR)
 				treasure = TRIANGLE;
+			else if(g1 && diffr1 > `LOW_THR && !g2 && diffr2 > `LOW_THR && diffr3 < `LOW_THR)
+				treasure = DIAMOND;
 			else
 				treasure = SQUARE;
 		end
 		else if (color == BLUE) begin
-			if(diffb2 > diffb1 && diffb2>diffb3)
-				treasure = DIAMOND;
-			else if (diffb1<diffb2 && diffb2<diffb3)
+			if (g4 && g5 && g6 && diffb3 > `HIGH_THR && diffb2 > `LOW_THR && diffb1 > `LOW_THR)
 				treasure = TRIANGLE;
+			else if(g4 && !g5 && diffb1 > `LOW_THR && diffb2 > `LOW_THR && diffb3 < `LOW_THR)
+				treasure = DIAMOND;
 			else
 				treasure = SQUARE;
 		end
@@ -193,12 +190,12 @@ always @(posedge CLK) begin
 	end
 end
 
-DIFF(.A(red1), .B(red2), .C(diffr1));
-DIFF(.A(red2), .B(red3), .C(diffr2));
-DIFF(.A(red1), .B(red3), .C(diffr3));
-DIFF(.A(blue1), .B(blue2), .C(diffb1));
-DIFF(.A(blue2), .B(blue3), .C(diffb2));
-DIFF(.A(blue1), .B(blue3), .C(diffb3));
+DIFF(.A(red1), .B(red2), .C(diffr1), .D(g1));
+DIFF(.A(red2), .B(red3), .C(diffr2), .D(g2));
+DIFF(.A(red1), .B(red3), .C(diffr3), .D(g3));
+DIFF(.A(blue1), .B(blue2), .C(diffb1), .D(g4));
+DIFF(.A(blue2), .B(blue3), .C(diffb2), .D(g5));
+DIFF(.A(blue1), .B(blue3), .C(diffb3), .D(g6));
 
 
 wire   [15:0]  diffr1;
@@ -207,6 +204,12 @@ wire   [15:0]  diffr3;
 wire   [15:0]  diffb1;
 wire   [15:0]  diffb2;
 wire   [15:0]  diffb3;
+wire				g1;
+wire				g2;
+wire				g3;
+wire				g4;
+wire				g5;
+wire				g6;
 
 endmodule
 
@@ -214,16 +217,23 @@ endmodule
 module DIFF (
 	input  [15:0] A,
 	input  [15:0] B,
-	output [15:0] C
+	output [15:0] C,
+	output 		  D
 );
 reg [15:0]    diff;
+reg  			  greater;
 assign C 	= diff;
+assign D 	= greater;
 
 always @(*) begin
-	if (A>B) 
-		diff = A - B;
-	else 
-		diff = B - A;
+	if (A>B) begin
+		diff	   	= A - B;
+		greater	   = 0;
+	end
+	else begin 
+		diff 			= B - A;
+		greater 		= 1;
+	end
 end
 endmodule
 

@@ -124,12 +124,12 @@ IMAGE_PROCESSOR proc(
 );
 assign GPIO_0_D[33]= image_proc_rdy && RESULT[0]; //1st part of treasure bit;  D3
 assign GPIO_0_D[32]= image_proc_rdy && RESULT[1]; //treasure; 		  				 D4
-assign GPIO_0_D[31]= image_proc_rdy && RESULT[2] ; //color; 				 			 D5
+assign GPIO_0_D[31]= image_proc_rdy && RESULT[2]; //color; 				 			 D5
 assign GPIO_0_D[30]= image_proc_rdy && RESULT[3]; //color; 				 			 D6
 /// CAMERA INPUTS/OUTPUTS //
 wire       CAM_VSYNC;
 wire       CAM_HREF;
-assign Data 		= GPIO_1_D[33:26];
+assign Data 		= GPIO_1_D[33:26]; //33-D7. 32-D6. 31-D5. 30-D4. 29-D3. 28-D2. 27-D1. 26-D0
 assign CAM_VSYNC 	= GPIO_1_D[25];
 assign CAM_HREF 	= GPIO_1_D[24];
 
@@ -160,76 +160,77 @@ localparam  STATE_WAIT          = 3'd4; //wait for next row
 
 //state transition
 always @(posedge pclk) begin
-	 if (VGA_RESET)
-        control_state = STATE_IDLE;
-    else
-        control_state = next_state;
-   X_ADDR = X_OUT;
+	// if (VGA_RESET)
+    //     control_state = STATE_IDLE;
+    // else
+    //     control_state = next_state;
+    X_ADDR = X_OUT;
 	Y_ADDR = Y_OUT;
+    W_EN   = downsampler_rdy;
 end
 
 //next state logic
-always @(*) begin
-	case (control_state)
-        STATE_IDLE: begin
-            next_state                  		= CAM_VSYNC ? STATE_NEW_FRAME : STATE_IDLE;
-        end
-        STATE_NEW_FRAME: begin
-            next_state           		      = STATE_POLL;
-        end
-        STATE_POLL: begin
-				if (CAM_VSYNC) 
-					next_state							= STATE_NEW_FRAME;
-				else	
-					next_state                  	= CAM_HREF ? STATE_POLL : STATE_UPDATE_ROW;
-        end
-        STATE_UPDATE_ROW: begin
-				if (CAM_VSYNC) 
-					next_state							= STATE_NEW_FRAME;
-            else
-					next_state                 	= STATE_POLL;
-        end
-//        STATE_WAIT: begin
-//            if (CAM_VSYNC) next_state       	= STATE_NEW_FRAME;
-//            else if (CAM_HREF) next_state   	= STATE_POLL;
-//            else next_state             		= STATE_WAIT;
-//        end
-        default: begin
-            next_state = STATE_IDLE;
-        end
-    endcase
-end
+// always @(*) begin
+// 	case (control_state)
+//         STATE_IDLE: begin
+//             next_state                  		= CAM_VSYNC ? STATE_NEW_FRAME : STATE_IDLE;
+//         end
+//         STATE_NEW_FRAME: begin
+//             next_state           		      = STATE_POLL;
+//         end
+//         STATE_POLL: begin
+// 				if (CAM_VSYNC) 
+// 					next_state							= STATE_NEW_FRAME;
+// 				else	
+// 					next_state                  	= CAM_HREF ? STATE_POLL : STATE_UPDATE_ROW;
+//         end
+//         STATE_UPDATE_ROW: begin
+// 				if (CAM_VSYNC) 
+// 					next_state							= STATE_NEW_FRAME;
+//             else
+// 					next_state                 	= STATE_POLL;
+//         end
+// //        STATE_WAIT: begin
+// //            if (CAM_VSYNC) next_state       	= STATE_NEW_FRAME;
+// //            else if (CAM_HREF) next_state   	= STATE_POLL;
+// //            else next_state             		= STATE_WAIT;
+// //        end
+//         default: begin
+//             next_state = STATE_IDLE;
+//         end
+//     endcase
+// end
 
-// output logic
-always @(*) begin
-    case (control_state)
-        STATE_IDLE: begin
-            down_sample_reset   = 1'b1;
-            W_EN                = 1'b0;
-        end
-        STATE_NEW_FRAME: begin
-            down_sample_reset   = 1'b1; //we need to poll as soon as HREF hits high
-            W_EN                = downsampler_rdy;
-        end
-        STATE_POLL: begin
-            down_sample_reset   = 1'b0;
-				W_EN					  = downsampler_rdy;
+// // output logic
+// always @(*) begin
+//     case (control_state)
+//         STATE_IDLE: begin
+//             down_sample_reset   = 1'b1;
+//             W_EN                = 1'b0;
+//         end
+//         STATE_NEW_FRAME: begin
+//             down_sample_reset   = 1'b1; //we need to poll as soon as HREF hits high
+//             W_EN                = downsampler_rdy;
+//         end
+//         STATE_POLL: begin
+//             down_sample_reset   = 1'b0;
+// 				W_EN					  = downsampler_rdy;
 				
-        end
-        STATE_UPDATE_ROW: begin
-            down_sample_reset   = 1'b1;
-            W_EN                = downsampler_rdy;
-        end
-//		  STATE_WAIT: begin
-//            down_sample_reset   <= 1'b1;
-//            W_EN                <= 1'b0;
-//        end
-        default: begin
-            down_sample_reset   = 1'b1;
-            W_EN                = 1'b0;
-        end
-    endcase
-end
+//         end
+//         STATE_UPDATE_ROW: begin
+//             down_sample_reset   = 1'b1;
+//             W_EN                = downsampler_rdy;
+//         end
+// //		  STATE_WAIT: begin
+// //            down_sample_reset   <= 1'b1;
+// //            W_EN                <= 1'b0;
+// //        end
+//         default: begin
+//             down_sample_reset   = 1'b1;
+//             W_EN                = 1'b0;
+//         end
+//     endcase
+// end
 ///////* Update Read Address *///////
 always @ (VGA_PIXEL_X, VGA_PIXEL_Y) begin
 		READ_ADDRESS = (VGA_PIXEL_X + VGA_PIXEL_Y*`SCREEN_WIDTH);
