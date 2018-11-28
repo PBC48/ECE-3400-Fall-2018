@@ -118,7 +118,7 @@ always @(posedge CLK) begin
 		greenCount = greenCount + green;
 	end
 	else if(VGA_PIXEL_Y >= `Y_HIGH_THRESH && !done_color) begin
-		if (greenCount > 15'd5000 && blueCount > 15'd20000 && redCount > 15'd20000) begin
+		if (greenCount > 15'd10000 && blueCount > 15'd20000 && redCount > 15'd20000) begin
 			color = NONE;
 		end
 		else if (blueCount > redCount && (blueCount - redCount) > 30 && blueCount > 15'd200) begin

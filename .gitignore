@@ -51,3 +51,9 @@ build/
 *.ppf
 *.qip
 *.done
+*.summary
+*.smsg
+*.qdf
+incremental_db/
+greybox_tmp/
+db/

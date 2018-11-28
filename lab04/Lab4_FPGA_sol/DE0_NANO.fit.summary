@@ -1,4 +1,4 @@
-Fitter Status : Successful - Mon Nov 26 22:11:37 2018
+Fitter Status : Successful - Tue Nov 27 14:18:24 2018
 Quartus Prime Version : 18.1.0 Build 625 09/12/2018 SJ Lite Edition
 Revision Name : DE0_NANO
 Top-level Entity Name : DE0_NANO
@@ -7,8 +7,8 @@ Device : EP4CE22F17C6
 Timing Models : Final
 Total logic elements : 796 / 22,320 ( 4 % )
     Total combinational functions : 779 / 22,320 ( 3 % )
-    Dedicated logic registers : 239 / 22,320 ( 1 % )
-Total registers : 239
+    Dedicated logic registers : 240 / 22,320 ( 1 % )
+Total registers : 240
 Total pins : 51 / 154 ( 33 % )
 Total virtual pins : 0
 Total memory bits : 202,752 / 608,256 ( 33 % )

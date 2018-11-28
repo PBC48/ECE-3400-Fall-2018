@@ -55,7 +55,7 @@ always @ (posedge CLK) begin
 			end
 			else begin
 				TEMP[15:8] = D;
-				OUT = {TEMP[15:13], TEMP[10:8], TEMP[4:3]}; //change based on RGB332 or RGB323
+				OUT = {TEMP[15:13], TEMP[10:9], TEMP[4:2]}; //change based on RGB332 or RGB323
 				reg_valid = 1'b1;
 				count_bit = 1'b0;
 				x = x +1;
