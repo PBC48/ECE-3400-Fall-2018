@@ -539,7 +539,7 @@ pre {
 pre code {
   font-size: 90%;
   color: #d30b0bbd;;
-  word-break: break-word;
+  word-break: inherit;
 }
 
 .pre-scrollable {
