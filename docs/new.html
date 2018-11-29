@@ -24,9 +24,6 @@
     <!-- Custom styles for this template -->
     <link href="css/freelancer.css" rel="stylesheet">
 
-    <link href="css/shCore.css" rel="stylesheet" type="text/css" />
-  <link href="css/shThemeDefault.css" rel="stylesheet" type="text/css" />
-
   </head>
 
   <body id="page-top">
@@ -562,8 +559,7 @@ ADCSRA = 0xe5; // adc prescalar
                   The FFT libraries takes care of the actual calculations of frequencies from the analog input to FFT outputs. 
                   We had to take the necessary samples for the library to calculate:
                 </p>
-                <!--Created using ToHtml.com on 2018-11-29 05:16:49 UTC -->
-                <pre class='brush: cpp'>
+                <pre><code class="language-pascal">var i: Integer;
 for (int i = 0 ; i < 512 ; i += 2) { // save 256 samples
     while(!(ADCSRA & 0x10)); // wait for adc to be ready
     ADCSRA = 0xf7; // restart adc
@@ -579,11 +575,9 @@ fft_window(); // window the data for better frequency response
 fft_reorder(); // reorder the data before doing the fft
 fft_run(); // process the data in the fft
 fft_mag_log(); // take the output of the fft
-            </pre><script src="js/shCore.js"></script>
-            <script src="js/shBrushCpp.js"></script>
-            <script>
-              SyntaxHighlighter.all()
-            </script>
+                    </code></pre>
+                <!--Created using ToHtml.com on 2018-11-29 05:16:49 UTC -->
+                
                 <p ALIGN=LEFT>
                   Once this is down we can grab our data using<br/><code>fft_log_out</code><br/>
                   which hosts the stored data in bins with a specific frequency range per bin.
