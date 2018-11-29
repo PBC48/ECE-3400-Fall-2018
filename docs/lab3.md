@@ -177,6 +177,7 @@ We had previously been having trouble with the range of our 660Hz tone detection
 Since we had already implemented a left-wall-following rule in milestone 2, our navigation implementation was already complete, and we did not have to change any of our code involving our wall and line sensors or turning conditionals. 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/zy4pa3PNozo" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/yrcaZHm1hLk" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
 ### Integration with Radio
 For the integration with the radio, we decided to do most of the decoding and data processing on the base station and off the robot system because we are already running low on memory and we can delegate some of the maze processing to the base station and have it send back a response. The robot only needs to send the readings from its wall sensors, treasure detection, and direction it intents to move. The base station will take the data and come up with absolute coordinates and wall locations based on robots previous locations. The base station can then update the GUI accordingly. 
 
