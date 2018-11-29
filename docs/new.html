@@ -558,23 +558,23 @@ ADCSRA <span style='color:#0000ff; '>=</span> <span style='color:#800000; '>0xe5
                   The FFT libraries takes care of the actual calculations of frequencies from the analog input to FFT outputs. 
                   We had to take the necessary samples for the library to calculate:
                 </p>
-<pre ALIGN=LEFT style='color:#d1d1d1;background:#000000;'><span style='color:#e66170; font-weight:bold; '>for</span> <span style='color:#d2cd86; '>(</span><span style='color:#e66170; font-weight:bold; '>int</span> i <span style='color:#d2cd86; '>=</span> <span style='color:#008c00; '>0</span> <span style='color:#b060b0; '>;</span> i <span style='color:#d2cd86; '>&lt;</span> <span style='color:#008c00; '>512</span> <span style='color:#b060b0; '>;</span> i <span style='color:#d2cd86; '>+</span><span style='color:#d2cd86; '>=</span> <span style='color:#008c00; '>2</span><span style='color:#d2cd86; '>)</span> <span style='color:#b060b0; '>{</span> <span style='color:#9999a9; '>// save 256 samples</span>
-    <span style='color:#e66170; font-weight:bold; '>while</span><span style='color:#d2cd86; '>(</span><span style='color:#d2cd86; '>!</span><span style='color:#d2cd86; '>(</span>ADCSRA <span style='color:#d2cd86; '>&amp;</span> <span style='color:#00a800; '>0x10</span><span style='color:#d2cd86; '>)</span><span style='color:#d2cd86; '>)</span><span style='color:#b060b0; '>;</span> <span style='color:#9999a9; '>// wait for adc to be ready</span>
-    ADCSRA <span style='color:#d2cd86; '>=</span> <span style='color:#00a800; '>0xf7</span><span style='color:#b060b0; '>;</span> <span style='color:#9999a9; '>// restart adc</span>
-    byte m <span style='color:#d2cd86; '>=</span> ADCL<span style='color:#b060b0; '>;</span> <span style='color:#9999a9; '>// fetch adc data</span>
-    byte j <span style='color:#d2cd86; '>=</span> ADCH<span style='color:#b060b0; '>;</span>
-    <span style='color:#e66170; font-weight:bold; '>int</span> k <span style='color:#d2cd86; '>=</span> <span style='color:#d2cd86; '>(</span>j <span style='color:#d2cd86; '>&lt;</span><span style='color:#d2cd86; '>&lt;</span> <span style='color:#008c00; '>8</span><span style='color:#d2cd86; '>)</span> <span style='color:#d2cd86; '>|</span> m<span style='color:#b060b0; '>;</span> <span style='color:#9999a9; '>// form into an int</span>
-    k <span style='color:#d2cd86; '>-</span><span style='color:#d2cd86; '>=</span> <span style='color:#00a800; '>0x0200</span><span style='color:#b060b0; '>;</span> <span style='color:#9999a9; '>// form into a signed int</span>
-    k <span style='color:#d2cd86; '>&lt;</span><span style='color:#d2cd86; '>&lt;</span><span style='color:#d2cd86; '>=</span> <span style='color:#008c00; '>6</span><span style='color:#b060b0; '>;</span> <span style='color:#9999a9; '>// form into a 16b signed int</span>
-    fft_input<span style='color:#d2cd86; '>[</span>i<span style='color:#d2cd86; '>]</span> <span style='color:#d2cd86; '>=</span> k<span style='color:#b060b0; '>;</span> <span style='color:#9999a9; '>// put real data into even bins</span>
-    fft_input<span style='color:#d2cd86; '>[</span>i<span style='color:#d2cd86; '>+</span><span style='color:#008c00; '>1</span><span style='color:#d2cd86; '>]</span> <span style='color:#d2cd86; '>=</span> <span style='color:#008c00; '>0</span><span style='color:#b060b0; '>;</span> <span style='color:#9999a9; '>// set odd bins to 0</span>
-<span style='color:#b060b0; '>}</span>
-fft_window<span style='color:#d2cd86; '>(</span><span style='color:#d2cd86; '>)</span><span style='color:#b060b0; '>;</span> <span style='color:#9999a9; '>// window the data for better frequency response</span>
-fft_reorder<span style='color:#d2cd86; '>(</span><span style='color:#d2cd86; '>)</span><span style='color:#b060b0; '>;</span> <span style='color:#9999a9; '>// reorder the data before doing the fft</span>
-fft_run<span style='color:#d2cd86; '>(</span><span style='color:#d2cd86; '>)</span><span style='color:#b060b0; '>;</span> <span style='color:#9999a9; '>// process the data in the fft</span>
-fft_mag_log<span style='color:#d2cd86; '>(</span><span style='color:#d2cd86; '>)</span><span style='color:#b060b0; '>;</span> <span style='color:#9999a9; '>// take the output of the fft</span>
+<pre ALIGN=LEFT style='color:#000000;background:#ffffff;'><span style='color:#0000ff; font-weight:bold; '>for</span> <span style='color:#0000ff; '>(</span><span style='color:#0000ff; font-weight:bold; '>int</span> i <span style='color:#0000ff; '>=</span> <span style='color:#800000; '>0</span> <span style='color:#0000ff; '>;</span> i <span style='color:#0000ff; '>&lt;</span> <span style='color:#800000; '>512</span> <span style='color:#0000ff; '>;</span> i <span style='color:#0000ff; '>+</span><span style='color:#0000ff; '>=</span> <span style='color:#800000; '>2</span><span style='color:#0000ff; '>)</span> <span style='color:#0000ff; '>{</span> <span style='color:#008000; '>// save 256 samples</span>
+    <span style='color:#0000ff; font-weight:bold; '>while</span><span style='color:#0000ff; '>(</span><span style='color:#0000ff; '>!</span><span style='color:#0000ff; '>(</span>ADCSRA <span style='color:#0000ff; '>&amp;</span> <span style='color:#800000; '>0x10</span><span style='color:#0000ff; '>)</span><span style='color:#0000ff; '>)</span><span style='color:#0000ff; '>;</span> <span style='color:#008000; '>// wait for adc to be ready</span>
+    ADCSRA <span style='color:#0000ff; '>=</span> <span style='color:#800000; '>0xf7</span><span style='color:#0000ff; '>;</span> <span style='color:#008000; '>// restart adc</span>
+    byte m <span style='color:#0000ff; '>=</span> ADCL<span style='color:#0000ff; '>;</span> <span style='color:#008000; '>// fetch adc data</span>
+    byte j <span style='color:#0000ff; '>=</span> ADCH<span style='color:#0000ff; '>;</span>
+    <span style='color:#0000ff; font-weight:bold; '>int</span> k <span style='color:#0000ff; '>=</span> <span style='color:#0000ff; '>(</span>j <span style='color:#0000ff; '>&lt;</span><span style='color:#0000ff; '>&lt;</span> <span style='color:#800000; '>8</span><span style='color:#0000ff; '>)</span> <span style='color:#0000ff; '>|</span> m<span style='color:#0000ff; '>;</span> <span style='color:#008000; '>// form into an int</span>
+    k <span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>=</span> <span style='color:#800000; '>0x0200</span><span style='color:#0000ff; '>;</span> <span style='color:#008000; '>// form into a signed int</span>
+    k <span style='color:#0000ff; '>&lt;</span><span style='color:#0000ff; '>&lt;</span><span style='color:#0000ff; '>=</span> <span style='color:#800000; '>6</span><span style='color:#0000ff; '>;</span> <span style='color:#008000; '>// form into a 16b signed int</span>
+    fft_input<span style='color:#0000ff; '>[</span>i<span style='color:#0000ff; '>]</span> <span style='color:#0000ff; '>=</span> k<span style='color:#0000ff; '>;</span> <span style='color:#008000; '>// put real data into even bins</span>
+    fft_input<span style='color:#0000ff; '>[</span>i<span style='color:#0000ff; '>+</span><span style='color:#800000; '>1</span><span style='color:#0000ff; '>]</span> <span style='color:#0000ff; '>=</span> <span style='color:#800000; '>0</span><span style='color:#0000ff; '>;</span> <span style='color:#008000; '>// set odd bins to 0</span>
+<span style='color:#0000ff; '>}</span>
+fft_window<span style='color:#0000ff; '>(</span><span style='color:#0000ff; '>)</span><span style='color:#0000ff; '>;</span> <span style='color:#008000; '>// window the data for better frequency response</span>
+fft_reorder<span style='color:#0000ff; '>(</span><span style='color:#0000ff; '>)</span><span style='color:#0000ff; '>;</span> <span style='color:#008000; '>// reorder the data before doing the fft</span>
+fft_run<span style='color:#0000ff; '>(</span><span style='color:#0000ff; '>)</span><span style='color:#0000ff; '>;</span> <span style='color:#008000; '>// process the data in the fft</span>
+fft_mag_log<span style='color:#0000ff; '>(</span><span style='color:#0000ff; '>)</span><span style='color:#0000ff; '>;</span> <span style='color:#008000; '>// take the output of the fft</span>
 </pre>
-                <!--Created using ToHtml.com on 2018-11-29 05:16:49 UTC -->
+                <!--Created using ToHtml.com on 2018-11-29 06:01:47 UTC -->
                 
                 <p ALIGN=LEFT>
                   Once this is down we can grab our data using<br/><code>fft_log_out</code><br/>
@@ -646,7 +646,7 @@ fft_mag_log<span style='color:#d2cd86; '>(</span><span style='color:#d2cd86; '>)
                   filter out more ambient noise, we narrowed the bin frequency width by changing the prescalar 
                   for the ADC clock input to 128. This was done by changing the ADC Control and Status Register A:
                   <br/>
-                  <code ALIGN=LEFT>ADCSRA = 0xe5;</code>
+<code ALIGN=LEFT>ADCSRA = 0xe5;</code>
                   <br/>
                   Re-calculating the frequency bin width we determined we should find our 660Hz frequency in bin 19, 
                   and we confirmed this by running the FFT and plotting the results:
@@ -660,16 +660,16 @@ fft_mag_log<span style='color:#d2cd86; '>(</span><span style='color:#d2cd86; '>)
                   As a finishing touch, we created a placeholder “robot start” function by lighting an LED whenever 
                   the 660Hz tone was detected, which we did by setting a threshold intensity value for bin 19 as shown 
                   in the following code:
-                    <pre><code>
-                      if(fft_log_out[18] > 90){
-                        digitalWrite(LED,HIGH);
-                      } else {
-                        digitalWrite(LED,LOW);
-                      }
-                    </code></pre>
+<pre ALIGN=LEFT style='color:#000000;background:#ffffff;'><span style='color:#0000ff; font-weight:bold; '>if</span><span style='color:#0000ff; '>(</span>fft_log_out<span style='color:#0000ff; '>[</span><span style='color:#800000; '>18</span><span style='color:#0000ff; '>]</span> <span style='color:#0000ff; '>></span> <span style='color:#800000; '>90</span><span style='color:#0000ff; '>)</span><span style='color:#0000ff; '>{</span>
+digitalWrite<span style='color:#0000ff; '>(</span>LED<span style='color:#0000ff; '>,</span>HIGH<span style='color:#0000ff; '>)</span><span style='color:#0000ff; '>;</span>
+<span style='color:#0000ff; '>}</span> <span style='color:#0000ff; font-weight:bold; '>else</span> <span style='color:#0000ff; '>{</span>
+digitalWrite<span style='color:#0000ff; '>(</span>LED<span style='color:#0000ff; '>,</span>LOW<span style='color:#0000ff; '>)</span><span style='color:#0000ff; '>;</span>
+<span style='color:#0000ff; '>}</span>
+</pre>
+<!--Created using ToHtml.com on 2018-11-29 06:03:31 UTC -->
                   A demonstration of this detection is shown in the following video:
                 </p>
-                <iframe width="560" height="315" src="https://www.youtube.com/embed/JvM9OUa2xY0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/JvM9OUa2xY0?controls=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
                 <h3>Optical</h3>
                 <h4>Initial Design</h4>
                 <p ALIGN=LEFT>We used the OP598A phototransistor to detect IR signals. The phototransistor was built exactly 
