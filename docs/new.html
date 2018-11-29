@@ -978,14 +978,14 @@ uint8_t state<span style='color:#0000ff; '>;</span>
                   <figure ALIGN=LEFT>
                     <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/milestone1/20180910_213436.jpg" width="560"/>
                     <font size="3">
-                    <figcaption> Front View of Robot after Adding a Second Level
+                    <figcaption> <b>Front View of Robot after Adding a Second Level</b>
                     </figcaption>
                     </font>
                   </figure>
                   <figure ALIGN=LEFT>
                     <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/milestone1/20180910_213510.jpg" width="560"/>
                     <font size="3">
-                    <figcaption> Top View of Updated Chassis
+                    <figcaption> <b>Top View of Updated Chassis</b>
                     </figcaption>
                     </font>
                   </figure>
@@ -1015,7 +1015,7 @@ uint8_t state<span style='color:#0000ff; '>;</span>
                 <figure ALIGN=LEFT>
                   <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/milestone1/20180913_204620.jpg" width="560"/>
                   <font size="3">
-                  <figcaption> Front view of Robot, Final Version
+                  <figcaption> <b>Front view of Robot, Final Version</b>
                   </figcaption>
                   </font>
                 </figure>
@@ -1026,11 +1026,11 @@ uint8_t state<span style='color:#0000ff; '>;</span>
                 <figure ALIGN=LEFT>
                   <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/Schematic-RobotLineSensing.PNG" width="560"/>
                   <font size="3">
-                  <figcaption> Schematic of Updated Robot with 2 Line Sensors
+                  <figcaption> <b>Schematic of Updated Robot with 2 Line Sensors</b>
                   </figcaption>
                   </font>
                 </figure>
-                <h3>Software Design<h3>
+                <h3>Software Design</h3>
                 <p ALIGN=LEFT>
                   We used a simple software algorithm for performing these tasks. However, we also began the ground work 
                   for abstracting away some of the robot functions such as servo speed for robot forward movement and turning, 
@@ -1046,33 +1046,28 @@ uint8_t state<span style='color:#0000ff; '>;</span>
                   of a digital pin changes. We used the interrupts for sensors with time sensitive operations such as 
                   following the line.
                 </p>
-                <h5>Code Snippet for Reading from the Line Sensor Using Digital Pins<h5>
-                <pre ALIGN=LEFT>
-                  <code ALIGN=LEFT>
-                  volatile int SENSOR0_READING;
-                  volatile int SENSOR0_TIMER;
-                  int SENSOR0_PIN=2;
-
-
-                  /**
-                    * Triggers when the state of digital pin goes from high to low.
-                    * Updates SENSOR0_READING variable.
-                    */
-                  void SENSOR0_ISR(){
-                      SENSOR0_READING = micros() - SENSOR0_TIMER; //time difference as a result 
-                      //of digital signal changing states from high to low. 
-                      SENSOR0_TIMER = micros(); 
-                      pinMode(SENSOR0_PIN, OUTPUT); //reset the digital pin
-                      digitalWrite(SENSOR0_PIN, HIGH); //put back to high for next reading when low
-                      pinMode(SENSOR0_PIN, INPUT);  
-                  }
-
-
-                  void setup(){
-                      attachInterrupt(digitalPinToInterrupt(SENSOR0_PIN), SENSOR0_ISR, LOW);
-                  }
-                  </code>
-                </pre>
+                <h5>Code Snippet for Reading from the Line Sensor Using Digital Pins</h5>
+<pre ALIGN=LEFT style='color:#000000;background:#ffffff;'><span style='color:#0000ff; font-weight:bold; '>volatile</span> <span style='color:#0000ff; font-weight:bold; '>int</span> SENSOR0_READING<span style='color:#0000ff; '>;</span>
+    <span style='color:#0000ff; font-weight:bold; '>volatile</span> <span style='color:#0000ff; font-weight:bold; '>int</span> SENSOR0_TIMER<span style='color:#0000ff; '>;</span>
+    <span style='color:#0000ff; font-weight:bold; '>int</span> SENSOR0_PIN<span style='color:#0000ff; '>=</span><span style='color:#800000; '>2</span><span style='color:#0000ff; '>;</span>
+    
+    <span style='color:#008000; '>/**</span>
+    <span style='color:#008000; '>* Triggers when the state of digital pin goes from high to low.</span>
+    <span style='color:#008000; '>* Updates SENSOR0_READING variable.</span>
+    <span style='color:#008000; '>*/</span>
+    <span style='color:#0000ff; font-weight:bold; '>void</span> SENSOR0_ISR<span style='color:#0000ff; '>(</span><span style='color:#0000ff; '>)</span><span style='color:#0000ff; '>{</span>
+        SENSOR0_READING <span style='color:#0000ff; '>=</span> micros<span style='color:#0000ff; '>(</span><span style='color:#0000ff; '>)</span> <span style='color:#0000ff; '>-</span> SENSOR0_TIMER<span style='color:#0000ff; '>;</span> <span style='color:#008000; '>//time difference as a result </span>
+        <span style='color:#008000; '>//of digital signal changing states from high to low. </span>
+        SENSOR0_TIMER <span style='color:#0000ff; '>=</span> micros<span style='color:#0000ff; '>(</span><span style='color:#0000ff; '>)</span><span style='color:#0000ff; '>;</span> 
+        pinMode<span style='color:#0000ff; '>(</span>SENSOR0_PIN<span style='color:#0000ff; '>,</span> OUTPUT<span style='color:#0000ff; '>)</span><span style='color:#0000ff; '>;</span> <span style='color:#008000; '>//reset the digital pin</span>
+        digitalWrite<span style='color:#0000ff; '>(</span>SENSOR0_PIN<span style='color:#0000ff; '>,</span> HIGH<span style='color:#0000ff; '>)</span><span style='color:#0000ff; '>;</span> <span style='color:#008000; '>//put back to high for next reading when low</span>
+        pinMode<span style='color:#0000ff; '>(</span>SENSOR0_PIN<span style='color:#0000ff; '>,</span> INPUT<span style='color:#0000ff; '>)</span><span style='color:#0000ff; '>;</span>  
+    <span style='color:#0000ff; '>}</span>
+    <span style='color:#0000ff; font-weight:bold; '>void</span> setup<span style='color:#0000ff; '>(</span><span style='color:#0000ff; '>)</span><span style='color:#0000ff; '>{</span>
+        attachInterrupt<span style='color:#0000ff; '>(</span>digitalPinToInterrupt<span style='color:#0000ff; '>(</span>SENSOR0_PIN<span style='color:#0000ff; '>)</span><span style='color:#0000ff; '>,</span> SENSOR0_ISR<span style='color:#0000ff; '>,</span> LOW<span style='color:#0000ff; '>)</span><span style='color:#0000ff; '>;</span>
+    <span style='color:#0000ff; '>}</span>
+    </pre>
+    <!--Created using ToHtml.com on 2018-11-29 06:24:17 UTC -->
                 </p>
                 <h5>Follow the Line</h5>
                 <p ALIGN=LEFT>
@@ -1083,19 +1078,19 @@ uint8_t state<span style='color:#0000ff; '>;</span>
                   it move straight forward when both sensors detected white tape at an intersection.
                 </p>
                 <h5>Code Snippet for Following the Line</h5>
-                <pre ALIGN=LEFT>
-                  <code ALIGN=LEFT>
-                      if(SENSOR0_READING<400 && SENSOR1_READING<400){ //continue straight
-                          forward();
-                      }else if(SENSOR1_READING < 400){ //turning right
-                          turn_right();
-                      }else if(SENSOR0_READING < 400) { //turning left
-                          turn _left();
-                      }else{
-                          forward();
-                      }
-                  </code>
-                </pre>
+                
+<pre ALIGN=LEFT style='color:#000000;background:#ffffff;'><span style='color:#0000ff; font-weight:bold; '>if</span><span style='color:#0000ff; '>(</span>SENSOR0_READING<span style='color:#0000ff; '>&lt;</span><span style='color:#800000; '>400</span> <span style='color:#0000ff; '>&amp;</span><span style='color:#0000ff; '>&amp;</span> SENSOR1_READING<span style='color:#0000ff; '>&lt;</span><span style='color:#800000; '>400</span><span style='color:#0000ff; '>)</span><span style='color:#0000ff; '>{</span> <span style='color:#008000; '>//continue straight</span>
+    forward<span style='color:#0000ff; '>(</span><span style='color:#0000ff; '>)</span><span style='color:#0000ff; '>;</span>
+<span style='color:#0000ff; '>}</span><span style='color:#0000ff; font-weight:bold; '>else</span> <span style='color:#0000ff; font-weight:bold; '>if</span><span style='color:#0000ff; '>(</span>SENSOR1_READING <span style='color:#0000ff; '>&lt;</span> <span style='color:#800000; '>400</span><span style='color:#0000ff; '>)</span><span style='color:#0000ff; '>{</span> <span style='color:#008000; '>//turning right</span>
+    turn_right<span style='color:#0000ff; '>(</span><span style='color:#0000ff; '>)</span><span style='color:#0000ff; '>;</span>
+<span style='color:#0000ff; '>}</span><span style='color:#0000ff; font-weight:bold; '>else</span> <span style='color:#0000ff; font-weight:bold; '>if</span><span style='color:#0000ff; '>(</span>SENSOR0_READING <span style='color:#0000ff; '>&lt;</span> <span style='color:#800000; '>400</span><span style='color:#0000ff; '>)</span> <span style='color:#0000ff; '>{</span> <span style='color:#008000; '>//turning left</span>
+    turn _left<span style='color:#0000ff; '>(</span><span style='color:#0000ff; '>)</span><span style='color:#0000ff; '>;</span>
+<span style='color:#0000ff; '>}</span><span style='color:#0000ff; font-weight:bold; '>else</span><span style='color:#0000ff; '>{</span>
+    forward<span style='color:#0000ff; '>(</span><span style='color:#0000ff; '>)</span><span style='color:#0000ff; '>;</span>
+<span style='color:#0000ff; '>}</span>
+</pre>
+<!--Created using ToHtml.com on 2018-11-29 06:25:20 UTC -->
+               
                 </p>
                 <h5>Demonstration of Robot Following the Line</h5>
                 <a><img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/milestone1/gif-followLine.gif"
@@ -1118,28 +1113,26 @@ uint8_t state<span style='color:#0000ff; '>;</span>
                   figure-8, with each element of the array indicating the direction to turn. The array is 
                   repeatable such that the robot will continuously move in a figure-8 formation.
                 </p>
-                <pre ALIGN=LEFT>
-                  <code ALIGN=LEFT>
-                    char map1[] = {right,left,left,left,left,right,right,right}; //dependent on 
-                    //where robot starts
-                    int i=0; 
-                    void loop() {
-                      if(SENSOR0_READING<400 && SENSOR1_READING<400){
-                        map1[i%8]==right ? turn_right() : turn_left();
-                        delay(1200);
-                        i++;
-                      }else if(SENSOR1_READING < 400){ //turning right
-                        turn_right();
-                      }else if(SENSOR0_READING < 400) { //turning left
-                        turn _left();
-                      }else{
-                        forward();
-                      }
-                    }
-                  </code>
-                </pre>
+<pre ALIGN=LEFT style='color:#000000;background:#ffffff;'><span style='color:#0000ff; font-weight:bold; '>char</span> map1<span style='color:#0000ff; '>[</span><span style='color:#0000ff; '>]</span> <span style='color:#0000ff; '>=</span> <span style='color:#0000ff; '>{</span>right<span style='color:#0000ff; '>,</span>left<span style='color:#0000ff; '>,</span>left<span style='color:#0000ff; '>,</span>left<span style='color:#0000ff; '>,</span>left<span style='color:#0000ff; '>,</span>right<span style='color:#0000ff; '>,</span>right<span style='color:#0000ff; '>,</span>right<span style='color:#0000ff; '>}</span><span style='color:#0000ff; '>;</span> <span style='color:#008000; '>//dependent on </span>
+    <span style='color:#008000; '>//where robot starts</span>
+    <span style='color:#0000ff; font-weight:bold; '>int</span> i<span style='color:#0000ff; '>=</span><span style='color:#800000; '>0</span><span style='color:#0000ff; '>;</span> 
+    <span style='color:#0000ff; font-weight:bold; '>void</span> loop<span style='color:#0000ff; '>(</span><span style='color:#0000ff; '>)</span> <span style='color:#0000ff; '>{</span>
+        <span style='color:#0000ff; font-weight:bold; '>if</span><span style='color:#0000ff; '>(</span>SENSOR0_READING<span style='color:#0000ff; '>&lt;</span><span style='color:#800000; '>400</span> <span style='color:#0000ff; '>&amp;</span><span style='color:#0000ff; '>&amp;</span> SENSOR1_READING<span style='color:#0000ff; '>&lt;</span><span style='color:#800000; '>400</span><span style='color:#0000ff; '>)</span><span style='color:#0000ff; '>{</span>
+            map1<span style='color:#0000ff; '>[</span>i<span style='color:#0000ff; '>%</span><span style='color:#800000; '>8</span><span style='color:#0000ff; '>]</span><span style='color:#0000ff; '>=</span><span style='color:#0000ff; '>=</span>right <span style='color:#0000ff; '>?</span> turn_right<span style='color:#0000ff; '>(</span><span style='color:#0000ff; '>)</span> <span style='color:#0000ff; '>:</span> turn_left<span style='color:#0000ff; '>(</span><span style='color:#0000ff; '>)</span><span style='color:#0000ff; '>;</span>
+            delay<span style='color:#0000ff; '>(</span><span style='color:#800000; '>1200</span><span style='color:#0000ff; '>)</span><span style='color:#0000ff; '>;</span>
+            i<span style='color:#0000ff; '>+</span><span style='color:#0000ff; '>+</span><span style='color:#0000ff; '>;</span>
+        <span style='color:#0000ff; '>}</span><span style='color:#0000ff; font-weight:bold; '>else</span> <span style='color:#0000ff; font-weight:bold; '>if</span><span style='color:#0000ff; '>(</span>SENSOR1_READING <span style='color:#0000ff; '>&lt;</span> <span style='color:#800000; '>400</span><span style='color:#0000ff; '>)</span> <span style='color:#008000; '>//turning right</span>
+            turn_right<span style='color:#0000ff; '>(</span><span style='color:#0000ff; '>)</span><span style='color:#0000ff; '>;</span>
+        <span style='color:#0000ff; font-weight:bold; '>else</span> <span style='color:#0000ff; font-weight:bold; '>if</span><span style='color:#0000ff; '>(</span>SENSOR0_READING <span style='color:#0000ff; '>&lt;</span> <span style='color:#800000; '>400</span><span style='color:#0000ff; '>)</span>  <span style='color:#008000; '>//turning left</span>
+            turn _left<span style='color:#0000ff; '>(</span><span style='color:#0000ff; '>)</span><span style='color:#0000ff; '>;</span>
+        <span style='color:#0000ff; font-weight:bold; '>else</span>
+            forward<span style='color:#0000ff; '>(</span><span style='color:#0000ff; '>)</span><span style='color:#0000ff; '>;</span>
+    <span style='color:#0000ff; '>}</span>
+    </pre>
+    <!--Created using ToHtml.com on 2018-11-29 06:27:12 UTC -->
+                
                 <h5>Video of Robot Performing Figure-8</h5>
-                <iframe width="560" height="315" src="https://www.youtube.com/embed/mZf0CTAzZvA" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/mZf0CTAzZvA?controls=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
                 <p ALIGN=LEFT>
                   Currently the robot doesn't turn as well as we would like; it doesn't turn for long 
                   enough and relies on the line sensors to reposition itself on the line after the turn. 
