@@ -1,7 +1,7 @@
 # Lab 4: FPGA and Color Detection
 
 ## Objectives
-- Implement a camera and FPGA into a system for detecting treasures
+- Use a camera and FPGA to implement a system for detecting treasures
 - Develop an FPGA module capable of detecting shapes and colors from a camera input
 - Communicate treasure detection from the FPGA to the Arduino
 - Display images from the camera onto a screen
@@ -9,7 +9,7 @@
 
 ## Introduction
 
-For this lab we began working with an FPGA to implement treasure-detection capabilities for the robot. The system consists of an FPGA, a camera, and an Arduino. To divide the work for this lab, Patrick and Chrissy worked with the FPGA, and Xiaoyu and Tara worked with the Arduino. The FPGA team worked on implementing PLL, downsampler, and image processor modules in Verilog for the FPGA, and the Arduino team worked on writing to appropriate registers in the camera in order to set it up properly for taking images. Then, the two teams came together to integrate the components to take image input from the camera, send the images to the memory of the FPGA and process the image to detect shape and color, and then send treasure information from the FPGA to the Arduino so that the robot can eventually send that information back to the base station.
+For this lab we began working with an FPGA to implement treasure-detection capabilities for the robot. The system consists of an FPGA, a camera, and an Arduino. To divide the work for this lab, Patrick and Chrissy worked with the FPGA, and Xiaoyu and Tara worked with the Arduino. The FPGA team worked on implementing PLL, downsampler, and image processor modules in Verilog for the FPGA, and the Arduino team worked on writing to appropriate registers in the camera in order to set it up properly for taking images. The two teams then came together to integrate the components to take image input from the camera, send the images to the memory of the FPGA and process the image to detect shape and color, and then send treasure information from the FPGA to the Arduino so that the robot can finally send that information back to the base station.
 
 
 ## FPGA
@@ -18,10 +18,10 @@ First, we implemented a phase-locked loop to clock the FPGA.
 Using the provided Verliog project, we set up the interface our system would use for shape detection.
 
 ### Setup
-We first use the PLL, which are not suceptible to clock skew, to produce different clocks to drive the camera, VGA, M9k block memory read and write. We use the 24 MHz clock to drive the camera, we plug that as XCLK. We use the 50 MHz clock for memory write and 25 MHz clock for read. We want write to be faster than read because writing to the block needs to be done before we read. We don't want to accidentally read blocks before they are updated. We also use the 25 MHz clock for VGA display. 
+We first use the PLL, which is not suceptible to clock skew, to produce different clocks to drive the camera, VGA, M9k block memory read and write. We use the 24 MHz clock to drive the camera and plug that as XCLK. We use the 50 MHz clock for memory write and 25 MHz clock for read. We want write to be faster than read because writing to the block needs to be done before we read. We don't want to accidentally read blocks before they are updated. We also use the 25 MHz clock for VGA display. 
 
 ### Camera, FPGA and Arduino Communication
-The camera contains 20 pins total. We have 8 pins for parallel data which sends one byte of the two bytes for pixel during each clcok cycle. These eight pins are connected to input GPIO pins on the FPGA. In addition, we also have HREF and VSYNC pins which are also connected as input to the FPGA. The camera also has PCLK and XCLK pins. The XCLK is for external clock. We use an output pin from the FPGA and put it to the camera. The PCLK is camera clock; we route that back to the FPGA for analysis. 
+The camera contains 20 pins total. We have 8 pins for parallel data which sends one  of the two bytes for pixel during each clcok cycle. These eight pins are connected to input GPIO pins on the FPGA. In addition, we also have HREF and VSYNC pins which are also connected as input to the FPGA. The camera also has PCLK and XCLK pins. The XCLK is for external clock. We use an output pin from the FPGA and put it to the camera. The PCLK is camera clock; we route that back to the FPGA for analysis. 
 
 <figure>
     <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab04/schematic.PNG" width="800"/>
@@ -31,16 +31,16 @@ The camera contains 20 pins total. We have 8 pins for parallel data which sends 
     </font>
 </figure>
 
-In the figure above, the colored rectanges means that the pins are wired together.
+In the figure above, the colored rectangles mean that the pins are wired together.
 
-In the FPGA, we must set the camera communication pins, HREF, VSYNC, and PCLK to input for the FPGA. We set the the communication pins with the Arduino as output. In quartus, this is done as such
+In the FPGA, we must set the camera communication pins, HREF, VSYNC, and PCLK to input for the FPGA. We set the the communication pins with the Arduino as output. In quartus, this is done as follows:
 ```vdhl
 //////////// GPIO_0, GPIO_0 connect to GPIO Default //////////
 output 		    [33:0]		GPIO_0_D;
 //////////// GPIO_0, GPIO_1 connect to GPIO Default //////////
 input 		    [33:20]		GPIO_1_D;
 ```
-We also use four parallel wires for the FPGA to communicate with the Arduino. We have two bits for treasure shape and two bits for color. 
+We also use four parallel wires for communication from FPGA to  the Arduino. We have two bits for treasure shape and two bits for color. 
 
 #### Polling from camera
 
@@ -52,7 +52,7 @@ We also use four parallel wires for the FPGA to communicate with the Arduino. We
     </font>
 </figure>
 
-The timing diagram above shows us how images from the camera are passed sent. When we have a new frame incoming, the VSYNC goes high. After some time, the HREF will go high, signalling the start of the first byte of data. The camera can send data in RGB565 which is 5 bits of red, 6 bits of green, and 5 bits of blue color. This is divided into two transmissions due to the camera's one byte communication line. When the HREF goes high, the camera is transmitting the data for the first row of data. A low HREF means that we finished transmitting data for one row. At this point, the VSYNC can go high to signal the end of the image or the HREF can go high again when the camera is sending data for the next row of pixels.
+The above timing diagram shows us how images from the camera are sent. When we have a new frame incoming, the VSYNC goes high. After some time, the HREF will go high, signalling the start of the first byte of data. The camera can send data in RGB565 which is 5 bits of red, 6 bits of green, and 5 bits of blue color. This is divided into two transmissions due to the camera's one byte communication line. When the HREF goes high, the camera is transmitting the data for the first row of data. A low HREF means that we finished transmitting data for one row. At this point, the VSYNC can go high to signal the end of the image or the HREF can go high again when the camera is sending data for the next row of pixels.
 
 <figure>
     <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab04/cam_fsm.PNG" width="800"/>
@@ -131,7 +131,7 @@ always @(posedge pclk) begin
 end
 ```
 
-We must save the data from the camera into a memory location so that it may be read by the VGA and the image processor later for analysis. This is done with two variables, X_ADDR and Y_ADDR. 
+We must save the data from the camera into a memory location so that it can be read by the VGA and the image processor later for analysis. This is done with two variables, X_ADDR and Y_ADDR. 
 
 <figure>
     <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab04/IMG_1174.jpg" width="500"/>
@@ -143,7 +143,7 @@ We must save the data from the camera into a memory location so that it may be r
 
 #### Downsampler
 
-The camera's eight parallel data pins output color per pixel at a clocked rate. For RGB, it uses the configuration for RGB565 or RGB555. Both configurations are two bytes in length total which means that each pixel captured by the camera are two bytes. We must downsample the two byte data from the camera to 1 byte data because of memory constraints on the M9k memory blocks on the FPGA. We can only store one byte of data per memory address. Thus we must convert to RGB332 or RGB323. We used RGB332 for debugging and displaying the camera data on the VGA screen since the VGA only takes in RGB332 values. For treasure detection, we changed to RGB323 to get more bits out of the blue pixel since we are only detecting blue and red treasures. Thus, the goal of the downsampler is to take the two byte pixel from the camera and converted it to a one byte pixel. This one byte pixel will be saved into the M9k memory block at the correct memory address which is relative to the pixel location on the screen. 
+The camera's eight parallel data pins output color per pixel at a clocked rate. For RGB, it uses the configuration for RGB565 or RGB555. Both configurations are two bytes in length total which means that each pixel captured by the camera are two bytes. We must downsample the two byte data from the camera to 1 byte data because of memory constraints on the M9k memory blocks on the FPGA. We can only store one byte of data per memory address. Thus we must convert to RGB332 or RGB323. We used RGB332 for debugging and displaying the camera data on the VGA screen since the VGA only takes in RGB332 values. For treasure detection, we changed to RGB323 to get more bits out of the blue pixel since we are only detecting blue and red treasures. The goal of the downsampler is to take the two byte pixel from the camera and converted it to a one byte pixel. This one byte pixel will be saved into the M9k memory block at the correct memory address which is relative to the pixel location on the screen. 
 <figure>
     <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab04/timingdiagram565.PNG" width="700"/>
     <font size="2">
@@ -181,7 +181,7 @@ end
 ```
 
 #### Color Bar
-To get the color bar to display, we must set the appropriate registers in the Camera. The main registers involved are COM 7 and COM 17 for color bar enable and color bar DSP enable. With the downsampler above, we are able to decode the bytes coming from the camera and display the color bar onto the VGA screen. The downsampler takes in input from the camera.
+To display the color bar, we must set the appropriate registers in the Camera. The main registers involved are COM 7 and COM 17 for color bar enable and color bar DSP enable. With the downsampler above, we are able to decode the bytes coming from the camera and display the color bar onto the VGA screen. The downsampler takes in input from the camera.
 <figure>
     <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab04/IMG_1163.jpg" width="600"/>
     <font size="2">
@@ -190,7 +190,7 @@ To get the color bar to display, we must set the appropriate registers in the Ca
     </font>
 </figure>
 
-The colors in the bar are different from the example in the lab but when we use the camera to capture, we found that the colors were passable and would not pose a huge issue.
+The colors in the bar are different from the example in the lab but when we use the camera to capture, we found that the colors were passable and would not pose an issue.
 
 
 #### Display Camera Capture
@@ -200,7 +200,7 @@ To display the images captured by the camera, we must set the registers from the
 <iframe width="560" height="315" src="https://www.youtube.com/embed/0lKN7Tkrx0Q?controls=0" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 ### Color Detection
-For color detection, we use a module call the Image Processor. The image processor samples at the same rate as the VGA board at 25 MHz. We set a boundary within the resolution of each image and then count the number of blue and red in each pixel. 
+For color detection, we use a module call the Image Processor. The image processor samples at the same rate as the VGA board at 25 MHz. We set a boundary within the resolution of each image and then count the amount of blue and red in each pixel. 
 
 ```vhdl
 always @(posedge CLK) begin
@@ -239,7 +239,7 @@ end
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/nbeuPRgot2Y?controls=0" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
-This implementation use a lot of variables. We needed a counter for the three colors. We used the counter to count the values of the blue and red pixels if they are within a set of boundary. The boundary was used as a filter so that we can get the values that are near the center of the camera screen since that was where the shapes are most likely going to be. We judge as soon as the VGA X and Y axis exit the high threshold which means that we are approaching the end of our image. As shown above, we compare the counters of red and blue pixels and see if one is greater than the other by some threshold. We need the green counter because if the green counter is high while red and blue are also high, it likely means that we are viewing a white wall since there are no green color shapes. The judging only occurs once which was done using a fliping bit. We also reset the counters for the next frame. 
+This implementation use a lot of variables. We needed a counter for the three colors. We used the counter to count the values of the blue and red pixels if they are within a set of boundary. The boundary was used as a filter so that we can get the values that are near the center of the camera screen since that was where the shapes are most likely going to be. We judge as soon as the VGA X and Y axis exit the high threshold which means that we are approaching the end of our image. As shown above, we compare the counters of red and blue pixels and see if one is greater than the other by some threshold. We need the green counter because if the green counter is high while red and blue are also high, it likely means that we are viewing a white wall since there are no green color shapes. The judging only occurs once which was done by a flipping bit. We also reset the counters for the next frame. 
 
 <figure>
     <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab04/IMG_1171.jpg" width="500"/>
@@ -264,7 +264,7 @@ This will allow the I2C interface to communicate with the camera without sending
 
 ### Writing Registers
 
-We use the I2C communication protocol to talk to the camera. This is setup using Arduino's *Wire* library which supports I2C interfaces. We set up the Arduino as the master and the camera as slave. The camera have a set slave address of 0x21 after we ignore the least significant bit because that is used to distinguish between read and writes. The *Wire* library already set this up for us. All we have to do is pass the upper seven bits of the slave address of the camera to the I2C interface. We write to the camera by calling:
+We use the I2C communication protocol to talk to the camera. This is setup using Arduino's *Wire* library which supports I2C interfaces. We set up the Arduino as the master and the camera as slave. The camera has a set slave address of 0x21 after we ignore the least significant bit because that is used to distinguish between read and writes. The *Wire* library already set this up for us. All we have to do is pass the upper seven bits of the slave address of the camera to the I2C interface. We write to the camera by calling:
 ```cpp
     Wire.beginTransmission(0x21); // 7-bit Slave address
     Wire.write(value_to_write);   
@@ -272,7 +272,7 @@ We use the I2C communication protocol to talk to the camera. This is setup using
 ```
 The library makes it super simple to communicate with the camera using I2C.
 
-To have the camera capture the images we want, we must set some registers on the camera that deal with resolution, and camera clock. The following show how we wrote to the registers.
+To have the camera capture the images we want, we must set some registers on the camera that deal with resolution, and camera clock. The following shows how we wrote to the registers:
 ```cpp
 void setup() {
     Wire.begin();
@@ -315,7 +315,7 @@ We set the camera to QCIF resolution which is 176 x 144 screen size. This is the
 
 ### Communicating with FPGA
 
-Communication with the FPGA is done by wiring the GPIO pins on the FPGA to the arduino in parallel. We use combinational logic in this case since we set the FPGA to output the results of the image processing immediately while having the Arduino constantly decode the message for the four pins. Even though the voltage of the Arduino pins are 5V while FPGA pins are 3.3V, we can connect the pins together without voltage divider because the Arduino pins are set as input and is capable of reading the 3.3V from the FPGA as high. 
+Communication with the FPGA is done by wiring the GPIO pins on the FPGA to the arduino in parallel. We use combinational logic in this case since we set the FPGA to output the results of the image processing immediately while having the Arduino constantly decode the message for the four pins. Even though the voltage of the Arduino pins are 5V while FPGA pins are 3.3V, we can connect the pins together without a voltage divider because the Arduino pins are set as input and are capable of reading the 3.3V from the FPGA as high. 
 
 Initially, we define the input communication pins on the Arduino and the decoding treasure numbers.
 ```cpp
@@ -359,8 +359,8 @@ uint8_t decoder(){
 }
 
 ```
-This code is the decoder for communication from the FPGA. The code is very simple because of the extra hardware used. With this method, we used up to four pins from the Arudino. We could have used a serial communication protocol using two pins to send the four bits of messages but we have extra pins from the Arduino left over so simplicity at the cost of hardware was chosed to save time.
+This code is the decoder for communication from the FPGA. The code is very simple because of the extra hardware used. With this method, we used up to four pins from the Arudino. We could have used a serial communication protocol using two pins to send the four bits of messages but we have extra pins from the Arduino left over so simplicity at the cost of hardware was prioritized.
 
 ## Conclusion
 
-Overall, this lab is one of the harder labs this semester. Getting the camera to display an image correctly was a challenge due to the complexities in timing the camera pixel transmission correctly. While getting the image itself wasn't too difficult to display, getting the right colors for the image was difficult. We often had inverted colors or colors that were too dark or faded displaying on the screen. Both hardware and software contributed to the difficulty. We had to set the software to poll the bytes from the camera correctly but also make sure we wire the camera to the FPGA in a way that won't introduce noise, especially with a 24 MHz clock driving the transmission. Looking forward, we will be integrating the FPGA camera system into our robot. This will likely result in more states and updates to our radio messages to support communicating treasure shapes and colors. We also will need to update the basestation so that it can receive messages from the radio.
+This lab is one of the harder labs this semester. Getting the camera to display an image correctly was a challenge due to the complexities in timing the camera pixel transmission correctly. While getting the image itself wasn't too difficult to display, getting the right colors for the image was difficult. We often had inverted colors or colors that were too dark or faded displaying on the screen. Both hardware and software contributed to the difficulty. We had to set the software to poll the bytes from the camera correctly but also had to ensure sure we wired the camera to the FPGA in a way that wouldn't introduce noise, especially with a 24 MHz clock driving the transmission. Looking forward, we will be integrating the FPGA camera system into our robot. This will likely result in more states and updates to our radio messages to support communicating treasure shapes and colors. We also will need to update the basestation so that it can receive messages from the radio.
