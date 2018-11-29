@@ -1035,6 +1035,10 @@ radio<span style='color:#0000ff; '>.</span>stopListening<span style='color:#0000
 </pre>
 <!--Created using ToHtml.com on 2018-11-29 06:56:30 UTC -->
         
+<p>[3:0]  Three bits for whether the relative locations next to the robot has 
+        been explored or not</p>
+        <p>[7:4]  Reserved for later usage. Allows filled with zeros</p>
+        <p>The message sent back to the robot allows the robot to make decisions based on the state of the maze. The robot can make decisions based on whether the locations near it have been explored or not. This can affect which direction the robot turns in an intersection. This comes at a cost of implementing additional decoders for the robot on the system.</p>
         <h5>Data Structure</h5>
         <h3>Simulating the Robot</h3>
         <h1>Objectives</h1>
