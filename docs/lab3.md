@@ -115,17 +115,17 @@ To update the robot's absolute position in the maze, we use the direction the ro
 
 Code snippet for updating the maze locations.
 ```cpp
-        case forward: //forward : robot decided to go forward
-            if(robot_direction==right){
-                x++;
-            }else if(robot_direction==left){
-                x--;
-            }else if(robot_direction==up){
-                y--;
-            }else if(robot_direction==down){
-                y++;
-            }
-            break;
+case forward: //forward : robot decided to go forward
+    if(robot_direction==right){
+        x++;
+    }else if(robot_direction==left){
+        x--;
+    }else if(robot_direction==up){
+        y--;
+    }else if(robot_direction==down){
+        y++;
+    }
+    break;
 ```
 
 Once the logic is set in place, we print the required values to the monitor so that the GUI can pick it up. We call ```python main.py COM# --rows 3 --cols 2``` for a 3x2 maze

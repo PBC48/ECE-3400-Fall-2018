@@ -942,7 +942,9 @@ radio<span style='color:#0000ff; '>.</span>stopListening<span style='color:#0000
                 </p>
             <h3>Sending Maze Information Between Arduinos</h3>
                 <iframe width="560" height="315" src="https://www.youtube.com/embed/flzf6dUwdMM?controls=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-                <p>The two byte communication message that the robot sends to the base station is structured like this:</p>
+                <h5>Data Structure</h5>
+                
+            <p>The two byte communication message that the robot sends to the base station is structured like this:</p>
 <pre ALIGN=LEFT style='color:#000000;background:#ffffff;'> <span style='color:#800000; '>15</span>                  <span style='color:#800000; '>9</span> <span style='color:#800000; '>8</span>     <span style='color:#800000; '>7</span>    <span style='color:#800000; '>6</span> <span style='color:#800000; '>5</span>       <span style='color:#800000; '>3</span> <span style='color:#800000; '>2</span>       <span style='color:#800000; '>0</span>
 <span style='color:#0000ff; '>+</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>+</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>+</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>+</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>+</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>+</span>
 <span style='color:#0000ff; '>|</span> Reserved            <span style='color:#0000ff; '>|</span>ROBOT<span style='color:#0000ff; '>|</span>DIR   <span style='color:#0000ff; '>|</span>TREASURE <span style='color:#0000ff; '>|</span> WALLS   <span style='color:#0000ff; '>|</span>
@@ -1040,9 +1042,43 @@ radio<span style='color:#0000ff; '>.</span>stopListening<span style='color:#0000
         <p ALIGN=LEFT><code>[7:4]</code>  Reserved for later usage. Allows filled with zeros</p>
         <p>The message sent back to the robot allows the robot to make decisions based on the state of the maze. The robot can make decisions based on whether the locations near it have been explored or not. This can affect which direction the robot turns in an intersection. This comes at a cost of implementing additional decoders for the robot on the system.</p>
        
-        <h5>Data Structure</h5>
+
         <h3>Simulating the Robot</h3>
-        <h1>Objectives</h1>
+        <p>To simulate the robot on the base station, we take the information that the robot sends and structure it into a format that the GUI can pick up.</p>
+        
+        <h3>Base Station-to-GUI Transmission</h3>
+<p>We simulated the base station to GUI transmission by using print statements in the base station. The base station receives messages from the robot and decodes the message with the absolute directions in North, West, East, and South. The base station also prints out any detected treasures. The base station uses both the robot's wall sensor values and the direction the robot decides to go to determine the next square where the robot will be. Then it uses the robot's facing direction to figure out the absolute position on the maze. We always start our maze with the robot facing 'right'. As the robot moves through the maze, we update the GUI one intersection at a time. </p>
+
+<pre ALIGN=LEFT style='color:#000000;background:#ffffff;'>byte <span style='color:#0000ff; '>*</span> decoder<span style='color:#0000ff; '>(</span>uint16_t input<span style='color:#0000ff; '>)</span><span style='color:#0000ff; '>{</span>
+    byte wforward  <span style='color:#0000ff; '>=</span> <span style='color:#0000ff; '>(</span>input<span style='color:#0000ff; '>></span><span style='color:#0000ff; '>></span><span style='color:#800000; '>1</span><span style='color:#0000ff; '>)</span> <span style='color:#0000ff; '>&amp;</span> <span style='color:#800000; '>0x0001</span><span style='color:#0000ff; '>;</span>
+    byte wright <span style='color:#0000ff; '>=</span> <span style='color:#0000ff; '>(</span>input <span style='color:#0000ff; '>></span><span style='color:#0000ff; '>></span> <span style='color:#800000; '>2</span><span style='color:#0000ff; '>)</span> <span style='color:#0000ff; '>&amp;</span> <span style='color:#800000; '>0x0001</span><span style='color:#0000ff; '>;</span>
+    byte wleft <span style='color:#0000ff; '>=</span> input <span style='color:#0000ff; '>&amp;</span> <span style='color:#800000; '>0x0001</span><span style='color:#0000ff; '>;</span>
+    byte robot <span style='color:#0000ff; '>=</span> <span style='color:#0000ff; '>(</span>input <span style='color:#0000ff; '>></span><span style='color:#0000ff; '>></span> <span style='color:#800000; '>8</span><span style='color:#0000ff; '>)</span> <span style='color:#0000ff; '>&amp;</span> <span style='color:#800000; '>0x0001</span><span style='color:#0000ff; '>;</span>
+    byte dir <span style='color:#0000ff; '>=</span> <span style='color:#0000ff; '>(</span><span style='color:#0000ff; '>(</span><span style='color:#0000ff; font-weight:bold; '>unsigned</span><span style='color:#0000ff; '>)</span>input <span style='color:#0000ff; '>></span><span style='color:#0000ff; '>></span> <span style='color:#800000; '>6</span><span style='color:#0000ff; '>)</span> <span style='color:#0000ff; '>&amp;</span> <span style='color:#800000; '>0x0003</span><span style='color:#0000ff; '>;</span>
+    byte treasure <span style='color:#0000ff; '>=</span> <span style='color:#0000ff; '>(</span>input <span style='color:#0000ff; '>></span><span style='color:#0000ff; '>></span> <span style='color:#800000; '>3</span><span style='color:#0000ff; '>)</span> <span style='color:#0000ff; '>&amp;</span> <span style='color:#800000; '>0x0007</span><span style='color:#0000ff; '>;</span>
+    byte output<span style='color:#0000ff; '>[</span><span style='color:#0000ff; '>]</span><span style='color:#0000ff; '>=</span><span style='color:#0000ff; '>{</span>wleft<span style='color:#0000ff; '>,</span> wright<span style='color:#0000ff; '>,</span> wforward<span style='color:#0000ff; '>,</span> robot<span style='color:#0000ff; '>,</span> treasure<span style='color:#0000ff; '>,</span> dir<span style='color:#0000ff; '>}</span><span style='color:#0000ff; '>;</span>
+    <span style='color:#0000ff; font-weight:bold; '>return</span> output<span style='color:#0000ff; '>;</span> 
+<span style='color:#0000ff; '>}</span>
+</pre>
+<!--Created using ToHtml.com on 2018-11-29 07:20:15 UTC -->
+<p>This is the decoder we used to get all the necessary values. We use the wall directions in combination with the direction the robot decided to take to update the robot's position on the maze for the GUI.</p>
+<p>To update the robot's absolute position in the maze, we use the direction the robot is facing and where the robot decide go towards in the intersection to up date the robot.</p>
+<p>Code snippet for updating the maze locations.</p>
+<pre style='color:#000000;background:#ffffff;'><span style='color:#0000ff; font-weight:bold; '>case </span><span style='color:#808080; font-weight:bold; '>forward</span><span style='color:#e34adc; font-weight:bold; '>:</span> <span style='color:#008000; '>//forward : robot decided to go forward</span>
+    <span style='color:#0000ff; font-weight:bold; '>if</span><span style='color:#0000ff; '>(</span>robot_direction<span style='color:#0000ff; '>=</span><span style='color:#0000ff; '>=</span>right<span style='color:#0000ff; '>)</span><span style='color:#0000ff; '>{</span>
+        x<span style='color:#0000ff; '>+</span><span style='color:#0000ff; '>+</span><span style='color:#0000ff; '>;</span>
+    <span style='color:#0000ff; '>}</span><span style='color:#0000ff; font-weight:bold; '>else</span> <span style='color:#0000ff; font-weight:bold; '>if</span><span style='color:#0000ff; '>(</span>robot_direction<span style='color:#0000ff; '>=</span><span style='color:#0000ff; '>=</span>left<span style='color:#0000ff; '>)</span><span style='color:#0000ff; '>{</span>
+        x<span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>;</span>
+    <span style='color:#0000ff; '>}</span><span style='color:#0000ff; font-weight:bold; '>else</span> <span style='color:#0000ff; font-weight:bold; '>if</span><span style='color:#0000ff; '>(</span>robot_direction<span style='color:#0000ff; '>=</span><span style='color:#0000ff; '>=</span>up<span style='color:#0000ff; '>)</span><span style='color:#0000ff; '>{</span>
+        y<span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>;</span>
+    <span style='color:#0000ff; '>}</span><span style='color:#0000ff; font-weight:bold; '>else</span> <span style='color:#0000ff; font-weight:bold; '>if</span><span style='color:#0000ff; '>(</span>robot_direction<span style='color:#0000ff; '>=</span><span style='color:#0000ff; '>=</span>down<span style='color:#0000ff; '>)</span><span style='color:#0000ff; '>{</span>
+        y<span style='color:#0000ff; '>+</span><span style='color:#0000ff; '>+</span><span style='color:#0000ff; '>;</span>
+    <span style='color:#0000ff; '>}</span>
+<span style='color:#0000ff; font-weight:bold; '>break</span><span style='color:#0000ff; '>;</span>
+</pre>
+<!--Created using ToHtml.com on 2018-11-29 07:21:17 UTC -->
+
+<h1>Objectives</h1>
 
               </p>
               <a class="btn btn-primary btn-lg rounded-pill portfolio-modal-dismiss" href="#">
