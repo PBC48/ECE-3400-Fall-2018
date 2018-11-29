@@ -537,9 +537,9 @@ pre {
 }
 
 pre code {
-  font-size: inherit;
-  color: inherit;
-  word-break: normal;
+  font-size: 90%;
+  color: #d30b0bbd;;
+  word-break: break-word;
 }
 
 .pre-scrollable {
