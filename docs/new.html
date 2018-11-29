@@ -559,7 +559,7 @@ ADCSRA = 0xe5; // adc prescalar
                   The FFT libraries takes care of the actual calculations of frequencies from the analog input to FFT outputs. 
                   We had to take the necessary samples for the library to calculate:
                 </p>
-                <pre><code>
+                <pre ALIGN=LEFT><code>
 for (int i = 0 ; i < 512 ; i += 2) { // save 256 samples
     while(!(ADCSRA & 0x10)); // wait for adc to be ready
     ADCSRA = 0xf7; // restart adc
