@@ -671,7 +671,7 @@ digitalWrite<span style='color:#0000ff; '>(</span>LED<span style='color:#0000ff;
                 </p>
                 <iframe width="560" height="315" src="https://www.youtube.com/embed/JvM9OUa2xY0?controls=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
                 <h3>Optical</h3>
-                <h4>Initial Design</h4>
+                <h5>Initial Design</h5>
                 <p ALIGN=LEFT>We used the OP598A phototransistor to detect IR signals. The phototransistor was built exactly 
                 like the schemamtic from the lab, with a 1.8k reistor connected to 5V power supply and the 
                 photoresistor connected to ground. We first put that output into the oscilioscope and got the 
@@ -692,11 +692,11 @@ digitalWrite<span style='color:#0000ff; '>(</span>LED<span style='color:#0000ff;
                 around 150Hz per bin. Thus the 6.08kHz desired frequency is located at bin 40. Thus, all we have 
                 to call is
                 <br/>
-                <code ALIGN=LEFT>fft_log_out[40]; //fft_log_out is the strength of the signal converted to dB.</code>
+                <code ALIGN=LEFT>fft_log_out[40];</code>
                 <br/>
                 to get our readings.
                 </p>
-                <h4>Upgraded Design</h4>
+                <h5>Upgraded Design</h5>
                 <p ALIGN=LEFT>
                   The signal strength of the FFT at our desired bin was already strong but we wanted to implement 
                   noise filtering which means we need a filter. We also want to amplify the values in order to 
@@ -721,7 +721,7 @@ digitalWrite<span style='color:#0000ff; '>(</span>LED<span style='color:#0000ff;
                   and higher cuttoff frequency of 6.5kHz. The formula to calculate the cutoff frequency is 1/(2*pi*RC). 
                   This completes our bandpass filter.
                 </p>
-                <h4>Testing</h4>
+                <h5>Testing</h5>
                 <p ALIGN=LEFT>
                   For testing we started with unit tests by turning on the hat and holding it a certain distance from 
                   the phototransistor and check the output of the FFT printing to serial. We also implemented a blinking 
@@ -795,7 +795,8 @@ digitalWrite<span style='color:#0000ff; '>(</span>LED<span style='color:#0000ff;
                 <h3>Integration</h3>
                 <p ALIGN=LEFT>
                   <figure ALIGN=LEFT>
-                      <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab02/20181003_164149.jpg"/>
+                      <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab02/20181003_164149.jpg"
+                      width="500"/>
                       <font size="2">
                       <figcaption> <b>The IR sensor and microphone together!</b>
                       </figcaption>
@@ -816,62 +817,64 @@ digitalWrite<span style='color:#0000ff; '>(</span>LED<span style='color:#0000ff;
                   here, we continue to recording and running the FFT on the IR. If the IR surpasses its threshold 
                   (meaning a robot is detected), it writes to the serial monitor and goes back to the start. Else, it 
                   keeps recording IR. 
-                    <code>
-                        enum states{
-                            START,
-                            AUDIO_FFT,
-                            AUDIO_PROC,
-                            IR_FFT,
-                            IR_PROC
-                        };
-                        uint8_t state;
-                        void loop() {
+                    
+<pre ALIGN=LEFT style='color:#000000;background:#ffffff;'><span style='color:#0000ff; font-weight:bold; '>enum</span> states<span style='color:#0000ff; '>{</span>
+    START<span style='color:#0000ff; '>,</span>
+    AUDIO_FFT<span style='color:#0000ff; '>,</span>
+    AUDIO_PROC<span style='color:#0000ff; '>,</span>
+    IR_FFT<span style='color:#0000ff; '>,</span>
+    IR_PROC
+<span style='color:#0000ff; '>}</span><span style='color:#0000ff; '>;</span>
+uint8_t state<span style='color:#0000ff; '>;</span>
+<span style='color:#0000ff; font-weight:bold; '>void</span> loop<span style='color:#0000ff; '>(</span><span style='color:#0000ff; '>)</span> <span style='color:#0000ff; '>{</span>
 
-                            switch (state){   
-                                case START:
-                                    //check point
-                                    state = AUDIO_FFT; //next state
-                                    break;
-                                case AUDIO_FFT:
-                                    ADMUX = 0x40; // use adc0
-                                    /*
-                                        Some FFT array from ADC generating code....
-                                    */
-                                    state = AUDIO_PROC;
-                                    break;
+    <span style='color:#0000ff; font-weight:bold; '>switch</span> <span style='color:#0000ff; '>(</span>state<span style='color:#0000ff; '>)</span><span style='color:#0000ff; '>{</span>   
+        <span style='color:#0000ff; font-weight:bold; '>case </span><span style='color:#808080; font-weight:bold; '>START</span><span style='color:#e34adc; font-weight:bold; '>:</span>
+            <span style='color:#008000; '>//check point</span>
+            state <span style='color:#0000ff; '>=</span> AUDIO_FFT<span style='color:#0000ff; '>;</span> <span style='color:#008000; '>//next state</span>
+            <span style='color:#0000ff; font-weight:bold; '>break</span><span style='color:#0000ff; '>;</span>
+        <span style='color:#0000ff; font-weight:bold; '>case </span><span style='color:#808080; font-weight:bold; '>AUDIO_FFT</span><span style='color:#e34adc; font-weight:bold; '>:</span>
+            ADMUX <span style='color:#0000ff; '>=</span> <span style='color:#800000; '>0x40</span><span style='color:#0000ff; '>;</span> <span style='color:#008000; '>// use adc0</span>
+            <span style='color:#008000; '>/*</span>
+<span style='color:#008000; '>&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;Some FFT array from ADC generating code....</span>
+<span style='color:#008000; '>&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;*/</span>
+            state <span style='color:#0000ff; '>=</span> AUDIO_PROC<span style='color:#0000ff; '>;</span>
+            <span style='color:#0000ff; font-weight:bold; '>break</span><span style='color:#0000ff; '>;</span>
 
-                                case AUDIO_PROC:
-                                    /*
-                                        Processing FFT result code and check threshhold...
-                                    */
-                                    if(past_some_threshhold){
-                                        state = IR_PROC; //past threshhold so we move on
-                                    }else{
-                                        state = AUDIO_FFT; //recalculate FFT with new samples
-                                    }
-                                    break;
+        <span style='color:#0000ff; font-weight:bold; '>case </span><span style='color:#808080; font-weight:bold; '>AUDIO_PROC</span><span style='color:#e34adc; font-weight:bold; '>:</span>
+            <span style='color:#008000; '>/*</span>
+<span style='color:#008000; '>&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;Processing FFT result code and check threshhold...</span>
+<span style='color:#008000; '>&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;*/</span>
+            <span style='color:#0000ff; font-weight:bold; '>if</span><span style='color:#0000ff; '>(</span>past_some_threshhold<span style='color:#0000ff; '>)</span><span style='color:#0000ff; '>{</span>
+                state <span style='color:#0000ff; '>=</span> IR_PROC<span style='color:#0000ff; '>;</span> <span style='color:#008000; '>//past threshhold so we move on</span>
+            <span style='color:#0000ff; '>}</span><span style='color:#0000ff; font-weight:bold; '>else</span><span style='color:#0000ff; '>{</span>
+                state <span style='color:#0000ff; '>=</span> AUDIO_FFT<span style='color:#0000ff; '>;</span> <span style='color:#008000; '>//recalculate FFT with new samples</span>
+            <span style='color:#0000ff; '>}</span>
+            <span style='color:#0000ff; font-weight:bold; '>break</span><span style='color:#0000ff; '>;</span>
 
-                                case IR_FFT:
-                                    ADMUX = 0x41; // use adc1
-                                    /*
-                                        Some FFT array from ADC generating code....
-                                    */
-                                    state = IR_PROC;
-                                    break;
+        <span style='color:#0000ff; font-weight:bold; '>case </span><span style='color:#808080; font-weight:bold; '>IR_FFT</span><span style='color:#e34adc; font-weight:bold; '>:</span>
+            ADMUX <span style='color:#0000ff; '>=</span> <span style='color:#800000; '>0x41</span><span style='color:#0000ff; '>;</span> <span style='color:#008000; '>// use adc1</span>
+            <span style='color:#008000; '>/*</span>
+<span style='color:#008000; '>&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;Some FFT array from ADC generating code....</span>
+<span style='color:#008000; '>&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;*/</span>
+            state <span style='color:#0000ff; '>=</span> IR_PROC<span style='color:#0000ff; '>;</span>
+            <span style='color:#0000ff; font-weight:bold; '>break</span><span style='color:#0000ff; '>;</span>
 
-                                case IR_PROC:
-                                    /*
-                                        Processing FFT result code and check threshhold...
-                                    */
-                                    if(past_some_threshhold){
-                                        state = START; //past threshhold so we move on
-                                    }else{
-                                        state = IR_FFT; //recalculate FFT with new samples
-                                    }
-                                    break;
-                          }  
-                        }
-                    </code>
+        <span style='color:#0000ff; font-weight:bold; '>case </span><span style='color:#808080; font-weight:bold; '>IR_PROC</span><span style='color:#e34adc; font-weight:bold; '>:</span>
+            <span style='color:#008000; '>/*</span>
+<span style='color:#008000; '>&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;Processing FFT result code and check threshhold...</span>
+<span style='color:#008000; '>&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;*/</span>
+            <span style='color:#0000ff; font-weight:bold; '>if</span><span style='color:#0000ff; '>(</span>past_some_threshhold<span style='color:#0000ff; '>)</span><span style='color:#0000ff; '>{</span>
+                state <span style='color:#0000ff; '>=</span> START<span style='color:#0000ff; '>;</span> <span style='color:#008000; '>//past threshhold so we move on</span>
+            <span style='color:#0000ff; '>}</span><span style='color:#0000ff; font-weight:bold; '>else</span><span style='color:#0000ff; '>{</span>
+                state <span style='color:#0000ff; '>=</span> IR_FFT<span style='color:#0000ff; '>;</span> <span style='color:#008000; '>//recalculate FFT with new samples</span>
+            <span style='color:#0000ff; '>}</span>
+            <span style='color:#0000ff; font-weight:bold; '>break</span><span style='color:#0000ff; '>;</span>
+    <span style='color:#0000ff; '>}</span>  
+<span style='color:#0000ff; '>}</span>
+</pre>
+<!--Created using ToHtml.com on 2018-11-29 06:17:21 UTC -->
+                 
                 </p>
                 <h3>Conclusion</h3>
                 <p ALIGN=LEFT>
@@ -965,7 +968,7 @@ digitalWrite<span style='color:#0000ff; '>(</span>LED<span style='color:#0000ff;
                     The goal is to build a good foundation for the robot structure so that we have enough space
                     and organization later on as the robot becomes more complex.
                   </p>
-                <h4>Chassis Upgrade</h4>
+                <h5>Chassis Upgrade</h5>
                   <p ALIGN=LEFT>
                     We added a second level to the robot’s chassis to support our battery, the arduino, 
                     and a breadboard for our circuits. This second level allows us to mount the battery in a secure 
@@ -997,7 +1000,7 @@ digitalWrite<span style='color:#0000ff; '>(</span>LED<span style='color:#0000ff;
                   securely and reliably attach electrical components to the board. We also plan to attach the breadboard 
                   more securely to the chassis, and will organize the wiring better especially as we add more components.
                 </p>
-                <h4>Line Sensor Update</h4>
+                <h5>Line Sensor Update</h5>
                 <p ALIGN=LEFT>
                   We used QRE1113 line sensors, which work by transmitting and then detecting IR light that reflects back 
                   to a phototransistor on the sensor. These sensors are mounted at the front of the robot facing downward, 
@@ -1016,7 +1019,7 @@ digitalWrite<span style='color:#0000ff; '>(</span>LED<span style='color:#0000ff;
                   </figcaption>
                   </font>
                 </figure>
-                <h4>Circuit</h4>
+                <h5>Circuit</h5>
                 <p ALIGN=LEFT>
                   Our final circuit with the sensors looked like this:
                 </p>
@@ -1033,7 +1036,7 @@ digitalWrite<span style='color:#0000ff; '>(</span>LED<span style='color:#0000ff;
                   for abstracting away some of the robot functions such as servo speed for robot forward movement and turning, 
                   which will be useful as we develop more complex algorithms to solve difficult problems later on. 
                 </p>
-                <h4>The Line Sensor</h4>
+                <h5>The Line Sensor</h5>
                 <p ALIGN=LEFT>
                   We tried to use the <code>analogRead()</code> function to read input values from the sensors corresponding to 
                   the darkness of the surface, but the numbers we read were illogical and unuseable. Instead, we used 
@@ -1071,7 +1074,7 @@ digitalWrite<span style='color:#0000ff; '>(</span>LED<span style='color:#0000ff;
                   </code>
                 </pre>
                 </p>
-                <h4>Follow the Line</h4>
+                <h5>Follow the Line</h5>
                 <p ALIGN=LEFT>
                   To follow the line, we used simple <code>if</code> statements to adjust the robot’s path. 
                   The two line sensors detected when the robot moved too far off-center of the white 
@@ -1107,7 +1110,7 @@ digitalWrite<span style='color:#0000ff; '>(</span>LED<span style='color:#0000ff;
                   and move the other to create a turning motion. Moving forward, we want to smooth the 
                   robot's readjustment so that it will not lose too much speed when readjusting.
                 </p>
-                <h4>Figure-8</h4>
+                <h5>Figure-8</h5>
                 <p ALIGN=LEFT>
                   To implement a figure-8 path, we built off the line-following code and added a conditional 
                   checking when both sensors hit a white line at an intersection.  Using an array, we created 
