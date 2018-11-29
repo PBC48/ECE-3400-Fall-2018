@@ -1077,10 +1077,51 @@ radio<span style='color:#0000ff; '>.</span>stopListening<span style='color:#0000
 <span style='color:#0000ff; font-weight:bold; '>break</span><span style='color:#0000ff; '>;</span>
 </pre>
 <!--Created using ToHtml.com on 2018-11-29 07:21:17 UTC -->
+<p>Once the logic is set in place, we print the required values to the monitor so that the GUI can pick it up. We call ```python main.py COM# --rows 3 --cols 2``` for a 3x2 maze</p>
 
-<h1>Objectives</h1>
+<figure>
+        <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab03/maze.PNG" width="400"/>
+        <font size="2">
+        <figcaption> <b> GUI of the 3x2 Maze </b>
+        </figcaption>
+        </font>
+    </figure>
+<p>There is a missing wall that the robot hasn't explored  wall yet because the robot starts facing away from the wall.</p>
+<h1>Robot Integration</h1>
+<p>The robot subteam’s task was to integrate all the pieces we’ve been working on into one cohesive system. A fair amount of this had already been completed for Milestone 2. What remained was to add the functionality to starting at a 660 Hz tone, as well as sending signals between radios to the base station. We also had to integrate all the necessary hardware onto the robot.</p>
+<figure>
+        <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab03/IMG_0386.jpg" width="800"/>
+        <font size="2">
+        <figcaption> <b> Adding the Radio to the Robot </b>
+        </figcaption>
+        </font>
+    </figure>              
 
-              </p>
+<h3>Robot State Machine</h3>
+<figure>
+        <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab03/FSM.PNG" width="800"/>
+        <font size="2">
+        <figcaption> <b> State Machine for the Robot </b>
+        </figcaption>
+        </font>
+    </figure>
+
+<h3>Integration with Mic</h3>
+<p>In order to make the robot start exploring the maze when we play the 660Hz tone, as it will in the actual competition, we added the audio portion of lab 2 onto the robot. We moved the circuitry and microphone onto the robot’s breadboard and connected the output signal to the Arduino.</p>
+<p>We had previously been having trouble with the range of our 660Hz tone detection -- the microphone was only able to distinguish it from background noise when we played the tone from our phone's speaker about an inch away. We learned that if we unplugged the power from our wall sensors our results improved significantly, presumably because this gave more power to the microphone and allowed it to better pick up audio signals. To solve this problem, we decided to move the microphone power to the arduino, while keeping the wall sensor power on the main breadboard circuit powered by the battery.</p>
+
+<h3>Robot Navigation through the maze</h3>
+<p>Since we had already implemented a left-wall-following rule in milestone 2, our navigation implementation was already complete, and we did not have to change any of our code involving our wall and line sensors or turning conditionals. </p>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/zy4pa3PNozo" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/yrcaZHm1hLk" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+<h3>Integration with Radio</h3>
+<p>For the integration with the radio, we decided to do most of the decoding and data processing on the base station and off the robot system because we are already running low on memory and we can delegate some of the maze processing to the base station and have it send back a response. The robot only needs to send the readings from its wall sensors, treasure detection, and direction it intents to move. The base station will take the data and come up with absolute coordinates and wall locations based on robots previous locations. The base station can then update the GUI accordingly.</p>
+
+<h1>Conclusion</h1>
+<p>Overall, Lab 3 proved to be quite a challenge. We learned a lot about wireless communication, bit optimization, and integration and testing. With the addition of new components, we needed to better optimize the circuit layout on our robot and the power supplies for each component. Through the <i>frustration</i> of component faults and other issues, we’ve learned how to better debug our problems.</p>
+
+</p>
               <a class="btn btn-primary btn-lg rounded-pill portfolio-modal-dismiss" href="#">
                 <i class="fa fa-close"></i>
                 Close Project</a>
