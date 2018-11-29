@@ -907,10 +907,44 @@ uint8_t state<span style='color:#0000ff; '>;</span>
         <div class="container text-center">
           <div class="row">
             <div class="col-lg-6 mx-auto">
-              <h2 class="text-secondary text-uppercase mb-0">Lab 3</h2>
+              <h2 class="text-secondary text-uppercase mb-0">Lab 3: System Integration and Radio Communication</h2>
               <hr class="star-dark mb-5">
               <img class="img-fluid mb-5" src="images/bootstrap/lab3-bootstrap.png" alt="">
-              <p class="mb-5">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Mollitia neque assumenda ipsam nihil, molestias magnam, recusandae quos quis inventore quisquam velit asperiores, vitae? Reprehenderit soluta, eos quod consequuntur itaque. Nam.</p>
+              <p class="mb-5">
+                <h1>Objectives</h1>
+<u1 ALIGN=LEFT>
+<li>Design an efficient data scheme to store all maze information on an Arduino</li>
+<li>Familiarize ourselves with Nordic radio transceivers and the RF24 Arduino library in order to communicate between radios on two different Arduinos and send maze information wirelessly
+</li>
+<li>Communicate with the GUI and update it from a wirelessly connected Arduino to display explored vs. unexplored areas of the maze
+</li>
+<li>Fully integrate all components onto the robot so it starts on a 660 Hz tone, explores the entire maze, stops if it sees another robot but ignores decoys, and displays maze information on the GUI via radio communication with the base station
+</li>
+</u1>
+
+            <h1>Introduction</h1>
+                <p>
+                        For this lab we integrated all of the robot’s capabilities that we had previously implemented into a cohesive system that communicates wirelessly with the provided GUI.  We first worked on creating an algorithm that would efficiently store all the information our robot detects as it navigates through the maze.  Next, one subteam (Patrick and Chrissy) worked on adding the radio component to the robot, setting up the two Nordic nRF24L01+ transceivers that we would use to communicate wirelessly between two Arduinos, one on the robot and one on a base station connected to the GUI.  Meanwhile the other subteam (Tara and Xiaoyu) integrated all the robot’s other functionalities: starting on detection of a 660 Hz tone, line following, wall detection, and detection of other robots while ignoring decoys. At the end of the lab we combined all of the work so that the robot can autonomously explore the maze and update the GUI in real time.
+                </p>
+            <h1>Radio</h1>
+                <p>For the radio portion of the lab we implemented two Nordic nRF24l01+ transceivers. To test out the connection between the two radios, we ran the example “GettingStarted” code on two separate Arduinos with radios attatched, ensuring proper communication. After that, we integrated other radios onto the "base station" (an Arduino connected to a computer) and the Arduino on the robot. Since the Arduino does have a 3.3V power supply, we needed to implement a 3.3V voltage regulator for each radio to step down to the appropriate power. This adjustment from our previous strategy, using  3.3V from a DC power supply, made the radios more portable.</p>
+                <p>Coding the radio involved setting the correct pipes to send our messages through the radio. Our team was assigned pin values  <code>const uint64_t pipes[2] = { 0x0000000014LL, 0x0000000015LL };</code> to avoid conflicts with other teams' radios. The transmitter writes to pipe 0x14 while reading from pipe 0x15; the receiver reads and writes the other way around. The RF24 library abstracts many of the complexities of radio transmission so that we only need to call some prewritten functions to send messages with the radio.</p>
+                <p>To transmit, we call <code>radio.write( &buff, sizeof(buff) )</code>, where the buffer can be an integer. </p>
+                <p>After writing, the transmitter has the option to hear back from the receiver, as shown in the code shown below. This allows us to confirm that the radio has delivered its package correctly, as well as send feedback between the robot and the base station.</p>
+                <p>
+<pre ALIGN=LEFT style='color:#000000;background:#ffffff;'>radio<span style='color:#0000ff; '>.</span>startListening<span style='color:#0000ff; '>(</span><span style='color:#0000ff; '>)</span><span style='color:#0000ff; '>;</span>
+uint16_t buffer<span style='color:#0000ff; '>;</span> 
+radio<span style='color:#0000ff; '>.</span>read<span style='color:#0000ff; '>(</span> <span style='color:#0000ff; '>&amp;</span>buffer<span style='color:#0000ff; '>,</span> <span style='color:#0000ff; font-weight:bold; '>sizeof</span><span style='color:#0000ff; '>(</span>buffer<span style='color:#0000ff; '>)</span> <span style='color:#0000ff; '>)</span><span style='color:#0000ff; '>;</span>
+radio<span style='color:#0000ff; '>.</span>stopListening<span style='color:#0000ff; '>(</span><span style='color:#0000ff; '>)</span><span style='color:#0000ff; '>;</span>
+</pre>
+<!--Created using ToHtml.com on 2018-11-29 06:37:48 UTC -->
+                </p>
+            <h3>Sending Maze Information Between Arduinos</h3>
+                <h5>Data Structure</h5>
+                <h3>Simulating the Robot</h3>
+                <h1>Objectives</h1>
+
+              </p>
               <a class="btn btn-primary btn-lg rounded-pill portfolio-modal-dismiss" href="#">
                 <i class="fa fa-close"></i>
                 Close Project</a>
