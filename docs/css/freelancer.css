@@ -355,6 +355,10 @@ a:focus, a:hover, a:active {
   background-color: #F3F93B !important;
 }
 
+.bg-tertary {
+  background-color: #17ea56;
+}
+
 .text-primary {
   color: #0fc144 !important;
 }
