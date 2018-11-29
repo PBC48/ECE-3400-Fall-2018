@@ -938,11 +938,92 @@ radio<span style='color:#0000ff; '>.</span>read<span style='color:#0000ff; '>(</
 radio<span style='color:#0000ff; '>.</span>stopListening<span style='color:#0000ff; '>(</span><span style='color:#0000ff; '>)</span><span style='color:#0000ff; '>;</span>
 </pre>
 <!--Created using ToHtml.com on 2018-11-29 06:37:48 UTC -->
+<!--DONT INDENT; that will ruin the formatting-->
                 </p>
             <h3>Sending Maze Information Between Arduinos</h3>
-                <h5>Data Structure</h5>
-                <h3>Simulating the Robot</h3>
-                <h1>Objectives</h1>
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/flzf6dUwdMM?controls=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                <p>The two byte communication message that the robot sends to the base station is structured like this:</p>
+<pre ALIGN=LEFT style='color:#000000;background:#ffffff;'> <span style='color:#800000; '>15</span>                  <span style='color:#800000; '>9</span> <span style='color:#800000; '>8</span>     <span style='color:#800000; '>7</span>    <span style='color:#800000; '>6</span> <span style='color:#800000; '>5</span>       <span style='color:#800000; '>3</span> <span style='color:#800000; '>2</span>       <span style='color:#800000; '>0</span>
+<span style='color:#0000ff; '>+</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>+</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>+</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>+</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>+</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>+</span>
+<span style='color:#0000ff; '>|</span> Reserved            <span style='color:#0000ff; '>|</span>ROBOT<span style='color:#0000ff; '>|</span>DIR   <span style='color:#0000ff; '>|</span>TREASURE <span style='color:#0000ff; '>|</span> WALLS   <span style='color:#0000ff; '>|</span>
+<span style='color:#0000ff; '>+</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>+</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>+</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>+</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>+</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>+</span>
+</pre>
+<!--Created using ToHtml.com on 2018-11-29 06:40:57 UTC -->
+<p>[2:0]  We reserve three bits for detecting walls. The position of the walls 
+        will be relative to the robot. </p>            
+<table>
+            <tr>
+                <th style="background-color: yellow">bits[2:0]</th>
+                <th style="background-color: yellow">Wall Locations</th>
+            </tr>
+            <tr>
+                <td>000</td>
+                <td >left_wall, front_wall, right_wall = false</td>
+            </tr>
+            <tr>
+                <td>001</td>
+                <td>left_wall = true</td>
+            </tr>
+            <tr>
+                <td>010</td>
+                <td>front_wall = true</td>
+            </tr>
+            <tr>
+                <td>011</td>
+                <td>left_wall, front_wall = true</td>
+            </tr>
+            <tr>
+                <td>100</td>
+                <td>right_wall = true</td>
+            </tr>
+            <tr>
+                <td>101</td>
+                <td>left_wall, right_wall = true</td>
+            </tr>
+            <tr>
+                <td>110</td>
+                <td>left_wall, front_wall = true</td>
+            </tr>
+            <tr>
+                <td>111</td>
+                <td>left_wall, front_wall, right_wall = true</td>
+            </tr>
+
+            </table>
+
+            <p>[5:3]  We reserve three bits for the treasure since there will be three shapes and 
+                    two colors, giving us four options, and we also need to define when there is no 
+                    treasure. Total, we have five options.</p>
+
+            <p>[7:6]  The direction the robot has decided to take after hitting the                 intersection</p>
+            
+            <table>
+                    <tr>
+                        <th style="background-color: yellow">bits[7:6]</th>
+                        <th style="background-color: yellow">Directions</th>
+                    </tr>
+                    <tr>
+                        <td>0</td>
+                        <td>forward</td>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td>right</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>left</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>reverse</td>
+                    </tr>
+                    </table>
+                
+            
+        <h5>Data Structure</h5>
+        <h3>Simulating the Robot</h3>
+        <h1>Objectives</h1>
 
               </p>
               <a class="btn btn-primary btn-lg rounded-pill portfolio-modal-dismiss" href="#">
