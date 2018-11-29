@@ -34,7 +34,7 @@ void loop() {
     }
     fft_window(); // window the data for better frequency response
     fft_reorder(); // reorder the data before doing the fft
-    fft_run(); // process the data in the fft
+    fft_run(); // process the data  in the fft
     fft_mag_log(); // take the output of the fft
     sei();   
     

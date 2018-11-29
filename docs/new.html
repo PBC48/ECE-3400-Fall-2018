@@ -551,33 +551,32 @@
                 </p>
                 <pre ALIGN=LEFT>
                   <code>
-                    ADMUX = 0x40; // use adc0
-                    ADCSRA = 0xe5; // adc prescalar
+ADMUX = 0x40; // use adc0
+ADCSRA = 0xe5; // adc prescalar
                   </code>
                 </pre>
                 <p ALIGN=LEFT>
                   The FFT libraries takes care of the actual calculations of frequencies from the analog input to FFT outputs. 
                   We had to take the necessary samples for the library to calculate:
                 </p>
-                <pre>
-                  <code>
-                    for (int i = 0 ; i < 512 ; i += 2) { // save 256 samples
-                        while(!(ADCSRA & 0x10)); // wait for adc to be ready
-                        ADCSRA = 0xf7; // restart adc
-                        byte m = ADCL; // fetch adc data
-                        byte j = ADCH;
-                        int k = (j << 8) | m; // form into an int
-                        k -= 0x0200; // form into a signed int
-                        k <<= 6; // form into a 16b signed int
-                        fft_input[i] = k; // put real data into even bins
-                        fft_input[i+1] = 0; // set odd bins to 0
-                    }
-                    fft_window(); // window the data for better frequency response
-                    fft_reorder(); // reorder the data before doing the fft
-                    fft_run(); // process the data in the fft
-                    fft_mag_log(); // take the output of the fft
-                  </code>
-                </pre>
+<pre style='color:#000000;background:#ffffff;'><span style='color:#0000ff; font-weight:bold; '>for</span> <span style='color:#0000ff; '>(</span><span style='color:#0000ff; font-weight:bold; '>int</span> i <span style='color:#0000ff; '>=</span> <span style='color:#800000; '>0</span> <span style='color:#0000ff; '>;</span> i <span style='color:#0000ff; '>&lt;</span> <span style='color:#800000; '>512</span> <span style='color:#0000ff; '>;</span> i <span style='color:#0000ff; '>+</span><span style='color:#0000ff; '>=</span> <span style='color:#800000; '>2</span><span style='color:#0000ff; '>)</span> <span style='color:#0000ff; '>{</span> <span style='color:#008000; '>// save 256 samples</span>
+    <span style='color:#0000ff; font-weight:bold; '>while</span><span style='color:#0000ff; '>(</span><span style='color:#0000ff; '>!</span><span style='color:#0000ff; '>(</span>ADCSRA <span style='color:#0000ff; '>&amp;</span> <span style='color:#800000; '>0x10</span><span style='color:#0000ff; '>)</span><span style='color:#0000ff; '>)</span><span style='color:#0000ff; '>;</span> <span style='color:#008000; '>// wait for adc to be ready</span>
+    ADCSRA <span style='color:#0000ff; '>=</span> <span style='color:#800000; '>0xf7</span><span style='color:#0000ff; '>;</span> <span style='color:#008000; '>// restart adc</span>
+    byte m <span style='color:#0000ff; '>=</span> ADCL<span style='color:#0000ff; '>;</span> <span style='color:#008000; '>// fetch adc data</span>
+    byte j <span style='color:#0000ff; '>=</span> ADCH<span style='color:#0000ff; '>;</span>
+    <span style='color:#0000ff; font-weight:bold; '>int</span> k <span style='color:#0000ff; '>=</span> <span style='color:#0000ff; '>(</span>j <span style='color:#0000ff; '>&lt;</span><span style='color:#0000ff; '>&lt;</span> <span style='color:#800000; '>8</span><span style='color:#0000ff; '>)</span> <span style='color:#0000ff; '>|</span> m<span style='color:#0000ff; '>;</span> <span style='color:#008000; '>// form into an int</span>
+    k <span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>=</span> <span style='color:#800000; '>0x0200</span><span style='color:#0000ff; '>;</span> <span style='color:#008000; '>// form into a signed int</span>
+    k <span style='color:#0000ff; '>&lt;</span><span style='color:#0000ff; '>&lt;</span><span style='color:#0000ff; '>=</span> <span style='color:#800000; '>6</span><span style='color:#0000ff; '>;</span> <span style='color:#008000; '>// form into a 16b signed int</span>
+    fft_input<span style='color:#0000ff; '>[</span>i<span style='color:#0000ff; '>]</span> <span style='color:#0000ff; '>=</span> k<span style='color:#0000ff; '>;</span> <span style='color:#008000; '>// put real data into even bins</span>
+    fft_input<span style='color:#0000ff; '>[</span>i<span style='color:#0000ff; '>+</span><span style='color:#800000; '>1</span><span style='color:#0000ff; '>]</span> <span style='color:#0000ff; '>=</span> <span style='color:#800000; '>0</span><span style='color:#0000ff; '>;</span> <span style='color:#008000; '>// set odd bins to 0</span>
+<span style='color:#0000ff; '>}</span>
+fft_window<span style='color:#0000ff; '>(</span><span style='color:#0000ff; '>)</span><span style='color:#0000ff; '>;</span> <span style='color:#008000; '>// window the data for better frequency response</span>
+fft_reorder<span style='color:#0000ff; '>(</span><span style='color:#0000ff; '>)</span><span style='color:#0000ff; '>;</span> <span style='color:#008000; '>// reorder the data before doing the fft</span>
+fft_run<span style='color:#0000ff; '>(</span><span style='color:#0000ff; '>)</span><span style='color:#0000ff; '>;</span> <span style='color:#008000; '>// process the data in the fft</span>
+fft_mag_log<span style='color:#0000ff; '>(</span><span style='color:#0000ff; '>)</span><span style='color:#0000ff; '>;</span> <span style='color:#008000; '>// take the output of the fft</span>
+</pre>
+                <!--Created using ToHtml.com on 2018-11-29 05:19:02 UTC -->
+                <!--Created using ToHtml.com on 2018-11-29 05:16:49 UTC -->
                 <p ALIGN=LEFT>
                   Once this is down we can grab our data using<br/><code>fft_log_out</code><br/>
                   which hosts the stored data in bins with a specific frequency range per bin.
@@ -662,13 +661,13 @@
                   As a finishing touch, we created a placeholder “robot start” function by lighting an LED whenever 
                   the 660Hz tone was detected, which we did by setting a threshold intensity value for bin 19 as shown 
                   in the following code:
-                    <code>
+                    <pre><code>
                       if(fft_log_out[18] > 90){
                         digitalWrite(LED,HIGH);
                       } else {
                         digitalWrite(LED,LOW);
                       }
-                    </code>
+                    </code></pre>
                   A demonstration of this detection is shown in the following video:
                 </p>
                 <iframe width="560" height="315" src="https://www.youtube.com/embed/JvM9OUa2xY0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
