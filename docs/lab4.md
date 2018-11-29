@@ -190,7 +190,7 @@ To get the color bar to display, we must set the appropriate registers in the Ca
     </font>
 </figure>
 
-The colors in the bar are different from the example in the lab but when we use the camera to capture, we found that the colors where passable. Thus, the colors where not a huge issue.
+The colors in the bar are different from the example in the lab but when we use the camera to capture, we found that the colors were passable and would not pose a huge issue.
 
 
 #### Display Camera Capture
