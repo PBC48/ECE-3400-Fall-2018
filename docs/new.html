@@ -949,7 +949,7 @@ radio<span style='color:#0000ff; '>.</span>stopListening<span style='color:#0000
 <span style='color:#0000ff; '>+</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>+</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>+</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>+</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>+</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>+</span>
 </pre>
 <!--Created using ToHtml.com on 2018-11-29 06:40:57 UTC -->
-<p>[2:0]  We reserve three bits for detecting walls. The position of the walls 
+<p ALIGN=LEFT><code>[2:0]</code>  We reserve three bits for detecting walls. The position of the walls 
         will be relative to the robot. </p>    
         <style>
                 table, th, td {
@@ -996,11 +996,11 @@ radio<span style='color:#0000ff; '>.</span>stopListening<span style='color:#0000
 
             </table>
 
-            <p>[5:3]  We reserve three bits for the treasure since there will be three shapes and 
+            <p ALIGN=LEFT><code>[5:3]</code>  We reserve three bits for the treasure since there will be three shapes and 
                     two colors, giving us four options, and we also need to define when there is no 
                     treasure. Total, we have five options.</p>
 
-            <p>[7:6]  The direction the robot has decided to take after hitting the                 intersection</p>
+            <p ALIGN=LEFT><code>[7:6]</code>  The direction the robot has decided to take after hitting the                 intersection</p>
             
             <table>
                     <tr>
@@ -1024,9 +1024,9 @@ radio<span style='color:#0000ff; '>.</span>stopListening<span style='color:#0000
                         <td>reverse</td>
                     </tr>
                     </table>
-                <p>[8]    Robot detection</p>
-                <p>[9]    Valid message</p>
-                <p>[15:10] Reserved for potentially later usage. Allows filled with zeros.</p>
+                <p ALIGN=LEFT><code>[8]</code>    Robot detection</p>
+                <p ALIGN=LEFT><code>[9]</code>    Valid message</p>
+                <p ALIGN=LEFT><code>[15:10]</code> Reserved for potentially later usage. Allows filled with zeros.</p>
             <p>The one byte communication message that the base station sends back to the robot is structured like this:</p>
 <pre ALIGN=LEFT style='color:#000000;background:#ffffff;'> <span style='color:#800000; '>7</span>           <span style='color:#800000; '>4</span> <span style='color:#800000; '>3</span>          <span style='color:#800000; '>0</span>
 <span style='color:#0000ff; '>+</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>+</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>+</span>
@@ -1035,10 +1035,11 @@ radio<span style='color:#0000ff; '>.</span>stopListening<span style='color:#0000
 </pre>
 <!--Created using ToHtml.com on 2018-11-29 06:56:30 UTC -->
         
-<p>[3:0]  Three bits for whether the relative locations next to the robot has 
+<p ALIGN=LEFT><code>[3:0]</code>  Three bits for whether the relative locations next to the robot has 
         been explored or not</p>
-        <p>[7:4]  Reserved for later usage. Allows filled with zeros</p>
+        <p ALIGN=LEFT><code>[7:4]</code>  Reserved for later usage. Allows filled with zeros</p>
         <p>The message sent back to the robot allows the robot to make decisions based on the state of the maze. The robot can make decisions based on whether the locations near it have been explored or not. This can affect which direction the robot turns in an intersection. This comes at a cost of implementing additional decoders for the robot on the system.</p>
+       
         <h5>Data Structure</h5>
         <h3>Simulating the Robot</h3>
         <h1>Objectives</h1>
