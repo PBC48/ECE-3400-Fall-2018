@@ -950,7 +950,12 @@ radio<span style='color:#0000ff; '>.</span>stopListening<span style='color:#0000
 </pre>
 <!--Created using ToHtml.com on 2018-11-29 06:40:57 UTC -->
 <p>[2:0]  We reserve three bits for detecting walls. The position of the walls 
-        will be relative to the robot. </p>            
+        will be relative to the robot. </p>    
+        <style>
+                table, th, td {
+                    border: 1px solid rgb(7, 214, 24);
+                }
+            </style>        
 <table>
             <tr>
                 <th style="background-color: yellow">bits[2:0]</th>
@@ -1019,8 +1024,17 @@ radio<span style='color:#0000ff; '>.</span>stopListening<span style='color:#0000
                         <td>reverse</td>
                     </tr>
                     </table>
-                
-            
+                <p>[8]    Robot detection</p>
+                <p>[9]    Valid message</p>
+                <p>[15:10] Reserved for potentially later usage. Allows filled with zeros.</p>
+            <p>The one byte communication message that the base station sends back to the robot is structured like this:</p>
+<pre ALIGN=LEFT style='color:#000000;background:#ffffff;'> <span style='color:#800000; '>7</span>           <span style='color:#800000; '>4</span> <span style='color:#800000; '>3</span>          <span style='color:#800000; '>0</span>
+<span style='color:#0000ff; '>+</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>+</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>+</span>
+<span style='color:#0000ff; '>|</span>Reserved     <span style='color:#0000ff; '>|</span> EXPLORED   <span style='color:#0000ff; '>|</span>
+<span style='color:#0000ff; '>+</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>+</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>-</span><span style='color:#0000ff; '>+</span>
+</pre>
+<!--Created using ToHtml.com on 2018-11-29 06:56:30 UTC -->
+        
         <h5>Data Structure</h5>
         <h3>Simulating the Robot</h3>
         <h1>Objectives</h1>
