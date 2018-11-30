@@ -204,16 +204,16 @@ void print_robot_state(){
 
   switch(robot_dir){
     case 0:
-      Serial.println("direction: north");
+      Serial.println(F("direction: north"));
       break;
     case 1:
-      Serial.println("direction: east");
+      Serial.println(F("direction: east"));
       break;
     case 2:
-      Serial.println("direction: south");
+      Serial.println(F("direction: south"));
       break;
     case 3:
-      Serial.println("direction: west");
+      Serial.println(F("direction: west"));
       break;
   }
 }

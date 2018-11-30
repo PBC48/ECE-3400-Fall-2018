@@ -45,7 +45,7 @@ void set_mux_select(byte device)
       break;
 
     default:
-      Serial.println("Mux not set");
+      Serial.println(F("Mux not set"));
       break;
   }
   delay(1); //1 to be safe? (0.5 = 500ns)

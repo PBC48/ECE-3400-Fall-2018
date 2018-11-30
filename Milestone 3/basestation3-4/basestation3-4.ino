@@ -24,9 +24,6 @@ int cols = 9;
 //int x = 0;
 //int y = 0;
 
-uint16_t * queue;
-int queue_size = 20;
-int queue_counter = 0;
 // Radio pipe addresses for the 2 nodes to communicate.
 const uint64_t pipes[2] = {0x0000000014LL, 0x0000000015LL};
 
@@ -92,9 +89,7 @@ void setup(void)
     //
     // Dump the configuration of the rf unit for debugging
     //
-    //radio.printDetails();
-    robot_direction = unknown;
-    queue = new uint16_t[queue_size];
+    radio.printDetails();
 }
 
 void loop(void)
@@ -113,10 +108,11 @@ void loop(void)
 
             // Spew it
             printf("Got payload %d...\n", buff);
+            GUI_com(buff);
         }
         
     }
-    GUI_com(buff);
+    
 }
 
 void GUI_com(int buff){

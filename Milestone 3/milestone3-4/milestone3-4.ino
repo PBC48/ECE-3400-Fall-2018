@@ -32,6 +32,7 @@ enum states : uint8_t
     TRANSMIT
 };
 
+bool radio_msg_valid;
 uint8_t STATE;
 uint32_t u32wait;
 uint32_t u32wait_ir;
@@ -48,7 +49,7 @@ void send_to_baseStation()
     line_sensor_detach();
     while(!radio_transmit(radio_msg));
     line_sensor_init();
-    radio_msg = radio_msg & 0x1FF;
+    radio_msg_valid = false;
 }
 
 
@@ -69,7 +70,8 @@ void setup() {
     robot_pos = 0x08; //x=0,y=8
     robot_dir = 2; //down
     Serial.println("INITIAL STATE");
-    print_robot_state;
+    // print_robot_state;
+    radio_msg_valid = false;
 }
 
 void loop()
@@ -167,19 +169,19 @@ void loop()
             if((FRONTWALL < 100) && (!is_explored(0))) 
             {
               dir = 0;
-              Serial.println("Go Forward");
+              Serial.println(F("Go Forward"));
               vcount++;
             } 
             else if ((RIGHTWALL < 100) && (!is_explored(1))) 
             {
               dir = 1;
-              Serial.println("Turn Right");
+              Serial.println(F("Turn Right"));
               vcount++;
             } 
             else if ((LEFTWALL < 100) && (!is_explored(3))) 
             {
               dir = 3;
-              Serial.println("Turn Left");
+              Serial.println(("Turn Left"));
               vcount++;
               //visited.push(robot_pos); // add robot_pos to stack
             } 
@@ -189,7 +191,7 @@ void loop()
               dir = go_to(next_pos);
               //dir = 2;
               //Serial.println("Turn Around");
-              Serial.println("Backtrack");
+              Serial.println(F("Backtrack"));
               vcount = visited_array[(next_pos>>4) & 0x0f][(next_pos) & 0x0f];
             }
             // Check when and how vcount is set
@@ -251,7 +253,7 @@ void loop()
             {
                 STATE = IR_DECT;
             }
-            else if ((radio_msg >> 9) & 0x1)
+            else if (radio_msg_valid)
             {
                 STATE = TRANSMIT;
             }
@@ -297,7 +299,6 @@ void loop()
         break;
 
     case TRANSMIT:
-        //radio_transmit(radio_msg);
         send_to_baseStation();
         
         STATE = ROBOT_SENSE;
