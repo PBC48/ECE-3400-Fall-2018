@@ -66,8 +66,8 @@ void setup() {
         visited_array[i][j] = 0;
       }
     }
-    robot_pos = 0x00; //x=0,y=0
-    robot_dir = 1; //right
+    robot_pos = 0x08; //x=0,y=8
+    robot_dir = 2; //down
     Serial.println("INITIAL STATE");
     print_robot_state;
 }
@@ -92,7 +92,7 @@ void loop()
         calculate_FFT(MIC);
         Serial.print(F("AUDIO SUM: "));
         Serial.println(sum);
-        if ((sum > 155) || (!digitalRead(BUTTON)) )
+        if ((sum > 150) || (!digitalRead(BUTTON)) )
         {
             Serial.println(F("660Hz Tone Detected"));
             STATE = IR_DECT;
@@ -102,7 +102,7 @@ void loop()
         {
             STATE = AUDIO_DECT;
         }
-        STATE = IR_DECT;
+        //STATE = IR_DECT;
         //radio_msg = millis();
         //radio_transmit(radio_msg);
         break;
@@ -220,8 +220,8 @@ void loop()
 
             // TRANSMIT TO BASESTATION
             //radio_msg = millis();
-            radio_msg = 0x3FF & ((1 << 9) | radio_msg |                                              //setting valid bit.
-                                  (dir << 6) | ((LEFTWALL > 115)) | (FRONTWALL > 115)<<1)| ((RIGHTWALL > 115)<<2);
+            radio_msg = 0xFFFF & (robot_pos << 8 |                                              //setting valid bit.
+                                  ((uint8_t)robot_dir << 6) | ((LEFTWALL > 115)) | (FRONTWALL > 115)<<1)| ((RIGHTWALL > 115)<<2);
             /*completely re-work basestation communication?
               make sure dir in basestation is FRBL */
 
