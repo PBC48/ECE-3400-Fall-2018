@@ -1,3 +1,5 @@
+// NOTE: This file is very different from Xiao's original maze.h
+
 
 uint8_t robot_pos; // robot's current position; [7:4] x, [3:0] y
 uint8_t next_pos;
