@@ -67,8 +67,8 @@ void setup() {
         visited_array[i][j] = 0;
       }
     }
-    robot_pos = 0x08; //x=0,y=8
-    robot_dir = 2; //down
+    robot_pos = 0x00; //x=0,y=8
+    robot_dir = 1; //down
     Serial.println("INITIAL STATE");
     // print_robot_state;
     radio_msg_valid = false;
@@ -137,7 +137,7 @@ void loop()
         //Serial.print(F("SENSOR_R READING: "));Serial.println(SENSOR_R_READING);
         //Serial.print(F("SENSOR_L READING: "));Serial.println(SENSOR_L_READING);
             
-        if (AVERAGE_L < 200 && AVERAGE_R < 200 && VALID_L && VALID_R)
+        if (AVERAGE_L < 250 && AVERAGE_R < 250 && VALID_L && VALID_R)
         {
             Serial.print(F("SENSOR_R READING: "));
             Serial.println(AVERAGE_R);
@@ -146,7 +146,9 @@ void loop()
             Serial.println(F("In intersection"));
             
             radio_msg = 0;
-
+            robot_move(rstop);
+            servo_detach();
+            line_sensor_detach();
             // READ WALL SENSORS
             set_mux_select(2);
             FRONTWALL = analogRead(MUX_OUT);
@@ -216,10 +218,7 @@ void loop()
                 break;
             }
             
-            // UPDATE ROBOT INFO VARIABLES
-            //explored[(robot_pos>>4) & 0x0f][(robot_pos) & 0x0f] = true; --- was here
-            update_robot_state(dir); // update robot_pos and robot_dir
-
+            
             // TRANSMIT TO BASESTATION
             //radio_msg = millis();
             radio_msg = 0xFFFF & (robot_pos << 8 |                                              //setting valid bit.
@@ -227,10 +226,16 @@ void loop()
             /*completely re-work basestation communication?
               make sure dir in basestation is FRBL */
 
+            // UPDATE ROBOT INFO VARIABLES
+            //explored[(robot_pos>>4) & 0x0f][(robot_pos) & 0x0f] = true; --- was here
+            update_robot_state(dir); // update robot_pos and robot_dir
+
             // RESET VARIABLES
             u32wait = millis();
             VALID_L = false;
             VALID_R = false;
+            radio_msg_valid = true;
+            line_sensor_init();
         }
         else
         {
@@ -258,7 +263,7 @@ void loop()
                 STATE = TRANSMIT;
             }
         }
-
+        
         break;
 
     case ROBOT_DETECTED:
@@ -268,7 +273,8 @@ void loop()
 
     case ROBOT_TURN_LEFT:
         robot_move(left);
-        if (millis() - u32wait > 700)
+        //Serial.println(F("TURNING LEFT"));
+        if (millis() - u32wait > 750)
         {
             STATE = ROBOT_SENSE;
         }
@@ -276,7 +282,8 @@ void loop()
 
     case ROBOT_TURN_RIGHT:
         robot_move(right);
-        if (millis() - u32wait > 700)
+        //Serial.println(F("TURNING RIGHT"));
+        if (millis() - u32wait > 750)
         {
             STATE = ROBOT_SENSE;
         }
@@ -292,7 +299,7 @@ void loop()
 
     case ROBOT_U_TURN:
         robot_move(right);
-        if(millis()-u32wait > 1600)
+        if(millis()-u32wait > 1650)
         {
             STATE = ROBOT_SENSE;
         }
@@ -310,3 +317,6 @@ void loop()
         break;
     }
 }
+
+
+

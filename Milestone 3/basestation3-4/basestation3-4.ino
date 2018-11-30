@@ -133,7 +133,7 @@ void GUI_com(int buff){
     treasure = (buff >> 3) & 0x0007;
     dir = (buff >> 6) & 0x0003;
     x = (buff>>12) & 0x0f;
-    y = 0x08 - ((buff>>8) & 0x0f);
+    y = ((buff>>8) & 0x0f);
     
     
     /*
@@ -154,26 +154,26 @@ void GUI_com(int buff){
     switch (dir)
     {
     case 1: //facing east, then left is north, right is south
-        north = wall_left;
-        south = wall_right;
+        north = wall_right ;
+        south = wall_left;
         west = false; //No wall behind robot
         east = wall_front;
         break;
     case 3: //facing west
-        north = wall_right;
-        south = wall_left;
+        north = wall_left;
+        south = wall_right;
         west = wall_front;
         east = false;
         break;
-    case 0:
-        north = wall_front;
-        south = false;
+    case 0: //north
+        north = false;
+        south = wall_front ;
         west = wall_left;
         east = wall_right;
         break;
-    case 2:
-        north = false;
-        south = wall_front;
+    case 2: //south
+        north = wall_front;
+        south = false;
         west = wall_right;
         east = wall_left;
         break;
