@@ -21,14 +21,19 @@ RF24 radio(9, 10);
 int rows = 9; //need to adjust based on robot position
 int cols = 9;
 // Starting coordinates
-int x = 0;
-int y = 0;
+//int x = 0;
+//int y = 0;
 
 uint16_t * queue;
 int queue_size = 20;
 int queue_counter = 0;
 // Radio pipe addresses for the 2 nodes to communicate.
 const uint64_t pipes[2] = {0x0000000014LL, 0x0000000015LL};
+
+
+// ROBOT MESSAGE
+// [15:8] robot position; [7:6] robot direction; [5:3] treasure; [2:0] walls
+
 
 
 enum r_dir
@@ -111,57 +116,7 @@ void loop(void)
         }
         
     }
-    bool wall_left, wall_right;
-    uint8_t dir;
-    dir = (buff >> 6) & 0x0003;
-    wall_left = buff & 0x0001;
-    wall_right = (buff >> 2) & 0x0001;
-    //Preprocessing to get where the robot is facing
-    if (x==0 && y==0 && robot_direction==unknown)
-    {
-        if (wall_left && !wall_right){
-            robot_direction = right;
-            
-        }   
-        else if (!wall_left && wall_right){
-            robot_direction = down;
-            
-        }
-    }
-    if (robot_direction==unknown)
-    {
-        switch (dir)
-        {
-            case 0: 
-                queue[queue_counter++] = buff;
-            break;
-            case 1: //right 
-                if (x-1 < 0)
-                    robot_direction = right;
-                else 
-                    robot_direction = down;
-                
-            break;
-            case 2: //left 
-                if (y-1 < 0)
-                    robot_direction = down;
-                else
-                    robot_direction = right;
-            break;
-            default: break;
-        }
-    }
-    
-    if(queue_counter==0 && robot_direction!=unknown)
-        GUI_com(buff);
-    else if(robot_direction!=unknown){
-        for (int i = 0; i<queue_counter; i++){
-            GUI_com(queue[i]);
-            delay(200);
-        }
-        queue_counter = 0;
-    }
-    
+    GUI_com(buff);
 }
 
 void GUI_com(int buff){
@@ -174,14 +129,15 @@ void GUI_com(int buff){
  * 
  * */
     bool wall_left, wall_right, wall_front, robot, west, east, north, south;
-    uint8_t dir, treasure;
+    uint8_t dir, treasure, x, y;
 
     wall_left = buff & 0x0001;
     wall_front = (buff >> 1) & 0x0001;
     wall_right = (buff >> 2) & 0x0001;
     treasure = (buff >> 3) & 0x0007;
     dir = (buff >> 6) & 0x0003;
-    robot = (buff >> 8) & 0x0001;
+    x = (buff>>12) & 0x0f;
+    y = 0x08 - ((buff>>8) & 0x0f);
     
     
     /*
@@ -197,27 +153,29 @@ void GUI_com(int buff){
     Serial.print(",robot=");Serial.println(robot);*/
         //Serial.println("");
     //decode the absolute directions base on the robot's direction and input
-    switch (robot_direction)
+    
+    
+    switch (dir)
     {
-    case right: //facing right, then left is north, right is south
+    case 1: //facing east, then left is north, right is south
         north = wall_left;
         south = wall_right;
         west = false; //No wall behind robot
         east = wall_front;
         break;
-    case left:
+    case 3: //facing west
         north = wall_right;
         south = wall_left;
         west = wall_front;
         east = false;
         break;
-    case up:
+    case 0:
         north = wall_front;
         south = false;
         west = wall_left;
         east = wall_right;
         break;
-    case down:
+    case 2:
         north = false;
         south = wall_front;
         west = wall_right;
@@ -257,7 +215,7 @@ void GUI_com(int buff){
 
 
     Serial.println("");
-    switch (dir)
+    /*switch (dir)
     {
     case 0: //forward : robot decided to go forward
         if (robot_direction == right)
@@ -345,7 +303,7 @@ void GUI_com(int buff){
 
     default:
         Serial.println("ROBOT DIRECTION NOT RECOGNIZED");
-    }
+    }*/
         
     
 }
