@@ -121,11 +121,11 @@ void loop(void)
     {
         if (wall_left && !wall_right){
             robot_direction = right;
-            GUI_com(buff);
+            
         }   
         else if (!wall_left && wall_right){
             robot_direction = down;
-            GUI_com(buff);
+            
         }
     }
     if (robot_direction==unknown)
@@ -139,30 +139,29 @@ void loop(void)
                 if (x-1 < 0)
                     robot_direction = right;
                 else 
-                    queue[queue_counter++] = buff;
+                    robot_direction = down;
                 
             break;
             case 2: //left 
                 if (y-1 < 0)
                     robot_direction = down;
                 else
-                    queue[queue_counter++] = buff;
+                    robot_direction = right;
             break;
             default: break;
         }
     }
-    else
-    {
-        if(queue_counter==0)
-            GUI_com(buff);
-        else{
-            for (int i = 0; i<queue_counter; i++){
-                GUI_com(queue[i]);
-                delay(500);
-            }
-            queue_counter = 0;
+    
+    if(queue_counter==0 && robot_direction!=unknown)
+        GUI_com(buff);
+    else if(robot_direction!=unknown){
+        for (int i = 0; i<queue_counter; i++){
+            GUI_com(queue[i]);
+            delay(200);
         }
+        queue_counter = 0;
     }
+    
 }
 
 void GUI_com(int buff){
