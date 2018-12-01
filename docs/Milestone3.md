@@ -19,3 +19,5 @@ In order to reflect the modifications to the robot exploration code, we also had
 Finally, we (added GUI)... In the end, we were able to correctly represent the entire maze with the GUI on the basestation’s screen.
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/cKP1L6YakC4" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/gVXUPPQBTW0" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
