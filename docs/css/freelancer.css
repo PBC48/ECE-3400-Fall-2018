@@ -49,16 +49,16 @@ hr.star-light {
 
 hr.star-light:after {
   color: #fff;
-  background-color: #F3F93B;
+  background-color: transparent;
 }
 
 hr.star-dark {
-  border-color: #17EA56;
+  border-color: #fff;
 }
 
 hr.star-dark:after {
-  color: #17EA56;
-  background-color: white;
+  color: #fff;
+  background-color: transparent;
 }
 
 section {
@@ -353,6 +353,10 @@ a:focus, a:hover, a:active {
 
 .bg-secondary {
   background-color: #F3F93B !important;
+}
+
+.bg-tertary {
+  background-color: #17ea56;
 }
 
 .text-primary {
