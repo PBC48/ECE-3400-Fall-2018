@@ -7,10 +7,20 @@ The goal of this milestone was to implement a search algorithm that would allow 
 After playing around with Dijkstra’s Algorithm and realizing how difficult it would be to implement in reality on the Arduino, we decided to write a simple Depth First Search algorithm to determine our robot’s path when exploring a maze. This type of search algorithm traverses as far as there is to go down a single path before backtracking to explore the next path, with a predetermined preference for the order in which the path options are explored. For the purpose of exploring a maze, this means turning around to backtrack only when all surrounding squares are either a wall or previously explored. The algorithm takes into account the spaces the robot has already encountered in order to allow it to explore more paths in as short a time as possible. In addition, the search algorithm keeps the robot from traversing in an endless loop. Although we at first tried to implement this algorithm with the robot virtually exploring the maze to find an unexplored square at every intersection, we eventually went the much simpler route of exploring the maze one square at a time as the robot traveled through it. Our logic took the following form:
 
 ```cpp
-  if( (no_front_wall) && (unexplored(forward_space)) ) {
+  if ( (no_front_wall) && (forward_space_unexplored) ) {
     go_forward;
+  } else if ( (no_right_wall) && (right_space_unexplored) ) {
+    turn_right;
+  } else if ( (no_left_wall) && (left_space_unexplored) ) {
+    turn_left;
+  } else {
+    backtrack;
   }
+  
+  update_robot_state();
+  update_visited_lists();
 ```
+
 Our search order preference for the algorithm is forward, right, left, then backward. The robot keeps a list of the squares it has visited and the order in which it has visited them in order to allow it to backtrack to the next unexplored path. It also keeps track of its position and direction. Once the algorithm was implemented into our code, we successfully tested the it in several different maze configurations of various sizes and confirmed that it explored as we wanted it to. The following video is a demonstration of one of these tests:
 
 ### Regular Speed:
