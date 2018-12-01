@@ -36,7 +36,7 @@ void setup() {
   Serial.println(OV7670_write_register(0x40,0xD0)); //COM15 select output range and RGB565
   Serial.println(OV7670_write_register(0x11,0xC0)); //CLKRC two clk both same speed, use external clk
   Serial.println(OV7670_write_register(0x1E,0x30)); //MVFP flip/mirror | was at 0x30
-//  Serial.println(OV7670_write_register(0x3B,0x80)); //night mode
+  Serial.println(OV7670_write_register(0x3B,0x80)); //night mode
 //   Serial.println(OV7670_write_register(0x69,0xff)); //fixed gain control
   
   //Serial.println(OV7670_write_register(0x41,0x07)); //AWB Gain Enable
@@ -54,7 +54,6 @@ void setup() {
 
 void loop(){
     decoder();
-    delay(1000);
  }
 ///////// Function Definition //////////////
 
@@ -65,32 +64,58 @@ void init_com(){
   pinMode(C2,INPUT);
 }
 
-uint8_t decoder(){
-  uint8_t treasure1 = digitalRead(T1);
-  uint8_t treasure2 = digitalRead(T2);
-  uint16_t color1     = digitalRead(C1);
-  uint16_t color2     = digitalRead(C2);
-  Serial.print("T1: ");Serial.print(treasure1);
-  Serial.print(" T2: ");Serial.print(treasure2);
-  Serial.print(" C1: ");Serial.print(color1);
-  Serial.print(" C2: ");Serial.print(color2);
+void decoder(){
+  uint8_t treasure1,treasure2,color1,color2;
+  uint8_t treasure;
+  uint8_t color  ;
+  int redCount = 0, blueCount = 0,
+  diaCount = 0, triCount = 0, sqCount = 0, nonCount = 0, nonTreasure = 0;
+  for (int i = 0; i<500; i++){
+    treasure1 = digitalRead(T1);
+    treasure2 = digitalRead(T2);
+    color1     = digitalRead(C1);
+    color2     = digitalRead(C2);
+    treasure  = (treasure2 << 1)|treasure1;
+    color   =   (color2<<1)|(color1);
+    if(color==BLUE) blueCount += 1;
+    else if(color==RED)   redCount += 1;
+    else nonCount += 1;
+    if (treasure == SQUARE) sqCount +=1;
+    else if( treasure == TRIANGLE) triCount += 1;
+    else if( treasure == DIAMOND)  diaCount += 1;
+    else nonTreasure += 1;
+    delay(2);
+  }
   
-  uint8_t treasure  = (treasure2 << 1)|treasure1;
-  uint8_t color   =   (color2<<1)|(color1);
+  
+//  Serial.print("T1: ");Serial.print(treasure1);
+//  Serial.print(" T2: ");Serial.print(treasure2);
+//  Serial.print(" C1: ");Serial.print(color1);
+//  Serial.print(" C2: ");Serial.print(color2);
+  
+  
   Serial.println("");
   Serial.print("---COLOR: ");
-  if(color==BLUE) Serial.print("BLUE");
-  else if(color==RED)    Serial.print("RED");
+  if( (blueCount>nonCount || redCount > nonCount) && blueCount>redCount) 
+  Serial.print("BLUE");
+  else if((blueCount>nonCount || redCount > nonCount) && redCount>blueCount)    
+  Serial.print("RED");
   else             Serial.print("NONE");
   Serial.print( " Treasure: ");
-  if( treasure == SQUARE)
+  if( (sqCount>nonTreasure)||(triCount>nonTreasure)||(diaCount>nonTreasure) && sqCount > triCount && sqCount > diaCount)
       Serial.print("SQUARE");
-  else if( treasure == TRIANGLE)
+  else if( (sqCount>nonTreasure)||(triCount>nonTreasure)||(diaCount>nonTreasure) && sqCount < triCount && triCount > diaCount)
       Serial.print("TRIANGLE");
-  else if( treasure == DIAMOND)
+  else if( (sqCount>nonTreasure)||(triCount>nonTreasure)||(diaCount>nonTreasure) && diaCount > triCount && triCount < diaCount)
       Serial.print("DIAMOND");
   else
       Serial.print("NONE");
+  Serial.println("");
+
+  Serial.print("red=");Serial.print(redCount);Serial.print(" blue=");Serial.print(blueCount);
+  Serial.print(" nonCount=");Serial.print(nonCount);
+  Serial.print(" sq=");Serial.print(sqCount);Serial.print(" tri=");Serial.print(triCount);
+  Serial.print(" dia=");Serial.print(diaCount);Serial.print(" nonTreasure=");Serial.print(nonTreasure);
   Serial.println("");
 }
 

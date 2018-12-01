@@ -1,22 +1,22 @@
 `define SCREEN_WIDTH 176
 `define SCREEN_HEIGHT 144
 
-`define Y_BARfirstTop 47
-`define Y_BARfirstBot 52 
+`define Y_BARfirstTop 35
+`define Y_BARfirstBot 40 
 
 `define Y_BARsecondTop 70
 `define Y_BARsecondBot 75
 
-`define Y_BARthirdTop 97
-`define Y_BARthirdBot 102
+`define Y_BARthirdTop 110
+`define Y_BARthirdBot 115
 
-`define X_HIGH_THRESH 150
-`define X_LOW_THRESH  30
+`define X_HIGH_THRESH 160
+`define X_LOW_THRESH  20
 `define Y_LOW_THRESH  20
 `define Y_HIGH_THRESH  125
 
-`define LOW_THR 20
-`define HIGH_THR 40
+`define LOW_THR 10
+`define HIGH_THR 20
 
 module IMAGE_PROCESSOR (
 	PIXEL_IN,
@@ -62,7 +62,7 @@ reg 	[15:0] blue3;
 
 wire	[3:0]	 red;
 wire	[3:0]	 blue;
-wire	[1:0]  green;
+wire	[2:0]  green;
 
 assign red 	=	PIXEL_IN[7:5];
 assign green=  PIXEL_IN[4:3];
@@ -122,10 +122,10 @@ always @(posedge CLK) begin
 		if (greenCount > 15'd10000 && blueCount > 15'd20000 && redCount > 15'd20000) begin
 			color = NONE;
 		end
-		else if (blueCount > redCount && (blueCount - redCount) > 30 && blueCount > 15'd200) begin
+		else if (blueCount > redCount && (blueCount - redCount) > 30 && blueCount > 15'd10000) begin
 			color = BLUE;
 		end
-		else if (redCount > blueCount && (redCount - blueCount) > 30 && redCount > 15'd200) begin
+		else if (redCount > blueCount && (redCount - blueCount) > 30 && redCount > 15'd10000) begin
 			color = RED;
 		end
 		else begin
@@ -169,8 +169,10 @@ always @(posedge CLK) begin
 	if (VGA_PIXEL_Y == `SCREEN_HEIGHT-3 && done_color && !done_treasure) begin
 		if (color == RED) begin
 			if (g3 && g2 && g1 && diffr3 > `HIGH_THR && diffr2 > `LOW_THR && diffr1 > `LOW_THR)
+				//mid > top; bot > mid
 				treasure = TRIANGLE;
 			else if(g1 && diffr1 > `LOW_THR && !g2 && diffr2 > `LOW_THR && diffr3 < `LOW_THR)
+				//mid > top; mid > bot
 				treasure = DIAMOND;
 			else
 				treasure = SQUARE;
@@ -193,6 +195,7 @@ end
 DIFF(.A(red1), .B(red2), .C(diffr1), .D(g1));
 DIFF(.A(red2), .B(red3), .C(diffr2), .D(g2));
 DIFF(.A(red1), .B(red3), .C(diffr3), .D(g3));
+
 DIFF(.A(blue1), .B(blue2), .C(diffb1), .D(g4));
 DIFF(.A(blue2), .B(blue3), .C(diffb2), .D(g5));
 DIFF(.A(blue1), .B(blue3), .C(diffb3), .D(g6));

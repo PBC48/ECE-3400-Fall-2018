@@ -72,15 +72,15 @@
 					"strict" : false
 				},
 				{
+					"name" : "GPIO_1_D[33]",
+					"strict" : false
+				},
+				{
 					"name" : "GPIO_1_D[24]",
 					"strict" : false
 				},
 				{
 					"name" : "GPIO_1_D[25]",
-					"strict" : false
-				},
-				{
-					"name" : "GPIO_1_D[33]",
 					"strict" : false
 				},
 				{
