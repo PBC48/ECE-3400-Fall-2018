@@ -7,7 +7,7 @@ The goal of milestone 4 are as follows:
 
 Treasure shape detection requires a more complicated algorithm then color detection because it deals directly with image processing. We must distinguish between three shapes: square, triangle, and diamond. For our algorithm to be robust, we must successfully threshold each shape.
 
-Integration is not a trivial task. The challenges are in both hardware and software. On the hardware side, we must figure out the ideal place for the camera and FPGA in the robot chasis and route power to both these devices. The camera placement is important as it determines where the the robot can detect the treasure and on which wall. On the software side, we must integrate the treasure detection into the Robot control flow. We need to create new FSM states to account for the fact that treasures can exist at every intersection; this also means that there are more processing to do at every interestion. We must change the state transitions properly such that treasure detection does not interfere with the rest of the robot's functionality. The radio from lab 3 must also be updated because the radio only handles wall mapping and not treasure mapping. This applies for both basestation and robot.
+Integration is not a trivial task. The challenges are in both hardware and software. On the hardware side, we must figure out the ideal place for the camera and FPGA in the robot chasis and route power to both these devices. The camera placement is important as it determines where the the robot can detect the treasure and on which wall. On the software side, we must integrate the treasure detection into the Robot control flow. We need to create new FSM states to account for the fact that treasures can exist at every intersection; this also means that there is more processing to do at every interestion. We must change the state transitions properly such that treasure detection does not interfere with the rest of the robot's functionality. The radio from lab 3 must also be updated because the radio only handles wall mapping and not treasure mapping. This applies for both basestation and robot.
 
 ## Updated Robot
 We decided to update the robot chassis to fit the camera. The Robot will now have three layers. We will add a new layer under the current first layer of the robot where the servos are. This will be used to store the batteries. We will need two batteries, one for the Arduino and one for servo and sensors. Previously, we used the second layer of the robot to hold the battery. However, we decided to use the second chassis layer of the robot to hold the FPGA and camera hardware. The third layer will host the Arduino and sensor circuitry.
@@ -51,7 +51,7 @@ for (int i = 0; i<500; i++){
 
 The code above shows us processing averages on the Arduino where we would take multiple readings over a second and then count the predictions. We would then choose the prediction with the highest count as our answer. To execute this well, we would need to be wary of timing constraints of the camera. 
 
-The camera completes transmission for a pixel of data every two clock cycles. An image is 176 x 144 in size in terms of pixels and our clock is 25 MHz. Using math, this translates to two milliseconds per image for processing our one image. We count the predictions for 500 images.
+The camera completes transmission for a pixel of data every two clock cycles. An image is 176 x 144 in size in terms of pixels and our clock is 25 MHz. This translates to two milliseconds per image for processing our one image. We count the predictions for 500 images.
 
 ## Treasure Shape Detection
 
@@ -123,5 +123,5 @@ In the code above, g1-g6 shows which bar has greater color concentration while d
 
 ## Conclusion
 
-Overall we were able to detect both color and shape detection on the FPGA and mounted the camera onto the robot chassis. Moving forward, we can explore implementing the averaging on the FPGA instead of the Arduino for more timely image processing averages. We can also improve reliability by increasing the number of bars. This will increase code density but will likely improve accuracy. The greatest challenge to accuracy of the camera remains that the camera needs good lighting to capture reliable images.   
+We were able to detect both color and shape detection on the FPGA and mounted the camera onto the robot chassis. Moving forward, we can explore implementing the averaging on the FPGA instead of the Arduino for more timely image processing averages. We can also improve reliability by increasing the number of bars. This will increase code density but will likely improve accuracy. The greatest challenge to accuracy of the camera remains that the camera needs good lighting to capture reliable images.   
 
