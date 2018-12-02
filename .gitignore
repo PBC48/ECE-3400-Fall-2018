@@ -54,6 +54,11 @@ build/
 *.summary
 *.smsg
 *.qdf
+*.qpf
+*.qsd
+*.qws
+*.sof
+*.sld
 incremental_db/
 greybox_tmp/
 db/
