@@ -10,7 +10,17 @@ Treasure shape detection requires a more complicated algorithm then color detect
 Integration is not a trivial task. The challenges are in both hardware and software. On the hardware side, we must figure out the ideal place for the camera and FPGA in the robot chasis and route power to both these devices. The camera placement is important as it determines where the the robot can detect the treasure and on which wall. On the software side, we must integrate the treasure detection into the Robot control flow. We need to create new FSM states to account for the fact that treasures can exist at every intersection; this also means that there are more processing to do at every interestion. We must change the state transitions properly such that treasure detection does not interfere with the rest of the robot's functionality. The radio from lab 3 must also be updated because the radio only handles wall mapping and not treasure mapping. This applies for both basestation and robot.
 
 ## Updated Robot
-We decided to update the robot chassis to fit the camera. The Robot will now have three layers. Previously, we used the second layer of the robot to hold the battery. However, we decided to use the second chassis layer of the robot to hold the FPGA and camera hardware. 
+We decided to update the robot chassis to fit the camera. The Robot will now have three layers. We will add a new layer under the current first layer of the robot where the servos are. This will be used to store the batteries. We will need two batteries, one for the Arduino and one for servo and sensors. Previously, we used the second layer of the robot to hold the battery. However, we decided to use the second chassis layer of the robot to hold the FPGA and camera hardware. The third layer will host the Arduino and sensor circuitry.
+
+<figure>
+    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/milestone4/IMG_1187.jpg" width="500"/>
+    <font size="3">
+    <figcaption> <b>Camera and FPGA Mounted</b>
+    </figcaption>
+    </font>
+</figure>
+
+In the image above, we mounted the Camera and FPGA on a a new chasis. We also soldered some of the intermediate connectors onto a protoboard such as the resistors required for I2C. This will be the new second level of the robot. We decided to have the camera face only one direction and only have the robot detect one of the walls at each intersection. We will miss some of the walls but this allows the robot movement algorithm to be simpler.
 
 ## Treasure Color Detection
 
@@ -62,36 +72,44 @@ always @(posedge CLK) begin
 		done_treasure = 0;
 		treasure = NONE;
 	end
-	else if (VGA_PIXEL_X > `X_LOW_THRESH && VGA_PIXEL_X < `X_HIGH_THRESH && VGA_PIXEL_Y > `Y_BARfirstTop && VGA_PIXEL_Y < `Y_BARfirstBot) begin
+	else if (VGA_PIXEL_X > `X_LOW_THRESH && VGA_PIXEL_X < 
+    `X_HIGH_THRESH && VGA_PIXEL_Y > `Y_BARfirstTop && VGA_PIXEL_Y < 
+    `Y_BARfirstBot) begin
 		red1 = red1 + red;
 		blue1 = blue1 + blue;
 	end
-	else if (VGA_PIXEL_X > `X_LOW_THRESH && VGA_PIXEL_X < `X_HIGH_THRESH && VGA_PIXEL_Y > `Y_BARsecondTop && VGA_PIXEL_Y < `Y_BARsecondBot) begin
+	else if (VGA_PIXEL_X > `X_LOW_THRESH && VGA_PIXEL_X < 
+    `X_HIGH_THRESH && VGA_PIXEL_Y > `Y_BARsecondTop && VGA_PIXEL_Y < 
+    `Y_BARsecondBot) begin
 		red2 = red2 + red;
 		blue2 = blue2 + blue;
 	end
-	else if (VGA_PIXEL_X > `X_LOW_THRESH && VGA_PIXEL_X < `X_HIGH_THRESH && VGA_PIXEL_Y > `Y_BARthirdTop && VGA_PIXEL_Y < `Y_BARthirdBot) begin
+	else if (VGA_PIXEL_X > `X_LOW_THRESH && VGA_PIXEL_X < 
+    `X_HIGH_THRESH && VGA_PIXEL_Y > `Y_BARthirdTop && VGA_PIXEL_Y <
+    `Y_BARthirdBot) begin
 		red3 = red3 + red;
 		blue3 = blue3 + blue;
 	end
-	if (VGA_PIXEL_Y == `SCREEN_HEIGHT-3 && done_color && !done_treasure) begin
+	if ((VGA_PIXEL_Y == `SCREEN_HEIGHT) && done_color && !done_treasure) 
+    begin
+	
 		if (color == RED) begin
-			if (g3 && g2 && g1 && diffr3 > `HIGH_THR && diffr2 > `LOW_THR && diffr1 > `LOW_THR)
+			if ((diffr3>diffr2) && (diffr3>diffr1) && diffr3>50)
 				//mid > top; bot > mid
 				treasure = TRIANGLE;
-			else if(g1 && diffr1 > `LOW_THR && !g2 && diffr2 > `LOW_THR && diffr3 < `LOW_THR)
-				//mid > top; mid > bot
-				treasure = DIAMOND;
-			else
+			else if((diffr1<100) && (diffr2<100) && (diffr3<100))
+				//mid ~= top; mid ~= bot
 				treasure = SQUARE;
+			else
+				treasure = DIAMOND;
 		end
 		else if (color == BLUE) begin
-			if (g4 && g5 && g6 && diffb3 > `HIGH_THR && diffb2 > `LOW_THR && diffb1 > `LOW_THR)
+			if ((diffb3>diffb2) && (diffb3>diffb1) && diffb3>50)
 				treasure = TRIANGLE;
-			else if(g4 && !g5 && diffb1 > `LOW_THR && diffb2 > `LOW_THR && diffb3 < `LOW_THR)
-				treasure = DIAMOND;
-			else
+			else if((diffb1<100) && (diffb2<100) && (diffb3<100))
 				treasure = SQUARE;
+			else
+				treasure = DIAMOND;
 		end
 		else begin
 			treasure = NONE;

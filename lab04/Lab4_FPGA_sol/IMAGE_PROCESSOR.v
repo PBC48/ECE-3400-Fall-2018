@@ -1,17 +1,17 @@
 `define SCREEN_WIDTH 176
 `define SCREEN_HEIGHT 144
 
-`define Y_BARfirstTop 35
-`define Y_BARfirstBot 40 
+`define Y_BARfirstTop 25
+`define Y_BARfirstBot 45 
 
-`define Y_BARsecondTop 70
-`define Y_BARsecondBot 75
+`define Y_BARsecondTop 65
+`define Y_BARsecondBot 85
 
-`define Y_BARthirdTop 110
-`define Y_BARthirdBot 115
+`define Y_BARthirdTop 105
+`define Y_BARthirdBot 125
 
-`define X_HIGH_THRESH 160
-`define X_LOW_THRESH  20
+`define X_HIGH_THRESH 110
+`define X_LOW_THRESH  50
 `define Y_LOW_THRESH  20
 `define Y_HIGH_THRESH  125
 
@@ -52,12 +52,15 @@ reg 			 done_treasure;
 
 reg 	[15:0] red1;
 reg 	[15:0] blue1;
+reg 	[15:0] green1;
 
 reg 	[15:0] red2;
 reg 	[15:0] blue2;
+reg 	[15:0] green2;
 
 reg 	[15:0] red3;
 reg 	[15:0] blue3;
+reg 	[15:0] green3;
 
 
 wire	[3:0]	 red;
@@ -93,9 +96,7 @@ assign 		RESULT      = {color, treasure};
 assign 		RDY         = done_color && done_treasure;
 
 
-reg   [15:0]  top;
-reg   [15:0]  mid;
-reg	[15:0]  bot;
+
 reg 	[15:0]  blueCount;
 reg 	[15:0]  redCount;
 reg 	[15:0]  greenCount;
@@ -107,7 +108,7 @@ reg [1:0]   treasure;
 ///////* Color Detection *///////
 always @(posedge CLK) begin
 
-	if (VGA_PIXEL_Y <=20) begin
+	if (VGA_PIXEL_Y <=`Y_LOW_THRESH) begin
 		blueCount  = 0;
 		redCount   = 0;
 		greenCount = 0;
@@ -138,13 +139,10 @@ always @(posedge CLK) begin
 	end
 end
 
-
-///////* Treasure Detection *///////
+reg done_subtract;
+///////* SHAPE Detection *///////
 always @(posedge CLK) begin
-	if (!VGA_VSYNC_NEG) begin
-		top = 0;
-		mid = 0;
-		bot = 0;
+	if (VGA_PIXEL_Y == 0) begin
 		red1 = 0;
 		red2 = 0;
 		red3 = 0;
@@ -152,38 +150,52 @@ always @(posedge CLK) begin
 		blue2 = 0;
 		blue3 = 0;
 		done_treasure = 0;
-		treasure = NONE;
+		//treasure = NONE;
+		done_subtract = 0;
 	end
-	else if (VGA_PIXEL_X > `X_LOW_THRESH && VGA_PIXEL_X < `X_HIGH_THRESH && VGA_PIXEL_Y > `Y_BARfirstTop && VGA_PIXEL_Y < `Y_BARfirstBot) begin
+	if ((VGA_PIXEL_X > `X_LOW_THRESH) && (VGA_PIXEL_X < `X_HIGH_THRESH) && (VGA_PIXEL_Y > `Y_BARfirstTop) && (VGA_PIXEL_Y < `Y_BARfirstBot)) begin
 		red1 = red1 + red;
 		blue1 = blue1 + blue;
+		green1 = green1 + green;
 	end
-	else if (VGA_PIXEL_X > `X_LOW_THRESH && VGA_PIXEL_X < `X_HIGH_THRESH && VGA_PIXEL_Y > `Y_BARsecondTop && VGA_PIXEL_Y < `Y_BARsecondBot) begin
+	if ((VGA_PIXEL_X > `X_LOW_THRESH) && (VGA_PIXEL_X < `X_HIGH_THRESH) && (VGA_PIXEL_Y > `Y_BARsecondTop) && (VGA_PIXEL_Y < `Y_BARsecondBot)) begin
 		red2 = red2 + red;
 		blue2 = blue2 + blue;
+		green2 = green2 + green;
 	end
-	else if (VGA_PIXEL_X > `X_LOW_THRESH && VGA_PIXEL_X < `X_HIGH_THRESH && VGA_PIXEL_Y > `Y_BARthirdTop && VGA_PIXEL_Y < `Y_BARthirdBot) begin
+	if ((VGA_PIXEL_X > `X_LOW_THRESH) && (VGA_PIXEL_X < `X_HIGH_THRESH) && (VGA_PIXEL_Y > `Y_BARthirdTop) && (VGA_PIXEL_Y < `Y_BARthirdBot)) begin
 		red3 = red3 + red;
 		blue3 = blue3 + blue;
+		green3 = green3 + green;
 	end
-	if (VGA_PIXEL_Y == `SCREEN_HEIGHT-3 && done_color && !done_treasure) begin
+	/*if(VGA_PIXEL_Y==`SCREEN_HEIGHT-5 && !done_subtract) begin
+		red3 = red3 - green3;
+		blue3 = blue3 - green3;
+		red2 = red2 - green2;
+		blue2 = blue2 - green2;
+		red1 = red1 - green1;
+		blue1 = blue1 - green1;
+		done_subtract = 1'b1;
+	end*/
+	if ((VGA_PIXEL_Y == `SCREEN_HEIGHT) && done_color && !done_treasure) begin
+	
 		if (color == RED) begin
-			if (g3 && g2 && g1 && diffr3 > `HIGH_THR && diffr2 > `LOW_THR && diffr1 > `LOW_THR)
+			if ((diffr3>diffr2) && (diffr3>diffr1) && diffr3>50)//g3 && g2 && g1 && diffr3>diffr2 && diffr3>diffr2)//diffr3 > `HIGH_THR && diffr2 > `LOW_THR && diffr1 > `LOW_THR)
 				//mid > top; bot > mid
 				treasure = TRIANGLE;
-			else if(g1 && diffr1 > `LOW_THR && !g2 && diffr2 > `LOW_THR && diffr3 < `LOW_THR)
-				//mid > top; mid > bot
-				treasure = DIAMOND;
-			else
+			else if((diffr1<100) && (diffr2<100) && (diffr3<100))//g1 && diffr1 > `LOW_THR && !g2 && diffr2 > `LOW_THR && diffr3 < `LOW_THR)
+				//mid ~= top; mid ~= bot
 				treasure = SQUARE;
+			else
+				treasure = DIAMOND;
 		end
 		else if (color == BLUE) begin
-			if (g4 && g5 && g6 && diffb3 > `HIGH_THR && diffb2 > `LOW_THR && diffb1 > `LOW_THR)
+			if ((diffb3>diffb2) && (diffb3>diffb1) && diffb3>50)
 				treasure = TRIANGLE;
-			else if(g4 && !g5 && diffb1 > `LOW_THR && diffb2 > `LOW_THR && diffb3 < `LOW_THR)
-				treasure = DIAMOND;
-			else
+			else if((diffb1<100) && (diffb2<100) && (diffb3<100))
 				treasure = SQUARE;
+			else
+				treasure = DIAMOND;
 		end
 		else begin
 			treasure = NONE;
@@ -223,21 +235,9 @@ module DIFF (
 	output [15:0] C,
 	output 		  D
 );
-reg [15:0]    diff;
-reg  			  greater;
-assign C 	= diff;
-assign D 	= greater;
+assign C 	= A>B ? A-B: B-A;
+assign D 	= A>B ? 0:1;
 
-always @(*) begin
-	if (A>B) begin
-		diff	   	= A - B;
-		greater	   = 0;
-	end
-	else begin 
-		diff 			= B - A;
-		greater 		= 1;
-	end
-end
 endmodule
 
 

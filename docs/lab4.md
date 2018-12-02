@@ -79,7 +79,7 @@ always @(*) begin
             down_sample_reset   <= 1'b1;
         end
         STATE_NEW_FRAME: begin
-            down_sample_reset   <= 1'b0; //we need to poll as soon as HREF hits high
+            down_sample_reset   <= 1'b0; 
             W_EN                <= downsampler_rdy ? 1'b1 : 1'b0;
         end
         STATE_POLL: begin
@@ -112,7 +112,8 @@ always @(posedge pclk) begin
          
         end
         STATE_POLL: begin
-			//increments xaddr after downsampler finishes and writes to mem
+			//increments xaddr after downsampler 
+            //finishes and writes to mem
 			X_ADDR <= downsampler_rdy ? X_ADDR + 1 : X_ADDR; 
 				
         end
@@ -211,19 +212,24 @@ always @(posedge CLK) begin
 		greenCount = 0;
 		done_color = 1'b0;
 	end
-	else if (VGA_PIXEL_X > `X_LOW_THRESH && VGA_PIXEL_X < `X_HIGH_THRESH && VGA_PIXEL_Y > `Y_LOW_THRESH && VGA_PIXEL_Y < `Y_HIGH_THRESH) begin
+	else if (VGA_PIXEL_X > `X_LOW_THRESH && VGA_PIXEL_X < 
+    `X_HIGH_THRESH && VGA_PIXEL_Y > `Y_LOW_THRESH && VGA_PIXEL_Y < 
+    `Y_HIGH_THRESH) begin
 		blueCount = blueCount + blue;
 		redCount  = redCount  + red;
 		greenCount = greenCount + green;
 	end
 	else if(VGA_PIXEL_Y >= `Y_HIGH_THRESH && !done_color) begin
-		if (greenCount > 15'd5000 && blueCount > 15'd20000 && redCount > 15'd20000) begin
+		if (greenCount > 15'd5000 && blueCount > 15'd20000 && 
+        redCount > 15'd20000) begin
 			color = NONE;
 		end
-		else if (blueCount > redCount && (blueCount - redCount) > 30 && blueCount > 15'd200) begin
+		else if (blueCount > redCount && (blueCount - redCount) > 30
+         && blueCount > 15'd200) begin
 			color = BLUE;
 		end
-		else if (redCount > blueCount && (redCount - blueCount) > 30 && redCount > 15'd200) begin
+		else if (redCount > blueCount && (redCount - blueCount) > 30 
+        && redCount > 15'd200) begin
 			color = RED;
 		end
 		else begin
@@ -339,7 +345,8 @@ uint8_t decoder(){
   Serial.print(" T2: ");Serial.print(treasure2);
   Serial.print(" C1: ");Serial.print(color1);
   Serial.print(" C2: ");Serial.print(color2);
-  uint8_t treasure  = (treasure2 << 1)|treasure1; //combine treasure bits
+  uint8_t treasure  = (treasure2 << 1)|treasure1; 
+  //combine treasure bits
   uint8_t color   =   (color2<<1)|(color1);
   Serial.println("");
   Serial.print("---COLOR: ");

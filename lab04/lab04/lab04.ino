@@ -70,7 +70,7 @@ void decoder(){
   uint8_t color  ;
   int redCount = 0, blueCount = 0,
   diaCount = 0, triCount = 0, sqCount = 0, nonCount = 0, nonTreasure = 0;
-  for (int i = 0; i<500; i++){
+  for (int i = 0; i<100; i++){
     treasure1 = digitalRead(T1);
     treasure2 = digitalRead(T2);
     color1     = digitalRead(C1);
@@ -84,7 +84,7 @@ void decoder(){
     else if( treasure == TRIANGLE) triCount += 1;
     else if( treasure == DIAMOND)  diaCount += 1;
     else nonTreasure += 1;
-    delay(2);
+    delay(10);
   }
   
   
@@ -102,11 +102,11 @@ void decoder(){
   Serial.print("RED");
   else             Serial.print("NONE");
   Serial.print( " Treasure: ");
-  if( (sqCount>nonTreasure)||(triCount>nonTreasure)||(diaCount>nonTreasure) && sqCount > triCount && sqCount > diaCount)
+  if( ((sqCount>nonTreasure)||(triCount>nonTreasure)||(diaCount>nonTreasure)) && (sqCount > triCount) && (sqCount > diaCount))
       Serial.print("SQUARE");
-  else if( (sqCount>nonTreasure)||(triCount>nonTreasure)||(diaCount>nonTreasure) && sqCount < triCount && triCount > diaCount)
+  else if( ((sqCount>nonTreasure)||(triCount>nonTreasure)||(diaCount>nonTreasure)) && (sqCount < triCount) && (triCount > diaCount))
       Serial.print("TRIANGLE");
-  else if( (sqCount>nonTreasure)||(triCount>nonTreasure)||(diaCount>nonTreasure) && diaCount > triCount && triCount < diaCount)
+  else if( ((sqCount>nonTreasure)||(triCount>nonTreasure)||(diaCount>nonTreasure)) && (diaCount > triCount) && (triCount < diaCount))
       Serial.print("DIAMOND");
   else
       Serial.print("NONE");
