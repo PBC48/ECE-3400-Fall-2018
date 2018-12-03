@@ -1266,7 +1266,8 @@ radio<span style='color:#0000ff; '>.</span>stopListening<span style='color:#0000
                     <td>Wait for start of next frame or row</td>
                   </tr>
                 </table>
-                <code ALIGN=LEFT>
+                <p ALIGN = LEFT>
+                <code>
                   always @(*) begin
                       case (control_state)
                           STATE_IDLE: begin
@@ -1326,6 +1327,7 @@ radio<span style='color:#0000ff; '>.</span>stopListening<span style='color:#0000
                       endcase
                   end
                 </code>
+                </p>
                 We must save the data from the camera into a memory location 
                 so that it can be read by the VGA and the image processor 
                 later for analysis. This is done with two variables, X_ADDR and Y_ADDR.
@@ -1376,7 +1378,8 @@ radio<span style='color:#0000ff; '>.</span>stopListening<span style='color:#0000
                       <td>Start reading from camera</td>
                     </tr>
                   </table>
-                  <code ALIGN=LEFT>
+                  <p ALIGN=LEFT>
+                  <code>
                   READ: begin
                       fsm 		= (VSYNC || RES) ? IDLE : READ;
 
@@ -1398,6 +1401,7 @@ radio<span style='color:#0000ff; '>.</span>stopListening<span style='color:#0000
                       end
                   end
                   </code>
+                  </p>
                   <h3>Color Bar</h3>
                   To display the color bar, we must set the appropriate registers 
                   in the Camera. The main registers involved are COM 7 and COM 17 
@@ -1416,7 +1420,285 @@ radio<span style='color:#0000ff; '>.</span>stopListening<span style='color:#0000
                   we use the camera to capture, we found that the colors were passable and 
                   would not pose an issue.
                   <h3>Display Camera Capture</h3>
-                  
+                  To display the images captured by the camera, we must set the registers from
+                  the Arduino. We can disable the DSP for color bar and the color bar test itself. 
+                  The FPGA code is exactly the same.
+                  <iframe width="560" height="315" src="https://www.youtube.com/embed/0lKN7Tkrx0Q?controls=0" 
+                  frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; 
+                  picture-in-picture" allowfullscreen></iframe>
+                  <h2>Color Detection</h2>
+                  For color detection, we use a module call the Image Processor. The image processor 
+                  samples at the same rate as the VGA board at 25 MHz. We set a boundary within the 
+                  resolution of each image and then count the amount of blue and red in each pixel. 
+              </p>
+              <p ALIGN=LEFT>
+              <code>
+                always @(posedge CLK) begin
+
+                    if (VGA_PIXEL_Y <=20) begin
+                      blueCount  = 0;
+                      redCount   = 0;
+                      greenCount = 0;
+                      done_color = 1'b0;
+                    end
+                    else if (VGA_PIXEL_X > `X_LOW_THRESH && VGA_PIXEL_X < 
+                      `X_HIGH_THRESH && VGA_PIXEL_Y > `Y_LOW_THRESH && VGA_PIXEL_Y < 
+                      `Y_HIGH_THRESH) begin
+                      blueCount = blueCount + blue;
+                      redCount  = redCount  + red;
+                      greenCount = greenCount + green;
+                    end
+                    else if(VGA_PIXEL_Y >= `Y_HIGH_THRESH && !done_color) begin
+                      if (greenCount > 15'd5000 && blueCount > 15'd20000 && 
+                          redCount > 15'd20000) begin
+                        color = NONE;
+                      end
+                      else if (blueCount > redCount && (blueCount - redCount) > 30
+                           && blueCount > 15'd200) begin
+                        color = BLUE;
+                      end
+                      else if (redCount > blueCount && (redCount - blueCount) > 30 
+                          && redCount > 15'd200) begin
+                        color = RED;
+                      end
+                      else begin
+                        color = NONE;
+                      end
+                      blueCount = 0;
+                      redCount  = 0;
+                      greenCount = 0;
+                      done_color = 1'b1;
+                    end
+                  end
+                </code>
+                </p>
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/nbeuPRgot2Y?controls=0" 
+                        frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
+                        allowfullscreen>
+                </iframe>
+                This implementation use a lot of variables. We needed a counter 
+                for the three colors. We used the counter to count the values of 
+                the blue and red pixels if they are within a set of boundary. 
+                The boundary was used as a filter so that we can get the values 
+                that are near the center of the camera screen since that was where 
+                the shapes are most likely going to be. We judge as soon as the VGA X 
+                and Y axis exit the high threshold which means that we are approaching 
+                the end of our image. As shown above, we compare the counters of red
+                and blue pixels and see if one is greater than the other by some threshold. 
+                We need the green counter because if the green counter is high while
+                red and blue are also high, it likely means that we are viewing a 
+                white wall since there are no green color shapes. The judging only 
+                occurs once which was done by a flipping bit. We also reset the counters 
+                for the next frame. 
+                <figure>
+                    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab04/IMG_1171.jpg" width="500"/>
+                    <font size="2">
+                    <figcaption> <b> Overview of FPGA and Camera </b>
+                    </figcaption>
+                    </font>
+                </figure>
+                <h1 ALIGN=LEFT>Arduino</h1>
+                <h2 ALIGN=LEFT>Disabling Arduino's Internal Pullup Resistor</h2>
+                In the prelab, we determined what registers we needed to set and what values 
+                we needed to set them to in order to properly set up the camera to do what we need 
+                it to. Before starting anything, we disabled the internal pullup resistors in the 
+                Arduino’s I2C interface so as not to damage the camera by sending 5V to it. We 
+                then downloaded the provided Lab 4 Arduino template in order to use the functions 
+                provided in it to write to and read from registers in the camera.
+                This is done by going to the Arduino library on our hard drive. This is done by going 
+                to *twi.c* at *C:\Program Files (x86)\Arduino\hardware\arduino\avr\libraries\Wire\src\utility*
+                and commenting out
+                <p ALIGN=LEFT>
+                  <code>
+                      //activate internal pullups for twi
+                      digitalWrite(SDA,1);
+                      digitalWrite(SCL,1);
+                  </code>
+                </p>
+                This will allow the I2C interface to communicate with the camera without sending 5v to the camera.
+                <h2>Writing Registers</h2>
+                We use the I2C communication protocol to talk to the camera. This is setup using Arduino's 
+                *Wire* library which supports I2C interfaces. We set up the Arduino as the master and the camera 
+                as slave. The camera has a set slave address of 0x21 after we ignore the least significant bit 
+                because that is used to distinguish between read and writes. The *Wire* library already set this 
+                up for us. All we have to do is pass the upper seven bits of the slave address of the camera to 
+                the I2C interface. We write to the camera by calling:
+                <p ALIGN=LEFT>
+                  <code>    
+                  Wire.beginTransmission(0x21); // 7-bit Slave address
+                  Wire.write(value_to_write);   
+                  Wire.endTransmission();
+                  </code>
+                </p>
+                The library makes it super simple to communicate with the camera using I2C.
+          
+                To have the camera capture the images we want, we must set some registers on the camera that deal with resolution, 
+                and camera clock. The following shows how we wrote to the registers:
+                <p ALIGN=LEFT>
+                  <code>
+                    void setup() {
+                        Wire.begin();
+                        Serial.begin(9600);
+                        delay(100);
+                        Serial.println(OV7670_write_register(0x12,0x80));  
+                        //color bar test
+                        //  Serial.println(OV7670_write_register(0x12,0x0E)); 
+                        //  Serial.println(OV7670_write_register(0x42,0x08));
+
+                        Serial.println(OV7670_write_register(0x12,0x0c)); 
+                        Serial.println(OV7670_write_register(0x0c,0x08)); 
+                        Serial.println(OV7670_write_register(0x14,0x11)); 
+                        Serial.println(OV7670_write_register(0x40,0xD0)); 
+                        Serial.println(OV7670_write_register(0x11,0xC0)); 
+                        Serial.println(OV7670_write_register(0x1E,0x30));
+                        set_color_matrix();
+                    }
+                  </code>
+                </p>
+                <table ALIGN=CENTER>
+                  <tr>
+                    <th>Registers</th>
+                    <th>Name</th>
+                    <th>Function</th>
+                  </tr>
+                  <tr>
+                    <td>--------</td>
+                    <td>----</td>
+                    <td>--------</td>
+                  </tr>
+                  <tr>
+                    <td>0x12</td>
+                    <td>COM7</td>
+                    <td>Reset regs; enable/disable color bar test; sets QCIF 176x144 resolution</td>
+                  </tr>
+                  <tr>
+                    <td>0x0c</td>
+                    <td>COM3</td>
+                    <td>Enable scaling</td>
+                  </tr>
+                  <tr>
+                    <td>0x14</td>
+                    <td>COM9</td>
+                    <td>Auto gain ceiling 2x; Freeze AGC/AEC</td>
+                  </tr>
+                  <tr>
+                    <td>0x40</td>
+                    <td>COM15</td>
+                    <td>Max output range [00] to [FF]; Use RGB 565</td>
+                  </tr>
+                  <tr>
+                    <td>0x42</td>
+                    <td>COM17</td>
+                    <td>DSP color bar enable</td>
+                  </tr>
+                  <tr>
+                    <td>0x11</td>
+                    <td>CLKRC</td>
+                    <td>Use 24 MHz clk from FPGA; pclk can be as high as xclk</td>
+                  </tr>
+                  <tr>
+                    <td>0x1E</td>
+                    <td>MVFP</td>
+                    <td>flip and mirror image</td>
+                  </tr>
+                </table>
+                We set the camera to QCIF resolution which is 176 x 144 screen size. 
+                This is the smallest resolution the camera supports. We use this
+                resolution because we lack memory to store any larger sizes on 
+                the FPGA. For the first part of the lab, we tested the camera 
+                and our FPGA polling code by using the camera color bar to make 
+                sure we can display the correct colors on the VGA screen. This
+                means we have to set COM7 to display the color bar and enable 
+                DSP color bar in COM 17. The other important setting is the 
+                camera clock. This camera clock determines the rate a which each 
+                pixel is sent to the FPGA. We drive the camera with the 24 MHz 
+                FPGA clock. This gives the camera the ability to go up to 24 MHz
+                for pixel transmissions.
+                <figure>
+                    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab04/IMG_1172.jpg" width="560"/>
+                    <font size="2">
+                    <figcaption> <b> Setup of the Arduino and FPGA </b>
+                    </figcaption>
+                    </font>
+                </figure>
+                <h2>Communicating with FPGA</h2>
+                Communication with the FPGA is done by wiring the GPIO pins on the 
+                FPGA to the arduino in parallel. We use combinational logic in this 
+                case since we set the FPGA to output the results of the image 
+                processing immediately while having the Arduino constantly decode
+                the message for the four pins. Even though the voltage of the 
+                Arduino pins are 5V while FPGA pins are 3.3V, we can connect 
+                the pins together without a voltage divider because the Arduino 
+                pins are set as input and are capable of reading the 3.3V from 
+                the FPGA as high.
+          
+                Initially, we define the input communication pins on the Arduino 
+                and the decoding treasure numbers.
+          
+                <p ALIGN=LEFT>
+                  <code>
+                    #define T1 3   //GPIO 33 treasure[0]
+                    #define T2 4   //GPIO 32 treasure[1]
+                    #define C1  5  //GPIO 31 color ; blue or red
+                    #define C2  6  //GPIO 30 color ; blue or red
+                    #define RED 2
+                    #define BLUE 1
+                    #define NONE 0
+                    #define SQUARE 2
+                    #define TRIANGLE 1
+                    #define DIAMOND 3
+
+                    uint8_t decoder(){
+                      uint8_t treasure1 = digitalRead(T1); //read from pins
+                      uint8_t treasure2 = digitalRead(T2); 
+                      uint16_t color1   = digitalRead(C1);
+                      uint16_t color2   = digitalRead(C2);
+                      Serial.print("T1: ");Serial.print(treasure1);
+                      Serial.print(" T2: ");Serial.print(treasure2);
+                      Serial.print(" C1: ");Serial.print(color1);
+                      Serial.print(" C2: ");Serial.print(color2);
+                      uint8_t treasure  = (treasure2 << 1)|treasure1; 
+                      //combine treasure bits
+                      uint8_t color   =   (color2<<1)|(color1);
+                      Serial.println("");
+                      Serial.print("---COLOR: ");
+                      if(color==BLUE) Serial.print("BLUE");
+                      else if(color==RED)    Serial.print("RED");
+                      else             Serial.print("NONE");
+                      Serial.print( " Treasure: ");
+                      if( treasure == SQUARE)
+                          Serial.print("SQUARE");
+                      else if( treasure == TRIANGLE)
+                          Serial.print("TRIANGLE");
+                      else if( treasure == DIAMOND)
+                          Serial.print("DIAMOND");
+                      else
+                          Serial.print("NONE");
+                      Serial.println("");
+                    }
+                  </code>
+                </p>
+                This code is the decoder for communication from the FPGA. 
+                The code is very simple because of the extra hardware used. 
+                With this method, we used up to four pins from the Arudino. 
+                We could have used a serial communication protocol using two 
+                pins to send the four bits of messages but we have extra pins 
+                from the Arduino left over so simplicity at the cost of 
+                hardware was prioritized.
+                <h1>Conclusion<h1>
+                This lab is one of the harder labs this semester. Getting the camera to 
+                display an image correctly was a challenge due to the complexities in timing 
+                the camera pixel transmission correctly. While getting the image itself wasn't 
+                too difficult to display, getting the right colors for the image was difficult.
+                We often had inverted colors or colors that were too dark or faded displaying 
+                on the screen. Both hardware and software contributed to the difficulty. We had 
+                to set the software to poll the bytes from the camera correctly but also had 
+                to ensure sure we wired the camera to the FPGA in a way that wouldn't introduce 
+                noise, especially with a 24 MHz clock driving the transmission. Looking forward, 
+                we will be integrating the FPGA camera system into our robot. This will likely 
+                result in more states and updates to our radio messages to support communicating 
+                treasure shapes and colors. We also will need to update the basestation so that 
+                it can receive messages from the radio.
               </p>
               <a class="btn btn-primary btn-lg rounded-pill portfolio-modal-dismiss" href="#">
                 <i class="fa fa-close"></i>
