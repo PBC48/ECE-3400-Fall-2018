@@ -75,14 +75,7 @@
         <hr class="star-dark mb-5">
         <div class="row">
           <div class="col-md-3 col-lg-3">
-            <a class="portfolio-item d-block mx-auto" href="#headshot-1">
-              <div class="portfolio-item-caption d-flex position-absolute h-100 w-100">
-                <div class="portfolio-item-caption-content my-auto w-100 text-center text-white">
-                  <i class="fas fa-search-plus fa-3x"></i>
-                </div>
-              </div>
-              <img class="img-fluid rounded-circle" src="images/headshot-Xiaoyu.PNG" alt="">
-            </a>
+            <img class="img-fluid rounded-circle" src="images/headshot-Xiaoyu.PNG" alt="">
             <h3 ALIGN=CENTER>Xiaoyu Yan</h3>
             <h4 ALIGN=CENTER>Junior ECE</h4>
             <ul ALIGN=CENTER class="list-inline mb-0">
@@ -99,14 +92,7 @@
             </ul>
           </div>
           <div class="col-md-3 col-lg-3">
-            <a class="portfolio-item d-block mx-auto" href="#headshot-2">
-              <div class="portfolio-item-caption d-flex position-absolute h-100 w-100">
-                <div class="portfolio-item-caption-content my-auto w-100 text-center text-white">
-                  <i class="fas fa-search-plus fa-3x"></i>
-                </div>
-              </div>
-              <img class="img-fluid rounded-circle" src="images/headshot-Chrissy.png" alt="">
-            </a>
+            <img class="img-fluid rounded-circle" src="images/headshot-Chrissy.png" alt="">
             <h3 ALIGN=CENTER>Christine Mayer</h3>
             <h4 ALIGN=CENTER>Junior ECE</h4>
             <ul ALIGN=CENTER class="list-inline mb-0">
@@ -123,15 +109,7 @@
             </ul>
           </div>
           <div class="col-md-3 col-lg-3">
-            <a class="portfolio-item d-block mx-auto" href="#headshot-3">
-              <div class="portfolio-item-caption d-flex position-absolute h-100 w-100">
-                <div class="portfolio-item-caption-content my-auto w-100 text-center text-white">
-                  <i class="fas fa-search-plus fa-3x"></i>
-                </div>
-              </div>
-              <img class="img-fluid rounded-circle" src="images/headshot-Patrick.png" alt="">
-
-            </a>
+            <img class="img-fluid rounded-circle" src="images/headshot-Patrick.png" alt="">
             <h3 ALIGN=CENTER>Patrick Clobridge</h3>
             <h4 ALIGN=CENTER>Senior ECE</h4>
             <ul ALIGN=CENTER class="list-inline mb-0">
@@ -148,14 +126,7 @@
             </ul>
           </div>
           <div class="col-md-3 col-lg-3">
-            <a class="portfolio-item d-block mx-auto" href="#headshot-4">
-              <div class="portfolio-item-caption d-flex position-absolute h-100 w-100">
-                <div class="portfolio-item-caption-content my-auto w-100 text-center text-white">
-                  <i class="fas fa-search-plus fa-3x"></i>
-                </div>
-              </div>
-              <img class="img-fluid rounded-circle" src="images/taravn_headshot.jpg" alt="">
-            </a>
+            <img class="img-fluid rounded-circle" src="images/taravn_headshot.jpg" alt="">
             <h3 ALIGN=CENTER>Tara Van Nieuwstadt</h3>
             <h4 ALIGN=CENTER>Junior ECE</h4>
             <ul ALIGN=CENTER class="list-inline mb-0">
@@ -1181,7 +1152,272 @@ radio<span style='color:#0000ff; '>.</span>stopListening<span style='color:#0000
               <h2 class="text-secondary text-uppercase mb-0">Lab 4</h2>
               <hr class="star-dark mb-5">
               <img class="img-fluid mb-5" src="images/bootstrap/lab4-bootstrap.png" alt="">
-              <p class="mb-5">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Mollitia neque assumenda ipsam nihil, molestias magnam, recusandae quos quis inventore quisquam velit asperiores, vitae? Reprehenderit soluta, eos quod consequuntur itaque. Nam.</p>
+              <p class="mb-5" ALIGN=LEFT>
+                <h1 ALIGN=LEFT>Objectives</h1>
+                <ul>
+                  <li> Use a camera and FPGA to implement a system for detecting treasures
+                  <li> Develop an FPGA module capable of detecting shapes and colors from a camera input
+                  <li> Communicate treasure detection from the FPGA to the Arduino
+                  <li> Display images from the camera onto a screen
+                </ul>
+              </p>
+              <h1 ALIGN=LEFT>Introduction</h1>
+              <p ALIGN=LEFT>
+                For this lab we began working with an FPGA to implement treasure-detection capabilities
+                for the robot. The system consists of an FPGA, a camera, and an Arduino. To divide the
+                work for this lab, Patrick and Chrissy worked with the FPGA, and Xiaoyu and Tara worked
+                with the Arduino. The FPGA team worked on implementing PLL, downsampler, and image 
+                processor modules in Verilog for the FPGA, and the Arduino team worked on writing to 
+                appropriate registers in the camera in order to set it up properly for taking images. 
+                The two teams then came together to integrate the components to take image input from 
+                the camera, send the images to the memory of the FPGA and process the image to detect 
+                shape and color, and then send treasure information from the FPGA to the Arduino so that 
+                the robot can finally send that information back to the base station.
+              </p>
+              <h1 ALIGN=LEFT>FPGA</h1>
+              <p ALIGN=LEFT>
+                First, we implemented a phase-locked loop to clock the FPGA. 
+                Using the provided Verliog project, we set up the interface our system would use for shape detection.
+                <h2 ALIGN=LEFT>Setup</h2>
+                We first use the PLL, which is not suceptible to clock skew, to produce different clocks
+                to drive the camera, VGA, M9k block memory read and write. We use the 24 MHz clock to drive 
+                the camera and plug that as XCLK. We use the 50 MHz clock for memory write and 25 MHz clock 
+                for read. We want write to be faster than read because writing to the block needs to be done 
+                before we read. We don't want to accidentally read blocks before they are updated. We also 
+                use the 25 MHz clock for VGA display.
+                <h2 ALIGN=LEFT>Camera, FPGA and Arduino Communication</h2>
+                The camera contains 20 pins total. We have 8 pins for parallel data which sends one of the two 
+                bytes for pixel during each clcok cycle. These eight pins are connected to input GPIO pins on 
+                the FPGA. In addition, we also have HREF and VSYNC pins which are also connected as input to the 
+                FPGA. The camera also has PCLK and XCLK pins. The XCLK is for external clock. We use an output pin 
+                from the FPGA and put it to the camera. The PCLK is camera clock; we route that back to the FPGA for analysis. 
+                <figure ALIGN=CENTER>
+                    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab04/schematic.PNG" width="560"/>
+                    <font size="2">
+                    <figcaption> <b> Wiring Diagram for FPGA, Arduino Uno, and Camera </b>
+                    </figcaption>
+                    </font>
+                </figure>
+                In the figure above, the colored rectangles mean that the pins are wired together.
+
+                In the FPGA, we must set the camera communication pins, HREF, VSYNC, and PCLK to 
+                input for the FPGA. We set the the communication pins with the Arduino as output. 
+                In quartus, this is done as follows:
+                <code ALIGN=CENTER>
+                  //////////// GPIO_0, GPIO_0 connect to GPIO Default //////////
+                  output 		    [33:0]		GPIO_0_D;
+                  //////////// GPIO_0, GPIO_1 connect to GPIO Default //////////
+                  input 		    [33:20]		GPIO_1_D;
+                </code>
+                We also use four parallel wires for communication from FPGA to the Arduino. We have 
+                two bits for treasure shape and two bits for color.
+                <h3>Polling from camera</h3>
+                <figure ALIGN=CENTER>
+                    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab04/vgatiming.PNG" width="560"/>
+                    <font size="2">
+                    <figcaption> <b> Timing Diagram for the OV7670 camera </b>
+                    </figcaption>
+                    </font>
+                </figure>
+                The above timing diagram shows us how images from the camera are sent. When we have
+                a new frame incoming, the VSYNC goes high. After some time, the HREF will go high, 
+                signalling the start of the first byte of data. The camera can send data in RGB565 
+                which is 5 bits of red, 6 bits of green, and 5 bits of blue color. This is divided 
+                into two transmissions due to the camera's one byte communication line. When the HREF 
+                goes high, the camera is transmitting the data for the first row of data. A low HREF 
+                means that we finished transmitting data for one row. At this point, the VSYNC can go 
+                high to signal the end of the image or the HREF can go high again when the camera is 
+                sending data for the next row of pixels.
+                <figure ALIGN=CENTER>
+                    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab04/cam_fsm.PNG" width="560"/>
+                    <font size="2">
+                    <figcaption> <b> FSM for getting data from camera </b>
+                    </figcaption>
+                    </font>
+                </figure>
+                Based on the timing diagram, we created this state machine to model the behavior of the camera transmissions.
+                <table ALIGN=CENTER>
+                  <tr>
+                    <th>States</th>
+                    <th>Function</th>
+                  </tr>
+                  <tr>
+                    <td>----------</td>
+                    <td>----------</td>
+                  </tr>
+                  <tr>
+                    <td>IDLE</td>
+                    <td>Start of device. We wait here for camera to start</td>
+                  </tr>
+                  <tr>
+                    <td>NEW FRAME</td>
+                    <td>Start of new frame where we reset the X and Y address</td>
+                  </tr>
+                  <tr>
+                    <td>POLL</td>
+                    <td>Enable to downsampler and poll from camera</td>
+                  </tr>
+                  <tr>
+                    <td>UPDATE ROW</td>
+                    <td>New row of pixels. Update Y address and reset X address<td>
+                  </tr>
+                  <tr>
+                    <td>WAIT</td>
+                    <td>Wait for start of next frame or row</td>
+                  </tr>
+                </table>
+                <code ALIGN=LEFT>
+                  always @(*) begin
+                      case (control_state)
+                          STATE_IDLE: begin
+                              W_EN                <= 1'b0;
+                              down_sample_reset   <= 1'b1;
+                          end
+                          STATE_NEW_FRAME: begin
+                              down_sample_reset   <= 1'b0; 
+                              W_EN                <= downsampler_rdy ? 1'b1 : 1'b0;
+                          end
+                          STATE_POLL: begin
+                              down_sample_reset   <= 1'b0;
+                        W_EN                <= downsampler_rdy ? 1'b1 : 1'b0;
+
+                          end
+                          STATE_UPDATE_ROW: begin
+                              down_sample_reset   <= 1'b1;
+                              W_EN                <= 1'b0;
+                          end
+                          STATE_WAIT: begin
+                              down_sample_reset   <= 1'b1;
+                              W_EN                <= 1'b0;
+                          end
+                          default: begin
+                              W_EN                <= 1'b0;
+                              down_sample_reset   <= 1'b1;
+                          end
+                      endcase
+                  end
+
+                  always @(posedge pclk) begin
+                    case (control_state)
+                          STATE_IDLE: begin
+                          end
+                          STATE_NEW_FRAME: begin
+                              X_ADDR          <= 15'b0;
+                              Y_ADDR          <= 15'b0;
+
+                          end
+                          STATE_POLL: begin
+                        //increments xaddr after downsampler 
+                              //finishes and writes to mem
+                        X_ADDR <= downsampler_rdy ? X_ADDR + 1 : X_ADDR; 
+
+                          end
+
+                          STATE_UPDATE_ROW: begin
+                        Y_ADDR			<= Y_ADDR + 1;
+                              X_ADDR          <= 15'b0;
+                          end
+                          STATE_WAIT: begin
+
+                          end
+                          default: begin
+
+                          end
+                      endcase
+                  end
+                </code>
+                We must save the data from the camera into a memory location 
+                so that it can be read by the VGA and the image processor 
+                later for analysis. This is done with two variables, X_ADDR and Y_ADDR.
+                <figure ALIGN=CENTER>
+                    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab04/IMG_1174.jpg" width="560"/>
+                    <font size="2">
+                    <figcaption> <b> Camera Connection to FPGA </b>
+                    </figcaption>
+                    </font>
+                </figure>
+                <h3>Downsampler</h3>
+                  The camera's eight parallel data pins output color per pixel at a clocked 
+                  rate. For RGB, it uses the configuration for RGB565 or RGB555. Both 
+                  configurations are two bytes in length total which means that each pixel 
+                  captured by the camera are two bytes. We must downsample the two byte data 
+                  from the camera to 1 byte data because of memory constraints on the M9k
+                  memory blocks on the FPGA. We can only store one byte of data per memory 
+                  address. Thus we must convert to RGB332 or RGB323. We used RGB332 for 
+                  debugging and displaying the camera data on the VGA screen since the VGA 
+                  only takes in RGB332 values. For treasure detection, we changed to RGB323 
+                  to get more bits out of the blue pixel since we are only detecting blue and 
+                  red treasures. The goal of the downsampler is to take the two byte pixel 
+                  from the camera and converted it to a one byte pixel. This one byte pixel 
+                  will be saved into the M9k memory block at the correct memory address which 
+                  is relative to the pixel location on the screen. 
+                  <figure>
+                      <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab04/timingdiagram565.PNG" width="560"/>
+                      <font size="2">
+                      <figcaption> <b> Timing Diagram for Outputing RGB565 </b>
+                      </figcaption>
+                      </font>
+                  </figure>
+                  <table ALIGN=CENTER>
+                    <tr>
+                      <th>States</th>
+                      <th>Function</th>
+                    </tr>
+                    <tr>
+                      <td>----------</td>
+                      <td>----------</td>
+                    </tr>
+                    <tr>
+                      <td>IDLE</td>
+                      <td>Start of device. We wait here for camera to start</td>
+                    </tr>
+                    <tr>
+                      <td>READ</td>
+                      <td>Start reading from camera</td>
+                    </tr>
+                  </table>
+                  <code ALIGN=LEFT>
+                  READ: begin
+                      fsm 		= (VSYNC || RES) ? IDLE : READ;
+
+                      if(HREF) begin
+                          count_bit 		= ~count_bit;
+                          if(count_bit) begin
+                              reg_valid		<= 1'b0;
+                              OUT[7:2]		<= {D[7:5], D[2:0]};
+                          end
+                          else begin 
+                              reg_valid 		<= 1'b1;
+                              OUT[1:0]		<= D[4:3];
+                          end
+                      end
+                      else begin
+                          count_bit			<= 1'b0;
+                          reg_valid 			<= 1'b0;
+                          OUT					<= 8'd7;
+                      end
+                  end
+                  </code>
+                  <h3>Color Bar</h3>
+                  To display the color bar, we must set the appropriate registers 
+                  in the Camera. The main registers involved are COM 7 and COM 17 
+                  for color bar enable and color bar DSP enable. With the downsampler 
+                  above, we are able to decode the bytes coming from the camera and 
+                  display the color bar onto the VGA screen. The downsampler takes 
+                  in input from the camera.
+                  <figure>
+                      <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab04/IMG_1163.jpg" width="560"/>
+                      <font size="2">
+                      <figcaption> <b> Color Bar Test </b>
+                      </figcaption>
+                      </font>
+                  </figure>
+                  The colors in the bar are different from the example in the lab but when 
+                  we use the camera to capture, we found that the colors were passable and 
+                  would not pose an issue.
+                  <h3>Display Camera Capture</h3>
+                  
+              </p>
               <a class="btn btn-primary btn-lg rounded-pill portfolio-modal-dismiss" href="#">
                 <i class="fa fa-close"></i>
                 Close Project</a>
