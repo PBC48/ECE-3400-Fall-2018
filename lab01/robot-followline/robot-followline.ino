@@ -40,51 +40,52 @@ void setup() {
 
 
 void loop() {
-  switch(state){
-    Serial.println(state);
-    case 0:
-      
-      if(SENSOR0_READING>600){
-        state++;
-      }else if(SENSOR1_READING>600){
-        state = 2;
-      }else{
-        robot.forward();
-      }
-      if(millis()-wait>=0){
-        state = 3;
-        wait=millis()+200;
-      }else if(poll_result<85){
-        state = 4;
-      }
-      break;
-    
-    case 1://turn right
-      robot.turn(right);
-      state = 0;
-      break;
-    
-    case 2: //turn left
-      robot.turn(left);
-      state = 0;
-      break;
-    
-    case 3:    
-      //poll_result = pollLineSensor(SENSOR3_PIN);
-      state = 0;
-      break;
-    
-    case 4:
-      robot.turn(map1[i%8]);
-      i++;
-      wait=millis()+500;
-      if(millis()-wait>=0){
-        state = 0;
-      }
-      poll_result=0xFFFFFFFF;
-      break;
-  }
-  
+  delay(1);
+//  switch(state){
+//    Serial.println(state);
+//    case 0:
+//      
+//      if(SENSOR0_READING>600){
+//        state++;
+//      }else if(SENSOR1_READING>600){
+//        state = 2;
+//      }else{
+//        robot.forward();
+//      }
+//      if(millis()-wait>=0){
+//        state = 3;
+//        wait=millis()+200;
+//      }else if(poll_result<85){
+//        state = 4;
+//      }
+//      break;
+//    
+//    case 1://turn right
+//      robot.turn(right);
+//      state = 0;
+//      break;
+//    
+//    case 2: //turn left
+//      robot.turn(left);
+//      state = 0;
+//      break;
+//    
+//    case 3:    
+//      //poll_result = pollLineSensor(SENSOR3_PIN);
+//      state = 0;
+//      break;
+//    
+//    case 4:
+//      robot.turn(map1[i%8]);
+//      i++;
+//      wait=millis()+500;
+//      if(millis()-wait>=0){
+//        state = 0;
+//      }
+//      poll_result=0xFFFFFFFF;
+//      break;
+//  }
+//  
 }
 
 

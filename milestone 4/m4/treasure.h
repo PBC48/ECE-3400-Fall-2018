@@ -1,10 +1,10 @@
 #include <Wire.h>
 
 #define OV7670_I2C_ADDRESS 0x21 // For Write/*TODO: write this in hex (eg. 0xAB) */
-#define T1 3  //GPIO 33 treasure[0]
-#define T2 4  //GPIO 32 treasure[1]
-#define C1  5  //GPIO 31 color ; blue or red
-#define C2  6  //GPIO 30 color ; blue or red
+#define T1 4  //GPIO 33 treasure[0]
+#define T2 4  //GPIO 32 treasure[1] //mux A5
+#define C1  5  //GPIO 31 color ; blue or red //mux A6
+#define C2  6  //GPIO 30 color ; blue or red //mux A7
 #define RED 2
 #define BLUE 1
 #define NONE 0
