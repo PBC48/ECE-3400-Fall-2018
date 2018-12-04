@@ -8,7 +8,7 @@ sensor, robot movement, microphone, and ir all in one.
 
 #include "robot.h"
 #include "line_sensor.h"
-#include "fft_lib.h"
+//#include "fft_lib.h"
 #include "radio.h"
 #include "mux.h"
 #include "maze.h"
@@ -35,6 +35,7 @@ bool radio_msg_valid;
 uint8_t STATE;
 uint32_t u32wait;
 uint32_t u32wait_ir;
+
 uint16_t radio_msg = 0;
 uint16_t FRONTWALL;
 uint16_t LEFTWALL;
@@ -63,7 +64,7 @@ void setup()
     Serial.println(F("INITIAL STATE"));
     // print_robot_state;
     radio_msg_valid = false;
-    treasure_setup();
+    //treasure_setup();
 }
 
 void loop()
@@ -83,19 +84,26 @@ void loop()
         break;
 
     case AUDIO_DECT:
-        calculate_FFT(MIC);
-        Serial.print(F("AUDIO SUM: "));
-        Serial.println(sum);
-        if ((sum > 150) || (!digitalRead(BUTTON)))
-        {
-            Serial.println(F("660Hz Tone Detected"));
-            STATE = IR_DECT;
-            robot_init();
-        }
-        else
+//        calculate_FFT(MIC);
+//        Serial.print(F("AUDIO SUM: "));
+//        Serial.println(sum);
+        if (!digitalRead(BUTTON)){
+          STATE = IR_DECT;
+          robot_init();
+        }else
         {
             STATE = AUDIO_DECT;
         }
+//        if ((sum > 150) || (!digitalRead(BUTTON)))
+//        {
+//            Serial.println(F("660Hz Tone Detected"));
+//            STATE = IR_DECT;
+//            robot_init();
+//        }
+//        else
+//        {
+//            STATE = AUDIO_DECT;
+//        }
         //STATE = IR_DECT;
         //radio_msg = millis();
         //radio_transmit(radio_msg);
@@ -108,7 +116,8 @@ void loop()
         //Serial.print(F("IR SUM: ")); Serial.println(sum);
         set_mux_select(2);
         FRONTWALL = analogRead(MUX_OUT);
-//        if(FRONTWALL<100){
+        
+//        if(FRONTWALL>300){
 //            STATE=ROBOT_DETECTED;
 //        }
 //        else {
@@ -139,7 +148,7 @@ void loop()
        // Serial.print(F("SENSOR_R READING: "));Serial.print(SENSOR_R_READING);
        // Serial.print(F("-----SENSOR_L READING: "));Serial.println(SENSOR_L_READING);
 
-        if (AVERAGE_L < 250 && AVERAGE_R < 250 && VALID_L && VALID_R)
+        if (AVERAGE_L < 200 && AVERAGE_R < 200 && VALID_L && VALID_R)
         {
             Serial.print(F("SENSOR_R READING: "));
             Serial.print(AVERAGE_R);
@@ -156,7 +165,7 @@ void loop()
             if (LEFTWALL > 250  )
             {
                 robot_move(forward);
-                delay(50);
+                //delay(50);
                 int treasure = treasure_decode();
                 radio_msg |= (treasure & 0x3) << 3;
             }
@@ -236,7 +245,8 @@ void loop()
 
             // TRANSMIT TO BASESTATION
             //radio_msg = millis();
-            radio_msg = 0xFFFF & (robot_pos << 8 | //setting valid bit.
+            
+            radio_msg = 0xFFFF &radio_msg | (robot_pos << 8 | //setting valid bit.
                                   ((uint8_t)robot_dir << 6) | ((LEFTWALL > 115)) | (FRONTWALL > 115) << 1) |
                         ((RIGHTWALL > 115) << 2);
             /*completely re-work basestation communication?
@@ -255,12 +265,12 @@ void loop()
         }
         else
         {
-            if (SENSOR_L_READING < 200)
+            if (SENSOR_L_READING < 220)
             {
                 robot_move(adj_right);
                 //Serial.println("Adjust right");
             }
-            else if (SENSOR_R_READING < 200)
+            else if (SENSOR_R_READING < 220)
             {
                 robot_move(adj_left);
                 //Serial.println("Adjust left");

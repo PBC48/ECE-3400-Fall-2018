@@ -2,9 +2,9 @@
 
 #define OV7670_I2C_ADDRESS 0x21 // For Write/*TODO: write this in hex (eg. 0xAB) */
 #define T1 4  //GPIO 33 treasure[0]
-#define T2 4  //GPIO 32 treasure[1] //mux A5
-#define C1  5  //GPIO 31 color ; blue or red //mux A6
-#define C2  6  //GPIO 30 color ; blue or red //mux A7
+//#define T2 4  //GPIO 32 treasure[1] //mux A5
+//#define C1  5  //GPIO 31 color ; blue or red //mux A6
+//#define C2  6  //GPIO 30 color ; blue or red //mux A7
 #define RED 2
 #define BLUE 1
 #define NONE 0
@@ -25,7 +25,7 @@ void init_com(){
 ///////// Function Definition //////////////
 
 
-uint8_t treasure_decode(){
+uint8_t treasure_decode(int t1, int t2, int c1, int c2){
   uint8_t treasure1,treasure2,color1,color2;
   uint8_t treasure;
   uint8_t color  ;

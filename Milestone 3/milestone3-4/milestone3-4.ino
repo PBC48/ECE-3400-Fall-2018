@@ -9,7 +9,7 @@ sensor, robot movement, microphone, and ir all in one.
 
 #include "robot.h"
 #include "line_sensor.h"
-#include "fft_lib.h"
+//#include "fft_lib.h"
 #include "radio.h"
 #include "mux.h"
 #include "maze.h"
@@ -47,7 +47,10 @@ void send_to_baseStation()
     robot_move(rstop);
     servo_detach();
     line_sensor_detach();
-    while(!radio_transmit(radio_msg));
+    int h = 0;
+    while(!radio_transmit(radio_msg) && h<50){
+      h++;
+    }
     line_sensor_init();
     radio_msg_valid = false;
 }
@@ -91,10 +94,11 @@ void loop()
         break;
 
     case AUDIO_DECT:
-        calculate_FFT(MIC);
-        Serial.print(F("AUDIO SUM: "));
-        Serial.println(sum);
-        if ((sum > 150) || (!digitalRead(BUTTON)) )
+//        calculate_FFT(MIC);
+//        Serial.print(F("AUDIO SUM: "));
+//        Serial.println(sum);
+//        if ((sum > 150) || (!digitalRead(BUTTON)) )
+        if ( (!digitalRead(BUTTON)) )
         {
             Serial.println(F("660Hz Tone Detected"));
             STATE = IR_DECT;
@@ -114,6 +118,11 @@ void loop()
         //calculate_FFT(IR);
         //Serial.println("IN IR_DECT");
         //Serial.print(F("IR SUM: ")); Serial.println(sum);
+        FRONTWALL = analogRead(MUX_OUT);
+        if (FRONTWALL > 500){
+          delay(1000);
+        }
+        STATE = ROBOT_SENSE;
 //        if (sum > 100)
 //        {
 //            Serial.println(F("Robot Detected"));
@@ -123,7 +132,7 @@ void loop()
 //        {
 //            STATE = ROBOT_SENSE; //LINE_SENSOR;
 //        }
-        STATE = ROBOT_SENSE; //LINE_SENSOR;
+        //STATE = ROBOT_SENSE; //LINE_SENSOR;
         u32wait_ir = millis();
         break;
 
@@ -138,7 +147,7 @@ void loop()
         //Serial.print(F("SENSOR_R READING: "));Serial.println(SENSOR_R_READING);
         //Serial.print(F("SENSOR_L READING: "));Serial.println(SENSOR_L_READING);
             
-        if (AVERAGE_L < 200 && AVERAGE_R < 200 && VALID_L && VALID_R)
+        if (AVERAGE_L < 125 && AVERAGE_R < 125 && VALID_L && VALID_R)
         {
             Serial.print(F("SENSOR_R READING: "));
             Serial.println(AVERAGE_R);
@@ -222,8 +231,8 @@ void loop()
             
             // TRANSMIT TO BASESTATION
             //radio_msg = millis();
-            radio_msg = radio_msg & (0x8);
-            radio_msg = 0xFFFF & radio_msg & (robot_pos << 8 |                                              //setting valid bit.
+            radio_msg = radio_msg | (0x0);
+            radio_msg = 0xFFFF & radio_msg | (robot_pos << 8 |                                              //setting valid bit.
                                   ((uint8_t)robot_dir << 6) | ((LEFTWALL > 115)) | (FRONTWALL > 115)<<1)| ((RIGHTWALL > 115)<<2);
             /*completely re-work basestation communication?
               make sure dir in basestation is FRBL */
@@ -241,12 +250,12 @@ void loop()
         }
         else
         {
-            if (SENSOR_L_READING < 200)
+            if (SENSOR_L_READING < 210)
             {
                 robot_move(adj_right);
                 //Serial.println("Adjust right");
             }
-            else if (SENSOR_R_READING < 200)
+            else if (SENSOR_R_READING < 210)
             {
                 robot_move(adj_left);
                 //Serial.println("Adjust left");
@@ -276,7 +285,7 @@ void loop()
     case ROBOT_TURN_LEFT:
         robot_move(left);
         //Serial.println(F("TURNING LEFT"));
-        if (millis() - u32wait > 750)
+        if (millis() - u32wait > 850)
         {
             STATE = ROBOT_SENSE;
         }
@@ -285,7 +294,7 @@ void loop()
     case ROBOT_TURN_RIGHT:
         robot_move(right);
         //Serial.println(F("TURNING RIGHT"));
-        if (millis() - u32wait > 750)
+        if (millis() - u32wait > 675)
         {
             STATE = ROBOT_SENSE;
         }
@@ -293,7 +302,7 @@ void loop()
 
     case ROBOT_FORWARD:
         robot_move(forward);
-        if (millis() - u32wait > 150)
+        if (millis() - u32wait > 200)
         {
             STATE = ROBOT_SENSE;
         }

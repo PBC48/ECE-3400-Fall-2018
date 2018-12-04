@@ -102,6 +102,7 @@ bool radio_transmit(uint16_t &buff){
     bool ok = false;
     //while (!ok) {
       ok = radio.write( &buff, sizeof(uint16_t) );
+      delay(100);
      // printf("sending");
     //}
 

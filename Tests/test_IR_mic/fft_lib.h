@@ -16,7 +16,7 @@ enum device {
 };
 
 // uint8_t AVERAGE;
-// uint8_t FBIN;
+// uint8_t FBIN;  
 // uint8_t ADC_RESTART;
 
 //uint32_t IR_target_freq = 6080;

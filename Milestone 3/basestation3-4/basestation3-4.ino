@@ -108,10 +108,10 @@ void loop(void)
             done = radio.read(&buff, sizeof(uint16_t));
 
             // Spew it
-            printf("Got payload %d...\n", buff);
-            GUI_com(buff);
+            //printf("Got payload %d...\n", buff);
+            
         }
-        
+        GUI_com(buff);
     }
     
 }
@@ -119,7 +119,7 @@ void loop(void)
 void GUI_com(int buff){
     /*
     Current bit configuration:
- * [2:0] WALLS; true or false / right,front, left
+ * [2:0] WALLS; true or fals.e / right,front, left
  * [5:3] TREASURE; y/n, circle/square, red/blue
  * [7:6] ROBOT DIRECTION; forward, right, left
  * [8]   ROBOT; true or false

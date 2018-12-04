@@ -92,7 +92,7 @@ void loop()
         {
             STATE = AUDIO_DECT;
         }
-        //STATE = IR_DECT;
+        STATE = IR_DECT;
         //radio_msg = millis();
         //radio_transmit(radio_msg);
         break;
