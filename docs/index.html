@@ -2363,12 +2363,12 @@ update_visited_lists<span style='color:#0000ff; '>(</span><span style='color:#00
 </p>
               
               <h3>Regular Speed:</h3>
-              <iframe width="560" height="315" src="https://www.youtube.com/embed/p1IaieuAFX0" 
+              <iframe width="560" height="315" src="https://www.youtube.com/embed/p1IaieuAFX0?rel=0&amp;controls=0" 
               frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope;
                                              picture-in-picture" allowfullscreen>
               </iframe>
               <h3>3x Speed:</h3>
-              <iframe width="560" height="315" src="https://www.youtube.com/embed/JbzAFhrltYo" frameborder="0" 
+              <iframe width="560" height="315" src="https://www.youtube.com/embed/JbzAFhrltYo?rel=0&amp;controls=0" frameborder="0" 
               allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
               </iframe>
               <h1>Basestation Modification</h1>
@@ -2457,7 +2457,10 @@ update_visited_lists<span style='color:#0000ff; '>(</span><span style='color:#00
               <img class="img-fluid mb-5" src="images/bootstrap/milestone4.gif" alt="">
               <p class="mb-5" ALIGN=LEFT>
               <h1>Introduction</h1>
-              The goal of milestone 4 are as follows:
+              <p ALIGN=LEFT>
+
+                    The goal of milestone 4 are as follows:
+              </p>
               <ul ALIGN=LEFT>
                 <li> Build off our results from lab 4 and implement treasure shape detection.
                 <li> Integrate our camera and FPGA system into our robot.
@@ -2578,8 +2581,8 @@ update_visited_lists<span style='color:#0000ff; '>(</span><span style='color:#00
                     the shape of the treasure. 
                 </p>
                         
-<pre ALIGN=LEFT style='color:#000000;background:#ffffff;'>always <span style='color:#0000ff; '>@</span><span style='color:#0000ff; '>(</span>posedge CLK<span style='color:#0000ff; '>)</span> begin
-    <span style='color:#0000ff; font-weight:bold; '>if</span> <span style='color:#0000ff; '>(</span><span style='color:#0000ff; '>!</span>VGA_VSYNC_NEG<span style='color:#0000ff; '>)</span> begin
+<pre ALIGN=LEFT style='color:#000000;background:#ffffff;'>always @<span style='color:#0000ff; '>(</span>posedge CLK<span style='color:#0000ff; '>)</span> <span style='color:#0000ff; font-weight:bold; '>begin</span>
+    <span style='color:#0000ff; font-weight:bold; '>if</span> <span style='color:#0000ff; '>(</span>!VGA_VSYNC_NEG<span style='color:#0000ff; '>)</span> <span style='color:#0000ff; font-weight:bold; '>begin</span>
         top <span style='color:#0000ff; '>=</span> <span style='color:#800000; '>0</span><span style='color:#0000ff; '>;</span>
         mid <span style='color:#0000ff; '>=</span> <span style='color:#800000; '>0</span><span style='color:#0000ff; '>;</span>
         bot <span style='color:#0000ff; '>=</span> <span style='color:#800000; '>0</span><span style='color:#0000ff; '>;</span>
@@ -2591,51 +2594,51 @@ update_visited_lists<span style='color:#0000ff; '>(</span><span style='color:#00
         blue3 <span style='color:#0000ff; '>=</span> <span style='color:#800000; '>0</span><span style='color:#0000ff; '>;</span>
         done_treasure <span style='color:#0000ff; '>=</span> <span style='color:#800000; '>0</span><span style='color:#0000ff; '>;</span>
         treasure <span style='color:#0000ff; '>=</span> NONE<span style='color:#0000ff; '>;</span>
-    end
-    <span style='color:#0000ff; font-weight:bold; '>else</span> <span style='color:#0000ff; font-weight:bold; '>if</span> <span style='color:#0000ff; '>(</span>VGA_PIXEL_X <span style='color:#0000ff; '>></span> `X_LOW_THRESH <span style='color:#0000ff; '>&amp;</span><span style='color:#0000ff; '>&amp;</span> VGA_PIXEL_X <span style='color:#0000ff; '>&lt;</span> 
+    <span style='color:#0000ff; font-weight:bold; '>end</span>
+    else if <span style='color:#0000ff; '>(</span>VGA_PIXEL_X <span style='color:#0000ff; '>></span> `X_LOW_THRESH <span style='color:#0000ff; '>&amp;</span><span style='color:#0000ff; '>&amp;</span> VGA_PIXEL_X <span style='color:#0000ff; '>&lt;</span> 
         `X_HIGH_THRESH <span style='color:#0000ff; '>&amp;</span><span style='color:#0000ff; '>&amp;</span> VGA_PIXEL_Y <span style='color:#0000ff; '>></span> `Y_BARfirstTop <span style='color:#0000ff; '>&amp;</span><span style='color:#0000ff; '>&amp;</span> VGA_PIXEL_Y <span style='color:#0000ff; '>&lt;</span> 
-        `Y_BARfirstBot<span style='color:#0000ff; '>)</span> begin
+        `Y_BARfirstBot<span style='color:#0000ff; '>)</span> <span style='color:#0000ff; font-weight:bold; '>begin</span>
         red1 <span style='color:#0000ff; '>=</span> red1 <span style='color:#0000ff; '>+</span> red<span style='color:#0000ff; '>;</span>
         blue1 <span style='color:#0000ff; '>=</span> blue1 <span style='color:#0000ff; '>+</span> blue<span style='color:#0000ff; '>;</span>
-    end
-    <span style='color:#0000ff; font-weight:bold; '>else</span> <span style='color:#0000ff; font-weight:bold; '>if</span> <span style='color:#0000ff; '>(</span>VGA_PIXEL_X <span style='color:#0000ff; '>></span> `X_LOW_THRESH <span style='color:#0000ff; '>&amp;</span><span style='color:#0000ff; '>&amp;</span> VGA_PIXEL_X <span style='color:#0000ff; '>&lt;</span> 
+    <span style='color:#0000ff; font-weight:bold; '>end</span>
+    else if <span style='color:#0000ff; '>(</span>VGA_PIXEL_X <span style='color:#0000ff; '>></span> `X_LOW_THRESH <span style='color:#0000ff; '>&amp;</span><span style='color:#0000ff; '>&amp;</span> VGA_PIXEL_X <span style='color:#0000ff; '>&lt;</span> 
         `X_HIGH_THRESH <span style='color:#0000ff; '>&amp;</span><span style='color:#0000ff; '>&amp;</span> VGA_PIXEL_Y <span style='color:#0000ff; '>></span> `Y_BARsecondTop <span style='color:#0000ff; '>&amp;</span><span style='color:#0000ff; '>&amp;</span> VGA_PIXEL_Y <span style='color:#0000ff; '>&lt;</span> 
-        `Y_BARsecondBot<span style='color:#0000ff; '>)</span> begin
+        `Y_BARsecondBot<span style='color:#0000ff; '>)</span> <span style='color:#0000ff; font-weight:bold; '>begin</span>
         red2 <span style='color:#0000ff; '>=</span> red2 <span style='color:#0000ff; '>+</span> red<span style='color:#0000ff; '>;</span>
         blue2 <span style='color:#0000ff; '>=</span> blue2 <span style='color:#0000ff; '>+</span> blue<span style='color:#0000ff; '>;</span>
-    end
-    <span style='color:#0000ff; font-weight:bold; '>else</span> <span style='color:#0000ff; font-weight:bold; '>if</span> <span style='color:#0000ff; '>(</span>VGA_PIXEL_X <span style='color:#0000ff; '>></span> `X_LOW_THRESH <span style='color:#0000ff; '>&amp;</span><span style='color:#0000ff; '>&amp;</span> VGA_PIXEL_X <span style='color:#0000ff; '>&lt;</span> 
+    <span style='color:#0000ff; font-weight:bold; '>end</span>
+    else if <span style='color:#0000ff; '>(</span>VGA_PIXEL_X <span style='color:#0000ff; '>></span> `X_LOW_THRESH <span style='color:#0000ff; '>&amp;</span><span style='color:#0000ff; '>&amp;</span> VGA_PIXEL_X <span style='color:#0000ff; '>&lt;</span> 
         `X_HIGH_THRESH <span style='color:#0000ff; '>&amp;</span><span style='color:#0000ff; '>&amp;</span> VGA_PIXEL_Y <span style='color:#0000ff; '>></span> `Y_BARthirdTop <span style='color:#0000ff; '>&amp;</span><span style='color:#0000ff; '>&amp;</span> VGA_PIXEL_Y <span style='color:#0000ff; '>&lt;</span>
-        `Y_BARthirdBot<span style='color:#0000ff; '>)</span> begin
+        `Y_BARthirdBot<span style='color:#0000ff; '>)</span> <span style='color:#0000ff; font-weight:bold; '>begin</span>
         red3 <span style='color:#0000ff; '>=</span> red3 <span style='color:#0000ff; '>+</span> red<span style='color:#0000ff; '>;</span>
         blue3 <span style='color:#0000ff; '>=</span> blue3 <span style='color:#0000ff; '>+</span> blue<span style='color:#0000ff; '>;</span>
-    end
-    <span style='color:#0000ff; font-weight:bold; '>if</span> <span style='color:#0000ff; '>(</span><span style='color:#0000ff; '>(</span>VGA_PIXEL_Y <span style='color:#0000ff; '>=</span><span style='color:#0000ff; '>=</span> `SCREEN_HEIGHT<span style='color:#0000ff; '>)</span> <span style='color:#0000ff; '>&amp;</span><span style='color:#0000ff; '>&amp;</span> done_color <span style='color:#0000ff; '>&amp;</span><span style='color:#0000ff; '>&amp;</span> <span style='color:#0000ff; '>!</span>done_treasure<span style='color:#0000ff; '>)</span> 
-    begin
-        <span style='color:#0000ff; font-weight:bold; '>if</span> <span style='color:#0000ff; '>(</span>color <span style='color:#0000ff; '>=</span><span style='color:#0000ff; '>=</span> RED<span style='color:#0000ff; '>)</span> begin
-            <span style='color:#0000ff; font-weight:bold; '>if</span> <span style='color:#0000ff; '>(</span><span style='color:#0000ff; '>(</span>diffr3<span style='color:#0000ff; '>></span>diffr2<span style='color:#0000ff; '>)</span> <span style='color:#0000ff; '>&amp;</span><span style='color:#0000ff; '>&amp;</span> <span style='color:#0000ff; '>(</span>diffr3<span style='color:#0000ff; '>></span>diffr1<span style='color:#0000ff; '>)</span> <span style='color:#0000ff; '>&amp;</span><span style='color:#0000ff; '>&amp;</span> diffr3<span style='color:#0000ff; '>></span><span style='color:#800000; '>50</span><span style='color:#0000ff; '>)</span>
-                treasure <span style='color:#0000ff; '>=</span> TRIANGLE<span style='color:#0000ff; '>;</span>
-            <span style='color:#0000ff; font-weight:bold; '>else</span> <span style='color:#0000ff; font-weight:bold; '>if</span><span style='color:#0000ff; '>(</span><span style='color:#0000ff; '>(</span>diffr1<span style='color:#0000ff; '>&lt;</span><span style='color:#800000; '>100</span><span style='color:#0000ff; '>)</span> <span style='color:#0000ff; '>&amp;</span><span style='color:#0000ff; '>&amp;</span> <span style='color:#0000ff; '>(</span>diffr2<span style='color:#0000ff; '>&lt;</span><span style='color:#800000; '>100</span><span style='color:#0000ff; '>)</span> <span style='color:#0000ff; '>&amp;</span><span style='color:#0000ff; '>&amp;</span> <span style='color:#0000ff; '>(</span>diffr3<span style='color:#0000ff; '>&lt;</span><span style='color:#800000; '>100</span><span style='color:#0000ff; '>)</span><span style='color:#0000ff; '>)</span>
-                treasure <span style='color:#0000ff; '>=</span> SQUARE<span style='color:#0000ff; '>;</span>
-            <span style='color:#0000ff; font-weight:bold; '>else</span>
-                treasure <span style='color:#0000ff; '>=</span> DIAMOND<span style='color:#0000ff; '>;</span>
-        end
-        <span style='color:#0000ff; font-weight:bold; '>else</span> <span style='color:#0000ff; font-weight:bold; '>if</span> <span style='color:#0000ff; '>(</span>color <span style='color:#0000ff; '>=</span><span style='color:#0000ff; '>=</span> BLUE<span style='color:#0000ff; '>)</span> begin
-            <span style='color:#0000ff; font-weight:bold; '>if</span> <span style='color:#0000ff; '>(</span><span style='color:#0000ff; '>(</span>diffb3<span style='color:#0000ff; '>></span>diffb2<span style='color:#0000ff; '>)</span> <span style='color:#0000ff; '>&amp;</span><span style='color:#0000ff; '>&amp;</span> <span style='color:#0000ff; '>(</span>diffb3<span style='color:#0000ff; '>></span>diffb1<span style='color:#0000ff; '>)</span> <span style='color:#0000ff; '>&amp;</span><span style='color:#0000ff; '>&amp;</span> diffb3<span style='color:#0000ff; '>></span><span style='color:#800000; '>50</span><span style='color:#0000ff; '>)</span>
-                treasure <span style='color:#0000ff; '>=</span> TRIANGLE<span style='color:#0000ff; '>;</span>
-            <span style='color:#0000ff; font-weight:bold; '>else</span> <span style='color:#0000ff; font-weight:bold; '>if</span><span style='color:#0000ff; '>(</span><span style='color:#0000ff; '>(</span>diffb1<span style='color:#0000ff; '>&lt;</span><span style='color:#800000; '>100</span><span style='color:#0000ff; '>)</span> <span style='color:#0000ff; '>&amp;</span><span style='color:#0000ff; '>&amp;</span> <span style='color:#0000ff; '>(</span>diffb2<span style='color:#0000ff; '>&lt;</span><span style='color:#800000; '>100</span><span style='color:#0000ff; '>)</span> <span style='color:#0000ff; '>&amp;</span><span style='color:#0000ff; '>&amp;</span> <span style='color:#0000ff; '>(</span>diffb3<span style='color:#0000ff; '>&lt;</span><span style='color:#800000; '>100</span><span style='color:#0000ff; '>)</span><span style='color:#0000ff; '>)</span>
-                treasure <span style='color:#0000ff; '>=</span> SQUARE<span style='color:#0000ff; '>;</span>
-            <span style='color:#0000ff; font-weight:bold; '>else</span>
-                treasure <span style='color:#0000ff; '>=</span> DIAMOND<span style='color:#0000ff; '>;</span>
-        end
-        <span style='color:#0000ff; font-weight:bold; '>else</span> begin
-            treasure <span style='color:#0000ff; '>=</span> NONE<span style='color:#0000ff; '>;</span>
-        end
+    <span style='color:#0000ff; font-weight:bold; '>end</span>
+    <span style='color:#0000ff; font-weight:bold; '>if</span> <span style='color:#0000ff; '>(</span><span style='color:#0000ff; '>(</span>VGA_PIXEL_Y <span style='color:#0000ff; '>=</span><span style='color:#0000ff; '>=</span> `SCREEN_HEIGHT<span style='color:#0000ff; '>)</span> <span style='color:#0000ff; '>&amp;</span><span style='color:#0000ff; '>&amp;</span> done_color <span style='color:#0000ff; '>&amp;</span><span style='color:#0000ff; '>&amp;</span> !done_treasure<span style='color:#0000ff; '>)</span> 
+    <span style='color:#0000ff; font-weight:bold; '>begin</span>
+        <span style='color:#0000ff; font-weight:bold; '>if</span> <span style='color:#0000ff; '>(</span>color <span style='color:#0000ff; '>=</span><span style='color:#0000ff; '>=</span> RED<span style='color:#0000ff; '>)</span> <span style='color:#0000ff; font-weight:bold; '>begin</span>
+        <span style='color:#0000ff; font-weight:bold; '>if</span> <span style='color:#0000ff; '>(</span><span style='color:#0000ff; '>(</span>diffr3<span style='color:#0000ff; '>></span>diffr2<span style='color:#0000ff; '>)</span> <span style='color:#0000ff; '>&amp;</span><span style='color:#0000ff; '>&amp;</span> <span style='color:#0000ff; '>(</span>diffr3<span style='color:#0000ff; '>></span>diffr1<span style='color:#0000ff; '>)</span> <span style='color:#0000ff; '>&amp;</span><span style='color:#0000ff; '>&amp;</span> diffr3<span style='color:#0000ff; '>></span><span style='color:#800000; '>50</span><span style='color:#0000ff; '>)</span>
+            treasure <span style='color:#0000ff; '>=</span> TRIANGLE<span style='color:#0000ff; '>;</span>
+        else if<span style='color:#0000ff; '>(</span><span style='color:#0000ff; '>(</span>diffr1<span style='color:#0000ff; '>&lt;</span><span style='color:#800000; '>100</span><span style='color:#0000ff; '>)</span> <span style='color:#0000ff; '>&amp;</span><span style='color:#0000ff; '>&amp;</span> <span style='color:#0000ff; '>(</span>diffr2<span style='color:#0000ff; '>&lt;</span><span style='color:#800000; '>100</span><span style='color:#0000ff; '>)</span> <span style='color:#0000ff; '>&amp;</span><span style='color:#0000ff; '>&amp;</span> <span style='color:#0000ff; '>(</span>diffr3<span style='color:#0000ff; '>&lt;</span><span style='color:#800000; '>100</span><span style='color:#0000ff; '>)</span><span style='color:#0000ff; '>)</span>
+            treasure <span style='color:#0000ff; '>=</span> SQUARE<span style='color:#0000ff; '>;</span>
+        <span style='color:#0000ff; font-weight:bold; '>else</span>
+            treasure <span style='color:#0000ff; '>=</span> DIAMOND<span style='color:#0000ff; '>;</span>
+        <span style='color:#0000ff; font-weight:bold; '>end</span>
+        else if <span style='color:#0000ff; '>(</span>color <span style='color:#0000ff; '>=</span><span style='color:#0000ff; '>=</span> BLUE<span style='color:#0000ff; '>)</span> <span style='color:#0000ff; font-weight:bold; '>begin</span>
+        <span style='color:#0000ff; font-weight:bold; '>if</span> <span style='color:#0000ff; '>(</span><span style='color:#0000ff; '>(</span>diffb3<span style='color:#0000ff; '>></span>diffb2<span style='color:#0000ff; '>)</span> <span style='color:#0000ff; '>&amp;</span><span style='color:#0000ff; '>&amp;</span> <span style='color:#0000ff; '>(</span>diffb3<span style='color:#0000ff; '>></span>diffb1<span style='color:#0000ff; '>)</span> <span style='color:#0000ff; '>&amp;</span><span style='color:#0000ff; '>&amp;</span> diffb3<span style='color:#0000ff; '>></span><span style='color:#800000; '>50</span><span style='color:#0000ff; '>)</span>
+            treasure <span style='color:#0000ff; '>=</span> TRIANGLE<span style='color:#0000ff; '>;</span>
+        else if<span style='color:#0000ff; '>(</span><span style='color:#0000ff; '>(</span>diffb1<span style='color:#0000ff; '>&lt;</span><span style='color:#800000; '>100</span><span style='color:#0000ff; '>)</span> <span style='color:#0000ff; '>&amp;</span><span style='color:#0000ff; '>&amp;</span> <span style='color:#0000ff; '>(</span>diffb2<span style='color:#0000ff; '>&lt;</span><span style='color:#800000; '>100</span><span style='color:#0000ff; '>)</span> <span style='color:#0000ff; '>&amp;</span><span style='color:#0000ff; '>&amp;</span> <span style='color:#0000ff; '>(</span>diffb3<span style='color:#0000ff; '>&lt;</span><span style='color:#800000; '>100</span><span style='color:#0000ff; '>)</span><span style='color:#0000ff; '>)</span>
+            treasure <span style='color:#0000ff; '>=</span> SQUARE<span style='color:#0000ff; '>;</span>
+        <span style='color:#0000ff; font-weight:bold; '>else</span>
+            treasure <span style='color:#0000ff; '>=</span> DIAMOND<span style='color:#0000ff; '>;</span>
+        <span style='color:#0000ff; font-weight:bold; '>end</span>
+        <span style='color:#0000ff; font-weight:bold; '>else</span> <span style='color:#0000ff; font-weight:bold; '>begin</span>
+        treasure <span style='color:#0000ff; '>=</span> NONE<span style='color:#0000ff; '>;</span>
+        <span style='color:#0000ff; font-weight:bold; '>end</span>
         done_treasure <span style='color:#0000ff; '>=</span> <span style='color:#800000; '>1</span>'b1<span style='color:#0000ff; '>;</span>
-    end
-end
-</pre>
-<!--Created using ToHtml.com on 2018-12-04 20:17:52 UTC -->              
+    <span style='color:#0000ff; font-weight:bold; '>end</span>
+    <span style='color:#0000ff; font-weight:bold; '>end</span>
+    </pre>
+    <!--Created using ToHtml.com on 2018-12-04 20:26:50 UTC -->
   <p ALIGN=LEFT>
         In the code above, g1-g6 shows which bar has greater color concentration 
         while diffb and diffr are the actual color differences.        
