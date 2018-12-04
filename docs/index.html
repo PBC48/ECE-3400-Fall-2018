@@ -1598,20 +1598,21 @@ else if<span style='color:#0000ff; '>(</span>VGA_PIXEL_Y <span style='color:#000
                         frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
                         allowfullscreen>
                 </iframe>
-                This implementation use a lot of variables. We needed a counter 
-                for the three colors. We used the counter to count the values of 
-                the blue and red pixels if they are within a set of boundary. 
-                The boundary was used as a filter so that we can get the values 
-                that are near the center of the camera screen since that was where 
-                the shapes are most likely going to be. We judge as soon as the VGA X 
-                and Y axis exit the high threshold which means that we are approaching 
-                the end of our image. As shown above, we compare the counters of red
-                and blue pixels and see if one is greater than the other by some threshold. 
-                We need the green counter because if the green counter is high while
-                red and blue are also high, it likely means that we are viewing a 
-                white wall since there are no green color shapes. The judging only 
-                occurs once which was done by a flipping bit. We also reset the counters 
-                for the next frame. 
+                <p ALIGN=LEFT>This implementation use a lot of variables. We needed a counter 
+                        for the three colors. We used the counter to count the values of 
+                        the blue and red pixels if they are within a set of boundary. 
+                        The boundary was used as a filter so that we can get the values 
+                        that are near the center of the camera screen since that was where 
+                        the shapes are most likely going to be. We judge as soon as the VGA X 
+                        and Y axis exit the high threshold which means that we are approaching 
+                        the end of our image. As shown above, we compare the counters of red
+                        and blue pixels and see if one is greater than the other by some threshold. 
+                        We need the green counter because if the green counter is high while
+                        red and blue are also high, it likely means that we are viewing a 
+                        white wall since there are no green color shapes. The judging only 
+                        occurs once which was done by a flipping bit. We also reset the counters 
+                        for the next frame. </p>
+                
                 <figure>
                     <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab04/IMG_1171.jpg" width="500"/>
                     <font size="2">
@@ -1621,67 +1622,65 @@ else if<span style='color:#0000ff; '>(</span>VGA_PIXEL_Y <span style='color:#000
                 </figure>
                 <h1>Arduino</h1>
                 <h3>Disabling Arduino's Internal Pullup Resistor</h3>
-                In the prelab, we determined what registers we needed to set and what values 
-                we needed to set them to in order to properly set up the camera to do what we need 
-                it to. Before starting anything, we disabled the internal pullup resistors in the 
-                Arduino’s I2C interface so as not to damage the camera by sending 5V to it. We 
-                then downloaded the provided Lab 4 Arduino template in order to use the functions 
-                provided in it to write to and read from registers in the camera.
-                This is done by going to the Arduino library on our hard drive. This is done by going 
-                to *twi.c* at *C:\Program Files (x86)\Arduino\hardware\arduino\avr\libraries\Wire\src\utility*
-                and commenting out
-                <pre ALIGN=LEFT>
-                  <code>
-                      //activate internal pullups for twi
-                      digitalWrite(SDA,1);
-                      digitalWrite(SCL,1);
-                  </code>
-                </pre>
-                This will allow the I2C interface to communicate with the camera without sending 5v to the camera.
-                <h3>Writing Registers</h3>
-                We use the I2C communication protocol to talk to the camera. This is setup using Arduino's 
-                *Wire* library which supports I2C interfaces. We set up the Arduino as the master and the camera 
-                as slave. The camera has a set slave address of 0x21 after we ignore the least significant bit 
-                because that is used to distinguish between read and writes. The *Wire* library already set this 
-                up for us. All we have to do is pass the upper seven bits of the slave address of the camera to 
-                the I2C interface. We write to the camera by calling:
-                <pre ALIGN=LEFT>
-                  <code>    
-                  Wire.beginTransmission(0x21); // 7-bit Slave address
-                  Wire.write(value_to_write);   
-                  Wire.endTransmission();
-                  </code>
-                </pre>
-                The library makes it super simple to communicate with the camera using I2C.
-          
-                To have the camera capture the images we want, we must set some registers on the camera that deal with resolution, 
-                and camera clock. The following shows how we wrote to the registers:
-                <pre ALIGN=LEFT>
-                  <code>
-                    void setup() {
-                        Wire.begin();
-                        Serial.begin(9600);
-                        delay(100);
-                        Serial.println(OV7670_write_register(0x12,0x80));  
-                        //color bar test
-                        //  Serial.println(OV7670_write_register(0x12,0x0E)); 
-                        //  Serial.println(OV7670_write_register(0x42,0x08));
+                <p ALIGN=LEFT>In the prelab, we determined what registers we needed to set and what values 
+                        we needed to set them to in order to properly set up the camera to do what we need 
+                        it to. Before starting anything, we disabled the internal pullup resistors in the 
+                        Arduino’s I2C interface so as not to damage the camera by sending 5V to it. We 
+                        then downloaded the provided Lab 4 Arduino template in order to use the functions 
+                        provided in it to write to and read from registers in the camera.
+                        This is done by going to the Arduino library on our hard drive. This is done by going 
+                        to <i>twi.c</i> at <i>C:\Program Files (x86)\Arduino\hardware\arduino\avr\libraries\Wire\src\utility</i>
+                        and commenting out</p>
+                
+<pre ALIGN=LEFT style='color:#000000;background:#ffffff;'><span style='color:#008000; '>//activate internal pullups for twi</span>
+digitalWrite<span style='color:#0000ff; '>(</span>SDA<span style='color:#0000ff; '>,</span><span style='color:#800000; '>1</span><span style='color:#0000ff; '>)</span><span style='color:#0000ff; '>;</span>
+digitalWrite<span style='color:#0000ff; '>(</span>SCL<span style='color:#0000ff; '>,</span><span style='color:#800000; '>1</span><span style='color:#0000ff; '>)</span><span style='color:#0000ff; '>;</span>
+</pre>
+<!--Created using ToHtml.com on 2018-12-04 19:56:36 UTC -->
+<p ALIGN=LEFT>This will allow the I2C interface to communicate with the camera without sending 5v to the camera.</p>                
 
-                        Serial.println(OV7670_write_register(0x12,0x0c)); 
-                        Serial.println(OV7670_write_register(0x0c,0x08)); 
-                        Serial.println(OV7670_write_register(0x14,0x11)); 
-                        Serial.println(OV7670_write_register(0x40,0xD0)); 
-                        Serial.println(OV7670_write_register(0x11,0xC0)); 
-                        Serial.println(OV7670_write_register(0x1E,0x30));
-                        set_color_matrix();
-                    }
-                  </code>
-                </pre>
+                <h3>Writing Registers</h3>
+                <p ALIGN=LEFT>
+                        We use the I2C communication protocol to talk to the camera. This is setup using Arduino's 
+                        <i>Wire</i> library which supports I2C interfaces. We set up the Arduino as the master and the camera 
+                        as slave. The camera has a set slave address of 0x21 after we ignore the least significant bit 
+                        because that is used to distinguish between read and writes. The *Wire* library already set this 
+                        up for us. All we have to do is pass the upper seven bits of the slave address of the camera to 
+                        the I2C interface. We write to the camera by calling:
+                </p>
+<pre ALIGN=LEFT style='color:#000000;background:#ffffff;'>Wire<span style='color:#0000ff; '>.</span>beginTransmission<span style='color:#0000ff; '>(</span><span style='color:#800000; '>0x21</span><span style='color:#0000ff; '>)</span><span style='color:#0000ff; '>;</span> <span style='color:#008000; '>// 7-bit Slave address</span>
+Wire<span style='color:#0000ff; '>.</span>write<span style='color:#0000ff; '>(</span>value_to_write<span style='color:#0000ff; '>)</span><span style='color:#0000ff; '>;</span>   
+Wire<span style='color:#0000ff; '>.</span>endTransmission<span style='color:#0000ff; '>(</span><span style='color:#0000ff; '>)</span><span style='color:#0000ff; '>;</span>
+</pre>
+<!--Created using ToHtml.com on 2018-12-04 19:58:08 UTC -->
+                The library makes it super simple to communicate with the camera using I2C.
+          <p ALIGN=LEFT>To have the camera capture the images we want, we must set some registers on the camera that deal with resolution, 
+                and camera clock. The following shows how we wrote to the registers:</p>
+                
+<pre ALIGN=LEFT style='color:#000000;background:#ffffff;'><span style='color:#0000ff; font-weight:bold; '>void</span> setup<span style='color:#0000ff; '>(</span><span style='color:#0000ff; '>)</span> <span style='color:#0000ff; '>{</span>
+    Wire<span style='color:#0000ff; '>.</span>begin<span style='color:#0000ff; '>(</span><span style='color:#0000ff; '>)</span><span style='color:#0000ff; '>;</span>
+    Serial<span style='color:#0000ff; '>.</span>begin<span style='color:#0000ff; '>(</span><span style='color:#800000; '>9600</span><span style='color:#0000ff; '>)</span><span style='color:#0000ff; '>;</span>
+    delay<span style='color:#0000ff; '>(</span><span style='color:#800000; '>100</span><span style='color:#0000ff; '>)</span><span style='color:#0000ff; '>;</span>
+    Serial<span style='color:#0000ff; '>.</span>println<span style='color:#0000ff; '>(</span>OV7670_write_register<span style='color:#0000ff; '>(</span><span style='color:#800000; '>0x12</span><span style='color:#0000ff; '>,</span><span style='color:#800000; '>0x80</span><span style='color:#0000ff; '>)</span><span style='color:#0000ff; '>)</span><span style='color:#0000ff; '>;</span>  
+    <span style='color:#008000; '>//color bar test</span>
+    <span style='color:#008000; '>//  Serial.println(OV7670_write_register(0x12,0x0E)); </span>
+    <span style='color:#008000; '>//  Serial.println(OV7670_write_register(0x42,0x08));</span>
+
+    Serial<span style='color:#0000ff; '>.</span>println<span style='color:#0000ff; '>(</span>OV7670_write_register<span style='color:#0000ff; '>(</span><span style='color:#800000; '>0x12</span><span style='color:#0000ff; '>,</span><span style='color:#800000; '>0x0c</span><span style='color:#0000ff; '>)</span><span style='color:#0000ff; '>)</span><span style='color:#0000ff; '>;</span> 
+    Serial<span style='color:#0000ff; '>.</span>println<span style='color:#0000ff; '>(</span>OV7670_write_register<span style='color:#0000ff; '>(</span><span style='color:#800000; '>0x0c</span><span style='color:#0000ff; '>,</span><span style='color:#800000; '>0x08</span><span style='color:#0000ff; '>)</span><span style='color:#0000ff; '>)</span><span style='color:#0000ff; '>;</span> 
+    Serial<span style='color:#0000ff; '>.</span>println<span style='color:#0000ff; '>(</span>OV7670_write_register<span style='color:#0000ff; '>(</span><span style='color:#800000; '>0x14</span><span style='color:#0000ff; '>,</span><span style='color:#800000; '>0x11</span><span style='color:#0000ff; '>)</span><span style='color:#0000ff; '>)</span><span style='color:#0000ff; '>;</span> 
+    Serial<span style='color:#0000ff; '>.</span>println<span style='color:#0000ff; '>(</span>OV7670_write_register<span style='color:#0000ff; '>(</span><span style='color:#800000; '>0x40</span><span style='color:#0000ff; '>,</span><span style='color:#800000; '>0xD0</span><span style='color:#0000ff; '>)</span><span style='color:#0000ff; '>)</span><span style='color:#0000ff; '>;</span> 
+    Serial<span style='color:#0000ff; '>.</span>println<span style='color:#0000ff; '>(</span>OV7670_write_register<span style='color:#0000ff; '>(</span><span style='color:#800000; '>0x11</span><span style='color:#0000ff; '>,</span><span style='color:#800000; '>0xC0</span><span style='color:#0000ff; '>)</span><span style='color:#0000ff; '>)</span><span style='color:#0000ff; '>;</span> 
+    Serial<span style='color:#0000ff; '>.</span>println<span style='color:#0000ff; '>(</span>OV7670_write_register<span style='color:#0000ff; '>(</span><span style='color:#800000; '>0x1E</span><span style='color:#0000ff; '>,</span><span style='color:#800000; '>0x30</span><span style='color:#0000ff; '>)</span><span style='color:#0000ff; '>)</span><span style='color:#0000ff; '>;</span>
+    set_color_matrix<span style='color:#0000ff; '>(</span><span style='color:#0000ff; '>)</span><span style='color:#0000ff; '>;</span>
+<span style='color:#0000ff; '>}</span>
+</pre>
+<!--Created using ToHtml.com on 2018-12-04 19:59:03 UTC -->
                 <table ALIGN=CENTER>
                   <tr>
-                    <th>Registers</th>
-                    <th>Name</th>
-                    <th>Function</th>
+                    <th style="background-color: yellow">Registers</th>
+                    <th style="background-color: yellow">Name</th>
+                    <th style="background-color: yellow">Function</th>
                   </tr>
                   <tr>
                     <td>0x12</td>
@@ -1719,18 +1718,19 @@ else if<span style='color:#0000ff; '>(</span>VGA_PIXEL_Y <span style='color:#000
                     <td>flip and mirror image</td>
                   </tr>
                 </table>
-                We set the camera to QCIF resolution which is 176 x 144 screen size. 
-                This is the smallest resolution the camera supports. We use this
-                resolution because we lack memory to store any larger sizes on 
-                the FPGA. For the first part of the lab, we tested the camera 
-                and our FPGA polling code by using the camera color bar to make 
-                sure we can display the correct colors on the VGA screen. This
-                means we have to set COM7 to display the color bar and enable 
-                DSP color bar in COM 17. The other important setting is the 
-                camera clock. This camera clock determines the rate a which each 
-                pixel is sent to the FPGA. We drive the camera with the 24 MHz 
-                FPGA clock. This gives the camera the ability to go up to 24 MHz
-                for pixel transmissions.
+                <p ALIGN=LEFT> We set the camera to QCIF resolution which is 176 x 144 screen size. 
+                        This is the smallest resolution the camera supports. We use this
+                        resolution because we lack memory to store any larger sizes on 
+                        the FPGA. For the first part of the lab, we tested the camera 
+                        and our FPGA polling code by using the camera color bar to make 
+                        sure we can display the correct colors on the VGA screen. This
+                        means we have to set COM7 to display the color bar and enable 
+                        DSP color bar in COM 17. The other important setting is the 
+                        camera clock. This camera clock determines the rate a which each 
+                        pixel is sent to the FPGA. We drive the camera with the 24 MHz 
+                        FPGA clock. This gives the camera the ability to go up to 24 MHz
+                        for pixel transmissions.</p>
+               
                 <figure>
                     <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab04/IMG_1172.jpg" width="560"/>
                     <font size="2">
@@ -1739,83 +1739,92 @@ else if<span style='color:#0000ff; '>(</span>VGA_PIXEL_Y <span style='color:#000
                     </font>
                 </figure>
                 <h3>Communicating with FPGA</h3>
-                Communication with the FPGA is done by wiring the GPIO pins on the 
-                FPGA to the arduino in parallel. We use combinational logic in this 
-                case since we set the FPGA to output the results of the image 
-                processing immediately while having the Arduino constantly decode
-                the message for the four pins. Even though the voltage of the 
-                Arduino pins are 5V while FPGA pins are 3.3V, we can connect 
-                the pins together without a voltage divider because the Arduino 
-                pins are set as input and are capable of reading the 3.3V from 
-                the FPGA as high.
-          
+                <p ALIGN=LEFT>
+                        Communication with the FPGA is done by wiring the GPIO pins on the 
+                        FPGA to the arduino in parallel. We use combinational logic in this 
+                        case since we set the FPGA to output the results of the image 
+                        processing immediately while having the Arduino constantly decode
+                        the message for the four pins. Even though the voltage of the 
+                        Arduino pins are 5V while FPGA pins are 3.3V, we can connect 
+                        the pins together without a voltage divider because the Arduino 
+                        pins are set as input and are capable of reading the 3.3V from 
+                        the FPGA as high.
+                </p>
+                
+          <p ALIGN=LEFT>
                 Initially, we define the input communication pins on the Arduino 
                 and the decoding treasure numbers.
+          </p>
+                
           
-                <pre ALIGN=LEFT>
-                  <code>
-                    #define T1 3   //GPIO 33 treasure[0]
-                    #define T2 4   //GPIO 32 treasure[1]
-                    #define C1  5  //GPIO 31 color ; blue or red
-                    #define C2  6  //GPIO 30 color ; blue or red
-                    #define RED 2
-                    #define BLUE 1
-                    #define NONE 0
-                    #define SQUARE 2
-                    #define TRIANGLE 1
-                    #define DIAMOND 3
+<pre ALIGN=LEFT style='color:#000000;background:#ffffff;'>define T1 <span style='color:#800000; '>3</span>   <span style='color:#008000; '>//GPIO 33 treasure[0]</span>
+<span style='color:#004a43; '>#</span><span style='color:#004a43; '>define</span><span style='color:#004a43; '> T2 4   </span><span style='color:#008000; '>//GPIO 32 treasure[1]</span>
+<span style='color:#004a43; '>#</span><span style='color:#004a43; '>define</span><span style='color:#004a43; '> C1  5  </span><span style='color:#008000; '>//GPIO 31 color ; blue or red</span>
+<span style='color:#004a43; '>#</span><span style='color:#004a43; '>define</span><span style='color:#004a43; '> C2  6  </span><span style='color:#008000; '>//GPIO 30 color ; blue or red</span>
+<span style='color:#004a43; '>#</span><span style='color:#004a43; '>define</span><span style='color:#004a43; '> RED 2</span>
+<span style='color:#004a43; '>#</span><span style='color:#004a43; '>define</span><span style='color:#004a43; '> BLUE 1</span>
+<span style='color:#004a43; '>#</span><span style='color:#004a43; '>define</span><span style='color:#004a43; '> NONE 0</span>
+<span style='color:#004a43; '>#</span><span style='color:#004a43; '>define</span><span style='color:#004a43; '> SQUARE 2</span>
+<span style='color:#004a43; '>#</span><span style='color:#004a43; '>define</span><span style='color:#004a43; '> TRIANGLE 1</span>
+<span style='color:#004a43; '>#</span><span style='color:#004a43; '>define</span><span style='color:#004a43; '> DIAMOND 3</span>
 
-                    uint8_t decoder(){
-                      uint8_t treasure1 = digitalRead(T1); //read from pins
-                      uint8_t treasure2 = digitalRead(T2); 
-                      uint16_t color1   = digitalRead(C1);
-                      uint16_t color2   = digitalRead(C2);
-                      Serial.print("T1: ");Serial.print(treasure1);
-                      Serial.print(" T2: ");Serial.print(treasure2);
-                      Serial.print(" C1: ");Serial.print(color1);
-                      Serial.print(" C2: ");Serial.print(color2);
-                      uint8_t treasure  = (treasure2 << 1)|treasure1; 
-                      //combine treasure bits
-                      uint8_t color   =   (color2<<1)|(color1);
-                      Serial.println("");
-                      Serial.print("---COLOR: ");
-                      if(color==BLUE) Serial.print("BLUE");
-                      else if(color==RED)    Serial.print("RED");
-                      else             Serial.print("NONE");
-                      Serial.print( " Treasure: ");
-                      if( treasure == SQUARE)
-                          Serial.print("SQUARE");
-                      else if( treasure == TRIANGLE)
-                          Serial.print("TRIANGLE");
-                      else if( treasure == DIAMOND)
-                          Serial.print("DIAMOND");
-                      else
-                          Serial.print("NONE");
-                      Serial.println("");
-                    }
-                  </code>
-                </pre>
-                This code is the decoder for communication from the FPGA. 
-                The code is very simple because of the extra hardware used. 
-                With this method, we used up to four pins from the Arudino. 
-                We could have used a serial communication protocol using two 
-                pins to send the four bits of messages but we have extra pins 
-                from the Arduino left over so simplicity at the cost of 
-                hardware was prioritized.
+uint8_t decoder<span style='color:#0000ff; '>(</span><span style='color:#0000ff; '>)</span><span style='color:#0000ff; '>{</span>
+    uint8_t treasure1 <span style='color:#0000ff; '>=</span> digitalRead<span style='color:#0000ff; '>(</span>T1<span style='color:#0000ff; '>)</span><span style='color:#0000ff; '>;</span> <span style='color:#008000; '>//read from pins</span>
+    uint8_t treasure2 <span style='color:#0000ff; '>=</span> digitalRead<span style='color:#0000ff; '>(</span>T2<span style='color:#0000ff; '>)</span><span style='color:#0000ff; '>;</span> 
+    uint16_t color1   <span style='color:#0000ff; '>=</span> digitalRead<span style='color:#0000ff; '>(</span>C1<span style='color:#0000ff; '>)</span><span style='color:#0000ff; '>;</span>
+    uint16_t color2   <span style='color:#0000ff; '>=</span> digitalRead<span style='color:#0000ff; '>(</span>C2<span style='color:#0000ff; '>)</span><span style='color:#0000ff; '>;</span>
+    Serial<span style='color:#0000ff; '>.</span>print<span style='color:#0000ff; '>(</span><span style='color:#0000e6; '>"</span><span style='color:#0000e6; '>T1: </span><span style='color:#0000e6; '>"</span><span style='color:#0000ff; '>)</span><span style='color:#0000ff; '>;</span>Serial<span style='color:#0000ff; '>.</span>print<span style='color:#0000ff; '>(</span>treasure1<span style='color:#0000ff; '>)</span><span style='color:#0000ff; '>;</span>
+    Serial<span style='color:#0000ff; '>.</span>print<span style='color:#0000ff; '>(</span><span style='color:#0000e6; '>"</span><span style='color:#0000e6; '> T2: </span><span style='color:#0000e6; '>"</span><span style='color:#0000ff; '>)</span><span style='color:#0000ff; '>;</span>Serial<span style='color:#0000ff; '>.</span>print<span style='color:#0000ff; '>(</span>treasure2<span style='color:#0000ff; '>)</span><span style='color:#0000ff; '>;</span>
+    Serial<span style='color:#0000ff; '>.</span>print<span style='color:#0000ff; '>(</span><span style='color:#0000e6; '>"</span><span style='color:#0000e6; '> C1: </span><span style='color:#0000e6; '>"</span><span style='color:#0000ff; '>)</span><span style='color:#0000ff; '>;</span>Serial<span style='color:#0000ff; '>.</span>print<span style='color:#0000ff; '>(</span>color1<span style='color:#0000ff; '>)</span><span style='color:#0000ff; '>;</span>
+    Serial<span style='color:#0000ff; '>.</span>print<span style='color:#0000ff; '>(</span><span style='color:#0000e6; '>"</span><span style='color:#0000e6; '> C2: </span><span style='color:#0000e6; '>"</span><span style='color:#0000ff; '>)</span><span style='color:#0000ff; '>;</span>Serial<span style='color:#0000ff; '>.</span>print<span style='color:#0000ff; '>(</span>color2<span style='color:#0000ff; '>)</span><span style='color:#0000ff; '>;</span>
+    uint8_t treasure  <span style='color:#0000ff; '>=</span> <span style='color:#0000ff; '>(</span>treasure2 <span style='color:#0000ff; '>&lt;</span><span style='color:#0000ff; '>&lt;</span> <span style='color:#800000; '>1</span><span style='color:#0000ff; '>)</span><span style='color:#0000ff; '>|</span>treasure1<span style='color:#0000ff; '>;</span> 
+    <span style='color:#008000; '>//combine treasure bits</span>
+    uint8_t color   <span style='color:#0000ff; '>=</span>   <span style='color:#0000ff; '>(</span>color2<span style='color:#0000ff; '>&lt;</span><span style='color:#0000ff; '>&lt;</span><span style='color:#800000; '>1</span><span style='color:#0000ff; '>)</span><span style='color:#0000ff; '>|</span><span style='color:#0000ff; '>(</span>color1<span style='color:#0000ff; '>)</span><span style='color:#0000ff; '>;</span>
+    Serial<span style='color:#0000ff; '>.</span>println<span style='color:#0000ff; '>(</span><span style='color:#0000e6; '>"</span><span style='color:#0000e6; '>"</span><span style='color:#0000ff; '>)</span><span style='color:#0000ff; '>;</span>
+    Serial<span style='color:#0000ff; '>.</span>print<span style='color:#0000ff; '>(</span><span style='color:#0000e6; '>"</span><span style='color:#0000e6; '>---COLOR: </span><span style='color:#0000e6; '>"</span><span style='color:#0000ff; '>)</span><span style='color:#0000ff; '>;</span>
+    <span style='color:#0000ff; font-weight:bold; '>if</span><span style='color:#0000ff; '>(</span>color<span style='color:#0000ff; '>=</span><span style='color:#0000ff; '>=</span>BLUE<span style='color:#0000ff; '>)</span> Serial<span style='color:#0000ff; '>.</span>print<span style='color:#0000ff; '>(</span><span style='color:#0000e6; '>"</span><span style='color:#0000e6; '>BLUE</span><span style='color:#0000e6; '>"</span><span style='color:#0000ff; '>)</span><span style='color:#0000ff; '>;</span>
+    <span style='color:#0000ff; font-weight:bold; '>else</span> <span style='color:#0000ff; font-weight:bold; '>if</span><span style='color:#0000ff; '>(</span>color<span style='color:#0000ff; '>=</span><span style='color:#0000ff; '>=</span>RED<span style='color:#0000ff; '>)</span>    Serial<span style='color:#0000ff; '>.</span>print<span style='color:#0000ff; '>(</span><span style='color:#0000e6; '>"</span><span style='color:#0000e6; '>RED</span><span style='color:#0000e6; '>"</span><span style='color:#0000ff; '>)</span><span style='color:#0000ff; '>;</span>
+    <span style='color:#0000ff; font-weight:bold; '>else</span>             Serial<span style='color:#0000ff; '>.</span>print<span style='color:#0000ff; '>(</span><span style='color:#0000e6; '>"</span><span style='color:#0000e6; '>NONE</span><span style='color:#0000e6; '>"</span><span style='color:#0000ff; '>)</span><span style='color:#0000ff; '>;</span>
+    Serial<span style='color:#0000ff; '>.</span>print<span style='color:#0000ff; '>(</span> <span style='color:#0000e6; '>"</span><span style='color:#0000e6; '> Treasure: </span><span style='color:#0000e6; '>"</span><span style='color:#0000ff; '>)</span><span style='color:#0000ff; '>;</span>
+    <span style='color:#0000ff; font-weight:bold; '>if</span><span style='color:#0000ff; '>(</span> treasure <span style='color:#0000ff; '>=</span><span style='color:#0000ff; '>=</span> SQUARE<span style='color:#0000ff; '>)</span>
+        Serial<span style='color:#0000ff; '>.</span>print<span style='color:#0000ff; '>(</span><span style='color:#0000e6; '>"</span><span style='color:#0000e6; '>SQUARE</span><span style='color:#0000e6; '>"</span><span style='color:#0000ff; '>)</span><span style='color:#0000ff; '>;</span>
+    <span style='color:#0000ff; font-weight:bold; '>else</span> <span style='color:#0000ff; font-weight:bold; '>if</span><span style='color:#0000ff; '>(</span> treasure <span style='color:#0000ff; '>=</span><span style='color:#0000ff; '>=</span> TRIANGLE<span style='color:#0000ff; '>)</span>
+        Serial<span style='color:#0000ff; '>.</span>print<span style='color:#0000ff; '>(</span><span style='color:#0000e6; '>"</span><span style='color:#0000e6; '>TRIANGLE</span><span style='color:#0000e6; '>"</span><span style='color:#0000ff; '>)</span><span style='color:#0000ff; '>;</span>
+    <span style='color:#0000ff; font-weight:bold; '>else</span> <span style='color:#0000ff; font-weight:bold; '>if</span><span style='color:#0000ff; '>(</span> treasure <span style='color:#0000ff; '>=</span><span style='color:#0000ff; '>=</span> DIAMOND<span style='color:#0000ff; '>)</span>
+        Serial<span style='color:#0000ff; '>.</span>print<span style='color:#0000ff; '>(</span><span style='color:#0000e6; '>"</span><span style='color:#0000e6; '>DIAMOND</span><span style='color:#0000e6; '>"</span><span style='color:#0000ff; '>)</span><span style='color:#0000ff; '>;</span>
+    <span style='color:#0000ff; font-weight:bold; '>else</span>
+        Serial<span style='color:#0000ff; '>.</span>print<span style='color:#0000ff; '>(</span><span style='color:#0000e6; '>"</span><span style='color:#0000e6; '>NONE</span><span style='color:#0000e6; '>"</span><span style='color:#0000ff; '>)</span><span style='color:#0000ff; '>;</span>
+    Serial<span style='color:#0000ff; '>.</span>println<span style='color:#0000ff; '>(</span><span style='color:#0000e6; '>"</span><span style='color:#0000e6; '>"</span><span style='color:#0000ff; '>)</span><span style='color:#0000ff; '>;</span>
+<span style='color:#0000ff; '>}</span>
+</pre>
+<!--Created using ToHtml.com on 2018-12-04 20:01:09 UTC -->
+<p ALIGN=LEFT>
+        This code is the decoder for communication from the FPGA. 
+        The code is very simple because of the extra hardware used. 
+        With this method, we used up to four pins from the Arudino. 
+        We could have used a serial communication protocol using two 
+        pins to send the four bits of messages but we have extra pins 
+        from the Arduino left over so simplicity at the cost of 
+        hardware was prioritized.
+</p>
+                
                 <h1>Conclusion</h1>
-                This lab is one of the harder labs this semester. Getting the camera to 
-                display an image correctly was a challenge due to the complexities in timing 
-                the camera pixel transmission correctly. While getting the image itself wasn't 
-                too difficult to display, getting the right colors for the image was difficult.
-                We often had inverted colors or colors that were too dark or faded displaying 
-                on the screen. Both hardware and software contributed to the difficulty. We had 
-                to set the software to poll the bytes from the camera correctly but also had 
-                to ensure sure we wired the camera to the FPGA in a way that wouldn't introduce 
-                noise, especially with a 24 MHz clock driving the transmission. Looking forward, 
-                we will be integrating the FPGA camera system into our robot. This will likely 
-                result in more states and updates to our radio messages to support communicating 
-                treasure shapes and colors. We also will need to update the basestation so that 
-                it can receive messages from the radio.
+                <p ALIGN=LEFT>
+                        This lab is one of the harder labs this semester. Getting the camera to 
+                        display an image correctly was a challenge due to the complexities in timing 
+                        the camera pixel transmission correctly. While getting the image itself wasn't 
+                        too difficult to display, getting the right colors for the image was difficult.
+                        We often had inverted colors or colors that were too dark or faded displaying 
+                        on the screen. Both hardware and software contributed to the difficulty. We had 
+                        to set the software to poll the bytes from the camera correctly but also had 
+                        to ensure sure we wired the camera to the FPGA in a way that wouldn't introduce 
+                        noise, especially with a 24 MHz clock driving the transmission. Looking forward, 
+                        we will be integrating the FPGA camera system into our robot. This will likely 
+                        result in more states and updates to our radio messages to support communicating 
+                        treasure shapes and colors. We also will need to update the basestation so that 
+                        it can receive messages from the radio.
+                </p>
+                
               </p>
               <a class="btn btn-primary btn-lg rounded-pill portfolio-modal-dismiss" href="#">
                 <i class="fa fa-close"></i>
