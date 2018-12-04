@@ -150,8 +150,6 @@ always @(posedge CLK) begin
 		blue2 = 0;
 		blue3 = 0;
 		done_treasure = 0;
-		//treasure = NONE;
-		done_subtract = 0;
 	end
 	if ((VGA_PIXEL_X > `X_LOW_THRESH) && (VGA_PIXEL_X < `X_HIGH_THRESH) && (VGA_PIXEL_Y > `Y_BARfirstTop) && (VGA_PIXEL_Y < `Y_BARfirstBot)) begin
 		red1 = red1 + red;
@@ -168,23 +166,12 @@ always @(posedge CLK) begin
 		blue3 = blue3 + blue;
 		green3 = green3 + green;
 	end
-	/*if(VGA_PIXEL_Y==`SCREEN_HEIGHT-5 && !done_subtract) begin
-		red3 = red3 - green3;
-		blue3 = blue3 - green3;
-		red2 = red2 - green2;
-		blue2 = blue2 - green2;
-		red1 = red1 - green1;
-		blue1 = blue1 - green1;
-		done_subtract = 1'b1;
-	end*/
 	if ((VGA_PIXEL_Y == `SCREEN_HEIGHT) && done_color && !done_treasure) begin
 	
 		if (color == RED) begin
-			if ((diffr3>diffr2) && (diffr3>diffr1) && diffr3>50)//g3 && g2 && g1 && diffr3>diffr2 && diffr3>diffr2)//diffr3 > `HIGH_THR && diffr2 > `LOW_THR && diffr1 > `LOW_THR)
-				//mid > top; bot > mid
+			if ((diffr3>diffr2) && (diffr3>diffr1) && diffr3>50)
 				treasure = TRIANGLE;
-			else if((diffr1<100) && (diffr2<100) && (diffr3<100))//g1 && diffr1 > `LOW_THR && !g2 && diffr2 > `LOW_THR && diffr3 < `LOW_THR)
-				//mid ~= top; mid ~= bot
+			else if((diffr1<100) && (diffr2<100) && (diffr3<100))
 				treasure = SQUARE;
 			else
 				treasure = DIAMOND;

@@ -2458,34 +2458,42 @@ update_visited_lists<span style='color:#0000ff; '>(</span><span style='color:#00
               <p class="mb-5" ALIGN=LEFT>
               <h1>Introduction</h1>
               The goal of milestone 4 are as follows:
-              <ul>
+              <ul ALIGN=LEFT>
                 <li> Build off our results from lab 4 and implement treasure shape detection.
                 <li> Integrate our camera and FPGA system into our robot.
               </ul>
-              Treasure shape detection requires a more complicated algorithm then color
-              detection because it deals directly with image processing. We must distinguish 
-              between three shapes: square, triangle, and diamond. For our algorithm to be 
-              robust, we must successfully threshold each shape.
+              <p ALIGN=LEFT>
+                    Treasure shape detection requires a more complicated algorithm then color
+                    detection because it deals directly with image processing. We must distinguish 
+                    between three shapes: square, triangle, and diamond. For our algorithm to be 
+                    robust, we must successfully threshold each shape.
+              </p>
+              <p ALIGN=LEFT>
+
+                    Integration is not a trivial task. The challenges are in both hardware and 
+                    software. On the hardware side, we must figure out the ideal place for the camera 
+                    and FPGA in the robot chasis and route power to both these devices. The camera 
+                    placement is important as it determines where the the robot can detect the treasure 
+                    and on which wall. On the software side, we must integrate the treasure detection 
+                    into the Robot control flow. We need to create new FSM states to account for the
+                    fact that treasures can exist at every intersection; this also means that there
+                    is more processing to do at every interestion. We must change the state transitions
+                    properly such that treasure detection does not interfere with the rest of the robot's
+                    functionality. The radio from lab 3 must also be updated because the radio only 
+                    handles wall mapping and not treasure mapping. This applies for both basestation and robot.
+              </p>
               
-              Integration is not a trivial task. The challenges are in both hardware and 
-              software. On the hardware side, we must figure out the ideal place for the camera 
-              and FPGA in the robot chasis and route power to both these devices. The camera 
-              placement is important as it determines where the the robot can detect the treasure 
-              and on which wall. On the software side, we must integrate the treasure detection 
-              into the Robot control flow. We need to create new FSM states to account for the
-              fact that treasures can exist at every intersection; this also means that there
-              is more processing to do at every interestion. We must change the state transitions
-              properly such that treasure detection does not interfere with the rest of the robot's
-              functionality. The radio from lab 3 must also be updated because the radio only 
-              handles wall mapping and not treasure mapping. This applies for both basestation and robot.
+            
               
               <h1>Updated Robot</h1>
-              We decided to update the robot chassis to fit the camera. The Robot will now have three 
-              layers. We will add a new layer under the current first layer of the robot where the servos 
-              are. This will be used to store the batteries. We will need two batteries, one for the Arduino 
-              and one for servo and sensors. Previously, we used the second layer of the robot to hold the 
-              battery. However, we decided to use the second chassis layer of the robot to hold the FPGA and 
-              camera hardware. The third layer will host the Arduino and sensor circuitry.
+              <p ALIGN=LEFT>We decided to update the robot chassis to fit the camera. The Robot will now have three 
+                    layers. We will add a new layer under the current first layer of the robot where the servos 
+                    are. This will be used to store the batteries. We will need two batteries, one for the Arduino 
+                    and one for servo and sensors. Previously, we used the second layer of the robot to hold the 
+                    battery. However, we decided to use the second chassis layer of the robot to hold the FPGA and 
+                    camera hardware. The third layer will host the Arduino and sensor circuitry.
+              </p>
+              
               
               <figure>
                   <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/milestone4/IMG_1187.jpg" width="500"/>
@@ -2494,142 +2502,156 @@ update_visited_lists<span style='color:#0000ff; '>(</span><span style='color:#00
                   </figcaption>
                   </font>
               </figure>
-              
-              In the image above, we mounted the Camera and FPGA on a a new chasis. We also soldered 
-              some of the intermediate connectors onto a protoboard such as the resistors required for I2C. 
-              This will be the new second level of the robot. We decided to have the camera face only one
-              direction and only have the robot detect one of the walls at each intersection. We will miss 
-              some of the walls but this allows the robot movement algorithm to be simpler.
+              <p ALIGN=LEFT>
+                    In the image above, we mounted the Camera and FPGA on a a new chasis. We also soldered 
+                    some of the intermediate connectors onto a protoboard such as the resistors required for I2C. 
+                    This will be the new second level of the robot. We decided to have the camera face only one
+                    direction and only have the robot detect one of the walls at each intersection. We will miss 
+                    some of the walls but this allows the robot movement algorithm to be simpler.
+                    
+              </p>
               
               <h1>Treasure Color Detection</h1>
               
               <iframe width="560" height="315" src="https://www.youtube.com/embed/nbeuPRgot2Y?controls=0" 
                       frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
               </iframe>
-              
-              We already have color detection from lab4 algorithm which was reliable if the camera can reliably 
+              <p ALIGN=LEFT>
+                    We already have color detection from lab4 algorithm which was reliable if the camera can reliably 
               detect the colors. We debug the camera by using VGA display connected to a monitor to see what the 
               camera sees by displaying the QCIF image on the monitor. The camera clearly has trouble capturing
               color on the image if the lighting is poor. This leads to misdetections which our algorithms can't
               solve since the problem lies in the quality of the image. We can only hope that the lighting during 
               the competition is better than in the lab. We may also consider adding a light pointing in the same 
               direction as the camera so that it can better capture the image.
+                    
+              </p>             
               
-              Another strategy we used to improve reliability was to use averages. This method allows us to avoid
-              outliers in detection. 
+              <p ALIGN=LEFT>
+                    Another strategy we used to improve reliability was to use averages. This method allows us to avoid
+                    outliers in detection. 
+                    
+              </p>   
               
-              <pre ALIGN=LEFT>
-              <code>
-              for (int i = 0; i<500; i++){
-                  treasure1 = digitalRead(T1);
-                  treasure2 = digitalRead(T2);
-                  color1     = digitalRead(C1);
-                  color2     = digitalRead(C2);
-                  treasure  = (treasure2 << 1)|treasure1;
-                  color   =   (color2<<1)|(color1);
-                  if(color==BLUE) blueCount += 1;
-                  else if(color==RED)   redCount += 1;
-                  else nonCount += 1;
-                  if (treasure == SQUARE) sqCount +=1;
-                  else if( treasure == TRIANGLE) triCount += 1;
-                  else if( treasure == DIAMOND)  diaCount += 1;
-                  else nonTreasure += 1;
-                  delay(2);
-              }
-              </code>
-              </pre>
+<pre ALIGN=LEFT style='color:#000000;background:#ffffff;'><span style='color:#0000ff; font-weight:bold; '>for</span> <span style='color:#0000ff; '>(</span><span style='color:#0000ff; font-weight:bold; '>int</span> i <span style='color:#0000ff; '>=</span> <span style='color:#800000; '>0</span><span style='color:#0000ff; '>;</span> i<span style='color:#0000ff; '>&lt;</span><span style='color:#800000; '>500</span><span style='color:#0000ff; '>;</span> i<span style='color:#0000ff; '>+</span><span style='color:#0000ff; '>+</span><span style='color:#0000ff; '>)</span><span style='color:#0000ff; '>{</span>
+    treasure1 <span style='color:#0000ff; '>=</span> digitalRead<span style='color:#0000ff; '>(</span>T1<span style='color:#0000ff; '>)</span><span style='color:#0000ff; '>;</span>
+    treasure2 <span style='color:#0000ff; '>=</span> digitalRead<span style='color:#0000ff; '>(</span>T2<span style='color:#0000ff; '>)</span><span style='color:#0000ff; '>;</span>
+    color1     <span style='color:#0000ff; '>=</span> digitalRead<span style='color:#0000ff; '>(</span>C1<span style='color:#0000ff; '>)</span><span style='color:#0000ff; '>;</span>
+    color2     <span style='color:#0000ff; '>=</span> digitalRead<span style='color:#0000ff; '>(</span>C2<span style='color:#0000ff; '>)</span><span style='color:#0000ff; '>;</span>
+    treasure  <span style='color:#0000ff; '>=</span> <span style='color:#0000ff; '>(</span>treasure2 <span style='color:#0000ff; '>&lt;</span><span style='color:#0000ff; '>&lt;</span> <span style='color:#800000; '>1</span><span style='color:#0000ff; '>)</span><span style='color:#0000ff; '>|</span>treasure1<span style='color:#0000ff; '>;</span>
+    color   <span style='color:#0000ff; '>=</span>   <span style='color:#0000ff; '>(</span>color2<span style='color:#0000ff; '>&lt;</span><span style='color:#0000ff; '>&lt;</span><span style='color:#800000; '>1</span><span style='color:#0000ff; '>)</span><span style='color:#0000ff; '>|</span><span style='color:#0000ff; '>(</span>color1<span style='color:#0000ff; '>)</span><span style='color:#0000ff; '>;</span>
+    <span style='color:#0000ff; font-weight:bold; '>if</span><span style='color:#0000ff; '>(</span>color<span style='color:#0000ff; '>=</span><span style='color:#0000ff; '>=</span>BLUE<span style='color:#0000ff; '>)</span> blueCount <span style='color:#0000ff; '>+</span><span style='color:#0000ff; '>=</span> <span style='color:#800000; '>1</span><span style='color:#0000ff; '>;</span>
+    <span style='color:#0000ff; font-weight:bold; '>else</span> <span style='color:#0000ff; font-weight:bold; '>if</span><span style='color:#0000ff; '>(</span>color<span style='color:#0000ff; '>=</span><span style='color:#0000ff; '>=</span>RED<span style='color:#0000ff; '>)</span>   redCount <span style='color:#0000ff; '>+</span><span style='color:#0000ff; '>=</span> <span style='color:#800000; '>1</span><span style='color:#0000ff; '>;</span>
+    <span style='color:#0000ff; font-weight:bold; '>else</span> nonCount <span style='color:#0000ff; '>+</span><span style='color:#0000ff; '>=</span> <span style='color:#800000; '>1</span><span style='color:#0000ff; '>;</span>
+    <span style='color:#0000ff; font-weight:bold; '>if</span> <span style='color:#0000ff; '>(</span>treasure <span style='color:#0000ff; '>=</span><span style='color:#0000ff; '>=</span> SQUARE<span style='color:#0000ff; '>)</span> sqCount <span style='color:#0000ff; '>+</span><span style='color:#0000ff; '>=</span><span style='color:#800000; '>1</span><span style='color:#0000ff; '>;</span>
+    <span style='color:#0000ff; font-weight:bold; '>else</span> <span style='color:#0000ff; font-weight:bold; '>if</span><span style='color:#0000ff; '>(</span> treasure <span style='color:#0000ff; '>=</span><span style='color:#0000ff; '>=</span> TRIANGLE<span style='color:#0000ff; '>)</span> triCount <span style='color:#0000ff; '>+</span><span style='color:#0000ff; '>=</span> <span style='color:#800000; '>1</span><span style='color:#0000ff; '>;</span>
+    <span style='color:#0000ff; font-weight:bold; '>else</span> <span style='color:#0000ff; font-weight:bold; '>if</span><span style='color:#0000ff; '>(</span> treasure <span style='color:#0000ff; '>=</span><span style='color:#0000ff; '>=</span> DIAMOND<span style='color:#0000ff; '>)</span>  diaCount <span style='color:#0000ff; '>+</span><span style='color:#0000ff; '>=</span> <span style='color:#800000; '>1</span><span style='color:#0000ff; '>;</span>
+    <span style='color:#0000ff; font-weight:bold; '>else</span> nonTreasure <span style='color:#0000ff; '>+</span><span style='color:#0000ff; '>=</span> <span style='color:#800000; '>1</span><span style='color:#0000ff; '>;</span>
+    delay<span style='color:#0000ff; '>(</span><span style='color:#800000; '>2</span><span style='color:#0000ff; '>)</span><span style='color:#0000ff; '>;</span>
+<span style='color:#0000ff; '>}</span>
+</pre>
+<!--Created using ToHtml.com on 2018-12-04 20:13:44 UTC -->
               
-              The code above shows us processing averages on the Arduino where we would 
-              take multiple readings over a second and then count the predictions. We would
-              then choose the prediction with the highest count as our answer. To execute 
-              this well, we would need to be wary of timing constraints of the camera. 
+<p ALIGN=LEFT>
+        The code above shows us processing averages on the Arduino where we would 
+        take multiple readings over a second and then count the predictions. We would
+        then choose the prediction with the highest count as our answer. To execute 
+        this well, we would need to be wary of timing constraints of the camera. 
+</p>
+<p ALIGN=LEFT>
+        The camera completes transmission for a pixel of data every two clock cycles. 
+        An image is 176 x 144 in size in terms of pixels and our clock is 25 MHz. This 
+        translates to two milliseconds per image for processing our one image. We count
+        the predictions for 500 images.
+</p>
+      
               
-              The camera completes transmission for a pixel of data every two clock cycles. 
-              An image is 176 x 144 in size in terms of pixels and our clock is 25 MHz. This 
-              translates to two milliseconds per image for processing our one image. We count
-              the predictions for 500 images.
+              
               
               <h1>Treasure Shape Detection</h1>
+              <p ALIGN=LEFT>
+                    Treasure shape detection is much more difficult than color detection. We needed 
+                    to detect the differences in color concentration between different parts of the 
+                    image. Our design is to insert three different bars in the image and only count
+                    the color values within those bars. In theory, the bars will have differences in 
+                    values for different shapes and we can compare the bars and distinguish between 
+                    the shape of the treasure. 
+                </p>
+                        
+<pre ALIGN=LEFT style='color:#000000;background:#ffffff;'>always <span style='color:#0000ff; '>@</span><span style='color:#0000ff; '>(</span>posedge CLK<span style='color:#0000ff; '>)</span> begin
+    <span style='color:#0000ff; font-weight:bold; '>if</span> <span style='color:#0000ff; '>(</span><span style='color:#0000ff; '>!</span>VGA_VSYNC_NEG<span style='color:#0000ff; '>)</span> begin
+        top <span style='color:#0000ff; '>=</span> <span style='color:#800000; '>0</span><span style='color:#0000ff; '>;</span>
+        mid <span style='color:#0000ff; '>=</span> <span style='color:#800000; '>0</span><span style='color:#0000ff; '>;</span>
+        bot <span style='color:#0000ff; '>=</span> <span style='color:#800000; '>0</span><span style='color:#0000ff; '>;</span>
+        red1 <span style='color:#0000ff; '>=</span> <span style='color:#800000; '>0</span><span style='color:#0000ff; '>;</span>
+        red2 <span style='color:#0000ff; '>=</span> <span style='color:#800000; '>0</span><span style='color:#0000ff; '>;</span>
+        red3 <span style='color:#0000ff; '>=</span> <span style='color:#800000; '>0</span><span style='color:#0000ff; '>;</span>
+        blue1 <span style='color:#0000ff; '>=</span> <span style='color:#800000; '>0</span><span style='color:#0000ff; '>;</span>
+        blue2 <span style='color:#0000ff; '>=</span> <span style='color:#800000; '>0</span><span style='color:#0000ff; '>;</span>
+        blue3 <span style='color:#0000ff; '>=</span> <span style='color:#800000; '>0</span><span style='color:#0000ff; '>;</span>
+        done_treasure <span style='color:#0000ff; '>=</span> <span style='color:#800000; '>0</span><span style='color:#0000ff; '>;</span>
+        treasure <span style='color:#0000ff; '>=</span> NONE<span style='color:#0000ff; '>;</span>
+    end
+    <span style='color:#0000ff; font-weight:bold; '>else</span> <span style='color:#0000ff; font-weight:bold; '>if</span> <span style='color:#0000ff; '>(</span>VGA_PIXEL_X <span style='color:#0000ff; '>></span> `X_LOW_THRESH <span style='color:#0000ff; '>&amp;</span><span style='color:#0000ff; '>&amp;</span> VGA_PIXEL_X <span style='color:#0000ff; '>&lt;</span> 
+        `X_HIGH_THRESH <span style='color:#0000ff; '>&amp;</span><span style='color:#0000ff; '>&amp;</span> VGA_PIXEL_Y <span style='color:#0000ff; '>></span> `Y_BARfirstTop <span style='color:#0000ff; '>&amp;</span><span style='color:#0000ff; '>&amp;</span> VGA_PIXEL_Y <span style='color:#0000ff; '>&lt;</span> 
+        `Y_BARfirstBot<span style='color:#0000ff; '>)</span> begin
+        red1 <span style='color:#0000ff; '>=</span> red1 <span style='color:#0000ff; '>+</span> red<span style='color:#0000ff; '>;</span>
+        blue1 <span style='color:#0000ff; '>=</span> blue1 <span style='color:#0000ff; '>+</span> blue<span style='color:#0000ff; '>;</span>
+    end
+    <span style='color:#0000ff; font-weight:bold; '>else</span> <span style='color:#0000ff; font-weight:bold; '>if</span> <span style='color:#0000ff; '>(</span>VGA_PIXEL_X <span style='color:#0000ff; '>></span> `X_LOW_THRESH <span style='color:#0000ff; '>&amp;</span><span style='color:#0000ff; '>&amp;</span> VGA_PIXEL_X <span style='color:#0000ff; '>&lt;</span> 
+        `X_HIGH_THRESH <span style='color:#0000ff; '>&amp;</span><span style='color:#0000ff; '>&amp;</span> VGA_PIXEL_Y <span style='color:#0000ff; '>></span> `Y_BARsecondTop <span style='color:#0000ff; '>&amp;</span><span style='color:#0000ff; '>&amp;</span> VGA_PIXEL_Y <span style='color:#0000ff; '>&lt;</span> 
+        `Y_BARsecondBot<span style='color:#0000ff; '>)</span> begin
+        red2 <span style='color:#0000ff; '>=</span> red2 <span style='color:#0000ff; '>+</span> red<span style='color:#0000ff; '>;</span>
+        blue2 <span style='color:#0000ff; '>=</span> blue2 <span style='color:#0000ff; '>+</span> blue<span style='color:#0000ff; '>;</span>
+    end
+    <span style='color:#0000ff; font-weight:bold; '>else</span> <span style='color:#0000ff; font-weight:bold; '>if</span> <span style='color:#0000ff; '>(</span>VGA_PIXEL_X <span style='color:#0000ff; '>></span> `X_LOW_THRESH <span style='color:#0000ff; '>&amp;</span><span style='color:#0000ff; '>&amp;</span> VGA_PIXEL_X <span style='color:#0000ff; '>&lt;</span> 
+        `X_HIGH_THRESH <span style='color:#0000ff; '>&amp;</span><span style='color:#0000ff; '>&amp;</span> VGA_PIXEL_Y <span style='color:#0000ff; '>></span> `Y_BARthirdTop <span style='color:#0000ff; '>&amp;</span><span style='color:#0000ff; '>&amp;</span> VGA_PIXEL_Y <span style='color:#0000ff; '>&lt;</span>
+        `Y_BARthirdBot<span style='color:#0000ff; '>)</span> begin
+        red3 <span style='color:#0000ff; '>=</span> red3 <span style='color:#0000ff; '>+</span> red<span style='color:#0000ff; '>;</span>
+        blue3 <span style='color:#0000ff; '>=</span> blue3 <span style='color:#0000ff; '>+</span> blue<span style='color:#0000ff; '>;</span>
+    end
+    <span style='color:#0000ff; font-weight:bold; '>if</span> <span style='color:#0000ff; '>(</span><span style='color:#0000ff; '>(</span>VGA_PIXEL_Y <span style='color:#0000ff; '>=</span><span style='color:#0000ff; '>=</span> `SCREEN_HEIGHT<span style='color:#0000ff; '>)</span> <span style='color:#0000ff; '>&amp;</span><span style='color:#0000ff; '>&amp;</span> done_color <span style='color:#0000ff; '>&amp;</span><span style='color:#0000ff; '>&amp;</span> <span style='color:#0000ff; '>!</span>done_treasure<span style='color:#0000ff; '>)</span> 
+    begin
+        <span style='color:#0000ff; font-weight:bold; '>if</span> <span style='color:#0000ff; '>(</span>color <span style='color:#0000ff; '>=</span><span style='color:#0000ff; '>=</span> RED<span style='color:#0000ff; '>)</span> begin
+            <span style='color:#0000ff; font-weight:bold; '>if</span> <span style='color:#0000ff; '>(</span><span style='color:#0000ff; '>(</span>diffr3<span style='color:#0000ff; '>></span>diffr2<span style='color:#0000ff; '>)</span> <span style='color:#0000ff; '>&amp;</span><span style='color:#0000ff; '>&amp;</span> <span style='color:#0000ff; '>(</span>diffr3<span style='color:#0000ff; '>></span>diffr1<span style='color:#0000ff; '>)</span> <span style='color:#0000ff; '>&amp;</span><span style='color:#0000ff; '>&amp;</span> diffr3<span style='color:#0000ff; '>></span><span style='color:#800000; '>50</span><span style='color:#0000ff; '>)</span>
+                treasure <span style='color:#0000ff; '>=</span> TRIANGLE<span style='color:#0000ff; '>;</span>
+            <span style='color:#0000ff; font-weight:bold; '>else</span> <span style='color:#0000ff; font-weight:bold; '>if</span><span style='color:#0000ff; '>(</span><span style='color:#0000ff; '>(</span>diffr1<span style='color:#0000ff; '>&lt;</span><span style='color:#800000; '>100</span><span style='color:#0000ff; '>)</span> <span style='color:#0000ff; '>&amp;</span><span style='color:#0000ff; '>&amp;</span> <span style='color:#0000ff; '>(</span>diffr2<span style='color:#0000ff; '>&lt;</span><span style='color:#800000; '>100</span><span style='color:#0000ff; '>)</span> <span style='color:#0000ff; '>&amp;</span><span style='color:#0000ff; '>&amp;</span> <span style='color:#0000ff; '>(</span>diffr3<span style='color:#0000ff; '>&lt;</span><span style='color:#800000; '>100</span><span style='color:#0000ff; '>)</span><span style='color:#0000ff; '>)</span>
+                treasure <span style='color:#0000ff; '>=</span> SQUARE<span style='color:#0000ff; '>;</span>
+            <span style='color:#0000ff; font-weight:bold; '>else</span>
+                treasure <span style='color:#0000ff; '>=</span> DIAMOND<span style='color:#0000ff; '>;</span>
+        end
+        <span style='color:#0000ff; font-weight:bold; '>else</span> <span style='color:#0000ff; font-weight:bold; '>if</span> <span style='color:#0000ff; '>(</span>color <span style='color:#0000ff; '>=</span><span style='color:#0000ff; '>=</span> BLUE<span style='color:#0000ff; '>)</span> begin
+            <span style='color:#0000ff; font-weight:bold; '>if</span> <span style='color:#0000ff; '>(</span><span style='color:#0000ff; '>(</span>diffb3<span style='color:#0000ff; '>></span>diffb2<span style='color:#0000ff; '>)</span> <span style='color:#0000ff; '>&amp;</span><span style='color:#0000ff; '>&amp;</span> <span style='color:#0000ff; '>(</span>diffb3<span style='color:#0000ff; '>></span>diffb1<span style='color:#0000ff; '>)</span> <span style='color:#0000ff; '>&amp;</span><span style='color:#0000ff; '>&amp;</span> diffb3<span style='color:#0000ff; '>></span><span style='color:#800000; '>50</span><span style='color:#0000ff; '>)</span>
+                treasure <span style='color:#0000ff; '>=</span> TRIANGLE<span style='color:#0000ff; '>;</span>
+            <span style='color:#0000ff; font-weight:bold; '>else</span> <span style='color:#0000ff; font-weight:bold; '>if</span><span style='color:#0000ff; '>(</span><span style='color:#0000ff; '>(</span>diffb1<span style='color:#0000ff; '>&lt;</span><span style='color:#800000; '>100</span><span style='color:#0000ff; '>)</span> <span style='color:#0000ff; '>&amp;</span><span style='color:#0000ff; '>&amp;</span> <span style='color:#0000ff; '>(</span>diffb2<span style='color:#0000ff; '>&lt;</span><span style='color:#800000; '>100</span><span style='color:#0000ff; '>)</span> <span style='color:#0000ff; '>&amp;</span><span style='color:#0000ff; '>&amp;</span> <span style='color:#0000ff; '>(</span>diffb3<span style='color:#0000ff; '>&lt;</span><span style='color:#800000; '>100</span><span style='color:#0000ff; '>)</span><span style='color:#0000ff; '>)</span>
+                treasure <span style='color:#0000ff; '>=</span> SQUARE<span style='color:#0000ff; '>;</span>
+            <span style='color:#0000ff; font-weight:bold; '>else</span>
+                treasure <span style='color:#0000ff; '>=</span> DIAMOND<span style='color:#0000ff; '>;</span>
+        end
+        <span style='color:#0000ff; font-weight:bold; '>else</span> begin
+            treasure <span style='color:#0000ff; '>=</span> NONE<span style='color:#0000ff; '>;</span>
+        end
+        done_treasure <span style='color:#0000ff; '>=</span> <span style='color:#800000; '>1</span>'b1<span style='color:#0000ff; '>;</span>
+    end
+end
+</pre>
+<!--Created using ToHtml.com on 2018-12-04 20:17:52 UTC -->              
+  <p ALIGN=LEFT>
+        In the code above, g1-g6 shows which bar has greater color concentration 
+        while diffb and diffr are the actual color differences.        
+  </p>
+  
               
-              Treasure shape detection is much more difficult than color detection. We needed 
-              to detect the differences in color concentration between different parts of the 
-              image. Our design is to insert three different bars in the image and only count
-              the color values within those bars. In theory, the bars will have differences in 
-              values for different shapes and we can compare the bars and distinguish between 
-              the shape of the treasure. 
-              <pre ALIGN=LEFT>
-              <code>
-              always @(posedge CLK) begin
-                if (!VGA_VSYNC_NEG) begin
-                  top = 0;
-                  mid = 0;
-                  bot = 0;
-                  red1 = 0;
-                  red2 = 0;
-                  red3 = 0;
-                  blue1 = 0;
-                  blue2 = 0;
-                  blue3 = 0;
-                  done_treasure = 0;
-                  treasure = NONE;
-                end
-                else if (VGA_PIXEL_X > `X_LOW_THRESH && VGA_PIXEL_X < 
-                  `X_HIGH_THRESH && VGA_PIXEL_Y > `Y_BARfirstTop && VGA_PIXEL_Y < 
-                  `Y_BARfirstBot) begin
-                  red1 = red1 + red;
-                  blue1 = blue1 + blue;
-                end
-                else if (VGA_PIXEL_X > `X_LOW_THRESH && VGA_PIXEL_X < 
-                  `X_HIGH_THRESH && VGA_PIXEL_Y > `Y_BARsecondTop && VGA_PIXEL_Y < 
-                  `Y_BARsecondBot) begin
-                  red2 = red2 + red;
-                  blue2 = blue2 + blue;
-                end
-                else if (VGA_PIXEL_X > `X_LOW_THRESH && VGA_PIXEL_X < 
-                  `X_HIGH_THRESH && VGA_PIXEL_Y > `Y_BARthirdTop && VGA_PIXEL_Y <
-                  `Y_BARthirdBot) begin
-                  red3 = red3 + red;
-                  blue3 = blue3 + blue;
-                end
-                if ((VGA_PIXEL_Y == `SCREEN_HEIGHT) && done_color && !done_treasure) 
-                  begin
-
-                  if (color == RED) begin
-                    if ((diffr3>diffr2) && (diffr3>diffr1) && diffr3>50)
-                      //mid > top; bot > mid
-                      treasure = TRIANGLE;
-                    else if((diffr1<100) && (diffr2<100) && (diffr3<100))
-                      //mid ~= top; mid ~= bot
-                      treasure = SQUARE;
-                    else
-                      treasure = DIAMOND;
-                  end
-                  else if (color == BLUE) begin
-                    if ((diffb3>diffb2) && (diffb3>diffb1) && diffb3>50)
-                      treasure = TRIANGLE;
-                    else if((diffb1<100) && (diffb2<100) && (diffb3<100))
-                      treasure = SQUARE;
-                    else
-                      treasure = DIAMOND;
-                  end
-                  else begin
-                    treasure = NONE;
-                  end
-                  done_treasure = 1'b1;
-                end
-              end
-              </code>
-              </pre>
-              In the code above, g1-g6 shows which bar has greater color concentration 
-              while diffb and diffr are the actual color differences.        
               <h1>Concusion</h1>
-              We were able to detect both color and shape detection on the FPGA and mounted
-              the camera onto the robot chassis. Moving forward, we can explore implementing 
-              the averaging on the FPGA instead of the Arduino for more timely image processing 
-              averages. We can also improve reliability by increasing the number of bars. This
-              will increase code density but will likely improve accuracy. The greatest challenge
-              to accuracy of the camera remains that the camera needs good lighting to capture reliable 
-              images.  
+              <p ALIGN=LEFT>
+                    We were able to detect both color and shape detection on the FPGA and mounted
+                    the camera onto the robot chassis. Moving forward, we can explore implementing 
+                    the averaging on the FPGA instead of the Arduino for more timely image processing 
+                    averages. We can also improve reliability by increasing the number of bars. This
+                    will increase code density but will likely improve accuracy. The greatest challenge
+                    to accuracy of the camera remains that the camera needs good lighting to capture reliable 
+                    images.  
+              </p>
               </p>
               <a class="btn btn-primary btn-lg rounded-pill portfolio-modal-dismiss" href="#">
                 <i class="fa fa-close"></i>
