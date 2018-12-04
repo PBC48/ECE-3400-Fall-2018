@@ -75,14 +75,7 @@
         <hr class="star-dark mb-5">
         <div class="row">
           <div class="col-md-3 col-lg-3">
-            <a class="portfolio-item d-block mx-auto" href="#headshot-1">
-              <div class="portfolio-item-caption d-flex position-absolute h-100 w-100">
-                <div class="portfolio-item-caption-content my-auto w-100 text-center text-white">
-                  <i class="fas fa-search-plus fa-3x"></i>
-                </div>
-              </div>
-              <img class="img-fluid rounded-circle" src="images/headshot-Xiaoyu.PNG" alt="">
-            </a>
+            <img class="img-fluid rounded-circle" src="images/headshot-Xiaoyu.PNG" alt="">
             <h3 ALIGN=CENTER>Xiaoyu Yan</h3>
             <h4 ALIGN=CENTER>Junior ECE</h4>
             <ul ALIGN=CENTER class="list-inline mb-0">
@@ -99,14 +92,7 @@
             </ul>
           </div>
           <div class="col-md-3 col-lg-3">
-            <a class="portfolio-item d-block mx-auto" href="#headshot-2">
-              <div class="portfolio-item-caption d-flex position-absolute h-100 w-100">
-                <div class="portfolio-item-caption-content my-auto w-100 text-center text-white">
-                  <i class="fas fa-search-plus fa-3x"></i>
-                </div>
-              </div>
-              <img class="img-fluid rounded-circle" src="images/headshot-Chrissy.png" alt="">
-            </a>
+            <img class="img-fluid rounded-circle" src="images/headshot-Chrissy.png" alt="">
             <h3 ALIGN=CENTER>Christine Mayer</h3>
             <h4 ALIGN=CENTER>Junior ECE</h4>
             <ul ALIGN=CENTER class="list-inline mb-0">
@@ -123,15 +109,7 @@
             </ul>
           </div>
           <div class="col-md-3 col-lg-3">
-            <a class="portfolio-item d-block mx-auto" href="#headshot-3">
-              <div class="portfolio-item-caption d-flex position-absolute h-100 w-100">
-                <div class="portfolio-item-caption-content my-auto w-100 text-center text-white">
-                  <i class="fas fa-search-plus fa-3x"></i>
-                </div>
-              </div>
-              <img class="img-fluid rounded-circle" src="images/headshot-Patrick.png" alt="">
-
-            </a>
+            <img class="img-fluid rounded-circle" src="images/headshot-Patrick.png" alt="">
             <h3 ALIGN=CENTER>Patrick Clobridge</h3>
             <h4 ALIGN=CENTER>Senior ECE</h4>
             <ul ALIGN=CENTER class="list-inline mb-0">
@@ -148,14 +126,7 @@
             </ul>
           </div>
           <div class="col-md-3 col-lg-3">
-            <a class="portfolio-item d-block mx-auto" href="#headshot-4">
-              <div class="portfolio-item-caption d-flex position-absolute h-100 w-100">
-                <div class="portfolio-item-caption-content my-auto w-100 text-center text-white">
-                  <i class="fas fa-search-plus fa-3x"></i>
-                </div>
-              </div>
-              <img class="img-fluid rounded-circle" src="images/taravn_headshot.jpg" alt="">
-            </a>
+            <img class="img-fluid rounded-circle" src="images/taravn_headshot.jpg" alt="">
             <h3 ALIGN=CENTER>Tara Van Nieuwstadt</h3>
             <h4 ALIGN=CENTER>Junior ECE</h4>
             <ul ALIGN=CENTER class="list-inline mb-0">
@@ -1181,7 +1152,554 @@ radio<span style='color:#0000ff; '>.</span>stopListening<span style='color:#0000
               <h2 class="text-secondary text-uppercase mb-0">Lab 4</h2>
               <hr class="star-dark mb-5">
               <img class="img-fluid mb-5" src="images/bootstrap/lab4-bootstrap.png" alt="">
-              <p class="mb-5">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Mollitia neque assumenda ipsam nihil, molestias magnam, recusandae quos quis inventore quisquam velit asperiores, vitae? Reprehenderit soluta, eos quod consequuntur itaque. Nam.</p>
+              <p class="mb-5" ALIGN=LEFT>
+                <h1 ALIGN=LEFT>Objectives</h1>
+                <ul>
+                  <li> Use a camera and FPGA to implement a system for detecting treasures
+                  <li> Develop an FPGA module capable of detecting shapes and colors from a camera input
+                  <li> Communicate treasure detection from the FPGA to the Arduino
+                  <li> Display images from the camera onto a screen
+                </ul>
+              </p>
+              <h1 ALIGN=LEFT>Introduction</h1>
+              <p ALIGN=LEFT>
+                For this lab we began working with an FPGA to implement treasure-detection capabilities
+                for the robot. The system consists of an FPGA, a camera, and an Arduino. To divide the
+                work for this lab, Patrick and Chrissy worked with the FPGA, and Xiaoyu and Tara worked
+                with the Arduino. The FPGA team worked on implementing PLL, downsampler, and image 
+                processor modules in Verilog for the FPGA, and the Arduino team worked on writing to 
+                appropriate registers in the camera in order to set it up properly for taking images. 
+                The two teams then came together to integrate the components to take image input from 
+                the camera, send the images to the memory of the FPGA and process the image to detect 
+                shape and color, and then send treasure information from the FPGA to the Arduino so that 
+                the robot can finally send that information back to the base station.
+              </p>
+              <h1 ALIGN=LEFT>FPGA</h1>
+              <p ALIGN=LEFT>
+                First, we implemented a phase-locked loop to clock the FPGA. 
+                Using the provided Verliog project, we set up the interface our system would use for shape detection.
+                <h2 ALIGN=LEFT>Setup</h2>
+                We first use the PLL, which is not suceptible to clock skew, to produce different clocks
+                to drive the camera, VGA, M9k block memory read and write. We use the 24 MHz clock to drive 
+                the camera and plug that as XCLK. We use the 50 MHz clock for memory write and 25 MHz clock 
+                for read. We want write to be faster than read because writing to the block needs to be done 
+                before we read. We don't want to accidentally read blocks before they are updated. We also 
+                use the 25 MHz clock for VGA display.
+                <h2 ALIGN=LEFT>Camera, FPGA and Arduino Communication</h2>
+                The camera contains 20 pins total. We have 8 pins for parallel data which sends one of the two 
+                bytes for pixel during each clcok cycle. These eight pins are connected to input GPIO pins on 
+                the FPGA. In addition, we also have HREF and VSYNC pins which are also connected as input to the 
+                FPGA. The camera also has PCLK and XCLK pins. The XCLK is for external clock. We use an output pin 
+                from the FPGA and put it to the camera. The PCLK is camera clock; we route that back to the FPGA for analysis. 
+                <figure ALIGN=CENTER>
+                    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab04/schematic.PNG" width="560"/>
+                    <font size="2">
+                    <figcaption> <b> Wiring Diagram for FPGA, Arduino Uno, and Camera </b>
+                    </figcaption>
+                    </font>
+                </figure>
+                In the figure above, the colored rectangles mean that the pins are wired together.
+
+                In the FPGA, we must set the camera communication pins, HREF, VSYNC, and PCLK to 
+                input for the FPGA. We set the the communication pins with the Arduino as output. 
+                In quartus, this is done as follows:
+                <code ALIGN=CENTER>
+                  //////////// GPIO_0, GPIO_0 connect to GPIO Default //////////
+                  output 		    [33:0]		GPIO_0_D;
+                  //////////// GPIO_0, GPIO_1 connect to GPIO Default //////////
+                  input 		    [33:20]		GPIO_1_D;
+                </code>
+                We also use four parallel wires for communication from FPGA to the Arduino. We have 
+                two bits for treasure shape and two bits for color.
+                <h3>Polling from camera</h3>
+                <figure ALIGN=CENTER>
+                    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab04/vgatiming.PNG" width="560"/>
+                    <font size="2">
+                    <figcaption> <b> Timing Diagram for the OV7670 camera </b>
+                    </figcaption>
+                    </font>
+                </figure>
+                The above timing diagram shows us how images from the camera are sent. When we have
+                a new frame incoming, the VSYNC goes high. After some time, the HREF will go high, 
+                signalling the start of the first byte of data. The camera can send data in RGB565 
+                which is 5 bits of red, 6 bits of green, and 5 bits of blue color. This is divided 
+                into two transmissions due to the camera's one byte communication line. When the HREF 
+                goes high, the camera is transmitting the data for the first row of data. A low HREF 
+                means that we finished transmitting data for one row. At this point, the VSYNC can go 
+                high to signal the end of the image or the HREF can go high again when the camera is 
+                sending data for the next row of pixels.
+                <figure ALIGN=CENTER>
+                    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab04/cam_fsm.PNG" width="560"/>
+                    <font size="2">
+                    <figcaption> <b> FSM for getting data from camera </b>
+                    </figcaption>
+                    </font>
+                </figure>
+                Based on the timing diagram, we created this state machine to model the behavior of the camera transmissions.
+                <table ALIGN=CENTER>
+                  <tr>
+                    <th>States</th>
+                    <th>Function</th>
+                  </tr>
+                  <tr>
+                    <td>----------</td>
+                    <td>----------</td>
+                  </tr>
+                  <tr>
+                    <td>IDLE</td>
+                    <td>Start of device. We wait here for camera to start</td>
+                  </tr>
+                  <tr>
+                    <td>NEW FRAME</td>
+                    <td>Start of new frame where we reset the X and Y address</td>
+                  </tr>
+                  <tr>
+                    <td>POLL</td>
+                    <td>Enable to downsampler and poll from camera</td>
+                  </tr>
+                  <tr>
+                    <td>UPDATE ROW</td>
+                    <td>New row of pixels. Update Y address and reset X address<td>
+                  </tr>
+                  <tr>
+                    <td>WAIT</td>
+                    <td>Wait for start of next frame or row</td>
+                  </tr>
+                </table>
+                <p ALIGN = LEFT>
+                <code>
+                  always @(*) begin
+                      case (control_state)
+                          STATE_IDLE: begin
+                              W_EN                <= 1'b0;
+                              down_sample_reset   <= 1'b1;
+                          end
+                          STATE_NEW_FRAME: begin
+                              down_sample_reset   <= 1'b0; 
+                              W_EN                <= downsampler_rdy ? 1'b1 : 1'b0;
+                          end
+                          STATE_POLL: begin
+                              down_sample_reset   <= 1'b0;
+                        W_EN                <= downsampler_rdy ? 1'b1 : 1'b0;
+
+                          end
+                          STATE_UPDATE_ROW: begin
+                              down_sample_reset   <= 1'b1;
+                              W_EN                <= 1'b0;
+                          end
+                          STATE_WAIT: begin
+                              down_sample_reset   <= 1'b1;
+                              W_EN                <= 1'b0;
+                          end
+                          default: begin
+                              W_EN                <= 1'b0;
+                              down_sample_reset   <= 1'b1;
+                          end
+                      endcase
+                  end
+
+                  always @(posedge pclk) begin
+                    case (control_state)
+                          STATE_IDLE: begin
+                          end
+                          STATE_NEW_FRAME: begin
+                              X_ADDR          <= 15'b0;
+                              Y_ADDR          <= 15'b0;
+
+                          end
+                          STATE_POLL: begin
+                        //increments xaddr after downsampler 
+                              //finishes and writes to mem
+                        X_ADDR <= downsampler_rdy ? X_ADDR + 1 : X_ADDR; 
+
+                          end
+
+                          STATE_UPDATE_ROW: begin
+                        Y_ADDR			<= Y_ADDR + 1;
+                              X_ADDR          <= 15'b0;
+                          end
+                          STATE_WAIT: begin
+
+                          end
+                          default: begin
+
+                          end
+                      endcase
+                  end
+                </code>
+                </p>
+                We must save the data from the camera into a memory location 
+                so that it can be read by the VGA and the image processor 
+                later for analysis. This is done with two variables, X_ADDR and Y_ADDR.
+                <figure ALIGN=CENTER>
+                    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab04/IMG_1174.jpg" width="560"/>
+                    <font size="2">
+                    <figcaption> <b> Camera Connection to FPGA </b>
+                    </figcaption>
+                    </font>
+                </figure>
+                <h3>Downsampler</h3>
+                  The camera's eight parallel data pins output color per pixel at a clocked 
+                  rate. For RGB, it uses the configuration for RGB565 or RGB555. Both 
+                  configurations are two bytes in length total which means that each pixel 
+                  captured by the camera are two bytes. We must downsample the two byte data 
+                  from the camera to 1 byte data because of memory constraints on the M9k
+                  memory blocks on the FPGA. We can only store one byte of data per memory 
+                  address. Thus we must convert to RGB332 or RGB323. We used RGB332 for 
+                  debugging and displaying the camera data on the VGA screen since the VGA 
+                  only takes in RGB332 values. For treasure detection, we changed to RGB323 
+                  to get more bits out of the blue pixel since we are only detecting blue and 
+                  red treasures. The goal of the downsampler is to take the two byte pixel 
+                  from the camera and converted it to a one byte pixel. This one byte pixel 
+                  will be saved into the M9k memory block at the correct memory address which 
+                  is relative to the pixel location on the screen. 
+                  <figure>
+                      <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab04/timingdiagram565.PNG" width="560"/>
+                      <font size="2">
+                      <figcaption> <b> Timing Diagram for Outputing RGB565 </b>
+                      </figcaption>
+                      </font>
+                  </figure>
+                  <table ALIGN=CENTER>
+                    <tr>
+                      <th>States</th>
+                      <th>Function</th>
+                    </tr>
+                    <tr>
+                      <td>----------</td>
+                      <td>----------</td>
+                    </tr>
+                    <tr>
+                      <td>IDLE</td>
+                      <td>Start of device. We wait here for camera to start</td>
+                    </tr>
+                    <tr>
+                      <td>READ</td>
+                      <td>Start reading from camera</td>
+                    </tr>
+                  </table>
+                  <pre ALIGN=LEFT>
+                  <code>
+                  READ: begin
+                      fsm 		= (VSYNC || RES) ? IDLE : READ;
+
+                      if(HREF) begin
+                          count_bit 		= ~count_bit;
+                          if(count_bit) begin
+                              reg_valid		<= 1'b0;
+                              OUT[7:2]		<= {D[7:5], D[2:0]};
+                          end
+                          else begin 
+                              reg_valid 		<= 1'b1;
+                              OUT[1:0]		<= D[4:3];
+                          end
+                      end
+                      else begin
+                          count_bit			<= 1'b0;
+                          reg_valid 			<= 1'b0;
+                          OUT					<= 8'd7;
+                      end
+                  end
+                  </code>
+                  </pre>
+                  <h3>Color Bar</h3>
+                  To display the color bar, we must set the appropriate registers 
+                  in the Camera. The main registers involved are COM 7 and COM 17 
+                  for color bar enable and color bar DSP enable. With the downsampler 
+                  above, we are able to decode the bytes coming from the camera and 
+                  display the color bar onto the VGA screen. The downsampler takes 
+                  in input from the camera.
+                  <figure>
+                      <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab04/IMG_1163.jpg" width="560"/>
+                      <font size="2">
+                      <figcaption> <b> Color Bar Test </b>
+                      </figcaption>
+                      </font>
+                  </figure>
+                  The colors in the bar are different from the example in the lab but when 
+                  we use the camera to capture, we found that the colors were passable and 
+                  would not pose an issue.
+                  <h3>Display Camera Capture</h3>
+                  To display the images captured by the camera, we must set the registers from
+                  the Arduino. We can disable the DSP for color bar and the color bar test itself. 
+                  The FPGA code is exactly the same.
+                  <iframe width="560" height="315" src="https://www.youtube.com/embed/0lKN7Tkrx0Q?controls=0" 
+                  frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; 
+                  picture-in-picture" allowfullscreen></iframe>
+                  <h2>Color Detection</h2>
+                  For color detection, we use a module call the Image Processor. The image processor 
+                  samples at the same rate as the VGA board at 25 MHz. We set a boundary within the 
+                  resolution of each image and then count the amount of blue and red in each pixel. 
+              </p>
+              <pre ALIGN=LEFT>
+              <code>
+                always @(posedge CLK) begin
+
+                    if (VGA_PIXEL_Y <=20) begin
+                      blueCount  = 0;
+                      redCount   = 0;
+                      greenCount = 0;
+                      done_color = 1'b0;
+                    end
+                    else if (VGA_PIXEL_X > `X_LOW_THRESH && VGA_PIXEL_X < 
+                      `X_HIGH_THRESH && VGA_PIXEL_Y > `Y_LOW_THRESH && VGA_PIXEL_Y < 
+                      `Y_HIGH_THRESH) begin
+                      blueCount = blueCount + blue;
+                      redCount  = redCount  + red;
+                      greenCount = greenCount + green;
+                    end
+                    else if(VGA_PIXEL_Y >= `Y_HIGH_THRESH && !done_color) begin
+                      if (greenCount > 15'd5000 && blueCount > 15'd20000 && 
+                          redCount > 15'd20000) begin
+                        color = NONE;
+                      end
+                      else if (blueCount > redCount && (blueCount - redCount) > 30
+                           && blueCount > 15'd200) begin
+                        color = BLUE;
+                      end
+                      else if (redCount > blueCount && (redCount - blueCount) > 30 
+                          && redCount > 15'd200) begin
+                        color = RED;
+                      end
+                      else begin
+                        color = NONE;
+                      end
+                      blueCount = 0;
+                      redCount  = 0;
+                      greenCount = 0;
+                      done_color = 1'b1;
+                    end
+                  end
+                </code>
+                </pre>
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/nbeuPRgot2Y?controls=0" 
+                        frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
+                        allowfullscreen>
+                </iframe>
+                This implementation use a lot of variables. We needed a counter 
+                for the three colors. We used the counter to count the values of 
+                the blue and red pixels if they are within a set of boundary. 
+                The boundary was used as a filter so that we can get the values 
+                that are near the center of the camera screen since that was where 
+                the shapes are most likely going to be. We judge as soon as the VGA X 
+                and Y axis exit the high threshold which means that we are approaching 
+                the end of our image. As shown above, we compare the counters of red
+                and blue pixels and see if one is greater than the other by some threshold. 
+                We need the green counter because if the green counter is high while
+                red and blue are also high, it likely means that we are viewing a 
+                white wall since there are no green color shapes. The judging only 
+                occurs once which was done by a flipping bit. We also reset the counters 
+                for the next frame. 
+                <figure>
+                    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab04/IMG_1171.jpg" width="500"/>
+                    <font size="2">
+                    <figcaption> <b> Overview of FPGA and Camera </b>
+                    </figcaption>
+                    </font>
+                </figure>
+                <h1 ALIGN=LEFT>Arduino</h1>
+                <h2 ALIGN=LEFT>Disabling Arduino's Internal Pullup Resistor</h2>
+                In the prelab, we determined what registers we needed to set and what values 
+                we needed to set them to in order to properly set up the camera to do what we need 
+                it to. Before starting anything, we disabled the internal pullup resistors in the 
+                Arduino’s I2C interface so as not to damage the camera by sending 5V to it. We 
+                then downloaded the provided Lab 4 Arduino template in order to use the functions 
+                provided in it to write to and read from registers in the camera.
+                This is done by going to the Arduino library on our hard drive. This is done by going 
+                to *twi.c* at *C:\Program Files (x86)\Arduino\hardware\arduino\avr\libraries\Wire\src\utility*
+                and commenting out
+                <pre ALIGN=LEFT>
+                  <code>
+                      //activate internal pullups for twi
+                      digitalWrite(SDA,1);
+                      digitalWrite(SCL,1);
+                  </code>
+                </pre>
+                This will allow the I2C interface to communicate with the camera without sending 5v to the camera.
+                <h2>Writing Registers</h2>
+                We use the I2C communication protocol to talk to the camera. This is setup using Arduino's 
+                *Wire* library which supports I2C interfaces. We set up the Arduino as the master and the camera 
+                as slave. The camera has a set slave address of 0x21 after we ignore the least significant bit 
+                because that is used to distinguish between read and writes. The *Wire* library already set this 
+                up for us. All we have to do is pass the upper seven bits of the slave address of the camera to 
+                the I2C interface. We write to the camera by calling:
+                <pre ALIGN=LEFT>
+                  <code>    
+                  Wire.beginTransmission(0x21); // 7-bit Slave address
+                  Wire.write(value_to_write);   
+                  Wire.endTransmission();
+                  </code>
+                </pre>
+                The library makes it super simple to communicate with the camera using I2C.
+          
+                To have the camera capture the images we want, we must set some registers on the camera that deal with resolution, 
+                and camera clock. The following shows how we wrote to the registers:
+                <pre ALIGN=LEFT>
+                  <code>
+                    void setup() {
+                        Wire.begin();
+                        Serial.begin(9600);
+                        delay(100);
+                        Serial.println(OV7670_write_register(0x12,0x80));  
+                        //color bar test
+                        //  Serial.println(OV7670_write_register(0x12,0x0E)); 
+                        //  Serial.println(OV7670_write_register(0x42,0x08));
+
+                        Serial.println(OV7670_write_register(0x12,0x0c)); 
+                        Serial.println(OV7670_write_register(0x0c,0x08)); 
+                        Serial.println(OV7670_write_register(0x14,0x11)); 
+                        Serial.println(OV7670_write_register(0x40,0xD0)); 
+                        Serial.println(OV7670_write_register(0x11,0xC0)); 
+                        Serial.println(OV7670_write_register(0x1E,0x30));
+                        set_color_matrix();
+                    }
+                  </code>
+                </pre>
+                <table ALIGN=CENTER>
+                  <tr>
+                    <th>Registers</th>
+                    <th>Name</th>
+                    <th>Function</th>
+                  </tr>
+                  <tr>
+                    <td>--------</td>
+                    <td>----</td>
+                    <td>--------</td>
+                  </tr>
+                  <tr>
+                    <td>0x12</td>
+                    <td>COM7</td>
+                    <td>Reset regs; enable/disable color bar test; sets QCIF 176x144 resolution</td>
+                  </tr>
+                  <tr>
+                    <td>0x0c</td>
+                    <td>COM3</td>
+                    <td>Enable scaling</td>
+                  </tr>
+                  <tr>
+                    <td>0x14</td>
+                    <td>COM9</td>
+                    <td>Auto gain ceiling 2x; Freeze AGC/AEC</td>
+                  </tr>
+                  <tr>
+                    <td>0x40</td>
+                    <td>COM15</td>
+                    <td>Max output range [00] to [FF]; Use RGB 565</td>
+                  </tr>
+                  <tr>
+                    <td>0x42</td>
+                    <td>COM17</td>
+                    <td>DSP color bar enable</td>
+                  </tr>
+                  <tr>
+                    <td>0x11</td>
+                    <td>CLKRC</td>
+                    <td>Use 24 MHz clk from FPGA; pclk can be as high as xclk</td>
+                  </tr>
+                  <tr>
+                    <td>0x1E</td>
+                    <td>MVFP</td>
+                    <td>flip and mirror image</td>
+                  </tr>
+                </table>
+                We set the camera to QCIF resolution which is 176 x 144 screen size. 
+                This is the smallest resolution the camera supports. We use this
+                resolution because we lack memory to store any larger sizes on 
+                the FPGA. For the first part of the lab, we tested the camera 
+                and our FPGA polling code by using the camera color bar to make 
+                sure we can display the correct colors on the VGA screen. This
+                means we have to set COM7 to display the color bar and enable 
+                DSP color bar in COM 17. The other important setting is the 
+                camera clock. This camera clock determines the rate a which each 
+                pixel is sent to the FPGA. We drive the camera with the 24 MHz 
+                FPGA clock. This gives the camera the ability to go up to 24 MHz
+                for pixel transmissions.
+                <figure>
+                    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab04/IMG_1172.jpg" width="560"/>
+                    <font size="2">
+                    <figcaption> <b> Setup of the Arduino and FPGA </b>
+                    </figcaption>
+                    </font>
+                </figure>
+                <h2>Communicating with FPGA</h2>
+                Communication with the FPGA is done by wiring the GPIO pins on the 
+                FPGA to the arduino in parallel. We use combinational logic in this 
+                case since we set the FPGA to output the results of the image 
+                processing immediately while having the Arduino constantly decode
+                the message for the four pins. Even though the voltage of the 
+                Arduino pins are 5V while FPGA pins are 3.3V, we can connect 
+                the pins together without a voltage divider because the Arduino 
+                pins are set as input and are capable of reading the 3.3V from 
+                the FPGA as high.
+          
+                Initially, we define the input communication pins on the Arduino 
+                and the decoding treasure numbers.
+          
+                <pre ALIGN=LEFT>
+                  <code>
+                    #define T1 3   //GPIO 33 treasure[0]
+                    #define T2 4   //GPIO 32 treasure[1]
+                    #define C1  5  //GPIO 31 color ; blue or red
+                    #define C2  6  //GPIO 30 color ; blue or red
+                    #define RED 2
+                    #define BLUE 1
+                    #define NONE 0
+                    #define SQUARE 2
+                    #define TRIANGLE 1
+                    #define DIAMOND 3
+
+                    uint8_t decoder(){
+                      uint8_t treasure1 = digitalRead(T1); //read from pins
+                      uint8_t treasure2 = digitalRead(T2); 
+                      uint16_t color1   = digitalRead(C1);
+                      uint16_t color2   = digitalRead(C2);
+                      Serial.print("T1: ");Serial.print(treasure1);
+                      Serial.print(" T2: ");Serial.print(treasure2);
+                      Serial.print(" C1: ");Serial.print(color1);
+                      Serial.print(" C2: ");Serial.print(color2);
+                      uint8_t treasure  = (treasure2 << 1)|treasure1; 
+                      //combine treasure bits
+                      uint8_t color   =   (color2<<1)|(color1);
+                      Serial.println("");
+                      Serial.print("---COLOR: ");
+                      if(color==BLUE) Serial.print("BLUE");
+                      else if(color==RED)    Serial.print("RED");
+                      else             Serial.print("NONE");
+                      Serial.print( " Treasure: ");
+                      if( treasure == SQUARE)
+                          Serial.print("SQUARE");
+                      else if( treasure == TRIANGLE)
+                          Serial.print("TRIANGLE");
+                      else if( treasure == DIAMOND)
+                          Serial.print("DIAMOND");
+                      else
+                          Serial.print("NONE");
+                      Serial.println("");
+                    }
+                  </code>
+                </pre>
+                This code is the decoder for communication from the FPGA. 
+                The code is very simple because of the extra hardware used. 
+                With this method, we used up to four pins from the Arudino. 
+                We could have used a serial communication protocol using two 
+                pins to send the four bits of messages but we have extra pins 
+                from the Arduino left over so simplicity at the cost of 
+                hardware was prioritized.
+                <h1>Conclusion</h1>
+                This lab is one of the harder labs this semester. Getting the camera to 
+                display an image correctly was a challenge due to the complexities in timing 
+                the camera pixel transmission correctly. While getting the image itself wasn't 
+                too difficult to display, getting the right colors for the image was difficult.
+                We often had inverted colors or colors that were too dark or faded displaying 
+                on the screen. Both hardware and software contributed to the difficulty. We had 
+                to set the software to poll the bytes from the camera correctly but also had 
+                to ensure sure we wired the camera to the FPGA in a way that wouldn't introduce 
+                noise, especially with a 24 MHz clock driving the transmission. Looking forward, 
+                we will be integrating the FPGA camera system into our robot. This will likely 
+                result in more states and updates to our radio messages to support communicating 
+                treasure shapes and colors. We also will need to update the basestation so that 
+                it can receive messages from the radio.
+              </p>
               <a class="btn btn-primary btn-lg rounded-pill portfolio-modal-dismiss" href="#">
                 <i class="fa fa-close"></i>
                 Close Project</a>
@@ -1412,7 +1930,226 @@ radio<span style='color:#0000ff; '>.</span>stopListening<span style='color:#0000
               <h2 class="text-secondary text-uppercase mb-0">Milestone 2</h2>
               <hr class="star-dark mb-5">
               <img class="img-fluid mb-5" src="img/portfolio/submarine.png" alt="">
-              <p class="mb-5">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Mollitia neque assumenda ipsam nihil, molestias magnam, recusandae quos quis inventore quisquam velit asperiores, vitae? Reprehenderit soluta, eos quod consequuntur itaque. Nam.</p>
+              <p class="mb-5" ALIGN=LEFT>
+              <h1>Introduction</h1>
+              The goal of milestone 2 was to implement wall-detection functionality 
+              and make the robot avoid other robots, while still successfully line-following 
+              in order to traverse the maze. To accomplish this task, we added 
+              short-range IR sensors to the robot to detect walls and refined our 
+              detection of the 6.08kHz IR signal emitted by the robot IR hat. Our 
+              final product was a demonstration of the robot traversing an arbitrary 
+              maze using a left-wall-following rule, and stopping whenever it detected the IR hat.
+
+              <h1>Line-following Improvements</h1>
+              Line-following functionality was previously implemented in milestone 1, 
+              but when we came back to this after working on Lab 2 we discovered that 
+              our implementation required some adjustments. Due to the added weight of 
+              new components, the power necessary to turn the robot 90 degrees increased; 
+              this threw off our initial code, so we re-calibrated the system. We also found 
+              that we needed to adjust the height of our line sensors. They were too low 
+              to the ground, which led to sensing issues at intersections and caused the 
+              robot to occasionally stop inexplicably instead of turning. We added nuts 
+              to act as a spacer onto the screw that attaches the sensors to the robot,
+              raising the sensors higher, and re-calibrated our white-black threshold.
+              
+              <figure>
+                  <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/milestone2/line_sensor_spacers2.jpg" width="560"/>
+                  <font size="3">
+                  <figcaption> <b>Raised Line Sensors</b>
+                  </figcaption>
+                  </font>
+              </figure>
+              <h1>Wall Detection</h1>
+              To avoid walls while navigating the maze, we attached short-range 
+              IR sensors to the front and left side of the chassis. These sensors 
+              detect objects at distances between 4 cm and 30cm, which is appropriate 
+              for our use.
+              <figure>
+                  <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/milestone2/IMG_0373.jpg" width="600"/>
+                  <font size="3">
+                  <figcaption> <b>Updated Robot with Wall Scensors</b>
+                  </figcaption>
+                  </font>
+              </figure>
+              The wall sensors output an analog value corresponding to the distance of 
+              an object from the sensor, and our algorithm sets threshold values to determine 
+              whether there is a wall in the grid space directly adjacent to the robot.  
+              We implemented a left-hand wall following rule, defaulting to a left turn at 
+              an intersection if no wall is detected to the left. If the robot only detects
+              a wall to the left, it goes straight, and if there is a wall both to the left
+              and in front of the robot, it turns right. The following video shows our robot
+              traversing a small maze:
+              <iframe width="560" height="315" ALIGN=LEFT src="https://www.youtube.com/embed/31nsK4JZrqU?rel=0&amp;controls=0" 
+                      frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
+              </iframe>
+              The core of our algorithm is a finite state machine. It has states that make the robot either turn left, 
+              turn right, or move forward, adjust the machine to stay on the line, and sense for other robots.
+              <h1>Robot Avoidance</h1>
+              The detecting of other robots was already mostly implemented in Lab 2 by the optical team, 
+              but we integrated the robot’s response to the IR hat’s signal this week.
+              <figure ALIGN=LEFT>
+                  <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/milestone2/phototransistor2.jpg" width="560"/>
+                  <font size="3">
+                  <figcaption> <b>View of Phototransistor</b>
+                  </figcaption>
+                  </font>
+              </figure>
+              To increase the sensitivity of the phototransistor, we put the sensor at the head of the robot.
+              <figure ALIGN=LEFT>
+                  <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/milestone2/IMG_0374.jpg" width="560"/>
+                  <font size="3">
+                  <figcaption> <b>Front View of Robot</b>
+                  </figcaption>
+                  </font>
+              </figure>
+              The phototransistor can be seen right in front of the battery.
+              
+              Placing the phototransistor there improved our ability to sense other robots 
+              in front, to the right, and to the left of ours. Our main focus is on detecting
+              robots in front of us, while detection of robots to the side is more limited. 
+              We chose to have the robot simply stop when it detects another robot. The 
+              following video shows our robot stopping when we hold the IR hat in front 
+              of it approximately 5.5 inches above the ground:
+              
+              <iframe width="560" height="315" src="https://www.youtube.com/embed/r3OLbq3HsRQ?rel=0&amp;controls=0" 
+                      frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
+              </iframe>
+              <h1>Code Updates</h1>
+              We updated the FSM used in our lab 2 integration with addtional states:
+              <pre ALIGN=LEFT>
+              <code>
+              enum states : uint8_t {
+                  START,
+                  AUDIO_DECT,
+                  IR_DECT,
+                  ROBOT_SENSE,
+                  ROBOT_DETECTED,
+                  ROBOT_TURN_LEFT,
+                  ROBOT_TURN_RIGHT
+              };
+              </code>
+              </pre>
+              We concentrated the use of the FFT for processing of the audio and IR signals into 
+              two states. We also have states specifically for the robot turning at intersections
+              because we hope to eventually implement a more robust robot turning algorithm. We 
+              have somewhat of a skeleton code for ROBOT_DETECTED, ROBOT_TURN_LEFT, and ROBOT_TURN_RIGHT 
+              because we intend to implement them with more complexity than simple delays. The
+              ROBOT_SENSE state is the main state that the robot will be in, where it is following 
+              the line and detecting the intersections. ROBOT_DETECTED handles cases where we detect
+              other robots with the IR detection state. The current FSM looks like this:
+              <pre ALIGN=LEFT>
+              <code>
+              #define WALL_FRONT 2
+              #define WALL_LEFT 3
+              #define WAITTIME 800
+              switch (STATE){
+                  case START:
+                      STATE = AUDIO_DECT;
+                      break;
+
+                  case AUDIO_DECT:
+                      calculate_FFT(MIC);
+                      if(pass_thresh_hold) 
+                          STATE = IR_DECT;
+                      else
+                          STATE = AUDIO_DECT;
+                      break;
+
+                  case IR_DECT:
+                      calculate_FFT(IR);
+                      if(pass_thresh_hold)
+                          STATE = ROBOT_DETECTED;
+                      else
+                          STATE = ROBOT_SENSE;
+                      u32wait_ir = millis();
+                      break;
+
+                  case ROBOT_SENSE:
+                      FRONTWALL = analogRead(WALL_FRONT);
+                      LEFTWALL = analogRead(WALL_LEFT);
+                      if(SENSOR_R_READING<200 && SENSOR_L_READING<200){ 
+                          if(LEFTWALL < 200){
+                              u32wait = millis();
+                              STATE = ROBOT_TURN_LEFT;
+                          } else if (FRONTWALL > 115) {
+                              u32wait = millis();
+                              STATE = ROBOT_TURN_RIGHT;
+                          } else 
+                              robot_move(forward);
+                      }else if(SENSOR_L_READING < 200)
+                          robot_move(adj_right);
+                      else if(SENSOR_R_READING < 200)
+                          robot_move(adj_left);
+                      else
+                          robot_move(forward);
+                      if((millis()-u32wait_ir) > WAITTIME){
+                          u32wait_ir = millis();
+                          STATE = IR_DECT;
+                      }
+                      break;
+
+                  case ROBOT_DETECTED:
+                      robot_move(rstop); //stop till we don't detect IR
+                      STATE = IR_DECT;
+                      break;
+
+                  case ROBOT_TURN_LEFT:
+                      robot_move(left);
+                      if(millis()-u32wait>700) //same as a delay
+                          STATE = ROBOT_SENSE;
+                      break;
+
+                  case ROBOT_TURN_RIGHT:
+                      robot_move(right);
+                      if(millis()-u32wait>700) //same as a delay
+                          STATE = ROBOT_SENSE;
+                      break
+                  }
+              </code>
+              </pre>
+              In ROBOT_SENSE, we read from the wall sensors and the line 
+              sensors to tell if we need to either turn or adjust the robot 
+              to stay on the line. Just like in milestone 1, we only consider 
+              turning if both sensors detect a white line; this time, however,
+              we turn based on the readings of the wall sensors rather than a 
+              pre-determined pattern.
+
+              The IR sensing occurs every 800 ms, which can be adjusted later
+              based on computation needs. Every 800 ms, we switch the state to 
+              IR_DECT and run the FFT with a processing algorithm. Currently,
+              we only do averages of N FFT cycles but may consider moving averages.
+              <h1>Demonstration</h1>
+              We show what our robot is “thinking” by flashing LEDs indicating what 
+              outside stimuli the robot has picked up and will be reacting to according 
+              to the FSM.  As it navigates the maze, it stays with the wall on its 
+              left.  The red LED indicates that the left path is clear, so the robot
+              will turn left.  If the yellow LED has turned on, this indicates that 
+              both the front and left wall sensors detect walls, so the robot will 
+              respond by turning right. The green LED turns on when the IR sensor has 
+              detected a signal from the IR hat (i.e., detected another robot), and the 
+              robot will halt to avoid the other robot.
+              <iframe width="560" height="315" src="https://www.youtube.com/embed/aWahZUqSUfI?rel=0&amp;controls=0" 
+              frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
+              </iframe>
+              <h1>Conclusion</h1>
+              We have progressed further toward our robot being able to successfully 
+              navigate the final competition maze. As we continue to optomize our design, 
+              we intend to add a third wall sensor to the right side of the robot to allow
+              it to detect walls on all side for the purpose of mapping the maze. We also
+              need to tune the IR sensor to better  detect robots coming from the sides. 
+              This will likely involve re-adusting the battery's positioning since its USB
+              blocks some of the signals to the IR. The FSM design for our robot control
+              is a robust and modular system that allows the robot to multitask by checking 
+              states per cycle and allow us to easily add more tasks if needed. The robot 
+              can switch its current task every clock cycle of the Arudino. In the future,
+              we might build a complex scheduler that decides what state the robot is in 
+              based on current conditions which can adapt to the various different activities 
+              the robot will be performing in the competition. In terms of implementation, 
+              we would like to write a more robust turning algorithm that will not rely on 
+              hard-coded delays, which would allow the robot to  adapt to different conditions
+              as it turns. Our current method assumes that the robot will always be in the
+              same position when it starts turning, but that may not be the case in the long term.   
+              </p>
               <a class="btn btn-primary btn-lg rounded-pill portfolio-modal-dismiss" href="#">
                 <i class="fa fa-close"></i>
                 Close Project</a>
@@ -1434,7 +2171,117 @@ radio<span style='color:#0000ff; '>.</span>stopListening<span style='color:#0000
               <h2 class="text-secondary text-uppercase mb-0">Milestone 3</h2>
               <hr class="star-dark mb-5">
               <img class="img-fluid mb-5" src="img/portfolio/submarine.png" alt="">
-              <p class="mb-5">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Mollitia neque assumenda ipsam nihil, molestias magnam, recusandae quos quis inventore quisquam velit asperiores, vitae? Reprehenderit soluta, eos quod consequuntur itaque. Nam.</p>
+              <p class="mb-5" ALIGN=LEFT>
+              <h1>Introduction</h1>
+              The goal of this milestone was to implement a search algorithm that 
+              would allow our robot to fully explore a maze of any configuration.
+              In order to visit every square in a maze with an arbitrary configuration
+              of walls, the robot’s next move is decided with a more intelligent
+              algorithm than our initial left-hand-following rule. We incorporated 
+              a Depth-First Search algorithm into our Arduino code to guide the 
+              robot’s exploration the maze. Additionally, we updated our basestation 
+              code and demonstrated that we are able to display the information the
+              robot collects on the GUI.
+              <h1>Search Algorithm</h1>
+              After playing around with Dijkstra’s Algorithm and realizing how difficult 
+              it would be to implement in reality on the Arduino, we decided to write a 
+              simple Depth First Search algorithm to determine our robot’s path when
+              exploring a maze. This type of search algorithm traverses as far as there 
+              is to go down a single path before backtracking to explore the next path, 
+              with a predetermined preference for the order in which the path options are 
+              explored. For the purpose of exploring a maze, this means turning around to 
+              backtrack only when all surrounding squares are either a wall or previously
+              explored. The algorithm takes into account the spaces the robot has already
+              encountered in order to allow it to explore more paths in as short a time as 
+              possible. In addition, the search algorithm keeps the robot from traversing 
+              in an endless loop. Although we at first tried to implement this algorithm with
+              the robot virtually exploring the maze to find an unexplored square at every 
+              intersection, we eventually went the much simpler route of exploring the maze 
+              one square at a time as the robot traveled through it. Our logic took the
+              following form:
+              <pre ALIGN=LEFT>
+              <code>
+                if ( (no_front_wall) && (forward_space_unexplored) ) {
+                  go_forward;
+                } else if ( (no_right_wall) && (right_space_unexplored) ) {
+                  turn_right;
+                } else if ( (no_left_wall) && (left_space_unexplored) ) {
+                  turn_left;
+                } else {
+                  backtrack;
+                }
+
+                update_robot_state();
+                update_visited_lists();
+              </code>
+              </pre>
+              Our search order preference for the algorithm is forward, right, left, 
+              then backward. The robot keeps a list of the squares it has visited and 
+              the order in which it has visited them in order to allow it to backtrack
+              to the next unexplored path. It also keeps track of its position and direction. 
+              Once the algorithm was implemented into our code, we successfully tested the 
+              it in several different maze configurations of various sizes and confirmed
+              that it explored as we wanted it to. The following video is a demonstration 
+              of one of these tests:
+              <h2>Regular Speed:</h2>
+              <iframe width="560" height="315" src="https://www.youtube.com/embed/p1IaieuAFX0" 
+              frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope;
+                                             picture-in-picture" allowfullscreen>
+              </iframe>
+              <h2>3x Speed:</h2>
+              <iframe width="560" height="315" src="https://www.youtube.com/embed/JbzAFhrltYo" frameborder="0" 
+              allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+              </iframe>
+              <h1>Basestation Modification</h1>
+              In order to reflect the modifications made to the robot’s code, we also 
+              had to update our basestation code to better receive and process the information
+              the robot collects as it explores the maze. We had not touched the code since 
+              we initially wrote it for Lab 3, so we had to make sure it would correctly 
+              interpret the radio messages from the robot and update the GUI to correctly 
+              display what the robot discovers. Since we had to keep track of the robot’s
+              position and direction for the algorithm, we were able to simplify the basestation
+              code by sending this information directly from the robot rather than having
+              the basestation calculate and keep track of it. This decreases the probability 
+              of discrepancies between the robot’s exploration and the GUI. We therefore slightly 
+              changed the structure of our radio messages, so they now look like this:
+              <pre ALIGN=LEFT>
+              <code>
+               15        12 11         8 7    6 5       3 2       0
+              +------------+------------+------+---------+---------+
+              | X-POS      | Y-POS      | DIR  |TREASURE | WALLS   |
+              +------------+------------+------+---------+---------+
+              </code>
+              </pre>
+              With the first 8 bits dedicated to the x- and y-coordinates of the robot in the maze,
+              the next 2 bits dedicated to the robot's direction, the following 3 bits dedicated 
+              to any treasures detected, and the last 3 bits dedicated to the readings from the
+              three wall sensors.
+
+              Additionally, we coded the basestation to display a mirrored version of the maze that the robot
+              explores due to the fact that our algorithm considers the point (0,0) to be the
+              bottom-left corner, and the GUI treats (0,0) as the top-left corner.
+              
+              <h1>Final Implementation and Demonstration</h1>
+              Once the basestation was fixed, we tested the search algorithm with the radios and
+              a fully operational basestation. We confirmed that the basestation was aligned with
+              the radio messages sent by the robot, and able to decode them to output the correct
+              information. Finally, we ran the GUI to display the output from the basestation. 
+              In the end, we were able to correctly represent the entire maze with the GUI on the
+              basestation’s screen. The following video is a demonstration of the robot exploring
+              an entire maze and updating the GUI to display it correctly:
+
+              <iframe width="560" height="315" src="https://www.youtube.com/embed/cKP1L6YakC4" frameborder="0"
+                      allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+              </iframe>
+
+              We also demonstrated that the robot was able to start at a 660Hz tone and explore an entire
+              maze with the algorithm, although we were unable to get complete video evidence of this
+              because the GUI kept crashing around 5 or 6 squares into the maze exploration.
+
+              <iframe width="560" height="315" src="https://www.youtube.com/embed/gVXUPPQBTW0" frameborder="0"
+                      allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+              </iframe>
+              </p>
               <a class="btn btn-primary btn-lg rounded-pill portfolio-modal-dismiss" href="#">
                 <i class="fa fa-close"></i>
                 Close Project</a>
