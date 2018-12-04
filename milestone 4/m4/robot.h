@@ -58,13 +58,13 @@ void robot_move(DIRECTIONS dir)
             Serial.println("stopped");
             break;
         case adj_left:
-            L.write(95);
+            L.write(90);
             R.write(0);
             //Serial.println("adjust left");
             break;
         case adj_right:
             L.write(180);
-            R.write(85);
+            R.write(90);
             //Serial.println("adjust right");
             break;
         case back:

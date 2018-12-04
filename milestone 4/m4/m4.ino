@@ -102,20 +102,30 @@ void loop()
         break;
 
     case IR_DECT:
-        set_mux_select(1);
-        calculate_FFT(IR);
+        //set_mux_select(1);
+        //calculate_FFT(IR);
         //Serial.println("IN IR_DECT");
         //Serial.print(F("IR SUM: ")); Serial.println(sum);
-        if (sum > 100)
-        {
-            Serial.println(F("Robot Detected"));
-            STATE = ROBOT_DETECTED;
-        }
-        else
-        {
-            STATE = ROBOT_SENSE; //LINE_SENSOR;
-        }
+        set_mux_select(2);
+        FRONTWALL = analogRead(MUX_OUT);
+//        if(FRONTWALL<100){
+//            STATE=ROBOT_DETECTED;
+//        }
+//        else {
+//            STATE = ROBOT_SENSE;
+//        }
+        STATE = ROBOT_SENSE;
         u32wait_ir = millis();
+        // if (sum > 100)
+        // {
+        //     Serial.println(F("Robot Detected"));
+        //     STATE = ROBOT_DETECTED;
+        // }
+        // else
+        // {
+        //     STATE = ROBOT_SENSE; //LINE_SENSOR;
+        // }
+        // u32wait_ir = millis();
         break;
 
     case ROBOT_SENSE:
@@ -126,14 +136,14 @@ void loop()
         // we add a valid bit so that the robot wouldn't stall at intersection.
         // May consider queue.
         //Serial.println(F("IN ROBOT_SENSE"));
-        //Serial.print(F("SENSOR_R READING: "));Serial.println(SENSOR_R_READING);
-        //Serial.print(F("SENSOR_L READING: "));Serial.println(SENSOR_L_READING);
+       // Serial.print(F("SENSOR_R READING: "));Serial.print(SENSOR_R_READING);
+       // Serial.print(F("-----SENSOR_L READING: "));Serial.println(SENSOR_L_READING);
 
         if (AVERAGE_L < 250 && AVERAGE_R < 250 && VALID_L && VALID_R)
         {
             Serial.print(F("SENSOR_R READING: "));
-            Serial.println(AVERAGE_R);
-            Serial.print(F("SENSOR_L READING: "));
+            Serial.print(AVERAGE_R);
+            Serial.print(F("-----SENSOR_L READING: "));
             Serial.println(AVERAGE_L);
             Serial.println(F("In intersection"));
 
@@ -143,10 +153,10 @@ void loop()
             set_mux_select(3);
             LEFTWALL = analogRead(MUX_OUT);
             ///////////////// START TREASURE DETECTION CODE ////////////////////
-            if (LEFTWALL < 100)
+            if (LEFTWALL > 250  )
             {
                 robot_move(forward);
-                delay(100);
+                delay(50);
                 int treasure = treasure_decode();
                 radio_msg |= (treasure & 0x3) << 3;
             }
@@ -155,13 +165,14 @@ void loop()
             set_mux_select(2);
             FRONTWALL = analogRead(MUX_OUT);
             Serial.print(F("FRONTWALL: "));
-            Serial.println(FRONTWALL);
-
-            Serial.print(F("LEFTWALL: "));
-            Serial.println(LEFTWALL);
+            Serial.print(FRONTWALL) ;
+            set_mux_select(3);
+            LEFTWALL = analogRead(MUX_OUT);
+            Serial.print(F("---LEFTWALL: "));
+            Serial.print(LEFTWALL);
             set_mux_select(4);
             RIGHTWALL = analogRead(MUX_OUT);
-            Serial.print(F("RIGHTWALL: "));
+            Serial.print(F("---RIGHTWALL: "));
             Serial.println(RIGHTWALL);
 
             explored[(robot_pos >> 4) & 0x0f][(robot_pos)&0x0f] = true;

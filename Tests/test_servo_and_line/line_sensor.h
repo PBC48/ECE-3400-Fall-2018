@@ -40,7 +40,6 @@ void SENSOR_R_ISR()
         AVERAGE_R = SUM_R >> (COUNT_R/4);
         SUM_R = 0;
         COUNT_R = 0;
-        
     }
 }
 

@@ -95,17 +95,17 @@ void robot_calibrate()
 {
     robot_move(right);
     Serial.println("MOVE RIGHT");
-    delay(10000);
+    delay(1000);
     robot_move(left);
     Serial.println("MOVE LEFT");
-    delay(10000);
+    delay(1000);
     robot_move(forward);
     Serial.println("MOVE FORWARD");
-    delay(10000);
-    robot_move(rstop);
-    Serial.println("MOVE STOP");
-    delay(10000);
-    robot_move(back);
-    Serial.println("MOVE BACK");
-    delay(10000);
+    delay(1000);
+//    robot_move(rstop);
+//    Serial.println("MOVE STOP");
+//    delay(1000);
+//    robot_move(back);
+//    Serial.println("MOVE BACK");
+//    delay(1000);
 }

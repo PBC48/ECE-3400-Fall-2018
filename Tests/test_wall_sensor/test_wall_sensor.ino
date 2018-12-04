@@ -1,5 +1,5 @@
 #include "mux.h"
-
+long LEFTWALL,FRONTWALL,RIGHTWALL;
 
 void setup(){
     mux_init();
@@ -7,14 +7,14 @@ void setup(){
 }
 
 void loop(){
-    delay(500);
-    set_mux_select(3);
-    LEFTWALL = analogRead(MUX_OUT);
+    delay(400);
+    
     set_mux_select(2);
     FRONTWALL = analogRead(MUX_OUT);
     Serial.print(F("FRONTWALL: "));
     Serial.print(FRONTWALL);
-
+    set_mux_select(3);
+    LEFTWALL = analogRead(MUX_OUT);
     Serial.print(F("-----LEFTWALL: "));
     Serial.print(LEFTWALL);
     set_mux_select(4);

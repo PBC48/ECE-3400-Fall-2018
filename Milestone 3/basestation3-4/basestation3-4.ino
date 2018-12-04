@@ -90,6 +90,7 @@ void setup(void)
     // Dump the configuration of the rf unit for debugging
     //
     radio.printDetails();
+    Serial.println("reset");
 }
 
 void loop(void)

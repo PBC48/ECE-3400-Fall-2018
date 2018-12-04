@@ -111,18 +111,19 @@ void loop()
 
     case IR_DECT:
         set_mux_select(1);
-        calculate_FFT(IR);
+        //calculate_FFT(IR);
         //Serial.println("IN IR_DECT");
         //Serial.print(F("IR SUM: ")); Serial.println(sum);
-        if (sum > 100)
-        {
-            Serial.println(F("Robot Detected"));
-            STATE = ROBOT_DETECTED;
-        }
-        else
-        {
-            STATE = ROBOT_SENSE; //LINE_SENSOR;
-        }
+//        if (sum > 100)
+//        {
+//            Serial.println(F("Robot Detected"));
+//            STATE = ROBOT_DETECTED;
+//        }
+//        else
+//        {
+//            STATE = ROBOT_SENSE; //LINE_SENSOR;
+//        }
+        STATE = ROBOT_SENSE; //LINE_SENSOR;
         u32wait_ir = millis();
         break;
 
@@ -137,7 +138,7 @@ void loop()
         //Serial.print(F("SENSOR_R READING: "));Serial.println(SENSOR_R_READING);
         //Serial.print(F("SENSOR_L READING: "));Serial.println(SENSOR_L_READING);
             
-        if (AVERAGE_L < 250 && AVERAGE_R < 250 && VALID_L && VALID_R)
+        if (AVERAGE_L < 200 && AVERAGE_R < 200 && VALID_L && VALID_R)
         {
             Serial.print(F("SENSOR_R READING: "));
             Serial.println(AVERAGE_R);
@@ -221,7 +222,8 @@ void loop()
             
             // TRANSMIT TO BASESTATION
             //radio_msg = millis();
-            radio_msg = 0xFFFF & (robot_pos << 8 |                                              //setting valid bit.
+            radio_msg = radio_msg & (0x8);
+            radio_msg = 0xFFFF & radio_msg & (robot_pos << 8 |                                              //setting valid bit.
                                   ((uint8_t)robot_dir << 6) | ((LEFTWALL > 115)) | (FRONTWALL > 115)<<1)| ((RIGHTWALL > 115)<<2);
             /*completely re-work basestation communication?
               make sure dir in basestation is FRBL */
@@ -291,7 +293,7 @@ void loop()
 
     case ROBOT_FORWARD:
         robot_move(forward);
-        if (millis() - u32wait > 200)
+        if (millis() - u32wait > 150)
         {
             STATE = ROBOT_SENSE;
         }

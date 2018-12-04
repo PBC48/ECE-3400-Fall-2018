@@ -114,33 +114,5 @@ bool radio_transmit(uint16_t &buff){
       return false;
     }
 
-    // Now, continue listening
-    radio.startListening();
-
-    // Wait here until we get a response, or timeout (250ms)
-    unsigned long started_waiting_at = millis();
-    bool timeout = false;
-    while ( ! radio.available() && ! timeout )
-      if (millis() - started_waiting_at > 200 ) {
-        timeout = true;
-      }
-
-    // Describe the results
-    if ( timeout )
-    {
-      printf("Failed, response timed out.\n\r");
-    }
-    else
-    {
-      // Grab the response, compare, and send to debugging spew
-      //unsigned long got_time;
-      uint16_t buffer; 
-      radio.read( &buffer, sizeof(buffer) );
-
-      // Spew it
-      //Serial.print("Got Response.."); Serial.println(buffer);
-      printf("Got response %d\n\r", (buffer));
-     //printf("Got response %lu, round-trip delay: %lu\n\r",got_time,millis()-got_time);
-    }
-    return true;
+   
 }

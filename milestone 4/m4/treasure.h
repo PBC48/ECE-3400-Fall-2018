@@ -16,9 +16,9 @@
 
 void init_com(){
   pinMode(T1,INPUT);
-  pinMode(T2,INPUT);
-  pinMode(C1,INPUT);
-  pinMode(C2,INPUT);
+  //pinMode(T2,INPUT);
+  //pinMode(C1,INPUT);
+  //pinMode(C2,INPUT);
 }
 
 
