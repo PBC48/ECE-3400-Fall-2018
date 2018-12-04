@@ -1304,18 +1304,20 @@ radio<span style='color:#0000ff; '>.</span>stopListening<span style='color:#0000
                 First, we implemented a phase-locked loop to clock the FPGA. 
                 Using the provided Verliog project, we set up the interface our system would use for shape detection.
             <h3>Setup</h3>
+            <p ALIGN=LEFT>
                 We first use the PLL, which is not suceptible to clock skew, to produce different clocks
                 to drive the camera, VGA, M9k block memory read and write. We use the 24 MHz clock to drive 
                 the camera and plug that as XCLK. We use the 50 MHz clock for memory write and 25 MHz clock 
                 for read. We want write to be faster than read because writing to the block needs to be done 
                 before we read. We don't want to accidentally read blocks before they are updated. We also 
-                use the 25 MHz clock for VGA display.
+                use the 25 MHz clock for VGA display.</p>
                 <h3>Camera, FPGA and Arduino Communication</h3>
+                <p ALIGN=LEFT>
                 The camera contains 20 pins total. We have 8 pins for parallel data which sends one of the two 
                 bytes for pixel during each clcok cycle. These eight pins are connected to input GPIO pins on 
                 the FPGA. In addition, we also have HREF and VSYNC pins which are also connected as input to the 
                 FPGA. The camera also has PCLK and XCLK pins. The XCLK is for external clock. We use an output pin 
-                from the FPGA and put it to the camera. The PCLK is camera clock; we route that back to the FPGA for analysis. 
+                from the FPGA and put it to the camera. The PCLK is camera clock; we route that back to the FPGA for analysis. </p>
                 <figure ALIGN=CENTER>
                     <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab04/schematic.PNG" 
                     width="560"/>
@@ -1368,7 +1370,7 @@ radio<span style='color:#0000ff; '>.</span>stopListening<span style='color:#0000
                 <table ALIGN=CENTER>
                   <tr>
                     <th style="background-color: yellow">States</th>
-                    <thth style="background-color: yellow">Function</th>
+                    <th style="background-color: yellow">Function</th>
                   </tr>
                   <tr>
                     <td>IDLE</td>
@@ -1404,7 +1406,7 @@ radio<span style='color:#0000ff; '>.</span>stopListening<span style='color:#0000
         <span style='color:#0000ff; font-weight:bold; '>end</span>
         STATE_POLL<span style='color:#0000ff; '>:</span> <span style='color:#0000ff; font-weight:bold; '>begin</span>
             down_sample_reset   <span style='color:#0000ff; '>&lt;</span><span style='color:#0000ff; '>=</span> <span style='color:#800000; '>1</span>'b0<span style='color:#0000ff; '>;</span>
-    W_EN                <span style='color:#0000ff; '>&lt;</span><span style='color:#0000ff; '>=</span> downsampler_rdy <span style='color:#0000ff; '>?</span> <span style='color:#800000; '>1</span>'b1 <span style='color:#0000ff; '>:</span> <span style='color:#800000; '>1</span>'b0<span style='color:#0000ff; '>;</span>
+            W_EN                <span style='color:#0000ff; '>&lt;</span><span style='color:#0000ff; '>=</span> downsampler_rdy <span style='color:#0000ff; '>?</span> <span style='color:#800000; '>1</span>'b1 <span style='color:#0000ff; '>:</span> <span style='color:#800000; '>1</span>'b0<span style='color:#0000ff; '>;</span>
 
         <span style='color:#0000ff; font-weight:bold; '>end</span>
         STATE_UPDATE_ROW<span style='color:#0000ff; '>:</span> <span style='color:#0000ff; font-weight:bold; '>begin</span>
@@ -1434,7 +1436,7 @@ always @<span style='color:#0000ff; '>(</span>posedge pclk<span style='color:#00
         STATE_POLL<span style='color:#0000ff; '>:</span> <span style='color:#0000ff; font-weight:bold; '>begin</span>
     <span style='color:#0000ff; '>/</span><span style='color:#0000ff; '>/</span>increments xaddr <span style='color:#0000ff; font-weight:bold; '>after</span> downsampler 
             <span style='color:#0000ff; '>/</span><span style='color:#0000ff; '>/</span>finishes <span style='color:#0000ff; font-weight:bold; '>and</span> writes <span style='color:#0000ff; font-weight:bold; '>to</span> mem
-    X_ADDR <span style='color:#0000ff; '>&lt;</span><span style='color:#0000ff; '>=</span> downsampler_rdy <span style='color:#0000ff; '>?</span> X_ADDR <span style='color:#0000ff; '>+</span> <span style='color:#800000; '>1</span> <span style='color:#0000ff; '>:</span> X_ADDR<span style='color:#0000ff; '>;</span> 
+            X_ADDR <span style='color:#0000ff; '>&lt;</span><span style='color:#0000ff; '>=</span> downsampler_rdy <span style='color:#0000ff; '>?</span> X_ADDR <span style='color:#0000ff; '>+</span> <span style='color:#800000; '>1</span> <span style='color:#0000ff; '>:</span> X_ADDR<span style='color:#0000ff; '>;</span> 
 
         <span style='color:#0000ff; font-weight:bold; '>end</span>
 
@@ -1522,12 +1524,13 @@ fsm 		<span style='color:#0000ff; '>=</span> <span style='color:#0000ff; '>(</sp
 </pre>
 <!--Created using ToHtml.com on 2018-12-04 19:44:11 UTC -->
                   <h5>Color Bar</h5>
+                  <p ALIGN=LEFT>
                   To display the color bar, we must set the appropriate registers 
                   in the Camera. The main registers involved are COM 7 and COM 17 
                   for color bar enable and color bar DSP enable. With the downsampler 
                   above, we are able to decode the bytes coming from the camera and 
                   display the color bar onto the VGA screen. The downsampler takes 
-                  in input from the camera.
+                  in input from the camera.</p>
                   <figure>
                       <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab04/IMG_1163.jpg" width="560"/>
                       <font size="2">
@@ -1535,62 +1538,62 @@ fsm 		<span style='color:#0000ff; '>=</span> <span style='color:#0000ff; '>(</sp
                       </figcaption>
                       </font>
                   </figure>
+                  <p ALIGN=LEFT>
                   The colors in the bar are different from the example in the lab but when 
                   we use the camera to capture, we found that the colors were passable and 
-                  would not pose an issue.
+                  would not pose an issue.</p>
                   <h5>Display Camera Capture</h5>
-                  To display the images captured by the camera, we must set the registers from
+                  <p ALIGN=LEFT>To display the images captured by the camera, we must set the registers from
                   the Arduino. We can disable the DSP for color bar and the color bar test itself. 
-                  The FPGA code is exactly the same.
+                  The FPGA code is exactly the same.</p>
                   <iframe width="560" height="315" src="https://www.youtube.com/embed/0lKN7Tkrx0Q?controls=0" 
                   frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; 
                   picture-in-picture" allowfullscreen></iframe>
                   <h3>Color Detection</h3>
+                  <p ALIGN=LEFT>
                   For color detection, we use a module call the Image Processor. The image processor 
                   samples at the same rate as the VGA board at 25 MHz. We set a boundary within the 
-                  resolution of each image and then count the amount of blue and red in each pixel. 
+                  resolution of each image and then count the amount of blue and red in each pixel. </p>
               </p>
-              <pre ALIGN=LEFT>
-              <code>
-                always @(posedge CLK) begin
+<pre ALIGN=LEFT style='color:#000000;background:#ffffff;'>always @<span style='color:#0000ff; '>(</span>posedge CLK<span style='color:#0000ff; '>)</span> <span style='color:#0000ff; font-weight:bold; '>begin</span>
 
-                    if (VGA_PIXEL_Y <=20) begin
-                      blueCount  = 0;
-                      redCount   = 0;
-                      greenCount = 0;
-                      done_color = 1'b0;
-                    end
-                    else if (VGA_PIXEL_X > `X_LOW_THRESH && VGA_PIXEL_X < 
-                      `X_HIGH_THRESH && VGA_PIXEL_Y > `Y_LOW_THRESH && VGA_PIXEL_Y < 
-                      `Y_HIGH_THRESH) begin
-                      blueCount = blueCount + blue;
-                      redCount  = redCount  + red;
-                      greenCount = greenCount + green;
-                    end
-                    else if(VGA_PIXEL_Y >= `Y_HIGH_THRESH && !done_color) begin
-                      if (greenCount > 15'd5000 && blueCount > 15'd20000 && 
-                          redCount > 15'd20000) begin
-                        color = NONE;
-                      end
-                      else if (blueCount > redCount && (blueCount - redCount) > 30
-                           && blueCount > 15'd200) begin
-                        color = BLUE;
-                      end
-                      else if (redCount > blueCount && (redCount - blueCount) > 30 
-                          && redCount > 15'd200) begin
-                        color = RED;
-                      end
-                      else begin
-                        color = NONE;
-                      end
-                      blueCount = 0;
-                      redCount  = 0;
-                      greenCount = 0;
-                      done_color = 1'b1;
-                    end
-                  end
-                </code>
-                </pre>
+<span style='color:#0000ff; font-weight:bold; '>if</span> <span style='color:#0000ff; '>(</span>VGA_PIXEL_Y <span style='color:#0000ff; '>&lt;</span><span style='color:#0000ff; '>=</span><span style='color:#800000; '>20</span><span style='color:#0000ff; '>)</span> <span style='color:#0000ff; font-weight:bold; '>begin</span>
+    blueCount  <span style='color:#0000ff; '>=</span> <span style='color:#800000; '>0</span><span style='color:#0000ff; '>;</span>
+    redCount   <span style='color:#0000ff; '>=</span> <span style='color:#800000; '>0</span><span style='color:#0000ff; '>;</span>
+    greenCount <span style='color:#0000ff; '>=</span> <span style='color:#800000; '>0</span><span style='color:#0000ff; '>;</span>
+    done_color <span style='color:#0000ff; '>=</span> <span style='color:#800000; '>1</span>'b0<span style='color:#0000ff; '>;</span>
+<span style='color:#0000ff; font-weight:bold; '>end</span>
+else if <span style='color:#0000ff; '>(</span>VGA_PIXEL_X <span style='color:#0000ff; '>></span> `X_LOW_THRESH <span style='color:#0000ff; '>&amp;</span><span style='color:#0000ff; '>&amp;</span> VGA_PIXEL_X <span style='color:#0000ff; '>&lt;</span> 
+    `X_HIGH_THRESH <span style='color:#0000ff; '>&amp;</span><span style='color:#0000ff; '>&amp;</span> VGA_PIXEL_Y <span style='color:#0000ff; '>></span> `Y_LOW_THRESH <span style='color:#0000ff; '>&amp;</span><span style='color:#0000ff; '>&amp;</span> VGA_PIXEL_Y <span style='color:#0000ff; '>&lt;</span> 
+    `Y_HIGH_THRESH<span style='color:#0000ff; '>)</span> <span style='color:#0000ff; font-weight:bold; '>begin</span>
+    blueCount <span style='color:#0000ff; '>=</span> blueCount <span style='color:#0000ff; '>+</span> blue<span style='color:#0000ff; '>;</span>
+    redCount  <span style='color:#0000ff; '>=</span> redCount  <span style='color:#0000ff; '>+</span> red<span style='color:#0000ff; '>;</span>
+    greenCount <span style='color:#0000ff; '>=</span> greenCount <span style='color:#0000ff; '>+</span> green<span style='color:#0000ff; '>;</span>
+<span style='color:#0000ff; font-weight:bold; '>end</span>
+else if<span style='color:#0000ff; '>(</span>VGA_PIXEL_Y <span style='color:#0000ff; '>></span><span style='color:#0000ff; '>=</span> `Y_HIGH_THRESH <span style='color:#0000ff; '>&amp;</span><span style='color:#0000ff; '>&amp;</span> !done_color<span style='color:#0000ff; '>)</span> <span style='color:#0000ff; font-weight:bold; '>begin</span>
+    <span style='color:#0000ff; font-weight:bold; '>if</span> <span style='color:#0000ff; '>(</span>greenCount <span style='color:#0000ff; '>></span> <span style='color:#800000; '>15</span>'d5000 <span style='color:#0000ff; '>&amp;</span><span style='color:#0000ff; '>&amp;</span> blueCount <span style='color:#0000ff; '>></span> <span style='color:#800000; '>15</span>'d20000 <span style='color:#0000ff; '>&amp;</span><span style='color:#0000ff; '>&amp;</span> 
+        redCount <span style='color:#0000ff; '>></span> <span style='color:#800000; '>15</span>'d20000<span style='color:#0000ff; '>)</span> <span style='color:#0000ff; font-weight:bold; '>begin</span>
+    color <span style='color:#0000ff; '>=</span> NONE<span style='color:#0000ff; '>;</span>
+    <span style='color:#0000ff; font-weight:bold; '>end</span>
+    else if <span style='color:#0000ff; '>(</span>blueCount <span style='color:#0000ff; '>></span> redCount <span style='color:#0000ff; '>&amp;</span><span style='color:#0000ff; '>&amp;</span> <span style='color:#0000ff; '>(</span>blueCount <span style='color:#0000ff; '>-</span> redCount<span style='color:#0000ff; '>)</span> <span style='color:#0000ff; '>></span> <span style='color:#800000; '>30</span>
+        <span style='color:#0000ff; '>&amp;</span><span style='color:#0000ff; '>&amp;</span> blueCount <span style='color:#0000ff; '>></span> <span style='color:#800000; '>15</span>'d200<span style='color:#0000ff; '>)</span> <span style='color:#0000ff; font-weight:bold; '>begin</span>
+    color <span style='color:#0000ff; '>=</span> BLUE<span style='color:#0000ff; '>;</span>
+    <span style='color:#0000ff; font-weight:bold; '>end</span>
+    else if <span style='color:#0000ff; '>(</span>redCount <span style='color:#0000ff; '>></span> blueCount <span style='color:#0000ff; '>&amp;</span><span style='color:#0000ff; '>&amp;</span> <span style='color:#0000ff; '>(</span>redCount <span style='color:#0000ff; '>-</span> blueCount<span style='color:#0000ff; '>)</span> <span style='color:#0000ff; '>></span> <span style='color:#800000; '>30</span> 
+        <span style='color:#0000ff; '>&amp;</span><span style='color:#0000ff; '>&amp;</span> redCount <span style='color:#0000ff; '>></span> <span style='color:#800000; '>15</span>'d200<span style='color:#0000ff; '>)</span> <span style='color:#0000ff; font-weight:bold; '>begin</span>
+    color <span style='color:#0000ff; '>=</span> RED<span style='color:#0000ff; '>;</span>
+    <span style='color:#0000ff; font-weight:bold; '>end</span>
+    <span style='color:#0000ff; font-weight:bold; '>else</span> <span style='color:#0000ff; font-weight:bold; '>begin</span>
+    color <span style='color:#0000ff; '>=</span> NONE<span style='color:#0000ff; '>;</span>
+    <span style='color:#0000ff; font-weight:bold; '>end</span>
+    blueCount <span style='color:#0000ff; '>=</span> <span style='color:#800000; '>0</span><span style='color:#0000ff; '>;</span>
+    redCount  <span style='color:#0000ff; '>=</span> <span style='color:#800000; '>0</span><span style='color:#0000ff; '>;</span>
+    greenCount <span style='color:#0000ff; '>=</span> <span style='color:#800000; '>0</span><span style='color:#0000ff; '>;</span>
+    done_color <span style='color:#0000ff; '>=</span> <span style='color:#800000; '>1</span>'b1<span style='color:#0000ff; '>;</span>
+<span style='color:#0000ff; font-weight:bold; '>end</span>
+<span style='color:#0000ff; font-weight:bold; '>end</span>
+</pre>
+<!--Created using ToHtml.com on 2018-12-04 19:45:56 UTC -->
                 <iframe width="560" height="315" src="https://www.youtube.com/embed/nbeuPRgot2Y?controls=0" 
                         frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
                         allowfullscreen>
