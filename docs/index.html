@@ -1274,19 +1274,19 @@ radio<span style='color:#0000ff; '>.</span>stopListening<span style='color:#0000
         <div class="container text-center">
           <div class="row">
             <div class="col-lg-6 mx-auto">
-              <h2 class="text-secondary text-uppercase mb-0">Lab 4</h2>
+              <h2 class="text-secondary text-uppercase mb-0">Lab 4: FPGA and Camera</h2>
               <hr class="star-dark mb-5">
               <img class="img-fluid mb-5" src="images/bootstrap/lab4-bootstrap.png" alt="">
               <p class="mb-5" ALIGN=LEFT>
-                <h1 ALIGN=LEFT>Objectives</h1>
-                <ul>
+                <h1>Objectives</h1>
+                <ul ALIGN=LEFT>
                   <li> Use a camera and FPGA to implement a system for detecting treasures
                   <li> Develop an FPGA module capable of detecting shapes and colors from a camera input
                   <li> Communicate treasure detection from the FPGA to the Arduino
                   <li> Display images from the camera onto a screen
                 </ul>
               </p>
-              <h1 ALIGN=LEFT>Introduction</h1>
+              <h1>Introduction</h1>
               <p ALIGN=LEFT>
                 For this lab we began working with an FPGA to implement treasure-detection capabilities
                 for the robot. The system consists of an FPGA, a camera, and an Arduino. To divide the
@@ -1299,51 +1299,54 @@ radio<span style='color:#0000ff; '>.</span>stopListening<span style='color:#0000
                 shape and color, and then send treasure information from the FPGA to the Arduino so that 
                 the robot can finally send that information back to the base station.
               </p>
-              <h1 ALIGN=LEFT>FPGA</h1>
+              <h1>FPGA</h1>
               <p ALIGN=LEFT>
                 First, we implemented a phase-locked loop to clock the FPGA. 
                 Using the provided Verliog project, we set up the interface our system would use for shape detection.
-                <h2 ALIGN=LEFT>Setup</h2>
+            <h3>Setup</h3>
                 We first use the PLL, which is not suceptible to clock skew, to produce different clocks
                 to drive the camera, VGA, M9k block memory read and write. We use the 24 MHz clock to drive 
                 the camera and plug that as XCLK. We use the 50 MHz clock for memory write and 25 MHz clock 
                 for read. We want write to be faster than read because writing to the block needs to be done 
                 before we read. We don't want to accidentally read blocks before they are updated. We also 
                 use the 25 MHz clock for VGA display.
-                <h2 ALIGN=LEFT>Camera, FPGA and Arduino Communication</h2>
+                <h3>Camera, FPGA and Arduino Communication</h3>
                 The camera contains 20 pins total. We have 8 pins for parallel data which sends one of the two 
                 bytes for pixel during each clcok cycle. These eight pins are connected to input GPIO pins on 
                 the FPGA. In addition, we also have HREF and VSYNC pins which are also connected as input to the 
                 FPGA. The camera also has PCLK and XCLK pins. The XCLK is for external clock. We use an output pin 
                 from the FPGA and put it to the camera. The PCLK is camera clock; we route that back to the FPGA for analysis. 
                 <figure ALIGN=CENTER>
-                    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab04/schematic.PNG" width="560"/>
+                    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab04/schematic.PNG" 
+                    width="560"/>
                     <font size="2">
                     <figcaption> <b> Wiring Diagram for FPGA, Arduino Uno, and Camera </b>
                     </figcaption>
                     </font>
                 </figure>
-                In the figure above, the colored rectangles mean that the pins are wired together.
-
-                In the FPGA, we must set the camera communication pins, HREF, VSYNC, and PCLK to 
-                input for the FPGA. We set the the communication pins with the Arduino as output. 
-                In quartus, this is done as follows:
-                <code ALIGN=CENTER>
-                  //////////// GPIO_0, GPIO_0 connect to GPIO Default //////////
-                  output 		    [33:0]		GPIO_0_D;
-                  //////////// GPIO_0, GPIO_1 connect to GPIO Default //////////
-                  input 		    [33:20]		GPIO_1_D;
-                </code>
-                We also use four parallel wires for communication from FPGA to the Arduino. We have 
-                two bits for treasure shape and two bits for color.
-                <h3>Polling from camera</h3>
+                <p ALIGN=LEFT>In the figure above, the colored rectangles mean that the pins are wired together.</p>
+<p ALIGN=LEFT>In the FPGA, we must set the camera communication pins, HREF, VSYNC, and PCLK to 
+        input for the FPGA. We set the the communication pins with the Arduino as output. 
+        In quartus, this is done as follows:</p>
+                
+<pre ALIGH=LEFT style='color:#000000;background:#ffffff;'><span style='color:#008000; '>//////////// GPIO_0, GPIO_0 connect to GPIO Default //////////</span>
+<span style='color:#ffffff; background:#dd0000; font-weight:bold; font-style:italic; '>output</span> 		    <span style='color:#ffffff; background:#dd0000; font-weight:bold; font-style:italic; '>[33:0]</span>		<span style='color:#ffffff; background:#dd0000; font-weight:bold; font-style:italic; '>GPIO_0_D;</span>
+<span style='color:#008000; '>//////////// GPIO_0, GPIO_1 connect to GPIO Default //////////</span>
+<span style='color:#ffffff; background:#dd0000; font-weight:bold; font-style:italic; '>input</span> 		    <span style='color:#ffffff; background:#dd0000; font-weight:bold; font-style:italic; '>[33:20]</span>		<span style='color:#ffffff; background:#dd0000; font-weight:bold; font-style:italic; '>GPIO_1_D;</span>
+</pre>
+<!--Created using ToHtml.com on 2018-12-04 19:39:29 UTC -->
+                <p ALIGN=LEFT>We also use four parallel wires for communication from FPGA to the Arduino. We have 
+                two bits for treasure shape and two bits for color.</p>
+                <h5>Polling from camera</h5>
                 <figure ALIGN=CENTER>
-                    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab04/vgatiming.PNG" width="560"/>
+                    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab04/vgatiming.PNG" 
+                    width="500"/>
                     <font size="2">
                     <figcaption> <b> Timing Diagram for the OV7670 camera </b>
                     </figcaption>
                     </font>
                 </figure>
+                <p ALIGN=LEFT>
                 The above timing diagram shows us how images from the camera are sent. When we have
                 a new frame incoming, the VSYNC goes high. After some time, the HREF will go high, 
                 signalling the start of the first byte of data. The camera can send data in RGB565 
@@ -1352,9 +1355,10 @@ radio<span style='color:#0000ff; '>.</span>stopListening<span style='color:#0000
                 goes high, the camera is transmitting the data for the first row of data. A low HREF 
                 means that we finished transmitting data for one row. At this point, the VSYNC can go 
                 high to signal the end of the image or the HREF can go high again when the camera is 
-                sending data for the next row of pixels.
+                sending data for the next row of pixels.</p>
                 <figure ALIGN=CENTER>
-                    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab04/cam_fsm.PNG" width="560"/>
+                    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab04/cam_fsm.PNG" 
+                    width="560"/>
                     <font size="2">
                     <figcaption> <b> FSM for getting data from camera </b>
                     </figcaption>
@@ -1363,12 +1367,8 @@ radio<span style='color:#0000ff; '>.</span>stopListening<span style='color:#0000
                 Based on the timing diagram, we created this state machine to model the behavior of the camera transmissions.
                 <table ALIGN=CENTER>
                   <tr>
-                    <th>States</th>
-                    <th>Function</th>
-                  </tr>
-                  <tr>
-                    <td>----------</td>
-                    <td>----------</td>
+                    <th style="background-color: yellow">States</th>
+                    <thth style="background-color: yellow">Function</th>
                   </tr>
                   <tr>
                     <td>IDLE</td>
@@ -1392,70 +1392,70 @@ radio<span style='color:#0000ff; '>.</span>stopListening<span style='color:#0000
                   </tr>
                 </table>
                 <p ALIGN = LEFT>
-                <code>
-                  always @(*) begin
-                      case (control_state)
-                          STATE_IDLE: begin
-                              W_EN                <= 1'b0;
-                              down_sample_reset   <= 1'b1;
-                          end
-                          STATE_NEW_FRAME: begin
-                              down_sample_reset   <= 1'b0; 
-                              W_EN                <= downsampler_rdy ? 1'b1 : 1'b0;
-                          end
-                          STATE_POLL: begin
-                              down_sample_reset   <= 1'b0;
-                        W_EN                <= downsampler_rdy ? 1'b1 : 1'b0;
+<pre ALIGN=LEFT style='color:#000000;background:#ffffff;'>always @<span style='color:#0000ff; '>(</span><span style='color:#0000ff; '>*</span><span style='color:#0000ff; '>)</span> <span style='color:#0000ff; font-weight:bold; '>begin</span>
+    <span style='color:#0000ff; font-weight:bold; '>case</span> <span style='color:#0000ff; '>(</span>control_state<span style='color:#0000ff; '>)</span>
+        STATE_IDLE<span style='color:#0000ff; '>:</span> <span style='color:#0000ff; font-weight:bold; '>begin</span>
+            W_EN                <span style='color:#0000ff; '>&lt;</span><span style='color:#0000ff; '>=</span> <span style='color:#800000; '>1</span>'b0<span style='color:#0000ff; '>;</span>
+            down_sample_reset   <span style='color:#0000ff; '>&lt;</span><span style='color:#0000ff; '>=</span> <span style='color:#800000; '>1</span>'b1<span style='color:#0000ff; '>;</span>
+        <span style='color:#0000ff; font-weight:bold; '>end</span>
+        STATE_NEW_FRAME<span style='color:#0000ff; '>:</span> <span style='color:#0000ff; font-weight:bold; '>begin</span>
+            down_sample_reset   <span style='color:#0000ff; '>&lt;</span><span style='color:#0000ff; '>=</span> <span style='color:#800000; '>1</span>'b0<span style='color:#0000ff; '>;</span> 
+            W_EN                <span style='color:#0000ff; '>&lt;</span><span style='color:#0000ff; '>=</span> downsampler_rdy <span style='color:#0000ff; '>?</span> <span style='color:#800000; '>1</span>'b1 <span style='color:#0000ff; '>:</span> <span style='color:#800000; '>1</span>'b0<span style='color:#0000ff; '>;</span>
+        <span style='color:#0000ff; font-weight:bold; '>end</span>
+        STATE_POLL<span style='color:#0000ff; '>:</span> <span style='color:#0000ff; font-weight:bold; '>begin</span>
+            down_sample_reset   <span style='color:#0000ff; '>&lt;</span><span style='color:#0000ff; '>=</span> <span style='color:#800000; '>1</span>'b0<span style='color:#0000ff; '>;</span>
+    W_EN                <span style='color:#0000ff; '>&lt;</span><span style='color:#0000ff; '>=</span> downsampler_rdy <span style='color:#0000ff; '>?</span> <span style='color:#800000; '>1</span>'b1 <span style='color:#0000ff; '>:</span> <span style='color:#800000; '>1</span>'b0<span style='color:#0000ff; '>;</span>
 
-                          end
-                          STATE_UPDATE_ROW: begin
-                              down_sample_reset   <= 1'b1;
-                              W_EN                <= 1'b0;
-                          end
-                          STATE_WAIT: begin
-                              down_sample_reset   <= 1'b1;
-                              W_EN                <= 1'b0;
-                          end
-                          default: begin
-                              W_EN                <= 1'b0;
-                              down_sample_reset   <= 1'b1;
-                          end
-                      endcase
-                  end
+        <span style='color:#0000ff; font-weight:bold; '>end</span>
+        STATE_UPDATE_ROW<span style='color:#0000ff; '>:</span> <span style='color:#0000ff; font-weight:bold; '>begin</span>
+            down_sample_reset   <span style='color:#0000ff; '>&lt;</span><span style='color:#0000ff; '>=</span> <span style='color:#800000; '>1</span>'b1<span style='color:#0000ff; '>;</span>
+            W_EN                <span style='color:#0000ff; '>&lt;</span><span style='color:#0000ff; '>=</span> <span style='color:#800000; '>1</span>'b0<span style='color:#0000ff; '>;</span>
+        <span style='color:#0000ff; font-weight:bold; '>end</span>
+        STATE_WAIT<span style='color:#0000ff; '>:</span> <span style='color:#0000ff; font-weight:bold; '>begin</span>
+            down_sample_reset   <span style='color:#0000ff; '>&lt;</span><span style='color:#0000ff; '>=</span> <span style='color:#800000; '>1</span>'b1<span style='color:#0000ff; '>;</span>
+            W_EN                <span style='color:#0000ff; '>&lt;</span><span style='color:#0000ff; '>=</span> <span style='color:#800000; '>1</span>'b0<span style='color:#0000ff; '>;</span>
+        <span style='color:#0000ff; font-weight:bold; '>end</span>
+        default<span style='color:#0000ff; '>:</span> <span style='color:#0000ff; font-weight:bold; '>begin</span>
+            W_EN                <span style='color:#0000ff; '>&lt;</span><span style='color:#0000ff; '>=</span> <span style='color:#800000; '>1</span>'b0<span style='color:#0000ff; '>;</span>
+            down_sample_reset   <span style='color:#0000ff; '>&lt;</span><span style='color:#0000ff; '>=</span> <span style='color:#800000; '>1</span>'b1<span style='color:#0000ff; '>;</span>
+        <span style='color:#0000ff; font-weight:bold; '>end</span>
+    endcase
+<span style='color:#0000ff; font-weight:bold; '>end</span>
 
-                  always @(posedge pclk) begin
-                    case (control_state)
-                          STATE_IDLE: begin
-                          end
-                          STATE_NEW_FRAME: begin
-                              X_ADDR          <= 15'b0;
-                              Y_ADDR          <= 15'b0;
+always @<span style='color:#0000ff; '>(</span>posedge pclk<span style='color:#0000ff; '>)</span> <span style='color:#0000ff; font-weight:bold; '>begin</span>
+<span style='color:#0000ff; font-weight:bold; '>case</span> <span style='color:#0000ff; '>(</span>control_state<span style='color:#0000ff; '>)</span>
+        STATE_IDLE<span style='color:#0000ff; '>:</span> <span style='color:#0000ff; font-weight:bold; '>begin</span>
+        <span style='color:#0000ff; font-weight:bold; '>end</span>
+        STATE_NEW_FRAME<span style='color:#0000ff; '>:</span> <span style='color:#0000ff; font-weight:bold; '>begin</span>
+            X_ADDR          <span style='color:#0000ff; '>&lt;</span><span style='color:#0000ff; '>=</span> <span style='color:#800000; '>15</span>'b0<span style='color:#0000ff; '>;</span>
+            Y_ADDR          <span style='color:#0000ff; '>&lt;</span><span style='color:#0000ff; '>=</span> <span style='color:#800000; '>15</span>'b0<span style='color:#0000ff; '>;</span>
 
-                          end
-                          STATE_POLL: begin
-                        //increments xaddr after downsampler 
-                              //finishes and writes to mem
-                        X_ADDR <= downsampler_rdy ? X_ADDR + 1 : X_ADDR; 
+        <span style='color:#0000ff; font-weight:bold; '>end</span>
+        STATE_POLL<span style='color:#0000ff; '>:</span> <span style='color:#0000ff; font-weight:bold; '>begin</span>
+    <span style='color:#0000ff; '>/</span><span style='color:#0000ff; '>/</span>increments xaddr <span style='color:#0000ff; font-weight:bold; '>after</span> downsampler 
+            <span style='color:#0000ff; '>/</span><span style='color:#0000ff; '>/</span>finishes <span style='color:#0000ff; font-weight:bold; '>and</span> writes <span style='color:#0000ff; font-weight:bold; '>to</span> mem
+    X_ADDR <span style='color:#0000ff; '>&lt;</span><span style='color:#0000ff; '>=</span> downsampler_rdy <span style='color:#0000ff; '>?</span> X_ADDR <span style='color:#0000ff; '>+</span> <span style='color:#800000; '>1</span> <span style='color:#0000ff; '>:</span> X_ADDR<span style='color:#0000ff; '>;</span> 
 
-                          end
+        <span style='color:#0000ff; font-weight:bold; '>end</span>
 
-                          STATE_UPDATE_ROW: begin
-                        Y_ADDR			<= Y_ADDR + 1;
-                              X_ADDR          <= 15'b0;
-                          end
-                          STATE_WAIT: begin
+        STATE_UPDATE_ROW<span style='color:#0000ff; '>:</span> <span style='color:#0000ff; font-weight:bold; '>begin</span>
+    Y_ADDR			<span style='color:#0000ff; '>&lt;</span><span style='color:#0000ff; '>=</span> Y_ADDR <span style='color:#0000ff; '>+</span> <span style='color:#800000; '>1</span><span style='color:#0000ff; '>;</span>
+            X_ADDR          <span style='color:#0000ff; '>&lt;</span><span style='color:#0000ff; '>=</span> <span style='color:#800000; '>15</span>'b0<span style='color:#0000ff; '>;</span>
+        <span style='color:#0000ff; font-weight:bold; '>end</span>
+        STATE_WAIT<span style='color:#0000ff; '>:</span> <span style='color:#0000ff; font-weight:bold; '>begin</span>
 
-                          end
-                          default: begin
+        <span style='color:#0000ff; font-weight:bold; '>end</span>
+        default<span style='color:#0000ff; '>:</span> <span style='color:#0000ff; font-weight:bold; '>begin</span>
 
-                          end
-                      endcase
-                  end
-                </code>
+        <span style='color:#0000ff; font-weight:bold; '>end</span>
+    endcase
+<span style='color:#0000ff; font-weight:bold; '>end</span>
+</pre>
+<!--Created using ToHtml.com on 2018-12-04 19:42:18 UTC -->
                 </p>
-                We must save the data from the camera into a memory location 
+                <p ALIGN=LEFT>We must save the data from the camera into a memory location 
                 so that it can be read by the VGA and the image processor 
-                later for analysis. This is done with two variables, X_ADDR and Y_ADDR.
+                later for analysis. This is done with two variables, X_ADDR and Y_ADDR. </p>
                 <figure ALIGN=CENTER>
                     <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab04/IMG_1174.jpg" width="560"/>
                     <font size="2">
@@ -1463,7 +1463,7 @@ radio<span style='color:#0000ff; '>.</span>stopListening<span style='color:#0000
                     </figcaption>
                     </font>
                 </figure>
-                <h3>Downsampler</h3>
+                <h5>Downsampler</h5>
                   The camera's eight parallel data pins output color per pixel at a clocked 
                   rate. For RGB, it uses the configuration for RGB565 or RGB555. Both 
                   configurations are two bytes in length total which means that each pixel 
@@ -1487,12 +1487,8 @@ radio<span style='color:#0000ff; '>.</span>stopListening<span style='color:#0000
                   </figure>
                   <table ALIGN=CENTER>
                     <tr>
-                      <th>States</th>
-                      <th>Function</th>
-                    </tr>
-                    <tr>
-                      <td>----------</td>
-                      <td>----------</td>
+                      <th style="background-color: yellow">States</th>
+                      <th style="background-color: yellow">Function</th>
                     </tr>
                     <tr>
                       <td>IDLE</td>
@@ -1503,31 +1499,29 @@ radio<span style='color:#0000ff; '>.</span>stopListening<span style='color:#0000
                       <td>Start reading from camera</td>
                     </tr>
                   </table>
-                  <pre ALIGN=LEFT>
-                  <code>
-                  READ: begin
-                      fsm 		= (VSYNC || RES) ? IDLE : READ;
+<pre ALIGN=LEFT style='color:#000000;background:#ffffff;'>READ<span style='color:#0000ff; '>:</span> <span style='color:#0000ff; font-weight:bold; '>begin</span>
+fsm 		<span style='color:#0000ff; '>=</span> <span style='color:#0000ff; '>(</span>VSYNC <span style='color:#0000ff; '>|</span><span style='color:#0000ff; '>|</span> RES<span style='color:#0000ff; '>)</span> <span style='color:#0000ff; '>?</span> IDLE <span style='color:#0000ff; '>:</span> READ<span style='color:#0000ff; '>;</span>
 
-                      if(HREF) begin
-                          count_bit 		= ~count_bit;
-                          if(count_bit) begin
-                              reg_valid		<= 1'b0;
-                              OUT[7:2]		<= {D[7:5], D[2:0]};
-                          end
-                          else begin 
-                              reg_valid 		<= 1'b1;
-                              OUT[1:0]		<= D[4:3];
-                          end
-                      end
-                      else begin
-                          count_bit			<= 1'b0;
-                          reg_valid 			<= 1'b0;
-                          OUT					<= 8'd7;
-                      end
-                  end
-                  </code>
-                  </pre>
-                  <h3>Color Bar</h3>
+<span style='color:#0000ff; font-weight:bold; '>if</span><span style='color:#0000ff; '>(</span>HREF<span style='color:#0000ff; '>)</span> <span style='color:#0000ff; font-weight:bold; '>begin</span>
+    count_bit 		<span style='color:#0000ff; '>=</span> ~count_bit<span style='color:#0000ff; '>;</span>
+    <span style='color:#0000ff; font-weight:bold; '>if</span><span style='color:#0000ff; '>(</span>count_bit<span style='color:#0000ff; '>)</span> <span style='color:#0000ff; font-weight:bold; '>begin</span>
+        reg_valid		<span style='color:#0000ff; '>&lt;</span><span style='color:#0000ff; '>=</span> <span style='color:#800000; '>1</span>'b0<span style='color:#0000ff; '>;</span>
+        <span style='color:#0000ff; font-weight:bold; '>OUT</span>[<span style='color:#800000; '>7</span><span style='color:#0000ff; '>:</span><span style='color:#800000; '>2</span>]		<span style='color:#0000ff; '>&lt;</span><span style='color:#0000ff; '>=</span> {D[<span style='color:#800000; '>7</span><span style='color:#0000ff; '>:</span><span style='color:#800000; '>5</span>]<span style='color:#0000ff; '>,</span> D[<span style='color:#800000; '>2</span><span style='color:#0000ff; '>:</span><span style='color:#800000; '>0</span>]}<span style='color:#0000ff; '>;</span>
+    <span style='color:#0000ff; font-weight:bold; '>end</span>
+    <span style='color:#0000ff; font-weight:bold; '>else</span> <span style='color:#0000ff; font-weight:bold; '>begin</span> 
+        reg_valid 		<span style='color:#0000ff; '>&lt;</span><span style='color:#0000ff; '>=</span> <span style='color:#800000; '>1</span>'b1<span style='color:#0000ff; '>;</span>
+        <span style='color:#0000ff; font-weight:bold; '>OUT</span>[<span style='color:#800000; '>1</span><span style='color:#0000ff; '>:</span><span style='color:#800000; '>0</span>]	        <span style='color:#0000ff; '>&lt;</span><span style='color:#0000ff; '>=</span> D[<span style='color:#800000; '>4</span><span style='color:#0000ff; '>:</span><span style='color:#800000; '>3</span>]<span style='color:#0000ff; '>;</span>
+    <span style='color:#0000ff; font-weight:bold; '>end</span>
+<span style='color:#0000ff; font-weight:bold; '>end</span>
+<span style='color:#0000ff; font-weight:bold; '>else</span> <span style='color:#0000ff; font-weight:bold; '>begin</span>
+    count_bit	        <span style='color:#0000ff; '>&lt;</span><span style='color:#0000ff; '>=</span> <span style='color:#800000; '>1</span>'b0<span style='color:#0000ff; '>;</span>
+    reg_valid 	        <span style='color:#0000ff; '>&lt;</span><span style='color:#0000ff; '>=</span> <span style='color:#800000; '>1</span>'b0<span style='color:#0000ff; '>;</span>
+    <span style='color:#0000ff; font-weight:bold; '>OUT</span>			<span style='color:#0000ff; '>&lt;</span><span style='color:#0000ff; '>=</span> <span style='color:#800000; '>8</span>'d7<span style='color:#0000ff; '>;</span>
+<span style='color:#0000ff; font-weight:bold; '>end</span>
+<span style='color:#0000ff; font-weight:bold; '>end</span>
+</pre>
+<!--Created using ToHtml.com on 2018-12-04 19:44:11 UTC -->
+                  <h5>Color Bar</h5>
                   To display the color bar, we must set the appropriate registers 
                   in the Camera. The main registers involved are COM 7 and COM 17 
                   for color bar enable and color bar DSP enable. With the downsampler 
@@ -1544,14 +1538,14 @@ radio<span style='color:#0000ff; '>.</span>stopListening<span style='color:#0000
                   The colors in the bar are different from the example in the lab but when 
                   we use the camera to capture, we found that the colors were passable and 
                   would not pose an issue.
-                  <h3>Display Camera Capture</h3>
+                  <h5>Display Camera Capture</h5>
                   To display the images captured by the camera, we must set the registers from
                   the Arduino. We can disable the DSP for color bar and the color bar test itself. 
                   The FPGA code is exactly the same.
                   <iframe width="560" height="315" src="https://www.youtube.com/embed/0lKN7Tkrx0Q?controls=0" 
                   frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; 
                   picture-in-picture" allowfullscreen></iframe>
-                  <h2>Color Detection</h2>
+                  <h3>Color Detection</h3>
                   For color detection, we use a module call the Image Processor. The image processor 
                   samples at the same rate as the VGA board at 25 MHz. We set a boundary within the 
                   resolution of each image and then count the amount of blue and red in each pixel. 
@@ -1622,8 +1616,8 @@ radio<span style='color:#0000ff; '>.</span>stopListening<span style='color:#0000
                     </figcaption>
                     </font>
                 </figure>
-                <h1 ALIGN=LEFT>Arduino</h1>
-                <h2 ALIGN=LEFT>Disabling Arduino's Internal Pullup Resistor</h2>
+                <h1>Arduino</h1>
+                <h3>Disabling Arduino's Internal Pullup Resistor</h3>
                 In the prelab, we determined what registers we needed to set and what values 
                 we needed to set them to in order to properly set up the camera to do what we need 
                 it to. Before starting anything, we disabled the internal pullup resistors in the 
@@ -1641,7 +1635,7 @@ radio<span style='color:#0000ff; '>.</span>stopListening<span style='color:#0000
                   </code>
                 </pre>
                 This will allow the I2C interface to communicate with the camera without sending 5v to the camera.
-                <h2>Writing Registers</h2>
+                <h3>Writing Registers</h3>
                 We use the I2C communication protocol to talk to the camera. This is setup using Arduino's 
                 *Wire* library which supports I2C interfaces. We set up the Arduino as the master and the camera 
                 as slave. The camera has a set slave address of 0x21 after we ignore the least significant bit 
@@ -1685,11 +1679,6 @@ radio<span style='color:#0000ff; '>.</span>stopListening<span style='color:#0000
                     <th>Registers</th>
                     <th>Name</th>
                     <th>Function</th>
-                  </tr>
-                  <tr>
-                    <td>--------</td>
-                    <td>----</td>
-                    <td>--------</td>
                   </tr>
                   <tr>
                     <td>0x12</td>
@@ -1746,7 +1735,7 @@ radio<span style='color:#0000ff; '>.</span>stopListening<span style='color:#0000
                     </figcaption>
                     </font>
                 </figure>
-                <h2>Communicating with FPGA</h2>
+                <h3>Communicating with FPGA</h3>
                 Communication with the FPGA is done by wiring the GPIO pins on the 
                 FPGA to the arduino in parallel. We use combinational logic in this 
                 case since we set the FPGA to output the results of the image 
