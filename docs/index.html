@@ -324,7 +324,7 @@
         <h2 class="text-center text-uppercase text-secondary mb-0">Tutorials</h2>
         <hr class="star-dark mb-5">
         <div class="row">
-          <div class="col-md-6 col-lg-3">
+          <div class="col-md-6 col-lg-6">
             <a class="portfolio-item d-block mx-auto" href="#portfolio-modal-9">
               <div class="portfolio-item-caption d-flex position-absolute h-100 w-100">
                 <div class="portfolio-item-caption-content my-auto w-100 text-center text-white">
@@ -335,25 +335,14 @@
             </a>
             <h3 ALIGN=CENTER>Intro to Soldering</h3>
            </div>
-          <div class="col-md-6 col-lg-3">
+          <div class="col-md-6 col-lg-6">
             <a class="portfolio-item d-block mx-auto" href="#portfolio-modal-10">
               <div class="portfolio-item-caption d-flex position-absolute h-100 w-100">
                 <div class="portfolio-item-caption-content my-auto w-100 text-center text-white">
                   <i class="fas fa-search-plus fa-3x"></i>
                 </div>
               </div>
-              <img class="img-fluid" src="images/bootstrap/soldering.png" alt="">
-            </a>
-            <h3 ALIGN=CENTER>Camera</h3>
-          </div>
-          <div class="col-md-6 col-lg-3">
-            <a class="portfolio-item d-block mx-auto" href="#portfolio-modal-11">
-              <div class="portfolio-item-caption d-flex position-absolute h-100 w-100">
-                <div class="portfolio-item-caption-content my-auto w-100 text-center text-white">
-                  <i class="fas fa-search-plus fa-3x"></i>
-                </div>
-              </div>
-              <img class="img-fluid" src="images/bootstrap/surfsoldering.png" alt="">
+              <img class="img-fluid" src="images/Muxing.png" alt="">
             </a>
             <h3 ALIGN=CENTER>Muxing</h3>
           </div>
@@ -3330,6 +3319,88 @@ update_visited_lists<span style='color:#0000ff; '>(</span><span style='color:#00
       </div>
     </div>
 
+<div class="portfolio-modal mfp-hide" id="portfolio-modal-10">
+      <div class="portfolio-modal-dialog bg-white">
+        <a class="close-button d-none d-md-block portfolio-modal-dismiss" href="#">
+          <i class="fa fa-4x fa-times"></i>
+        </a>
+        <div class="container text-center">
+          <div class="row">
+            <div class="col-lg-6 mx-auto">
+              <h2 class="text-secondary text-uppercase mb-0">Muxing</h2>
+              <hr class="star-dark mb-5">
+              <img class="img-fluid mb-5" src="images/Muxing.png" alt="">
+              <h1>Intro to Muxing</h1>
+              <p ALIGN=LEFT>
+                In order to have enough Arduino pins to connect all of our components, 
+                our team found it necessary to implement a multiplexer, or mux, in our 
+                circuitry. A multiplexer allows you to read several different signals
+                from just one pin by choosing which one you want to read at any given
+                time. It is a very useful component if you’re pressed for space on an Arduino!
+                <h2>How to Wire up a Mux</h2>
+              A mux will come in the from of a chip with two rows of metal pins. Many of these pins
+              are input pins (to the mux), one is an output pin, some are ‘select’ pins, one is 
+              power, one is ground, and a couple might be miscellaneous other things. In order 
+              to know which one is which, you have to look up the part number and reference the 
+              datasheet. A quick Google search of the string of numbers and letters on the chip 
+              will do the trick. 
+              The way to wire it up is to connect all the signals you are trying to read (probably
+              on some kind of protoboard) to the input pins of the mux. You connect the power pin 
+              to a power source of a voltage specified by the mux’s datasheet, and you connect the
+              ground pin to your common ground. That way the mux will be powered. You then connect 
+              the output pin of the mux to the Arduino pin that you are using to read the signals. 
+              Finally, you wire the select pins. The number of input pins on a mux will be a power 
+              of two, and that power is how many select pins you will have. For example, if you have 
+              8 inputs, you will have 3 select pins; 4 inputs will have 2 select pins. These select
+              pins must also be connected to Arduino pins. Finally, there may be a couple other
+              miscellaneous pins; reference the data sheet to figure out what to do with those.
+              <h2>Configuring the Arduino Pins</h2>
+              To read from the mux, you have to set the select pins to a digital HIGH or LOW 
+              from the Arduino. This can be coded in the Arduino IDE. However, first you have 
+              to set up the Arduino pins correctly. This should be done in the Arduino’s setup 
+              section Use the pinMode() function to set the Arduino pin connected to the mux 
+              output as an input, and the Arduino pins connected to the mux select pins as digital 
+              outputs. Note that if the signals you are reading are analog (and the mux is designed 
+              to handle that), you must read the mux output from an analog pin and you need not set 
+              up the pin with pinMode(); but the analog pins can be configured as digital with the
+              pinMode() function so a digital mux output and the mux select pins can be connected 
+              to either digital or analog Arduino pins.
+              <h2>Reading from the Mux</h2>
+              Now you can move on to actually setting your mux select bits and reading from the mux. 
+              In the mux’s datasheet there will be a table specifying what combinations of HIGH and 
+              LOW signals you should write to the select pins to read from a certain input pin. 
+              Whenever you want to read from the mux, use digitalWrite() on the mux select pins
+              to set the desired combination, and then use digitalRead() on the mux output pin
+              to read your signal!
+              <h2>Our Mux and How to Use it</h2>
+              The mux we were provided in 3400 is a CD74HC4051. Its datasheet can be found 
+              <a href="http://www.ti.com/lit/ds/symlink/cd74hc4051.pdf">here</a>, 
+              and a more concise overview of it can be found on the Arduino playground 
+              <a herf="https://playground.arduino.cc/learning/4051">here</a>. It
+              is powered by 5V. Some nice features of this mux are that it is an analog mux, so 
+              we were able to use it to resolve our shortage of analog pins. It also specifies 
+              on the Arduino playground site that no delay is needed between selecting the input 
+              and reading from the output, although putting a small one in to be safe doesn’t hurt. 
+              We ran into a couple of quirks in that this mux has a negative supply voltage pin Vee,
+              and an active-low enable input E. Both of these pins had to be wired to ground for 
+              the mux to work correctly. One drawback of this mux is that it is an 8-to-1 mux,
+              and as such it still took up 4 of our Arduino pins to implement. It still saved 
+              us pins, and eventually we were able to wire up to 5 different signals through
+              the mux to make its space less wasted and it worked out fine. Additionally, if 
+              we had needed only 4 or even 2 input pins, we could have connected some of the 
+              select pins straight to ground, making those select values always low, thereby 
+              limiting the number of select combinations we can set and decreasing the number 
+              of Arduino pins we need to use on mux selecting. However, it is still a long chip 
+              and took up space on our protoboard. All in all though, it worked quite well for us!
+              </p>
+              <a class="btn btn-primary btn-lg rounded-pill portfolio-modal-dismiss" href="#">
+                <i class="fa fa-close"></i>
+                Close Tutorial</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
     <!-- Bootstrap core JavaScript -->
     <script src="vendor/jquery/jquery.min.js"></script>
     <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
