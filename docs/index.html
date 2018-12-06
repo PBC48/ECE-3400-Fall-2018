@@ -48,9 +48,6 @@
               <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#ethics">Ethics</a>
             </li>
             <li class="nav-item mx-0 mx-lg-1">
-              <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#robot">Our Robot</a>
-            </li>
-            <li class="nav-item mx-0 mx-lg-1">
               <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#labs">Labs</a>
             </li>
             <li class="nav-item mx-0 mx-lg-1">
@@ -422,11 +419,12 @@
                         <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/final_competition/schematics.PNG"
                         width="800"/>
                         <font size="2">
-                          <figcaption> Front View of the Robot
+                          <figcaption> Schematic of Entire Robot
                           </figcaption>
                         </font>
                       </figure>
-                  <h1>Line Sensor</h1>
+                  <h1>Progression</h1>
+                  <h2>Line Sensor</h2>
                     <figure ALIGN=CENTER>
                         <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/final_competition/IMG_1190.jpg"
                         width="560"/>
@@ -446,7 +444,7 @@
                   and also be able to detect intersections with the setup, which the algorithm is simple: if both sensors detect a
                   line then we have reached an intersection.
                   <iframe width="560" height="315" src="https://www.youtube.com/embed/mZf0CTAzZvA?controls=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-                  <h1>Wall Detection and Maze Movement</h1>
+                  <h2>Wall Detection and Maze Movement</h2>
                   For the second milestone of the project, we are to get the robot to detect walls and upon that inference, decide how to
                   turn at the intersection. For our basic implementation, we only used two IR distance sensors to detect the walls since
                   our plan of a maze movement algorithm was simple: just left-wall following. As such, we placed the wall sensors on the
@@ -455,16 +453,8 @@
                   and once again after we turned. The implementation turned out to do very well.
                   <iframe width="560" height="315" src="https://www.youtube.com/embed/aWahZUqSUfI?rel=0&amp;controls=0" 
                   frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
-                  </iframe>
-                    <figure ALIGN=CENTER>
-                        <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/final_competition/IMG_1191.jpg"
-                        width="560"/>
-                        <font size="2">
-                          <figcaption> Left Side View of Robot with Camera
-                          </figcaption>
-                        </font>
-                      </figure>
-                    <figure ALIGN=CENTER>
+                  <h2>Integration of IR and Microphone</h2>
+                     <figure ALIGN=CENTER>
                         <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/final_competition/IMG_1192.jpg"
                         width="560"/>
                         <font size="2">
@@ -472,14 +462,58 @@
                           </figcaption>
                         </font>
                       </figure>
-                    <figure ALIGN=CENTER>
-                        <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/final_competition/IMG_1193.jpg"
+                    Now its time to get the robot to interact with us and other robots. To do so, we have the aide of IR and audio
+                    signals. For the IR sensor, we use Infra-Red (IR) light to detect the presence of another robot (or a decoy).
+                    The IR sensor uses a Phototransistor to convert the light into a signal for the robot to convert into individual
+                    frequencies. For us to convert the signal into these individual frequencies, we used Fast Fourier Transform (FFT). Although
+                    it is a rather hefty algorithm that requires a lot of space, it is essential. For the IR Sensor, we built the following
+                    circuit to amplify the incoming signal:
+                    <figure ALIGN=LEFT>
+                      <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab02/schematic-Phototransistor%20with%20OpAmp.PNG" width="560"/>
+                      <font size="2">
+                      <figcaption> <b>Schematic of IR with OpAmp and bandpass filter</b>
+                      </figcaption>
+                      </font>
+                  </figure>
+                    The circuit filters out undesired signals such as the DC (0Hz) and higher frequencies (>6.08Hz, the robot detection
+                    frequency).
+                    </br>
+                  As for the microphone, We needed a way to get the robot to start without the use of physical manipulation. As such, we
+                  installed the microphone. Much like the IR sensor, the microphone required the use of the FFT. For the robot to start,
+                  we want to detect a 660Hz past a certain threshold. if the signal passes the threshold, the robot would start. to make
+                  the circuit simplier, we decided to detect the signal by just taking the value out of the "bucket" generated by the FFT
+                  that contains the value closest to 660Hz. The results were satisfactory.
+                  <figure ALIGN=LEFT>
+                    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/lab02/Acoustic.png" width="600"/>
+                    <font size="2">
+                    <figcaption> <b>Acoustic Amplifier Circuit Design</b>
+                    </figcaption>
+                    </font>
+                </figure>
+                  <h2>Search Algorithm</h2>
+                  to improve on the left-wall following algorithm, which doesn't take it account spaces that we have already visited and
+                  doesn't permit escape from an infinite traversal in a box, we decided to create a search algorithm. We have decided to
+                  go with the DFS (Depth First Search) Algorithm since it's easier to implement than Djikstra's algorithm and fares well
+                  with Maze navigation. The algorithm allowed us to fully explore the maze.
+                  <iframe width="560" height="315" src="https://www.youtube.com/embed/JbzAFhrltYo?rel=0&amp;controls=0" frameborder="0" 
+                  allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+                  </iframe>
+                  <h2>Treasure Detection</h2>
+                      <figure ALIGN=CENTER>
+                        <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/final_competition/IMG_1191.jpg"
                         width="560"/>
                         <font size="2">
-                          <figcaption> Back View of Robot
+                          <figcaption> Left Side View of Robot with Camera
                           </figcaption>
                         </font>
-                  </figure>
+                      </figure>
+                  The last integral part of the design is treasure detection. This is the most complex part of the robot, and although
+                  we were unable to fully integrate the camera with the robot, in our design, we were able to get the treasure detection
+                  to work decently. To get it to work properly, we need the robot to detect 6 types of treasures: 2 different colors and
+                  3 different shapes. To best detect them, we decided to split the image taken from the camera into three segments: a top
+                  segment, a middle segment, and a bottom segment. We measure the amount of red and blue and lack of green in the image of
+                  these segments. With this segmentation, we are able to threshold and compare the segments to each other and determine the
+                  shape detected.
                   <h1>Final Design</h1>
                   For the final design of the robot, we redesigned the overall layout of the robot. 
                   This included both electrical and mechanical improvements. This entire project is 
@@ -516,6 +550,14 @@
                   for each component itself allowing each component to act properly.
                   <img src="images/Muxing.png" alt="Connection Transformation" width="560"></img>
                   <h1>Mechanical Improvements</h1>
+                  <figure ALIGN=CENTER>
+                        <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/final_competition/IMG_1193.jpg"
+                        width="560"/>
+                        <font size="2">
+                          <figcaption> Back View of Robot
+                          </figcaption>
+                        </font>
+                  </figure>
                   To fit all the components onto the robot, we strategically placed the arduino, 
                   the FPGA, the Camera, the solder board, the smaller protoboard, and the two battery
                   packs. We planned a layout with the arduino and the solder board on the top layer
