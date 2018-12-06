@@ -455,6 +455,45 @@
                           </figcaption>
                         </font>
                       </figure>
+                  <h1>Introduction</h1>
+                  For the final design of the robot, we redesigned the overall layout of the robot. 
+                  This included both electrical and mechanical improvements. This entire project is 
+                  the gambit of the fully autonomous robot using many aspects over many different types 
+                  of wired/wireless communications, peripherals, data structures, computer architectures,
+                  and system design. It is the peak of a junior design project. Over the course of four 
+                  labs and four milestones, we have taught our robot how to follow a line, to operate a 
+                  servo, navigate with walls, communicate to another arduino, and how to detect color
+                  and think about where to move next. The biggest challenge of it all was to move past 
+                  the prototyping stage and integrate an optimized version of the robot with better
+                  power utilization, mechanical dexterity, and algorithmic precision. Although by 
+                  competition we were unable to fully integrate our perfected robot, we demonstrated 
+                  that our design worked to greatest potential.
+                  <h1>Electrical Hardware</h1>
+                  For our electrical hardware, we cleaned up the wiring and replaced the bulky protoboards 
+                  with throughput solder board. In order to make the adjustment, we condensed the electrical 
+                  hardware for the microphone, the IR sensor, and the Camera controls onto one board and 
+                  relegated the hardware to regulate the power to the radio to a smaller protoboard.
+                  In addition to the new layout, we also decided to optimize power usage and pin layout 
+                  By muxing together the three wall sensors and the microphone. Since all four of these 
+                  objects can have information retrieved at different times, it doesn’t make sense for
+                  all of them to have their own pin. So, we used a 4 to 2 multiplexer which takes in 2 
+                  inputs and selects between the four signals to input into one pin. So, even though 
+                  it doesn’t seem like much of a change, instead of requiring 4 pins, we reduced the 
+                  amount required to 3. Overall, by doing this, we have allowed more power allowance 
+                  for each component itself allowing each component to act properly.
+                  <img src="images/Muxing.png" alt="Connection Transformation" width="560"></img>
+                  <h1>Mechanical Improvements</h1>
+                  To fit all the components onto the robot, we strategically placed the arduino, 
+                  the FPGA, the Camera, the solder board, the smaller protoboard, and the two battery
+                  packs. We planned a layout with the arduino and the solder board on the top layer
+                  of the robot, the FPGA, Camera, wall sensors, power regulator for the radio, and 
+                  FPGA/Camera connections to the middle layer, and the two batteries to the bottom 
+                  layer. To create a layer underneath the robot, we designed nd laser cut a base
+                  plate with some chunks cut out of it, allowing room for the line sensors and the 
+                  stabilizing appendage in the back. We held it in place by creating two more base 
+                  plates with aligned holes for more structural support and flexibility with the 
+                  placement of our other components.
+                  <h1>Cost</h1>
                   </p>
                   <a class="btn btn-primary btn-lg rounded-pill portfolio-modal-dismiss" href="#">
                     <i class="fa fa-close"></i>
