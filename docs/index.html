@@ -402,11 +402,31 @@
                   <h2 class="text-secondary text-uppercase mb-0">ROBOT</h2>
                   <hr class="star-dark mb-5">
                   <img class="img-fluid mb-5" src="images/final_competition/IMG_1189.jpg" alt="">
-                    <h1>ROBOT</h1>
+                    <h1>Introduction</h1>
                   <p ALIGN=LEFT>
                     <h5 ALIGN=LEFT>Meet our robot friend! This little guy was built for ECE 3400, Intelligent Physical Systems, to complete the tasks of the final competition.
                     </h5>
-
+                  For the final design of the robot, we redesigned the overall layout of the robot. 
+                  This included both electrical and mechanical improvements. This entire project is 
+                  the gambit of the fully autonomous robot using many aspects over many different types 
+                  of wired/wireless communications, peripherals, data structures, computer architectures,
+                  and system design. It is the peak of a junior design project. Over the course of four 
+                  labs and four milestones, we have taught our robot how to follow a line, to operate a 
+                  servo, navigate with walls, communicate to another arduino, and how to detect color
+                  and think about where to move next. The biggest challenge of it all was to move past 
+                  the prototyping stage and integrate an optimized version of the robot with better
+                  power utilization, mechanical dexterity, and algorithmic precision. Although by 
+                  competition we were unable to fully integrate our perfected robot, we demonstrated 
+                  that our design worked to greatest potential.
+                  <figure ALIGN=CENTER>
+                        <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/final_competition/schematics.PNG"
+                        width="800"/>
+                        <font size="2">
+                          <figcaption> Front View of the Robot
+                          </figcaption>
+                        </font>
+                      </figure>
+                  <h1>Line Sensor</h1>
                     <figure ALIGN=CENTER>
                         <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/final_competition/IMG_1190.jpg"
                         width="560"/>
@@ -415,14 +435,27 @@
                           </figcaption>
                         </font>
                       </figure>
-                      <figure ALIGN=CENTER>
-                        <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/final_competition/schematics.PNG"
-                        width="800"/>
-                        <font size="2">
-                          <figcaption> Front View of the Robot
-                          </figcaption>
-                        </font>
-                      </figure>
+                  For our Line Sensor, we have decided to go with the simple design of two line sensors each to the side of the
+                  line. The design is very simple: if one line sensor detects the white, we turn in the direction that moves the
+                  line sensor back into the unlined surface. So: if the left sensor detects the line, we turn a little bit to the
+                  left and vice versa. Below is a demonstration of the line following capabilities:
+                  <a><img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/milestone1/gif-followLine.gif"
+                        width = "560" height = "auto"></a>
+                  In our demonstration, the robot smoothly follows the line. In a more complex implementation, we were able to
+                  program the robot to move in a figure 8 to demonstrate that the robot can properly send PWM signals to the Servos
+                  and also be able to detect intersections with the setup, which the algorithm is simple: if both sensors detect a
+                  line then we have reached an intersection.
+                  <iframe width="560" height="315" src="https://www.youtube.com/embed/mZf0CTAzZvA?controls=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                  <h1>Wall Detection and Maze Movement</h1>
+                  For the second milestone of the project, we are to get the robot to detect walls and upon that inference, decide how to
+                  turn at the intersection. For our basic implementation, we only used two IR distance sensors to detect the walls since
+                  our plan of a maze movement algorithm was simple: just left-wall following. As such, we placed the wall sensors on the
+                  left and front of the robot. Thankfully, in our case, two wall sensors is all that is needed. Of course, a u-turn is not
+                  as simple as it would be in the final design. In order to execute the u-turn, we detected the wall twice: in the initial instance
+                  and once again after we turned. The implementation turned out to do very well.
+                  <iframe width="560" height="315" src="https://www.youtube.com/embed/aWahZUqSUfI?rel=0&amp;controls=0" 
+                  frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
+                  </iframe>
                     <figure ALIGN=CENTER>
                         <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/final_competition/IMG_1191.jpg"
                         width="560"/>
@@ -446,16 +479,8 @@
                           <figcaption> Back View of Robot
                           </figcaption>
                         </font>
-                      </figure>
-                    <figure ALIGN=CENTER>
-                        <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/final_competition/IMG_1194.jpg"
-                        width="560"/>
-                        <font size="2">
-                          <figcaption> Robot Protoboard
-                          </figcaption>
-                        </font>
-                      </figure>
-                  <h1>Introduction</h1>
+                  </figure>
+                  <h1>Final Design</h1>
                   For the final design of the robot, we redesigned the overall layout of the robot. 
                   This included both electrical and mechanical improvements. This entire project is 
                   the gambit of the fully autonomous robot using many aspects over many different types 
@@ -469,6 +494,14 @@
                   competition we were unable to fully integrate our perfected robot, we demonstrated 
                   that our design worked to greatest potential.
                   <h1>Electrical Hardware</h1>
+                  <figure ALIGN=CENTER>
+                        <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/final_competition/IMG_1194.jpg"
+                        width="560"/>
+                        <font size="2">
+                          <figcaption> Robot Protoboard
+                          </figcaption>
+                        </font>
+                      </figure>
                   For our electrical hardware, we cleaned up the wiring and replaced the bulky protoboards 
                   with throughput solder board. In order to make the adjustment, we condensed the electrical 
                   hardware for the microphone, the IR sensor, and the Camera controls onto one board and 
