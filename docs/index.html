@@ -566,7 +566,12 @@
                     hardware on the robot which increases the robot's energy comsumption for easier implementation. 
                 </p>
                 <p ALIGN=LEFT>
-
+                    Powering the robot was a major concern for us because we have a lot of components that drain the power. The two servos, the Arduino,
+                    and FPGA are all major power consumers that can affect the reliability of other sensors since the the consumption may be so high
+                    that it causes the sensors to not be powered fully, affecting their performance. The solution to this was to use two batteries
+                    and properly balance the load on the battery. We tackled this problem in both hardware and software. 
+                    In hardware, we balance the load on the battery by having first battery power the sensors and servos where the servo will be 
+                    a hugh power consumer. We use the second battery to power the Arduino and FPGA. 
                 </p>
                 <h1>Mechanical Improvements</h1>
                 <figure ALIGN=CENTER>
