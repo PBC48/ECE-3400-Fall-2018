@@ -389,8 +389,8 @@
                   <hr class="star-dark mb-5">
                   <img class="img-fluid mb-5" src="images/final_competition/IMG_1189.jpg" alt="">
                     <h1>Introduction</h1>
-                    <h5 ALIGN=LEFT>Meet our robot friend! This little guy was built for ECE 3400, Intelligent Physical Systems, to complete the tasks of the final competition.
-                    </h5>
+                    <p ALIGN=LEFT><b>Meet our robot friend! This little guy was built for ECE 3400, Intelligent Physical Systems, to complete the tasks of the final competition.
+                    </b></p>
                   <p ALIGN=LEFT>
                   For the final design of the robot, we redesigned the overall layout of the robot. 
                   This included both electrical and mechanical improvements. This entire project is 
@@ -406,18 +406,14 @@
                   that our design worked to greatest potential.
                   <figure ALIGN=CENTER>
                         <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/final_competition/schematics.PNG"
-                        width="560"/>
+                        width="100"/>
                         <font size="2">
-<<<<<<< HEAD
                           <figcaption> Schematic of Final Robot
-=======
-                          <figcaption> Schematic of Entire Robot
->>>>>>> 01398bdbe9b65012fe946fdc9e092ba61d1319a5
                           </figcaption>
                         </font>
                       </figure>
                   <h1>Progression</h1>
-                  <h2>Line Sensor</h2>
+                  <h3>Line Sensor</h3>
                     <figure ALIGN=CENTER>
                         <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/final_competition/IMG_1190.jpg"
                         width="560"/>
@@ -451,7 +447,7 @@
                   frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
                   </iframe>
                   </p>
-                  <h2>Integration of IR and Microphone</h2>
+                  <h3>Integration of IR and Microphone</h3>
                      <figure ALIGN=CENTER>
                         <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/final_competition/IMG_1192.jpg"
                         width="560"/>
@@ -492,9 +488,9 @@
                     </font>
                 </figure>
                 </p>
-                <h2>Search Algorithm</h2>
+                <h3>Search Algorithm</h3>
                 <p ALIGN=LEFT>
-                  to improve on the left-wall following algorithm, which doesn't take it account spaces that we have already visited and
+                  To improve on the left-wall following algorithm, which doesn't take it account spaces that we have already visited and
                   doesn't permit escape from an infinite traversal in a box, we decided to create a search algorithm. We have decided to
                   go with the DFS (Depth First Search) Algorithm since it's easier to implement than Djikstra's algorithm and fares well
                   with Maze navigation. The algorithm allowed us to fully explore the maze.
@@ -527,7 +523,7 @@
                 the gambit of the fully autonomous robot using many aspects over many different types 
                 of wired/wireless communications, peripherals, data structures, computer architectures,
                 and system design. It is the peak of a junior design project. Over the course of four 
-                labs and four milestones, we have taught our robot how to follow a line, to operate a 
+                labs and four milestones, we have programmed our robot how to follow a line, to operate a 
                 servo, navigate with walls, communicate to another arduino, and how to detect color
                 and think about where to move next. The biggest challenge of it all was to move past 
                 the prototyping stage and integrate an optimized version of the robot with better
@@ -559,6 +555,16 @@
                   for each component itself allowing each component to act properly.
                   <img src="images/Muxing.png" alt="Connection Transformation" width="560"></img>
                 </p>
+                <p ALIGN=LEFT>This allowed us to use more pins on the Arduino, which was especially useful since we decided to 
+                    use a parallel type of communication between the Arduino and FPGA to send treasure information. This meant
+                    that we need four additional pins on the Arduino which wasn't possible with the amount of peripherals on 
+                    the robot. The mux is one implementation to increase the number of pins we have. We effectively trade in 
+                    four pins: the selects and output for eight pins which made parallel treasure comunication possible.
+                    The alternative option was to have a serial communication protocol such as I2C style with a clock and
+                    data line where the clock can be driven by the FPGA. However, this implementation will be much more complicated
+                    in terms of software and will need extensive testing to assure reliability; thus, we decided to add extra
+                    hardware on the robot which increases the robot's energy comsumption for easier implementation. 
+                </p>
                 <h1>Mechanical Improvements</h1>
                 <figure ALIGN=CENTER>
                       <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/final_competition/IMG_1193.jpg"
@@ -574,7 +580,7 @@
                 packs. We planned a layout with the arduino and the solder board on the top layer
                 of the robot, the FPGA, Camera, wall sensors, power regulator for the radio, and 
                 FPGA/Camera connections to the middle layer, and the two batteries to the bottom 
-                layer. To create a layer underneath the robot, we designed nd laser cut a base
+                layer. To create a layer underneath the robot, we designed and laser cut a base
                 plate with some chunks cut out of it, allowing room for the line sensors and the 
                 stabilizing appendage in the back. We held it in place by creating two more base 
                 plates with aligned holes for more structural support and flexibility with the 
@@ -633,7 +639,7 @@
                     the main power supplies died on us. For the second round of the competition, our line sensors 
                     went on the fritz and could only map out 8 squares.
                   </p>
-                  <h2> Reflection: If it ain't broke don't fix it</h2>
+                  <h5> Reflection: If it ain't broke don't fix it</h5>
                   <h1>Conclusion and Suggestions for future work</h1>
                   <p ALIGN=LEFT>
                   Looking back on the learning experience of building this robot, we achieved many impressive 
