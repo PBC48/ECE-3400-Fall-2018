@@ -389,9 +389,9 @@
                   <hr class="star-dark mb-5">
                   <img class="img-fluid mb-5" src="images/final_competition/IMG_1189.jpg" alt="">
                     <h1>Introduction</h1>
-                  <p ALIGN=LEFT>
                     <h5 ALIGN=LEFT>Meet our robot friend! This little guy was built for ECE 3400, Intelligent Physical Systems, to complete the tasks of the final competition.
                     </h5>
+                  <p ALIGN=LEFT>
                   For the final design of the robot, we redesigned the overall layout of the robot. 
                   This included both electrical and mechanical improvements. This entire project is 
                   the gambit of the fully autonomous robot using many aspects over many different types 
@@ -422,6 +422,7 @@
                           </figcaption>
                         </font>
                       </figure>
+                  <p ALIGN=LEFT>
                   For our Line Sensor, we have decided to go with the simple design of two line sensors each to the side of the
                   line. The design is very simple: if one line sensor detects the white, we turn in the direction that moves the
                   line sensor back into the unlined surface. So: if the left sensor detects the line, we turn a little bit to the
@@ -443,6 +444,7 @@
                   <iframe width="560" height="315" src="https://www.youtube.com/embed/aWahZUqSUfI?rel=0&amp;controls=0" 
                   frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
                   </iframe>
+                  </p>
                   <h2>Integration of IR and Microphone</h2>
                      <figure ALIGN=CENTER>
                         <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/final_competition/IMG_1192.jpg"
@@ -452,6 +454,7 @@
                           </figcaption>
                         </font>
                       </figure>
+                  <p ALIGN=LEFT>
                     Now its time to get the robot to interact with us and other robots. To do so, we have the aide of IR and audio
                     signals. For the IR sensor, we use Infra-Red (IR) light to detect the presence of another robot (or a decoy).
                     The IR sensor uses a Phototransistor to convert the light into a signal for the robot to convert into individual
@@ -467,7 +470,9 @@
                   </figure>
                     The circuit filters out undesired signals such as the DC (0Hz) and higher frequencies (>6.08Hz, the robot detection
                     frequency).
-                    </br>
+                  </p>
+                  </br>
+                  <p ALIGN=LEFT>
                   As for the microphone, We needed a way to get the robot to start without the use of physical manipulation. As such, we
                   installed the microphone. Much like the IR sensor, the microphone required the use of the FFT. For the robot to start,
                   we want to detect a 660Hz past a certain threshold. if the signal passes the threshold, the robot would start. to make
@@ -480,7 +485,9 @@
                     </figcaption>
                     </font>
                 </figure>
-                  <h2>Search Algorithm</h2>
+                </p>
+                <h2>Search Algorithm</h2>
+                <p ALIGN=LEFT>
                   to improve on the left-wall following algorithm, which doesn't take it account spaces that we have already visited and
                   doesn't permit escape from an infinite traversal in a box, we decided to create a search algorithm. We have decided to
                   go with the DFS (Depth First Search) Algorithm since it's easier to implement than Djikstra's algorithm and fares well
@@ -488,44 +495,50 @@
                   <iframe width="560" height="315" src="https://www.youtube.com/embed/JbzAFhrltYo?rel=0&amp;controls=0" frameborder="0" 
                   allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
                   </iframe>
-                  <h2>Treasure Detection</h2>
-                      <figure ALIGN=CENTER>
-                        <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/final_competition/IMG_1191.jpg"
-                        width="560"/>
-                        <font size="2">
-                          <figcaption> Left Side View of Robot with Camera
-                          </figcaption>
-                        </font>
-                      </figure>
-                  The last integral part of the design is treasure detection. This is the most complex part of the robot, and although
-                  we were unable to fully integrate the camera with the robot, in our design, we were able to get the treasure detection
-                  to work decently. To get it to work properly, we need the robot to detect 6 types of treasures: 2 different colors and
-                  3 different shapes. To best detect them, we decided to split the image taken from the camera into three segments: a top
-                  segment, a middle segment, and a bottom segment. We measure the amount of red and blue and lack of green in the image of
-                  these segments. With this segmentation, we are able to threshold and compare the segments to each other and determine the
-                  shape detected.
-                  <h1>Final Design</h1>
-                  For the final design of the robot, we redesigned the overall layout of the robot. 
-                  This included both electrical and mechanical improvements. This entire project is 
-                  the gambit of the fully autonomous robot using many aspects over many different types 
-                  of wired/wireless communications, peripherals, data structures, computer architectures,
-                  and system design. It is the peak of a junior design project. Over the course of four 
-                  labs and four milestones, we have taught our robot how to follow a line, to operate a 
-                  servo, navigate with walls, communicate to another arduino, and how to detect color
-                  and think about where to move next. The biggest challenge of it all was to move past 
-                  the prototyping stage and integrate an optimized version of the robot with better
-                  power utilization, mechanical dexterity, and algorithmic precision. Although by 
-                  competition we were unable to fully integrate our perfected robot, we demonstrated 
-                  that our design worked to greatest potential.
-                  <h1>Electrical Hardware</h1>
-                  <figure ALIGN=CENTER>
-                        <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/final_competition/IMG_1194.jpg"
-                        width="560"/>
-                        <font size="2">
-                          <figcaption> Robot Protoboard
-                          </figcaption>
-                        </font>
-                      </figure>
+                </p>
+                <h2>Treasure Detection</h2>
+                <figure ALIGN=CENTER>
+                  <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/final_competition/IMG_1191.jpg"
+                  width="560"/>
+                  <font size="2">
+                    <figcaption> Left Side View of Robot with Camera
+                    </figcaption>
+                  </font>
+                </figure>
+                <p ALIGN=LEFT>
+                The last integral part of the design is treasure detection. This is the most complex part of the robot, and although
+                we were unable to fully integrate the camera with the robot, in our design, we were able to get the treasure detection
+                to work decently. To get it to work properly, we need the robot to detect 6 types of treasures: 2 different colors and
+                3 different shapes. To best detect them, we decided to split the image taken from the camera into three segments: a top
+                segment, a middle segment, and a bottom segment. We measure the amount of red and blue and lack of green in the image of
+                these segments. With this segmentation, we are able to threshold and compare the segments to each other and determine the
+                shape detected.
+                </p>
+                <h1>Final Design</h1>
+                <p ALIGN=LEFT>
+                For the final design of the robot, we redesigned the overall layout of the robot. 
+                This included both electrical and mechanical improvements. This entire project is 
+                the gambit of the fully autonomous robot using many aspects over many different types 
+                of wired/wireless communications, peripherals, data structures, computer architectures,
+                and system design. It is the peak of a junior design project. Over the course of four 
+                labs and four milestones, we have taught our robot how to follow a line, to operate a 
+                servo, navigate with walls, communicate to another arduino, and how to detect color
+                and think about where to move next. The biggest challenge of it all was to move past 
+                the prototyping stage and integrate an optimized version of the robot with better
+                power utilization, mechanical dexterity, and algorithmic precision. Although by 
+                competition we were unable to fully integrate our perfected robot, we demonstrated 
+                that our design worked to greatest potential.
+                </p>
+                <h1>Electrical Hardware</h1>
+                <figure ALIGN=CENTER>
+                    <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/final_competition/IMG_1194.jpg"
+                      width="560"/>
+                      <font size="2">
+                        <figcaption> Robot Protoboard
+                        </figcaption>
+                      </font>
+                </figure>
+                <p ALIGN=LEFT>
                   For our electrical hardware, we cleaned up the wiring and replaced the bulky protoboards 
                   with throughput solder board. In order to make the adjustment, we condensed the electrical 
                   hardware for the microphone, the IR sensor, and the Camera controls onto one board and 
@@ -539,80 +552,84 @@
                   amount required to 3. Overall, by doing this, we have allowed more power allowance 
                   for each component itself allowing each component to act properly.
                   <img src="images/Muxing.png" alt="Connection Transformation" width="560"></img>
-                  <h1>Mechanical Improvements</h1>
-                  <figure ALIGN=CENTER>
-                        <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/final_competition/IMG_1193.jpg"
-                        width="560"/>
-                        <font size="2">
-                          <figcaption> Back View of Robot
-                          </figcaption>
-                        </font>
-                  </figure>
-                  To fit all the components onto the robot, we strategically placed the arduino, 
-                  the FPGA, the Camera, the solder board, the smaller protoboard, and the two battery
-                  packs. We planned a layout with the arduino and the solder board on the top layer
-                  of the robot, the FPGA, Camera, wall sensors, power regulator for the radio, and 
-                  FPGA/Camera connections to the middle layer, and the two batteries to the bottom 
-                  layer. To create a layer underneath the robot, we designed nd laser cut a base
-                  plate with some chunks cut out of it, allowing room for the line sensors and the 
-                  stabilizing appendage in the back. We held it in place by creating two more base 
-                  plates with aligned holes for more structural support and flexibility with the 
-                  placement of our other components.
-                  <h1>Cost</h1>
-                  <p ALIGN=LEFT>
-                    Given the supplies that we had used on our root, here's the cost that we have incurred:
-                    <table ALIGN=CENTER>
-                      <tr>
-                        <th>Item
-                        <th>Unit Cost
-                        <th># of Units 
-                        <th>Total Cost
-                      </tr>
-                      <tr>
-                        <td>Line Sensors
-                        <td>$3
-                        <td>2
-                        <td>$6
-                      </tr>
-                      <tr>
-                        <td>IR Distance (Wall) Sensors
-                        <td>$7
-                        <td>3 
-                        <td>$21
-                      </tr>
-                      <tr>
-                        <td>Camera
-                        <td>$14
-                        <td>1 
-                        <td>$14
-                      </tr>
-                      <tr>
-                        <td>Parallax Servos
-                        <td>$13
-                        <td>2 
-                        <td>$26
-                      </tr>
-                      <tr>
-                        <td>Arduino Uno
-                        <td>$16
-                        <td>1 
-                        <td>$16
-                      </tr>
-                      <tr>
-                        <td colspan="3">Item 
-                        <td>$83
-                      </tr>
-                    </table>
-                  </p>
+                </p>
+                <h1>Mechanical Improvements</h1>
+                <figure ALIGN=CENTER>
+                      <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/final_competition/IMG_1193.jpg"
+                      width="560"/>
+                      <font size="2">
+                        <figcaption> Back View of Robot
+                        </figcaption>
+                      </font>
+                </figure>
+                <p ALIGN=LEFT>
+                To fit all the components onto the robot, we strategically placed the arduino, 
+                the FPGA, the Camera, the solder board, the smaller protoboard, and the two battery
+                packs. We planned a layout with the arduino and the solder board on the top layer
+                of the robot, the FPGA, Camera, wall sensors, power regulator for the radio, and 
+                FPGA/Camera connections to the middle layer, and the two batteries to the bottom 
+                layer. To create a layer underneath the robot, we designed nd laser cut a base
+                plate with some chunks cut out of it, allowing room for the line sensors and the 
+                stabilizing appendage in the back. We held it in place by creating two more base 
+                plates with aligned holes for more structural support and flexibility with the 
+                placement of our other components.
+                </p>
+                <h1>Cost</h1>
+                <p ALIGN=LEFT>
+                  Given the supplies that we had used on our root, here's the cost that we have incurred:
+                  <table ALIGN=CENTER>
+                    <tr>
+                      <th>Item
+                      <th>Unit Cost
+                      <th># of Units 
+                      <th>Total Cost
+                    </tr>
+                    <tr>
+                      <td>Line Sensors
+                      <td>$3
+                      <td>2
+                      <td>$6
+                    </tr>
+                    <tr>
+                      <td>IR Distance (Wall) Sensors
+                      <td>$7
+                      <td>3 
+                      <td>$21
+                    </tr>
+                    <tr>
+                      <td>Camera
+                      <td>$14
+                      <td>1 
+                      <td>$14
+                    </tr>
+                    <tr>
+                      <td>Parallax Servos
+                      <td>$13
+                      <td>2 
+                      <td>$26
+                    </tr>
+                    <tr>
+                      <td>Arduino Uno
+                      <td>$16
+                      <td>1 
+                      <td>$16
+                    </tr>
+                    <tr>
+                      <td colspan="3">Item 
+                      <td>$83
+                    </tr>
+                  </table>
+                </p>
                   <h2>Competition</h2>
                   <p ALIGN=LEFT>
                     In the Competition, due to the issues we had with testing and integrating the hew robot design,
                     we were not able to compete as strongly as we wished. In the first round of competition, one of 
                     the main power supplies died on us. For the second round of the competition, our line sensors 
                     went on the fritz and could only map out 8 squares.
-                    
+                  </p>
                   <h2> Reflection: If it ain't broke don't fix it</h2>
                   <h1>Conclusion and Suggestions for future work</h1>
+                  <p ALIGN=LEFT>
                   Looking back on the learning experience of building this robot, we achieved many impressive 
                   results and overcame great challenges, but there are several things we wish could have been different 
                   as well.  In hindsight, we made one significantly miscalculated decision that cost on us competition 
@@ -624,12 +641,15 @@
                   all, instead of optimizing our maze navigation, treasure detection, and the overall power plan for our 
                   robot.  We believe that otherwise our robot could have given a much stronger performance, and are 
                   disappointed when remembering how more reliably it navigated mazes just four days earlier.
+                  </p>
                   </br>
+                  <p ALIGN=LEFT>
                   For future work on the robot, definitely the best option would be to first all implement Djikstra's algorithm
                   onto it. We have created a data structure that would be able to handle the algorithm, but unfortunately,
                   we were unable to implement it due to time constraints and complexity. The data structure allowed for dynamic
                   allocation, and wouldn't have taken up too much space in the heap, but alas, the DFS that we instead implemented
                   worked well enough.
+                  </p>
                   </p>
                   </br>
                   <p ALIGN=LEFT>
