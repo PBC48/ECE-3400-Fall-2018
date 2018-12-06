@@ -406,7 +406,7 @@
                   that our design worked to greatest potential.
                   <figure ALIGN=CENTER>
                         <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/final_competition/schematics.PNG"
-                        width="800"/>
+                        width="560"/>
                         <font size="2">
                           <figcaption> Schematic of Entire Robot
                           </figcaption>
@@ -434,7 +434,9 @@
                   and also be able to detect intersections with the setup, which the algorithm is simple: if both sensors detect a
                   line then we have reached an intersection.
                   <iframe width="560" height="315" src="https://www.youtube.com/embed/mZf0CTAzZvA?controls=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                  </p>
                   <h2>Wall Detection and Maze Movement</h2>
+                  <p ALIGN=LEFT>
                   For the second milestone of the project, we are to get the robot to detect walls and upon that inference, decide how to
                   turn at the intersection. For our basic implementation, we only used two IR distance sensors to detect the walls since
                   our plan of a maze movement algorithm was simple: just left-wall following. As such, we placed the wall sensors on the
@@ -3437,7 +3439,9 @@ update_visited_lists<span style='color:#0000ff; '>(</span><span style='color:#00
                 circuitry. A multiplexer allows you to read several different signals
                 from just one pin by choosing which one you want to read at any given
                 time. It is a very useful component if you’re pressed for space on an Arduino!
+              </p>
                 <h2>How to Wire up a Mux</h2>
+              <p ALIGN=LEFT>
               A mux will come in the from of a chip with two rows of metal pins. Many of these pins
               are input pins (to the mux), one is an output pin, some are ‘select’ pins, one is 
               power, one is ground, and a couple might be miscellaneous other things. In order 
@@ -3454,7 +3458,9 @@ update_visited_lists<span style='color:#0000ff; '>(</span><span style='color:#00
               8 inputs, you will have 3 select pins; 4 inputs will have 2 select pins. These select
               pins must also be connected to Arduino pins. Finally, there may be a couple other
               miscellaneous pins; reference the data sheet to figure out what to do with those.
+              </p>
               <h2>Configuring the Arduino Pins</h2>
+              <p ALIGN=LEFT>
               To read from the mux, you have to set the select pins to a digital HIGH or LOW 
               from the Arduino. This can be coded in the Arduino IDE. However, first you have 
               to set up the Arduino pins correctly. This should be done in the Arduino’s setup 
@@ -3465,14 +3471,18 @@ update_visited_lists<span style='color:#0000ff; '>(</span><span style='color:#00
               up the pin with pinMode(); but the analog pins can be configured as digital with the
               pinMode() function so a digital mux output and the mux select pins can be connected 
               to either digital or analog Arduino pins.
+              </p>
               <h2>Reading from the Mux</h2>
+              <p ALIGN=LEFT>
               Now you can move on to actually setting your mux select bits and reading from the mux. 
               In the mux’s datasheet there will be a table specifying what combinations of HIGH and 
               LOW signals you should write to the select pins to read from a certain input pin. 
               Whenever you want to read from the mux, use digitalWrite() on the mux select pins
               to set the desired combination, and then use digitalRead() on the mux output pin
               to read your signal!
+              </p>
               <h2>Our Mux and How to Use it</h2>
+              <p ALIGN=LEFT>
               The mux we were provided in 3400 is a CD74HC4051. Its datasheet can be found 
               <a href="http://www.ti.com/lit/ds/symlink/cd74hc4051.pdf">here</a>, 
               and a more concise overview of it can be found on the Arduino playground 
