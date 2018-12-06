@@ -392,9 +392,9 @@
                     <p ALIGN=LEFT><b>Meet our robot friend! This little guy was built for ECE 3400, Intelligent Physical Systems, to complete the tasks of the final competition.
                     </b></p>
                   <p ALIGN=LEFT>
-                  In our robot's final design, we redesigned the overall layout of the robot, including  
+                  In our robot's final design, we redesigned the overall layout of the robot, making  
                   both electrical and mechanical improvements. This entire project is 
-                  the gambit of the fully autonomous robot using many aspects over many different types 
+                  the culmination of a fully autonomous robot using many aspects over many different types 
                   of wired/wireless communications, peripherals, data structures, computer architectures,
                   and system design. It is the peak of a junior design project. Over the course of four 
                   labs and four milestones, we have taught our robot how to follow a line, operate a 
@@ -403,7 +403,7 @@
                   the prototyping stage and integrate an optimized version of the robot with better
                   power utilization, mechanical dexterity, and algorithmic precision. Although by 
                   competition we were unable to fully integrate our perfected robot, we incrementally demonstrated 
-                  that our design worked to greatest potential.
+                  that our components worked to expectation.
                   <figure ALIGN=CENTER>
                         <img ALIGN=CENTER src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/final_competition/schematics.PNG"
                         width="800"/>
@@ -423,21 +423,21 @@
                         </font>
                       </figure>
                   <p ALIGN=LEFT>
-                  For our Line Sensor, we have decided to go with the simple design of two line sensors, each to the side of the
+                  We implemented a simple design with two line sensors, each to the side of the
                   line. If one line sensor detects the white, we turn in the direction that moves the
                   line sensor back into the unlined surface. So, if the left sensor detects the line, we turn a little bit to the
                   left and vice versa. Below is a demonstration of the line following capabilities:
                   <a><img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/milestone1/gif-followLine.gif"
                         width = "560" height = "auto"></a>
-                  In our demonstration, the robot smoothly follows the line. In a more complex implementation, we were able to
-                  program the robot to move in a figure 8 to demonstrate that the robot can properly send PWM signals to the Servos
-                  while also detecingt intersections. An interseciton is detected if both sensors see a
-                  line.
+                  In our demonstration, the robot smoothly follows the line.  An interseciton is detected if both sensors see a
+                  line. In a more complex implementation, we were able to
+                  program the robot to move in a figure 8, demonstrating that the robot can properly send PWM signals to the Servos
+                  while also detecing intersections. 
                   <iframe width="560" height="315" src="https://www.youtube.com/embed/mZf0CTAzZvA?controls=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
                   </p>
                   <h2>Wall Detection and Maze Movement</h2>
                   <p ALIGN=LEFT>
-                  For the second milestone of the project, we get the robot to detect walls and decide how to
+                  For the second milestone of the project, we our robot detects walls and decides how to
                   turn at the intersection.  Since
                   our plan of a maze movement algorithm was simple, just left-wall following, we only used two IR distance sensors to detect the walls, placed the wall sensors on the
                   left and front of the robot. Of course, a u-turn is not
