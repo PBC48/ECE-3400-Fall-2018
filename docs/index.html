@@ -398,15 +398,15 @@
                   of wired/wireless communications, peripherals, data structures, computer architectures,
                   and system design. It is the peak of a junior design project. Over the course of four 
                   labs and four milestones, we have taught our robot how to follow a line, operate a 
-                  servo, navigate with walls, communicate with another arduino, and detect color
+                  servo, navigate with walls, communicate with another arduino, detect color,
                   and think about where to move next. The biggest challenge of all was to move past 
                   the prototyping stage and integrate an optimized version of the robot with better
                   power utilization, mechanical dexterity, and algorithmic precision. Although by 
-                  competition we were unable to fully integrate our perfected robot, we demonstrated 
+                  competition we were unable to fully integrate our perfected robot, we incrementally demonstrated 
                   that our design worked to greatest potential.
                   <figure ALIGN=CENTER>
                         <img ALIGN=CENTER src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/final_competition/schematics.PNG"
-                        width="1000"/>
+                        width="800"/>
                         <font size="2">
                           <figcaption><b> Schematic of Final Robot</b>
                           </figcaption>
@@ -423,26 +423,26 @@
                         </font>
                       </figure>
                   <p ALIGN=LEFT>
-                  For our Line Sensor, we have decided to go with the simple design of two line sensors each to the side of the
-                  line. The design is very simple: if one line sensor detects the white, we turn in the direction that moves the
-                  line sensor back into the unlined surface. So: if the left sensor detects the line, we turn a little bit to the
+                  For our Line Sensor, we have decided to go with the simple design of two line sensors, each to the side of the
+                  line. If one line sensor detects the white, we turn in the direction that moves the
+                  line sensor back into the unlined surface. So, if the left sensor detects the line, we turn a little bit to the
                   left and vice versa. Below is a demonstration of the line following capabilities:
                   <a><img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/milestone1/gif-followLine.gif"
                         width = "560" height = "auto"></a>
                   In our demonstration, the robot smoothly follows the line. In a more complex implementation, we were able to
                   program the robot to move in a figure 8 to demonstrate that the robot can properly send PWM signals to the Servos
-                  and also be able to detect intersections with the setup, which the algorithm is simple: if both sensors detect a
-                  line then we have reached an intersection.
+                  while also detecingt intersections. An interseciton is detected if both sensors see a
+                  line.
                   <iframe width="560" height="315" src="https://www.youtube.com/embed/mZf0CTAzZvA?controls=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
                   </p>
                   <h2>Wall Detection and Maze Movement</h2>
                   <p ALIGN=LEFT>
-                  For the second milestone of the project, we are to get the robot to detect walls and upon that inference, decide how to
-                  turn at the intersection. For our basic implementation, we only used two IR distance sensors to detect the walls since
-                  our plan of a maze movement algorithm was simple: just left-wall following. As such, we placed the wall sensors on the
-                  left and front of the robot. Thankfully, in our case, two wall sensors is all that is needed. Of course, a u-turn is not
-                  as simple as it would be in the final design. In order to execute the u-turn, we detected the wall twice: in the initial instance
-                  and once again after we turned. The implementation turned out to do very well.
+                  For the second milestone of the project, we get the robot to detect walls and decide how to
+                  turn at the intersection.  Since
+                  our plan of a maze movement algorithm was simple, just left-wall following, we only used two IR distance sensors to detect the walls, placed the wall sensors on the
+                  left and front of the robot. Of course, a u-turn is not
+                  as simple as it would be in the final design. In order to execute the u-turn, we detect the wall twice: in the initial instance
+                  and once again after we turned. The implementation worked reliably.
                   <iframe width="560" height="315" src="https://www.youtube.com/embed/aWahZUqSUfI?rel=0&amp;controls=0" 
                   frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
                   </iframe>
@@ -457,10 +457,10 @@
                         </font>
                       </figure>
                   <p ALIGN=LEFT>
-                    Now its time to get the robot to interact with us and other robots. To do so, we have the aide of IR and audio
+                    Now its time for the robot to interact with us and other robots with the aid of IR and audio
                     signals. For the IR sensor, we use Infra-Red (IR) light to detect the presence of another robot (or a decoy).
                     The IR sensor uses a Phototransistor to convert the light into a signal for the robot to convert into individual
-                    frequencies. For us to convert the signal into these individual frequencies, we used Fast Fourier Transform (FFT). Although
+                    frequencies. To convert the signal into these individual frequencies, we used Fast Fourier Transform (FFT). Although
                     it is a rather hefty algorithm that requires a lot of space, it is essential. For the IR Sensor, we built the following
                     circuit to amplify the incoming signal:
                     <figure ALIGN=LEFT>
@@ -475,9 +475,8 @@
                   </p>
                   </br>
                   <p ALIGN=LEFT>
-                  As for the microphone, We needed a way to get the robot to start without the use of physical manipulation. As such, we
-                  installed the microphone. Much like the IR sensor, the microphone required the use of the FFT. For the robot to start,
-                  we want to detect a 660Hz past a certain threshold. if the signal passes the threshold, the robot would start. to make
+                  We installed a microphone so the robot could start without any physical manipulation. Like the IR sensor, the microphone required the use of the FFT. The robot starts
+                  when we detect a 660Hz past a certain threshold. To make
                   the circuit simplier, we decided to detect the signal by just taking the value out of the "bucket" generated by the FFT
                   that contains the value closest to 660Hz. The results were satisfactory.
                   <figure ALIGN=LEFT>
@@ -490,10 +489,10 @@
                 </p>
                 <h3>Search Algorithm</h3>
                 <p ALIGN=LEFT>
-                  To improve on the left-wall following algorithm, which doesn't take it account spaces that we have already visited and
-                  doesn't permit escape from an infinite traversal in a box, we decided to create a search algorithm. We have decided to
-                  go with the DFS (Depth First Search) Algorithm since it's easier to implement than Djikstra's algorithm and fares well
-                  with Maze navigation. The algorithm allowed us to fully explore the maze.
+                  To improve on the left-wall following algorithm, which doesn't account for spaces that we have already visited and
+                  doesn't permit escape from an infinite traversal in a box, we created a search algorithm. We used
+                   the DFS (Depth First Search) Algorithm since it's easier to implement than Djikstra's algorithm and fares well
+                  enough with Maze navigation. The algorithm allowed us to fully explore the maze.
                   <iframe width="560" height="315" src="https://www.youtube.com/embed/JbzAFhrltYo?rel=0&amp;controls=0" frameborder="0" 
                   allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
                   </iframe>
@@ -509,16 +508,16 @@
                 </figure>
                 <p ALIGN=LEFT>
                 The last integral part of the design is treasure detection. This is the most complex part of the robot, and although
-                we were unable to fully integrate the camera with the robot, in our design, we were able to get the treasure detection
-                to work decently. To get it to work properly, we need the robot to detect 6 types of treasures: 2 different colors and
-                3 different shapes. To best detect them, we decided to split the image taken from the camera into three segments: a top
-                segment, a middle segment, and a bottom segment. We measure the amount of red and blue and lack of green in the image of
-                these segments. With this segmentation, we are able to threshold and compare the segments to each other and determine the
+                we were unable to fully integrate the camera with the robot, we were able to get the treasure detection
+                to work somewhat reliably on its own. We needed the robot to detect 6 types of treasures: 2 different colors and
+                3 different shapes. To determine shape we split the image taken from the camera into three segments: a top
+                third, a middle third, and a bottom third. We measure the amount of red and blue and lack of green in the image of
+                these segments. We then threshold and compare the segments to each other to determine the
                 shape detected.
                 </p>
                 <h1>Final Design</h1>
                 <p ALIGN=LEFT>
-                For the final design of the robot, we redesigned the overall layout of the robot. 
+                For the final robot, we redesigned its overall layout. 
                 This included both electrical and mechanical improvements. This entire project is 
                 the gambit of the fully autonomous robot using many aspects over many different types 
                 of wired/wireless communications, peripherals, data structures, computer architectures,
@@ -546,29 +545,24 @@
                   hardware for the microphone, the IR sensor, and the Camera controls onto one board and 
                   relegated the hardware to regulate the power to the radio to a smaller protoboard.
                   In addition to the new layout, we also decided to optimize power usage and pin layout 
-                  By muxing together the three wall sensors and the microphone. Since all four of these 
-                  objects can have information retrieved at different times, it doesn’t make sense for
-                  all of them to have their own pin. So, we used a 4 to 2 multiplexer which takes in 2 
-                  inputs and selects between the four signals to input into one pin. So, even though 
-                  it doesn’t seem like much of a change, instead of requiring 4 pins, we reduced the 
-                  amount required to 3. Overall, by doing this, we have allowed more power allowance 
+                  by muxing together the three wall sensors and the microphone. Since all four of these 
+                  objects can have information retrieved at different times, they don't each need their own pin. So, we used a 4 to 2 multiplexer which takes in 2 
+                  inputs and selects between the four signals to input into one pin. We reduced the 
+                   required pins from 4 to 3. Overall, we now have power allowance 
                   for each component itself allowing each component to act properly.
                   <img src="images/Muxing.png" alt="Connection Transformation" width="560"></img>
                 </p>
-                <p ALIGN=LEFT>This allowed us to use more pins on the Arduino, which was especially useful since we decided to 
-                    use a parallel type of communication between the Arduino and FPGA to send treasure information. This meant
-                    that we need four additional pins on the Arduino which wasn't possible with the amount of peripherals on 
-                    the robot. The mux is one implementation to increase the number of pins we have. We effectively trade in 
+                <p ALIGN=LEFT>This allowed us an extra pin on the Arduino, which was especially useful since we decided to 
+                    use parallel communication between the Arduino and FPGA to send treasure information, which required four additional pins on the Arduino. The mux is one implementation to increase the number of pins we have. We effectively trade in 
                     four pins: the selects and output for eight pins which made parallel treasure comunication possible.
                     The alternative option was to have a serial communication protocol such as I2C style with a clock and
-                    data line where the clock can be driven by the FPGA. However, this implementation will be much more complicated
-                    in terms of software and will need extensive testing to assure reliability; thus, we decided to add extra
-                    hardware on the robot which increases the robot's energy comsumption for easier implementation. 
+                    data line where the clock can be driven by the FPGA. However, this implementation would be much more complicated
+                    in terms of software and would need extensive testing to assure reliability. 
                 </p>
                 <p ALIGN=LEFT>
                     Powering the robot was a major concern for us because we have a lot of components that drain the power. The two servos, the Arduino,
                     and FPGA are all major power consumers that can affect the reliability of other sensors since the the consumption may be so high
-                    that it causes the sensors to not be powered fully, affecting their performance. The solution to this was to use two batteries
+                    that it causes the sensors to not be powered fully, affecting their performance. Our solution to this was to use two batteries
                     and properly balance the load on the battery. We tackled this problem in both hardware and software. 
                     In hardware, we balance the load on the battery by having first battery power the sensors, camera and servos where the servo will be 
                     a hugh power consumer. We use the second battery to power the Arduino and FPGA. We want our processors to have 
@@ -579,18 +573,6 @@
                     when transmitting and we simply don't have the power to keep all these components on. Properly powering our robot was
                     a very important part of design and can mean the difference between peripherals not working and working. 
                 </p>
-                <p ALIGN=LEFT>
-                    Our protoboard design was just the entire circuit for all the sensors placed into one. This was because we used 
-                    a breadboard through out of the semester and only decided to add breadboard implementation towards the end of the semester.
-                    This ended up being a poor choice because we weren't able to take advantage of the modularity of different different sensors
-                    and could not replace components easily if one part of the circuit doesn't work for one reason or another. The benefit of 
-                    everything together is the smaller area the circuit takes up and easily ensuring that the circuits are all powered
-                    properly and contains common ground. However, when parts of the ciruit fail such as the microphone sensors, we would not
-                    be able to easily replace the component. This was the case before competition when the microphone failed and we had
-                    to rely on the push button to start the robot. Another benefit that the wiring is much more clean as shown in the image 
-                    above. 
-
-                </p>
                 <h1>Mechanical Improvements</h1>
                 <figure ALIGN=CENTER>
                       <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/final_competition/labelrobot2.png"
@@ -600,15 +582,15 @@
                         </figcaption>
                       </font>
                 </figure>
-                <p ALIGN=LEFT> 
+                <p ALIGH=LEFT> 
                     We originally had only two layers on the robot. One for the battery and one for the Arduino Uno. However, because 
                     of the addition of the FPGA and camera, we needed to add an additional layer to the robot.
                 </p>
 
                 <p ALIGN=LEFT>
-                To fit all the components onto the robot, we strategically placed the arduino, 
+                To fit all the components onto the robot, we strategically placed the Arduino, 
                 the FPGA, the Camera, the solder board, the smaller protoboard, and the two battery
-                packs. We planned a layout with the arduino and the solder board on the top layer
+                packs. We planned a layout with the Arduino and the solder board on the top layer
                 of the robot, the FPGA, Camera, wall sensors, power regulator for the radio, and 
                 FPGA/Camera connections to the middle layer, and the two batteries to the bottom 
                 layer. To create a layer underneath the robot, we designed and laser cut a base
@@ -620,7 +602,7 @@
 
                 <p ALIGN=LEFT> 
                     As seen in the image above the batteries are at the lowest layer since they need the least amount of adjustment.
-                     To retrieve the batteries, we would have to remove the ball and caster mount, nut since the batteries do not
+                     To retrieve the batteries, we would have to remove the ball and caster mount, but since the batteries do not
                      drain quickly, we didn't need to replace the battery often.
                 </p>
                 <p ALIGN=LEFT>
@@ -705,7 +687,7 @@
                   </p>
                   </br>
                   <p ALIGN=LEFT>
-                  For future work on the robot, definitely the best option would be to first all implement Djikstra's algorithm
+                  For future work on the robot, definitely the best option would be to implement Djikstra's algorithm
                   onto it. We have created a data structure that would be able to handle the algorithm, but unfortunately,
                   we were unable to implement it due to time constraints and complexity. The data structure allowed for dynamic
                   allocation, and wouldn't have taken up too much space in the heap, but alas, the DFS that we instead implemented
@@ -777,7 +759,7 @@
               </ol>
               <h2>Team Expectations</h2>
               <h4>Work Quality:</h4>
-              We all want to get an A in this class really badly. So, we will make sure 
+              We all want want to perform in this class to our greatest potential. So, we will make sure 
               that our work is pristine, comments are understandable and well marked, and 
               generated processes will be well documented for ease of the next user.
               <ol type="1" ALIGN=LEFT>
