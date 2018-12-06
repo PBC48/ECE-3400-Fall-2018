@@ -404,11 +404,11 @@
                   power utilization, mechanical dexterity, and algorithmic precision. Although by 
                   competition we were unable to fully integrate our perfected robot, we demonstrated 
                   that our design worked to greatest potential.
-                  <figure ALIGN=CENTER>
+                  <figure ALIGN=LEFT>
                         <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/final_competition/schematics.PNG"
                         width="800"/>
                         <font size="2">
-                          <figcaption> Schematic of Final Robot
+                          <figcaption><b> Schematic of Final Robot</b>
                           </figcaption>
                         </font>
                       </figure>
@@ -418,7 +418,7 @@
                         <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/final_competition/labelrobot6.png"
                         width="560"/>
                         <font size="2">
-                          <figcaption> Front View of the Robot
+                          <figcaption><b> Front View of the Robot</b>
                           </figcaption>
                         </font>
                       </figure>
@@ -452,7 +452,7 @@
                         <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/final_competition/labelrobot3.png"
                         width="560"/>
                         <font size="2">
-                          <figcaption> Top View with IR Hat
+                          <figcaption> <b>Top View with IR Hat</b>
                           </figcaption>
                         </font>
                       </figure>
@@ -503,7 +503,7 @@
                   <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/final_competition/labelrobot4.png"
                   width="560"/>
                   <font size="2">
-                    <figcaption> Left Side View of Robot with Camera
+                    <figcaption> <b>Left Side View of Robot with Camera</b>
                     </figcaption>
                   </font>
                 </figure>
@@ -536,7 +536,7 @@
                     <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/final_competition/labelrobot1.png"
                       width="560"/>
                       <font size="2">
-                        <figcaption> Robot Protoboard
+                        <figcaption> <b>Robot Protoboard</b>
                         </figcaption>
                       </font>
                 </figure>
@@ -565,15 +565,23 @@
                     in terms of software and will need extensive testing to assure reliability; thus, we decided to add extra
                     hardware on the robot which increases the robot's energy comsumption for easier implementation. 
                 </p>
+                <p ALIGN=LEFT>
+
+                </p>
                 <h1>Mechanical Improvements</h1>
                 <figure ALIGN=CENTER>
                       <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/final_competition/labelrobot2.png"
                       width="560"/>
                       <font size="2">
-                        <figcaption> Back View of Robot
+                        <figcaption> <b>Back View of Robot</b>
                         </figcaption>
                       </font>
                 </figure>
+                <p ALIGH=LEFT> 
+                    We originally ahd only two layers on the robot. One for the battery and one for the Arduino Uno. However, because 
+                    of the addition of the FPGA and camera, we needed to add an additional layer to the robot.
+                </p>
+
                 <p ALIGN=LEFT>
                 To fit all the components onto the robot, we strategically placed the arduino, 
                 the FPGA, the Camera, the solder board, the smaller protoboard, and the two battery
@@ -586,6 +594,24 @@
                 plates with aligned holes for more structural support and flexibility with the 
                 placement of our other components.
                 </p>
+
+                <p ALIGN=LEFT> 
+                    As seen in the image above the batteries are at the lowest layer since they need the least amount of adjustment.
+                     To retrieve the batteries, we would have to remove the ball and caster mount, nut since the batteries do not
+                     drain quickly, we didn't need to replace the battery often.
+                </p>
+                <p ALIGN=LEFT>
+                    The second layer contains the camera and FPGA. The camera had to be at the right height to detect the 
+                    treasure placed on the walls. The second layer is the obvious decision. We also placed the wall sensors here
+                    for the same reason. To separate the FPGA from the Arduino. The FPGA contains it's own set of circuits but they
+                    must share a common ground. 
+                </p>
+                <p ALIGN=LEFT>
+                    The third and top layer contains the Arduino and protoboard. The placement was advantageous for us becase it allowed
+                    us to easily debug the circuit and program the Arudino. We also places the required IR hats here at the 5.5 inch mark. The radio
+                    was also hosted here for best communication reliability.
+                </p>
+
                 <h1>Cost</h1>
                 <p ALIGN=LEFT>
                   Given the supplies that we had used on our root, here's the cost that we have incurred:
