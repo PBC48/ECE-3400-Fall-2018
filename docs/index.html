@@ -404,8 +404,8 @@
                   power utilization, mechanical dexterity, and algorithmic precision. Although by 
                   competition we were unable to fully integrate our perfected robot, we demonstrated 
                   that our design worked to greatest potential.
-                  <figure ALIGN=LEFT>
-                        <img src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/final_competition/schematics.PNG"
+                  <figure ALIGN=CENTER>
+                        <img ALIGN=CENTER src="https://raw.githubusercontent.com/PBC48/ECE-3400-Fall-2018/master/docs/images/final_competition/schematics.PNG"
                         width="800"/>
                         <font size="2">
                           <figcaption><b> Schematic of Final Robot</b>
@@ -570,8 +570,14 @@
                     and FPGA are all major power consumers that can affect the reliability of other sensors since the the consumption may be so high
                     that it causes the sensors to not be powered fully, affecting their performance. The solution to this was to use two batteries
                     and properly balance the load on the battery. We tackled this problem in both hardware and software. 
-                    In hardware, we balance the load on the battery by having first battery power the sensors and servos where the servo will be 
-                    a hugh power consumer. We use the second battery to power the Arduino and FPGA. 
+                    In hardware, we balance the load on the battery by having first battery power the sensors, camera and servos where the servo will be 
+                    a hugh power consumer. We use the second battery to power the Arduino and FPGA. We want our processors to have 
+                    the best performance possible. In practice, we should have three batteries to fully power everything given the power
+                    consumptions of all of our peripherals since each battery output a max of 1A. In software, we reduce the amount of 
+                    unneccessary load on the battery by turning off components that were no used. One example is that we turned off the 
+                    line sensors and servo when transmitting to the basestation because the radio consumes a significant amount of power
+                    when transmitting and we simply don't have the power to keep all these components on. Properly powering our robot was
+                    a very important part of design and can mean the difference between peripherals not working and working. 
                 </p>
                 <h1>Mechanical Improvements</h1>
                 <figure ALIGN=CENTER>
